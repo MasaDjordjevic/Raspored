@@ -1,0 +1,10 @@
+﻿<h1>Ja sam BOG</h1>
+<div class="list-group" *ngIf="data != null">
+    <li class="list-group-item" *ngFor="#num of data">ID: {{ num.id }} IME: {{ num.name }}</li>
+</div>
+New Hero:
+<input #newHero type="text"/>
+<button (click)="addHero(newHero.value); newHero.value=''">
+    Add Hero
+</button>
+<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>

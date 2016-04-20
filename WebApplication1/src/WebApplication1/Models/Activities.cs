@@ -1,0 +1,24 @@
+using System;
+using System.Collections.Generic;
+
+namespace WebApplication1.Models
+{
+    public partial class Activities
+    {
+        public int activityID { get; set; }
+        public string activityContent { get; set; }
+        public int? activityScheduleID { get; set; }
+        public int? classroomID { get; set; }
+        public int? groupID { get; set; }
+        public string place { get; set; }
+        public int? studentID { get; set; }
+        public int timeSpanID { get; set; }
+        public string title { get; set; }
+
+        public virtual ActivitySchedules activitySchedule { get; set; }
+        public virtual Classrooms classroom { get; set; }
+        public virtual Groups group { get; set; }
+        public virtual Students student { get; set; }
+        public virtual TimeSpans timeSpan { get; set; }
+    }
+}
