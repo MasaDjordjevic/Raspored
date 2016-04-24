@@ -5,10 +5,10 @@ namespace WebApplication1.Models
 {
     public partial class RasporedContext : DbContext
     {
-        //protected override void OnConfiguring(DbContextOptionsBuilder options)
-        //{
-        //    options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -193,6 +193,11 @@ namespace WebApplication1.Models
                 entity.HasOne(d => d.deparment).WithMany(p => p.Students).HasForeignKey(d => d.deparmentID).OnDelete(DeleteBehavior.Restrict);
             });
 
+            modelBuilder.Entity<StudentsActivities>(entity =>
+            {
+                entity.HasKey(e => e.studentActivityID);
+            });
+
             modelBuilder.Entity<TimeSpans>(entity =>
             {
                 entity.HasKey(e => e.timeSpanID);
@@ -267,6 +272,7 @@ namespace WebApplication1.Models
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<RolesPermissions> RolesPermissions { get; set; }
         public virtual DbSet<Students> Students { get; set; }
+        public virtual DbSet<StudentsActivities> StudentsActivities { get; set; }
         public virtual DbSet<TimeSpans> TimeSpans { get; set; }
         public virtual DbSet<UniMembers> UniMembers { get; set; }
         public virtual DbSet<UniMembersRoles> UniMembersRoles { get; set; }
