@@ -6,8 +6,9 @@
 *.user
 *.userosscache
 *.sln.docstates
-./**/*.js
-./**/*.js.map
+*.js
+*.js.map
+WebApplication1/.vs/
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
