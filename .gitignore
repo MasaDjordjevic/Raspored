@@ -9,6 +9,7 @@
 *.js
 *.js.map
 WebApplication1/.vs/
+Startup.cs
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
