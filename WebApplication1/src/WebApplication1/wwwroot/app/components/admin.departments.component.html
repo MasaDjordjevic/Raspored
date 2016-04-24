@@ -1,0 +1,22 @@
+﻿<h1>Lista smerova</h1>
+<div class="list-group" *ngIf="data != null">
+    <div class="list-group-item" *ngFor="#dep of data; #i = index">
+        <span class="id"><b>ID</b> {{dep.departmentID}}</span>
+        <span class="name"><b>Name</b> {{dep.departmentName}}</span>
+        <span class="year"><b>Year</b> {{dep.year}}</span>
+        <button (click)="onDelete(dep.departmentID)">Delete</button>
+    </div>
+</div>
+
+Ime smera:
+<input [(ngModel)]="newDepartment.name" type="text" />
+
+Godina:
+<div *ngFor="#year of newDepartment.boolYears; #i = index;">
+    <input id="{{year.year}}" type="checkbox" [(ngModel)]="year.checked"/>
+    <label attr.for="{{year.year}}">{{year.year + ' ' + year.checked}}</label>
+</div> 
+
+<button (click)="addDepartment()" style="padding-bottom:500px">Dodaj novi smer</button>
+
+<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>

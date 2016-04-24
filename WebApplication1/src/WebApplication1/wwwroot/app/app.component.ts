@@ -33,13 +33,18 @@ export class AppComponent implements OnInit {
                 }),
                 new AsyncRoute({
                     path: "/test",
-                    name: "Test",
+                    name: "Testtttttt",
                     loader: () => System.import("app/components/test.component").then(c => c["TestComponent"])
                 }),
                 new AsyncRoute({
                     path: "/roles",
                     name: "Roles",
                     loader: () => System.import("app/components/roles.component").then(c => c["RolesComponent"])
+                }),
+                new AsyncRoute({
+                    path: "/admin/departments",
+                    name: "Departments",
+                    loader: () => System.import("app/components/admin.departments.component").then(c => c["AdminDepartmentsComponent"])
                 }),
             ];
 
