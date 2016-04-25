@@ -10,6 +10,7 @@ namespace WebApplication1.Models
             Activities = new HashSet<Activities>();
             Ads = new HashSet<Ads>();
             GroupsStudents = new HashSet<GroupsStudents>();
+            StudentsActivities = new HashSet<StudentsActivities>();
             UniMembers = new HashSet<UniMembers>();
         }
 
@@ -20,6 +21,7 @@ namespace WebApplication1.Models
         public virtual ICollection<Activities> Activities { get; set; }
         public virtual ICollection<Ads> Ads { get; set; }
         public virtual ICollection<GroupsStudents> GroupsStudents { get; set; }
+        public virtual ICollection<StudentsActivities> StudentsActivities { get; set; }
         public virtual ICollection<UniMembers> UniMembers { get; set; }
         public virtual Departments deparment { get; set; }
     }
