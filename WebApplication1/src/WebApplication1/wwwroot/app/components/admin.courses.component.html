@@ -1,6 +1,6 @@
-﻿<select #selYears *ngIf="yearDepartments != null" (change)="getDepartmentsFront(selYears.value)">
+﻿<select #selYears *ngIf="yearDepartments != null" (change)="getDepartmentsFront(selYears.value)" >
     <option>Izaberi godinu studija</option>
-    <option *ngFor="#yd of yearDepartments">
+    <option *ngFor="#yd of yearDepartments; #i = index"  [value]="i">
         {{yd.year}}
     </option>
 </select>

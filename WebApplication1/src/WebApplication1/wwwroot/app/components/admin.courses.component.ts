@@ -34,14 +34,9 @@ export class AdminCoursesComponent implements OnInit {
         this.getDepartmentsByYear();
     }
 
-    getDepartmentsFront(year:string) {
-        for (var i = 0; i < this.yearDepartments.length; i++) {
-            if (this.yearDepartments[i].year == Number(year)) {
-                this.depsOfSelected = this.yearDepartments[i].departments;
-                this.selectDepartment(this.depsOfSelected[0].departmentID);
-            }
-               
-        }
+    getDepartmentsFront(index:number) {
+        this.depsOfSelected = this.yearDepartments[index].departments;
+        this.selectDepartment(this.depsOfSelected[0].departmentID);
     }
 
     getCoursesOfDepartment(departmentID: number) {
