@@ -12,7 +12,6 @@
 </select>
 
 
-
 <div *ngIf="selectedDepartmentID != null">
     <h4>Lista kurseva</h4>
     <div class="list-group" *ngIf="courses != null">
@@ -21,13 +20,15 @@
             <span class="name"><b>Name</b> {{course.name}}</span>
             <span class="alias"><b>Alias</b> {{course.alias}}</span>
             <span class="code"><b>Code</b> {{course.code}}</span>
+            <span class="semester"><b>Semester</b> {{course.semester}}</span>
             <button (click)="onDelete(course.courseID)">Delete</button>
         </div>
     </div>
 
     <input placeholder="Name" [(ngModel)]="newCourse.name" />
     <input placeholder="Alias" [(ngModel)]="newCourse.alias" />
-    <input placeholder="Code" [(ngModel)]="newCourse.code" />
+    <input placeholder="Code" [(ngModel)]="newCourse.code"/>
+    <input placeholder="Semester" [(ngModel)]="newCourse.semester" />
     <button (click)="addCourse()">Dodaj</button>
 </div>
 

@@ -58,7 +58,7 @@ export class AdminCoursesComponent implements OnInit {
             return;
         }
 
-        this._coursesService.addCourse(this.newCourse.code, this.newCourse.alias, this.newCourse.name, this.selectedDepartmentID)
+        this._coursesService.addCourse(this.newCourse.code, this.newCourse.alias, this.newCourse.name, this.selectedDepartmentID, this.newCourse.semester)
             .then(
                 course => this.courses.push(course),
                 error => this.errorMessage = <any>error)

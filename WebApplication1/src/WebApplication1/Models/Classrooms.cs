@@ -12,7 +12,7 @@ namespace WebApplication1.Models
         }
 
         public int classroomID { get; set; }
-        public int number { get; set; }
+        public string number { get; set; }
         public bool projector { get; set; }
         public bool sunnySide { get; set; }
 

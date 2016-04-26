@@ -73,6 +73,10 @@ namespace WebApplication1.Models
             modelBuilder.Entity<Classrooms>(entity =>
             {
                 entity.HasKey(e => e.classroomID);
+
+                entity.Property(e => e.number)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Courses>(entity =>
@@ -218,6 +222,8 @@ namespace WebApplication1.Models
                 entity.HasKey(e => e.uniMemberID);
 
                 entity.Property(e => e.address).HasMaxLength(200);
+
+                entity.Property(e => e.avatar).HasColumnType("image");
 
                 entity.Property(e => e.email)
                     .IsRequired()

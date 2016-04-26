@@ -22,8 +22,8 @@ export class CoursesService {
             .catch(this.handleError);
     }
 
-    addCourse(code:string, alias:string, name: string, departmentID: number): Promise<Course> {
-        let body = JSON.stringify({ code, alias, name, departmentID });
+    addCourse(code:string, alias:string, name: string, departmentID: number, semester:number): Promise<Course> {
+        let body = JSON.stringify({ code, alias, name, departmentID, semester });
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/PostCourses', body, options)

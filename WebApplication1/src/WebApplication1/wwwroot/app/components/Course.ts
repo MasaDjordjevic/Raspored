@@ -4,4 +4,5 @@
     alias: string;
     name: string;
     departmentID: number;
+    semester: number;
 }
