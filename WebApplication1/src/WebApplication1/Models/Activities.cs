@@ -5,6 +5,11 @@ namespace WebApplication1.Models
 {
     public partial class Activities
     {
+        public Activities()
+        {
+            StudentsActivities = new HashSet<StudentsActivities>();
+        }
+
         public int activityID { get; set; }
         public string activityContent { get; set; }
         public int? activityScheduleID { get; set; }
@@ -15,6 +20,7 @@ namespace WebApplication1.Models
         public int timeSpanID { get; set; }
         public string title { get; set; }
 
+        public virtual ICollection<StudentsActivities> StudentsActivities { get; set; }
         public virtual ActivitySchedules activitySchedule { get; set; }
         public virtual Classrooms classroom { get; set; }
         public virtual Groups group { get; set; }

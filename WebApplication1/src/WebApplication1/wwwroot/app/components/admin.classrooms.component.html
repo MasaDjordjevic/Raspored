@@ -1,0 +1,23 @@
+﻿<div style="display: flex; 
+            flex-flow: row; 
+            justify-content: space-around;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.3);">
+    <div *ngFor="#cf of classroomsFloors; #i=index" class="floor">
+        {{cf.floor}}
+        <ul>
+            <li *ngFor="#cr of cf.classrooms">
+                {{cr.number}} {{cr.projector}} {{cr.sunnySide}}
+            </li>
+        </ul>
+    </div>
+</div>
+<input type="text" placeholder="Classroom number" [(ngModel)]="newClassroom.number"/>
+<input type="checkbox" [(ngModel)]="newClassroom.projector"/><label>Projector</label>
+<input type="checkbox" [(ngModel)]="newClassroom.sunnySide"/><label>SunnySide</label>
+
+<button (click)="addClassroom()">Add Classroom</button>
+
+{{newClassroom.number}}
+{{newClassroom.projector}}

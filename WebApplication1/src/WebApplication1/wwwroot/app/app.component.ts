@@ -51,6 +51,16 @@ export class AppComponent implements OnInit {
                     name: "Assistant Edit",
                     loader: () => System.import("app/components/assistant-edit.component").then(c => c["AssistantEditComponent"])
                 }),
+                new AsyncRoute({
+                    path: "/admin/courses",
+                    name: "Courses",
+                    loader: () => System.import("app/components/admin.courses.component").then(c => c["AdminCoursesComponent"])
+                }),
+                new AsyncRoute({
+                    path: "/admin/classrooms",
+                    name: "Classrooms",
+                    loader: () => System.import("app/components/admin.classrooms.component").then(c => c["AdminClassroomsComponent"])
+                }),
             ];
 
             this.router.config(this.routes);

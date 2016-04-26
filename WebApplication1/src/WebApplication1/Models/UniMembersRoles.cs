@@ -9,7 +9,7 @@ namespace WebApplication1.Models
         public int roleID { get; set; }
         public int uniMemberID { get; set; }
 
-        public virtual UniMembers UniMembers { get; set; }
         public virtual Roles role { get; set; }
+        public virtual UniMembers uniMember { get; set; }
     }
 }

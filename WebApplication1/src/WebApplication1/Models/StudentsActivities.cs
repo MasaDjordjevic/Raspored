@@ -10,5 +10,8 @@ namespace WebApplication1.Models
         public bool? alert { get; set; }
         public bool? ignore { get; set; }
         public int studentID { get; set; }
+
+        public virtual Activities activity { get; set; }
+        public virtual Students student { get; set; }
     }
 }

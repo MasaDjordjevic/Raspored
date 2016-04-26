@@ -9,10 +9,12 @@ namespace WebApplication1.Models
         {
             AssistantsCourses = new HashSet<AssistantsCourses>();
             GroupsAssistants = new HashSet<GroupsAssistants>();
+            UniMembersRoles = new HashSet<UniMembersRoles>();
         }
 
         public int uniMemberID { get; set; }
         public string address { get; set; }
+        public byte[] avatar { get; set; }
         public string email { get; set; }
         public string name { get; set; }
         public string password { get; set; }
@@ -22,7 +24,7 @@ namespace WebApplication1.Models
 
         public virtual ICollection<AssistantsCourses> AssistantsCourses { get; set; }
         public virtual ICollection<GroupsAssistants> GroupsAssistants { get; set; }
+        public virtual ICollection<UniMembersRoles> UniMembersRoles { get; set; }
         public virtual Students student { get; set; }
-        public virtual UniMembersRoles uniMember { get; set; }
     }
 }

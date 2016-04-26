@@ -73,6 +73,10 @@ namespace WebApplication1.Models
             modelBuilder.Entity<Classrooms>(entity =>
             {
                 entity.HasKey(e => e.classroomID);
+
+                entity.Property(e => e.number)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Courses>(entity =>
@@ -90,6 +94,8 @@ namespace WebApplication1.Models
                 entity.Property(e => e.name)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.HasOne(d => d.department).WithMany(p => p.Courses).HasForeignKey(d => d.departmentID);
             });
 
             modelBuilder.Entity<Departments>(entity =>
@@ -196,6 +202,10 @@ namespace WebApplication1.Models
             modelBuilder.Entity<StudentsActivities>(entity =>
             {
                 entity.HasKey(e => e.studentActivityID);
+
+                entity.HasOne(d => d.activity).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.activityID).OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(d => d.student).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<TimeSpans>(entity =>
@@ -211,9 +221,9 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.uniMemberID);
 
-                entity.Property(e => e.uniMemberID).ValueGeneratedOnAdd();
-
                 entity.Property(e => e.address).HasMaxLength(200);
+
+                entity.Property(e => e.avatar).HasColumnType("image");
 
                 entity.Property(e => e.email)
                     .IsRequired()
@@ -236,8 +246,6 @@ namespace WebApplication1.Models
                     .HasMaxLength(50);
 
                 entity.HasOne(d => d.student).WithMany(p => p.UniMembers).HasForeignKey(d => d.studentID);
-
-                entity.HasOne(d => d.uniMember).WithOne(p => p.UniMembers).HasForeignKey<UniMembers>(d => d.uniMemberID).OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<UniMembersRoles>(entity =>
@@ -245,6 +253,8 @@ namespace WebApplication1.Models
                 entity.HasKey(e => e.uniMembersRoleID);
 
                 entity.HasOne(d => d.role).WithMany(p => p.UniMembersRoles).HasForeignKey(d => d.roleID).OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(d => d.uniMember).WithMany(p => p.UniMembersRoles).HasForeignKey(d => d.uniMemberID).OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<sysdiagrams>(entity =>

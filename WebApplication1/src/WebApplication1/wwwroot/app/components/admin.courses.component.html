@@ -1,0 +1,37 @@
+﻿<select #selYears *ngIf="yearDepartments != null" (change)="getDepartmentsFront(selYears.value)" >
+    <option>Izaberi godinu studija</option>
+    <option *ngFor="#yd of yearDepartments; #i = index"  [value]="i">
+        {{yd.year}}
+    </option>
+</select>
+
+<select #selDeps *ngIf="depsOfSelected != null" (change)="selectDepartment($event.target.value)">
+    <option *ngFor="#dep of depsOfSelected" [value]="dep.departmentID">
+        {{dep.departmentName}}
+    </option>
+</select>
+
+
+<div *ngIf="selectedDepartmentID != null">
+    <h4>Lista kurseva</h4>
+    <div class="list-group" *ngIf="courses != null">
+        <div class="list-group-item" *ngFor="#course of courses; #i = index">
+            <span class="id"><b>ID</b> {{course.courseID}}</span>
+            <span class="name"><b>Name</b> {{course.name}}</span>
+            <span class="alias"><b>Alias</b> {{course.alias}}</span>
+            <span class="code"><b>Code</b> {{course.code}}</span>
+            <span class="semester"><b>Semester</b> {{course.semester}}</span>
+            <button (click)="onDelete(course.courseID)">Delete</button>
+        </div>
+    </div>
+
+    <input placeholder="Name" [(ngModel)]="newCourse.name" />
+    <input placeholder="Alias" [(ngModel)]="newCourse.alias" />
+    <input placeholder="Code" [(ngModel)]="newCourse.code"/>
+    <input placeholder="Semester" [(ngModel)]="newCourse.semester" />
+    <button (click)="addCourse()">Dodaj</button>
+</div>
+
+
+
+

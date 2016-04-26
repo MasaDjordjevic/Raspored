@@ -7,6 +7,7 @@ namespace WebApplication1.Models
     {
         public Departments()
         {
+            Courses = new HashSet<Courses>();
             Students = new HashSet<Students>();
         }
 
@@ -14,6 +15,7 @@ namespace WebApplication1.Models
         public string departmentName { get; set; }
         public int year { get; set; }
 
+        public virtual ICollection<Courses> Courses { get; set; }
         public virtual ICollection<Students> Students { get; set; }
     }
 }

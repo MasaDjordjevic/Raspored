@@ -9,74 +9,72 @@ namespace WebApplication1.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
-    public class DepartmentsController : Controller
+    public class CoursesController : Controller
     {
         private RasporedContext _context;
 
-        public DepartmentsController(RasporedContext context)
+        public CoursesController(RasporedContext context)
         {
             _context = context;
         }
-       
 
-        // GET: api/Departments
+        // GET: api/Courses
         [HttpGet]
-       public IActionResult GetDepartments()
+        public IEnumerable<Courses> GetCourses()
         {
-            var departments =
-                (from a in _context.Departments
-                    select new {departmentID = a.departmentID, departmentName = a.departmentName}).ToList();
-            return Ok(departments);
-        }
-        
-        [HttpGet(Name = "GetDepartmentsByYear")]
-        public IActionResult GetDepartmentsByYear()
-        {
-            var departments =
-                (from dep in _context.Departments
-                 group dep by dep.year
-                    into newdeps
-                 orderby newdeps.Key
-                 select new {year = newdeps.Key, departments = newdeps}).ToList();
-            return Ok(departments);
+            return _context.Courses;
         }
 
-        // GET: api/Departments/5
-        [HttpGet("{id}", Name = "GetDepartments")]
+        [HttpGet]
         [Route("{id:int}")]
-        public IActionResult GetDepartments([FromRoute] int id)
+        public IActionResult GetCoursesOfDepartment([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            Departments departments = _context.Departments.Single(m => m.departmentID == id);
+            //TODO: sredi da vraca samo ono sto ti treba, i nemoj uvek da vracas ok
+            var courses = (from c in _context.Courses where c.departmentID == id select c).ToList();
+            return Ok(courses);
+        }
 
-            if (departments == null)
+        // GET: api/Courses/5
+        [HttpGet("{id}", Name = "GetCourses")]
+        [Route("{id:int}")]
+        public IActionResult GetCourses([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            Courses courses = _context.Courses.Single(m => m.courseID == id);
+
+            if (courses == null)
             {
                 return HttpNotFound();
             }
 
-            return Ok(departments);
+            return Ok(courses);
         }
 
-        // PUT: api/Departments/5
+        // PUT: api/Courses/5
         [HttpPut("{id}")]
         [Route("{id:int}")]
-        public IActionResult PutDepartments(int id, [FromBody] Departments departments)
+        public IActionResult PutCourses(int id, [FromBody] Courses courses)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            if (id != departments.departmentID)
+            if (id != courses.courseID)
             {
                 return HttpBadRequest();
             }
 
-            _context.Entry(departments).State = EntityState.Modified;
+            _context.Entry(courses).State = EntityState.Modified;
 
             try
             {
@@ -84,7 +82,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DepartmentsExists(id))
+                if (!CoursesExists(id))
                 {
                     return HttpNotFound();
                 }
@@ -97,23 +95,23 @@ namespace WebApplication1.Controllers
             return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
         }
 
-        // POST: api/Departments
+        // POST: api/Courses
         [HttpPost]
-        public IActionResult PostDepartments([FromBody] Departments departments)
+        public IActionResult PostCourses([FromBody] Courses courses)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            _context.Departments.Add(departments);
+            _context.Courses.Add(courses);
             try
             {
                 _context.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                if (DepartmentsExists(departments.departmentID))
+                if (CoursesExists(courses.courseID))
                 {
                     return new HttpStatusCodeResult(StatusCodes.Status409Conflict);
                 }
@@ -123,29 +121,29 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtRoute("GetDepartments", new { id = departments.departmentID }, departments);
+            return CreatedAtRoute("GetCourses", new { id = courses.courseID }, courses);
         }
 
-        // DELETE: api/Departments/5
+        // DELETE: api/Courses/5
         [HttpDelete("{id}")]
         [Route("{id:int}")]
-        public IActionResult DeleteDepartments(int id)
+        public IActionResult DeleteCourses(int id)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            Departments departments = _context.Departments.Single(m => m.departmentID == id);
-            if (departments == null)
+            Courses courses = _context.Courses.Single(m => m.courseID == id);
+            if (courses == null)
             {
                 return HttpNotFound();
             }
 
-            _context.Departments.Remove(departments);
+            _context.Courses.Remove(courses);
             _context.SaveChanges();
 
-            return Ok(departments);
+            return Ok(courses);
         }
 
         protected override void Dispose(bool disposing)
@@ -157,9 +155,9 @@ namespace WebApplication1.Controllers
             base.Dispose(disposing);
         }
 
-        private bool DepartmentsExists(int id)
+        private bool CoursesExists(int id)
         {
-            return _context.Departments.Count(e => e.departmentID == id) > 0;
+            return _context.Courses.Count(e => e.courseID == id) > 0;
         }
     }
 }
