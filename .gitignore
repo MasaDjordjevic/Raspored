@@ -8,6 +8,8 @@
 *.sln.docstates
 *.js
 *.js.map
+*.css
+*.css.map
 WebApplication1/.vs/
 Startup.cs
 

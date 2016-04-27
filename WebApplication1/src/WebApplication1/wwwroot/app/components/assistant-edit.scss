@@ -1,0 +1,152 @@
+@import "ljubenovic-toolkit";
+@import "palette";
+
+* {
+    font-family: Roboto;
+}
+
+.dialog {
+    width: 700px;
+    height: 460px;
+    @include z-depth(2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 2px;
+
+    & > * {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 24px;
+    }
+
+    .basic-info {
+        @include force-height(220px);
+        background-color: palette($blue);
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+
+        .picture {
+            height: 220px - 48px;
+            width: 220px - 48px;
+            background-color: white;
+        }
+
+        .names {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 300px;
+
+            & > * {
+                position: relative;
+                height: 50px;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                margin: 5px;
+                font-size: 1.5em;
+
+                label {
+                    position: absolute;
+                    font-size: 1em;
+                    color: rgba(white, .7);
+                    padding: 0;
+                    margin: 0;
+                    top: 12px;
+                    left: 5px;
+                    transition: all .2s;
+
+                    &.collapsed {
+                        top: 2px;
+                        left: 2px;
+                        font-size: .6em;
+                        color: rgba(white, .5);
+                    }
+                }
+
+                input[type="text"] {
+                    background-color: transparent;
+                    outline: none;
+                    border: none;
+                    box-shadow: 0 1px 0 0 rgba(white, .2);
+                    width: 100%;
+                    color: rgba(white, 9);
+                }
+            }
+        }
+    }
+
+    .additional-info {
+        //background-color: palette($green);
+        height: 100%;
+    }
+
+    .footer {
+        height: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .messages {
+            .error-message {
+                color: palette($red);
+            }
+
+            .warning-message {
+                color: palette($orange);
+            }
+
+            .success-message {
+                color: palette($green);
+            }
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+
+            button {
+                display: inline-block;
+                box-sizing: content-box;
+                border-radius: 2px;
+                $s: 1em;
+                font-size: $s;
+                line-height: $s;
+                height: $s;
+                font-weight: bold;
+                margin: 6px;
+                padding: 8px 12px;
+                outline: none;
+                border: none;
+                background-color: palette($blue);
+                @include z-depth(1);
+                text-transform: uppercase;
+                color: rgba(white, .9);
+            }
+
+            button.flat {
+                display: inline-block;
+                box-sizing: content-box;
+                border-radius: 2px;
+                $s: 1em;
+                font-size: $s;
+                line-height: $s;
+                height: $s;
+                font-weight: bold;
+                margin: 6px;
+                padding: 8px 12px;
+                outline: none;
+                border: none;
+                background-color: transparent;
+                @include z-depth(0);
+                color: palette($blue);
+                text-transform: uppercase;
+            }
+        }
+    }
+
+}
+
