@@ -5,10 +5,10 @@ namespace WebApplication1.Models
 {
     public partial class RasporedContext : DbContext
     {
-        //protected override void (DbContextOptionsBuilder options)
-        //{
-        //    options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -123,6 +123,12 @@ namespace WebApplication1.Models
                 entity.Property(e => e.beginning).HasColumnType("date");
 
                 entity.Property(e => e.ending).HasColumnType("date");
+
+                entity.HasOne(d => d.course).WithMany(p => p.Divisions).HasForeignKey(d => d.courseID);
+
+                entity.HasOne(d => d.creator).WithMany(p => p.Divisions).HasForeignKey(d => d.creatorID).OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(d => d.department).WithMany(p => p.Divisions).HasForeignKey(d => d.departmentID);
 
                 entity.HasOne(d => d.divisionType).WithMany(p => p.Divisions).HasForeignKey(d => d.divisionTypeID).OnDelete(DeleteBehavior.Restrict);
             });

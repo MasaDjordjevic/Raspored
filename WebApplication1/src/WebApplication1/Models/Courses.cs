@@ -8,6 +8,7 @@ namespace WebApplication1.Models
         public Courses()
         {
             AssistantsCourses = new HashSet<AssistantsCourses>();
+            Divisions = new HashSet<Divisions>();
         }
 
         public int courseID { get; set; }
@@ -18,6 +19,7 @@ namespace WebApplication1.Models
         public int? semester { get; set; }
 
         public virtual ICollection<AssistantsCourses> AssistantsCourses { get; set; }
+        public virtual ICollection<Divisions> Divisions { get; set; }
         public virtual Departments department { get; set; }
     }
 }
