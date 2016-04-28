@@ -8,7 +8,7 @@ import {YearDepartments} from './YearDepartments';
 
 @Component({
     selector: "r-admin-courses",
-    templateUrl: "app/components/admin.courses.component.html",
+    templateUrl: "app/admin.courses.component.html",
     providers: [CoursesService, DepartmentService],
     directives: CORE_DIRECTIVES
 })

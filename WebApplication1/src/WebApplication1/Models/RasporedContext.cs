@@ -5,7 +5,7 @@ namespace WebApplication1.Models
 {
     public partial class RasporedContext : DbContext
     {
-        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //protected override void (DbContextOptionsBuilder options)
         //{
         //    options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
         //}

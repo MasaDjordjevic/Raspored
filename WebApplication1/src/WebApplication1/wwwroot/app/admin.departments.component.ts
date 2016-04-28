@@ -5,7 +5,7 @@ import {Department} from "./department";
 
 @Component({
     selector: "r-admin-departments",
-    templateUrl: "app/components/admin.departments.component.html",
+    templateUrl: "app/admin.departments.component.html",
     providers: [DepartmentService],
     directives: CORE_DIRECTIVES
 })

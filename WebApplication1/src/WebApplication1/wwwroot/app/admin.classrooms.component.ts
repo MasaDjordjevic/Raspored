@@ -5,7 +5,7 @@ import {Classroom} from './Classroom';
 
 @Component({
     selector: "r-admin-classrooms",
-    templateUrl: "app/components/admin.classrooms.component.html",
+    templateUrl: "app/admin.classrooms.component.html",
     styles: [".floor {display:inline; width: 200px;}"],
     providers: [ClassroomsService],
     directives: CORE_DIRECTIVES

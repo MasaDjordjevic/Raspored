@@ -1,4 +1,4 @@
-﻿import "rxjs/Rx";
+﻿import "rxjs/Rx"
 import {Http, Response, Headers, RequestOptions} from "angular2/http";
 import {Injectable} from "angular2/core";
 import {Observable} from 'rxjs/Observable';

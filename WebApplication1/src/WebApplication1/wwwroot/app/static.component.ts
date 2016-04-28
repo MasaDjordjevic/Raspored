@@ -2,7 +2,7 @@
 
 @Component({
     selector: "static",
-    templateUrl: "app/components/static.html"
+    templateUrl: "app/static.html"
 })
 export class StaticComponent implements OnInit {
     message: string;

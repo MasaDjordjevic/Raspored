@@ -5,7 +5,7 @@ import {Role} from './role';
 
 @Component({
     selector: "test",
-    templateUrl: "app/components/roles.component.html",
+    templateUrl: "app/roles.component.html",
     providers: [RolesService],
     directives: CORE_DIRECTIVES
 })

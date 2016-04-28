@@ -2,13 +2,14 @@
 import {CORE_DIRECTIVES} from "angular2/src/common/directives/core_directives";
 import {AssistantService} from "./assistant.service";
 import {Assistant} from "./assistant";
+import {RInputText} from "./r-input-text.component";
 
 @Component({
     selector: "r-assistant-edit",
-    templateUrl: "app/components/assistant-edit.component.html",
-    styleUrls:  ["app/components/assistant-edit.css"],
+    templateUrl: "app/assistant-edit.component.html",
+    styleUrls:  ["app/assistant-edit.css"],
     providers: [AssistantService],
-    directives: CORE_DIRECTIVES
+    directives: [CORE_DIRECTIVES, RInputText],
 })
 export class AssistantEditComponent implements OnInit {
     oldAssistant: Assistant;

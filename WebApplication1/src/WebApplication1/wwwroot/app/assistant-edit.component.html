@@ -1,0 +1,26 @@
+﻿<div class="dialog">
+    <div class="basic-info">
+        <div class="picture"></div>
+        <div class="names">
+            <r-input-text [val]="newAssistant.title" [lab]="'Zvanje'"></r-input-text>
+            <r-input-text [val]="newAssistant.name" [lab]="'Ime'"></r-input-text>
+            <r-input-text [val]="newAssistant.surname" [lab]="'Prezime'"></r-input-text>
+        </div>
+    </div>
+    <div class="additional-info">
+        <r-input-text [val]="newAssistant.email" [lab]="'Elektronska pošta'" class="light-theme"></r-input-text>
+        <r-input-text [val]="newAssistant.address" [lab]="'Kancelarija'" class="light-theme"></r-input-text>
+    </div>
+    <div class="footer">
+        <div class="messages">
+            <span class="error-message">{{errorMessage}}</span>
+            <span class="warning-message">{{warningMessage}}</span>
+            <span class="success-message">{{successMessage}}</span>
+        </div>
+        <div class="buttons">
+            <!--<button class="apply flat" (click)="onApply()">Apply</button>-->
+            <button class="cancel flat" (click)="onCancel()">Cancel</button>
+            <button class="save" (click)="onSave()">Save</button>
+        </div>
+    </div>
+</div>

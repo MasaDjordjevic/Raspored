@@ -2,7 +2,7 @@
 
 @Component({
     selector: "test",
-    templateUrl: "app/components/roles.component.html"
+    templateUrl: "app/roles.component.html"
 })
 export class TestComponent implements OnInit {
     message: string;
