@@ -13,22 +13,22 @@ import {DivisionsListComponent} from "./divisions-list.component";
         useAsDefault: true,
     },
     {
-        path: '/department/...',
+        path: '/department/:id/...',
         name: 'DivisionList',
         component: DivisionsListComponent,
     }
 ])
 
 @Component({
-        selector: "r-assistant-panel",
-        directives: [ROUTER_DIRECTIVES],
+    selector: "r-assistant-panel",
+    directives: [ROUTER_DIRECTIVES],
     template: `
 <h2>Asistentski panel</h2>
-<h2>Departments list</h2>
-<a [routerLink]="['DivisionList']">Department 1</a>
-<a [routerLink]="['DivisionList']">Department 2</a>
-<a [routerLink]="['DivisionList']">Department 3</a>
-<a [routerLink]="['AssistantPanelOptions']">Options</a>
+<h3>Departments list</h3>
+<a [routerLink]="['DivisionList', {id: 1}]">Department 1</a>
+<a [routerLink]="['DivisionList', {id: 2}]">Department 2</a>
+<a [routerLink]="['DivisionList', {id: 3}]">Department 3</a><br/>
+<a [routerLink]="['AssistantPanelOptions']">Back to General Assistant Panel Options</a>
 <router-outlet></router-outlet>
     `,
 })

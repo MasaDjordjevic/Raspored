@@ -11,7 +11,7 @@ import {StudentsListComponent} from "./students-list.component";
         useAsDefault: true,
     },
     {
-        path: '/group/...',
+        path: '/group/:id/...',
         component: StudentsListComponent,
         name: 'StudentsList'
     }
@@ -19,12 +19,12 @@ import {StudentsListComponent} from "./students-list.component";
 @Component({
     template: `
 <h3>Group List</h3>
-<a [routerLink]="['StudentsList']">Group 1</a>
-<a [routerLink]="['StudentsList']">Group 2</a>
-<a [routerLink]="['StudentsList']">Group 3</a>
-<a [routerLink]="['DivisionOptions']">Options</a>
+<a [routerLink]="['StudentsList', {id: 1}]">Group 1</a>
+<a [routerLink]="['StudentsList', {id: 2}]">Group 2</a>
+<a [routerLink]="['StudentsList', {id: 3}]">Group 3</a><br/>
+<a [routerLink]="['DivisionOptions']">Back to Division Options</a>
 <router-outlet></router-outlet>`,
-        directives: [ROUTER_DIRECTIVES],
+    directives: [ROUTER_DIRECTIVES],
 })
 export class GroupsListComponent {
 

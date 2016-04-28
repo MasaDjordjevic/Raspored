@@ -11,7 +11,7 @@ import {GroupsListComponent} from "./groups-list.component";
         useAsDefault: true,
     }, 
     {
-        path: '/division/...',
+        path: '/division/:id/...',
         component: GroupsListComponent,
         name: 'GroupsList'
     }
@@ -19,10 +19,10 @@ import {GroupsListComponent} from "./groups-list.component";
 @Component({
         template: `
 <h3>Divisions List</h3>
-<a [routerLink]="['GroupsList']">Division 1</a>
-<a [routerLink]="['GroupsList']">Division 2</a>
-<a [routerLink]="['GroupsList']">Division 3</a>
-<a [routerLink]="['DepartmentOptions']">Options</a>
+<a [routerLink]="['GroupsList', {id: 1}]">Division 1</a>
+<a [routerLink]="['GroupsList', {id: 2}]">Division 2</a>
+<a [routerLink]="['GroupsList', {id: 3}]">Division 3</a><br/>
+<a [routerLink]="['DepartmentOptions']">Back to Department Options</a>
 <router-outlet></router-outlet>`,
         directives: [ROUTER_DIRECTIVES],
 })
