@@ -1,14 +1,27 @@
-﻿import {Component, OnInit} from "angular2/core";
-import {Assistant} from "./assistant";
-import {AssistantEditComponent} from "./assistant-edit.component";
+﻿// Angular2
+import {Component, OnInit, AfterViewInit, ChangeDetectorRef} from "angular2/core";
 import {ROUTER_DIRECTIVES, Route, RouteConfig} from 'angular2/router';
 import {Router, RouteParams} from 'angular2/router';
 
+//Components
 import {AssistantPanelOptionsComponent} from "./assistant-panel-options.component";
+import {AssistantEditComponent} from "./assistant-edit.component";
 import {DivisionsListComponent} from "./divisions-list.component";
+
+// Services
 import {DepartmentService} from "./department.service";
+
+// Classes
 import {Department} from "./department";
 import {YearDepartments} from './YearDepartments';
+import {Assistant} from "./assistant";
+
+// R-UI
+import {R_NESTED_LIST_DIRECTIVES} from "./r-nested-list";
+
+// Interfaces
+import {INestedList, NestedList} from "./INestedList";
+
 
 @RouteConfig([
     {
@@ -26,46 +39,58 @@ import {YearDepartments} from './YearDepartments';
 
 @Component({
     selector: "r-assistant-panel",
-    directives: [ROUTER_DIRECTIVES],
-    template: `
-<h2>Asistentski panel</h2>
-<h3>Departments list</h3>
-<div class="container">
-    <div *ngIf="yearDepartments != null">
-        <div *ngFor="#yd of yearDepartments">
-            <label>{{yd.year}}</label>
-            <ul>
-                <li *ngFor="#dep of yd.departments" [class.selected]="isSelected(dep)">
-                    <a (click)="onSelect(dep.departmentID)">{{dep.departmentName}}</a>
-                </li>         
-            </ul>
-        </div>
-        <div>     
-            <a (click)="onDeselect()">Back to General Assistant Panel Options</a>
-        </div>
-    </div>  
-    <router-outlet></router-outlet>
-</div>
-    `,
-    styles: [` *{color: black; text-decoration: none;}
-                .selected a{color: #FF9D00;}
-                .container {                        
-                        display: flex;
-                        flex-flow: row;
-                        justify-content: flex-start;
-    `],
+    directives: [ROUTER_DIRECTIVES, R_NESTED_LIST_DIRECTIVES],
+    templateUrl: 'app/assistant-panel.html',
+    styleUrls:  ['app/assistant-panel.css'],
     providers: [DepartmentService],
 })
-export class AssistantPanelComponent implements OnInit{
+
+export class AssistantPanelComponent implements OnInit {
+    titleString: string = "Smerovi";
     assistant: Assistant;
     yearDepartments: YearDepartments[];
     errorMessage: string;
     selectedDepartmentID: number;
 
-    constructor(private _departmentsService: DepartmentService, private _router: Router) { }
+    private _nestedListData = null;
+
+    constructor(
+        private _departmentsService: DepartmentService,
+        private _router: Router,
+        private _cdr: ChangeDetectorRef) { }
 
     ngOnInit() {
         this.getDepartmentsByYear();
+        //this.getNestedListData();
+    }
+
+    ngAfterViewInit() {
+       this._cdr.detectChanges();
+    }
+
+    get nestedListData() {
+        //var ret = new Array<NestedList>();
+        if (!this.yearDepartments) return;
+        if (!this._nestedListData) this._nestedListData = new Array<NestedList>();
+        for (let i = 0; i < this.yearDepartments.length; i++) {
+            if (!this._nestedListData[i]) this._nestedListData[i] = new NestedList;
+            this._nestedListData[i].outer = {
+                s: "" + this.yearDepartments[i].year + " godina",
+                id: this.yearDepartments[i].year
+            };
+            if (!this._nestedListData[i].inner) this._nestedListData[i].inner = [];
+            for (let j = 0; j < this.yearDepartments[i].departments.length; j++) {
+                this._nestedListData[i].inner[j] = {
+                    s: this.yearDepartments[i].departments[j].departmentName,
+                    id: this.yearDepartments[i].departments[j].departmentID
+                };
+            }
+        }
+        return this._nestedListData;
+    }
+
+    set nestedListData(data) {
+        this._nestedListData = data;
     }
 
     getDepartmentsByYear() {
@@ -75,9 +100,9 @@ export class AssistantPanelComponent implements OnInit{
             error => this.errorMessage = <any>error);
     }
 
-    onSelect(departmentID: number) {
-        this.selectedDepartmentID = departmentID;
-        this._router.navigate(['DivisionList', { id: departmentID }]);
+    onSelect($event) {
+        this.selectedDepartmentID = $event;
+        this._router.navigate(['DivisionList', { id: this.selectedDepartmentID }]);
     }
 
     onDeselect() {
@@ -85,8 +110,7 @@ export class AssistantPanelComponent implements OnInit{
         this._router.navigate(['AssistantPanelOptions']);
     }
 
-    isSelected(department: Department) {
-        return department.departmentID === this.selectedDepartmentID;
+    isSelected(departmentID: number) {
+        return departmentID === this.selectedDepartmentID;
     }
-
 }

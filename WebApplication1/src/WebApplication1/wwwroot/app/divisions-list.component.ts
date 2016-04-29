@@ -1,12 +1,26 @@
-﻿import {Component, OnInit} from "angular2/core";
+﻿// Angular2
+import {Component, OnInit} from "angular2/core";
 import {RouteDefinition, RouteConfig, Location, ROUTER_DIRECTIVES} from "angular2/router";
 import {Router, RouteParams} from 'angular2/router';
 
+// Components
 import {DepartmentOptionsComponent} from "./department-options.component";
 import {GroupsListComponent} from "./groups-list.component";
+
+// Services
+import {DivisionsService} from './divisions.service';
+
+// Classes
 import {TypeDivisions} from './TypeDivisions';
 import {Division} from './Division';
-import {DivisionsService} from './divisions.service';
+
+
+// R-UI
+import {R_NESTED_LIST_DIRECTIVES} from "./r-nested-list";
+
+// Interfaces
+import {INestedList, NestedList} from "./INestedList";
+
 
 @RouteConfig([
     {
@@ -21,41 +35,23 @@ import {DivisionsService} from './divisions.service';
         name: 'GroupsList'
     }
 ])
+
 @Component({
-        template: `
-<h3>Divisions List</h3>
-<div class="container">
-    <div *ngIf="typeDivisions != null">
-        <div *ngFor="#td of typeDivisions">
-            <label>{{td.type}}</label>
-            <ul>
-                <li *ngFor="#div of td.divisions" [class.selected]="isSelected(div)">
-                    <a (click)="onSelect(div.divisionID)">{{div.creatorName}}</a>
-                </li>         
-            </ul>
-        </div>
-        <div>     
-            <a (click)="onDeselect()">Back to Department Options</a>
-        </div>
-    </div>  
-    <router-outlet></router-outlet>
-</div>
-`,
-        directives: [ROUTER_DIRECTIVES],
-        styles: [` *{color: black; text-decoration: none;}
-                .selected a{color: #FF9D00;}
-                .container {                        
-                        display: flex;
-                        flex-flow: row;
-                        justify-content: flex-start;
-    `],
-        providers: [DivisionsService],
+    selector: 'r-divisions-list',
+    templateUrl: 'app/divisions-list.html',
+    styleUrls: ['app/divisions-list.css'],
+    directives: [ROUTER_DIRECTIVES, R_NESTED_LIST_DIRECTIVES],
+    providers: [DivisionsService],
 })
+
 export class DivisionsListComponent implements OnInit {
     typeDivisions: TypeDivisions[];
     errorMessage: string;
     selectedDivisionID: number;
     selectedDepartmentID: number;
+    titleString: string = "Raspodele";
+
+    private _nestedListData = null;
 
     constructor(private routeParams: RouteParams, private _router: Router, private _divisionsService: DivisionsService) { }
 
@@ -64,6 +60,31 @@ export class DivisionsListComponent implements OnInit {
         //puca aplikacija kada dodam routParams
         this.selectedDepartmentID = +this.routeParams.get('id');
         this.getDivisionsByType();
+    }
+
+    get nestedListData() {
+        if (!this.typeDivisions) return;
+        if (!this._nestedListData) this._nestedListData = new Array<NestedList>();
+
+        for (let i = 0; i < this.typeDivisions.length; i++) {
+            if (!this._nestedListData[i]) this._nestedListData[i] = new NestedList;
+            this._nestedListData[i].outer = {
+                s: this.typeDivisions[i].type,
+                id: this.typeDivisions[i].type
+            };
+            if (!this._nestedListData[i].inner) this._nestedListData[i].inner = [];
+            for (let j = 0; j < this.typeDivisions[i].divisions.length; j++) {
+                this._nestedListData[i].inner[j] = {
+                    s: this.typeDivisions[i].divisions[j].departmentName,
+                    id: this.typeDivisions[i].divisions[j].divisionID
+                };
+            }
+        }
+        return this._nestedListData;
+    }
+
+    set nestedListData(data) {
+        this._nestedListData = data;
     }
 
     getDivisionsByType() {

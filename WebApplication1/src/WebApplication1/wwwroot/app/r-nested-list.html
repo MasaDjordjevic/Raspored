@@ -1,0 +1,20 @@
+﻿<div class="title" *ngIf="titleString != null">
+    <h2>{{titleString}}</h2>
+    <button>?</button>
+</div>
+<ul *ngIf="data != null && data != undefined">
+    <li #li *ngFor="#d of data; #index = index">
+        <h3 (click)="expand(li)">
+            <span class="outer">{{d.outer.s}}</span>
+            <!--<span class="indicator">▲</span>-->
+        </h3>
+        <ul [class.collapsed]="!index==0">
+            <li *ngFor="#inner of d.inner"
+                [class.selected]="isSelected(inner.id)">
+                <a (click)="onSelectItem(inner.id)">
+                    {{inner.s}}
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

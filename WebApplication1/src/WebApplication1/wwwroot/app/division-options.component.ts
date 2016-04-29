@@ -1,7 +1,9 @@
 ﻿import {Component} from "angular2/core";
 
 @Component({
-    template: "<p>Division Options</p>",
+    selector: 'r-division-options',
+    template: `<p>Division Options</p>`,
+    styleUrls: ['app/assistant-panel-options.css'],
 })
 export class DivisionOptionsComponent {
 }

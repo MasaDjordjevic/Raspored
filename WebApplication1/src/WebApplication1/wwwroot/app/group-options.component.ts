@@ -1,7 +1,9 @@
 ﻿import {Component} from "angular2/core";
 
 @Component({
-    template: "<p>Group Options</p>",
+    selector: 'r-group-options',
+    template: `<p>Group Options</p>`,
+    styleUrls: ['app/assistant-panel-options.css'],
 })
 export class GroupOptionsComponent {
 }

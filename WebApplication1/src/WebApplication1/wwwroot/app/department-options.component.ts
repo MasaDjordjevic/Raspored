@@ -2,7 +2,9 @@
 import {Router, RouteDefinition, RouteConfig, Location, ROUTER_DIRECTIVES} from "angular2/router";
 
 @Component({
-    template: "<p>Department Options</p>",
+    selector: 'r-department-options',
+    template: `<p>Department Options</p>`,
+    styleUrls: ['app/assistant-panel-options.css'],
 })
 export class DepartmentOptionsComponent {
     

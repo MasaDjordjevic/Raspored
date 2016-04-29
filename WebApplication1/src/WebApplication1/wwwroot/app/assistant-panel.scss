@@ -1,0 +1,28 @@
+﻿@import "palette";
+@import "ljubenovic-toolkit";
+
+:host {
+    display: flex;
+    height: calc(100vh - #{16px}); // body ima marginu 8px nzm zasto
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+header, footer {
+    background-color: palette($blue-grey, 200);
+    height: 40px;
+    margin: 10px;
+}
+
+main {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+router-outlet {
+    background-color: blue;
+}

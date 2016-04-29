@@ -1,0 +1,19 @@
+﻿<header>
+    Header
+</header>
+
+<main>
+    
+    <r-nested-list
+        [titleString]="titleString"
+        [data]="nestedListData"
+        (selectItem)="onSelect($event)">
+    </r-nested-list>
+
+    <router-outlet></router-outlet>
+
+</main>
+
+<footer>
+    Footer
+</footer>

@@ -1,0 +1,11 @@
+﻿@import "ljubenovic-toolkit";
+@import "palette";
+
+:host {
+    width: 100%;
+    margin-left: 18px;
+    padding: 12px;
+    background-color: palette($blue-grey, 900);
+    color: rgba(white, .85);
+    @include z-depth(1);
+}

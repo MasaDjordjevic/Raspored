@@ -1,0 +1,162 @@
+﻿@import "palette";
+@import "ljubenovic-toolkit";
+
+:host {
+    @include z-depth(1);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overflow-y: overlay;
+    border-radius: 2px;
+    min-width: 240px;
+    width: 12%;
+    max-width: 320px;
+    min-height: 400px;
+    height: 600px;
+    max-height: 100%;
+    margin: 12px;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-button {
+      width: 0px;
+      height: 0px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: palette($teal);
+      border: none;
+      border-radius: 3px;
+      max-height: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: palette($teal);
+    }
+    &::-webkit-scrollbar-thumb:active {
+      background: palette($teal);
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-track:hover {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-track:active {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    .title {
+        $p: 12px;
+        $h: 48px;
+        background-color: palette($teal);
+        width: 100%;
+        @include force-height($h);
+        box-sizing: border-box;
+        @include z-depth(1);
+        display: flex;
+        justify-content: space-between;
+        //margin-bottom: 12px;
+
+        h2 {
+            padding: $p;
+            color: white;
+            line-height: $h - 2 * $p;
+            font-size: 1 * ($h - 2 * $p);
+        }
+
+        //SHAME
+        button {
+            background-color: rgba(white, 0.1);
+            outline: none;
+            border: none;
+            color: white;
+            height: $h;
+            width:  $h;
+            padding: $p;
+            line-height: $h - 2 * $p;
+            box-sizing: border-box;
+        }
+    }
+
+    & > ul {
+        font-weight: bold;
+
+        & > li {
+            padding: 8px 12px;
+            display: block;
+            box-shadow: 0 1px 1px 0 rgba(black, .066);
+
+            h3 {
+                font-size: 1em; // reset h3 veliki font
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+    
+                .godina {
+                    display: block;
+                    font-weight: bold;
+                }
+
+                /*.indicator {
+                    background-color: transparent;
+                    outline: none;
+                    border: none;
+                    display: block;
+                    $w: 24px;
+                    width:  $w;
+                    height: $w;
+                    line-height: $w;
+                    font-size: 0.5 * $w;
+                    text-align: center;
+                    color: rgba(palette($teal), .3);
+                    text-shadow: 0 0 1px rgba(black, .02);   
+                    transition: transform .1s ease;
+                }*/
+            }
+
+            & > ul {
+                padding: 12px; // isto kao za title
+                $t: .2s;
+                transition: height $t ease-out, padding $t ease-out;
+                overflow: hidden;
+                
+                &.collapsed {
+                    height: 0;
+                    padding-top: 0;
+                    padding-bottom: 0;
+                }
+
+                & > li {
+                    display: block;
+                    font-weight: normal;
+                    //background-color: palette($yellow, 100);
+                    margin-top: 6px;
+
+                    a {
+                        cursor: pointer;
+                        color: rgba(black, .85);
+                        transition: color .1s;
+
+                        &:hover {
+                            color: palette($teal, 300);
+                        }
+                    }
+
+                    &.selected {
+                        
+                        a {
+                            color: palette($teal);
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
