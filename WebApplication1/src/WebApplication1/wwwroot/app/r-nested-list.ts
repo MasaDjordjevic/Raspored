@@ -26,6 +26,7 @@ export class RNestedListItemOuter { }
     templateUrl: 'app/r-nested-list.html',
     styleUrls: ['app/r-nested-list.css']
 })
+
 export class RNestedList implements AfterViewInit {
 
     @Input() titleString: string = null;
@@ -37,10 +38,6 @@ export class RNestedList implements AfterViewInit {
     constructor(
         private _cdr: ChangeDetectorRef
     ) { }
-
-    ngOnInit() {
-        
-    }
 
     ngAfterViewInit() {
         this._cdr.detectChanges();

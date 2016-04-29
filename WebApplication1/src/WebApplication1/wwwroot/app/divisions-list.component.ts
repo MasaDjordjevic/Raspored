@@ -95,6 +95,7 @@ export class DivisionsListComponent implements OnInit {
     }
 
     onSelect(divisionID: number) {
+        console.log("Division ID " + divisionID);
         this.selectedDivisionID = divisionID;
         this._router.navigate(['GroupsList', { id: divisionID }]);
     }
@@ -103,9 +104,5 @@ export class DivisionsListComponent implements OnInit {
         this.selectedDivisionID = -1;
         this._router.navigate(['DepartmentOptions']);
     }
-
-    isSelected(division: Division) {
-        return division.divisionID === this.selectedDivisionID;
-    }
-
+    
 }
