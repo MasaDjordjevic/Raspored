@@ -22,12 +22,13 @@
 	"typings": "^0.8.1"
   },
   "scripts": {
-    "nece" : "gulp && npm run tsc && npm run sass && concurrently \"nodemon --ext cs,js,html --exec \"dnx web ASPNET_ENV=Development\"\" \"npm run watch\"",
-    "start" : "gulp && npm run tsc && npm run sass && concurrently \"dnx web ASPNET_ENV=Development\" \"npm run watch\"",
+    "start" : "npm run prestart && concurrently \"npm run pokemon\" \"npm run watch\"",
+	"prestart": "npm run tsc && npm run sass",
+	"pokemon": "nodemon --ext cs --exec \"dnx web ASPNET_ENV=Development\"",
+	"watch": "concurrently \"npm run tsc:w\" \"npm run sass:w\"",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
 	"sass": "sass --update wwwroot:wwwroot",
-	"sass:w": "sass --watch wwwroot:wwwroot",
-	"watch": "concurrently \"npm run tsc:w\" \"npm run sass:w\""
+	"sass:w": "sass --watch wwwroot:wwwroot"
   }
 }
