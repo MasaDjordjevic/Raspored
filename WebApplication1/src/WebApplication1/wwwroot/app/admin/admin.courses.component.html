@@ -1,12 +1,12 @@
 ﻿<select #selYears *ngIf="yearDepartments != null" (change)="getDepartmentsFront(selYears.value)" >
     <option>Izaberi godinu studija</option>
-    <option *ngFor="#yd of yearDepartments; #i = index"  [value]="i">
+    <option *ngFor="let yd of yearDepartments; #i = index"  [value]="i">
         {{yd.year}}
     </option>
 </select>
 
 <select #selDeps *ngIf="depsOfSelected != null" (change)="selectDepartment($event.target.value)">
-    <option *ngFor="#dep of depsOfSelected" [value]="dep.departmentID">
+    <option *ngFor="let dep of depsOfSelected" [value]="dep.departmentID">
         {{dep.departmentName}}
     </option>
 </select>
@@ -15,7 +15,7 @@
 <div *ngIf="selectedDepartmentID != null">
     <h4>Lista kurseva</h4>
     <div class="list-group" *ngIf="courses != null">
-        <div class="list-group-item" *ngFor="#course of courses; #i = index">
+        <div class="list-group-item" *ngFor="let course of courses; #i = index">
             <span class="id"><b>ID</b> {{course.courseID}}</span>
             <span class="name"><b>Name</b> {{course.name}}</span>
             <span class="alias"><b>Alias</b> {{course.alias}}</span>

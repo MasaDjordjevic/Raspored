@@ -3,7 +3,7 @@
     <button>?</button>
 </div>
 <ul *ngIf="data != null && data != undefined">
-    <li *ngFor="#d of data"
+    <li *ngFor="let d of data"
         [class.selected]="isSelected(d.id)">
         <a (click)="onSelectItem(d.id)">
             {{d.s}}
