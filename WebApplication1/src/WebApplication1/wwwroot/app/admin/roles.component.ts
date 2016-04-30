@@ -9,7 +9,7 @@ import {Role} from '../models/Role';
 
 
 @Component({
-    selector: "test",
+    selector: "r-roles",
     templateUrl: "app/admin/roles.component.html",
     providers: [RolesService],
     directives: CORE_DIRECTIVES

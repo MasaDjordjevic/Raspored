@@ -10,6 +10,6 @@ export class StaticComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.message = "Masa menja stvari!!! The 'static.html' was used as the Angular2 'templateUrl'. There is a 'message' property bound to the <blockqoute> element."
+        this.message = "Masa menja stvari!"
     }
 }

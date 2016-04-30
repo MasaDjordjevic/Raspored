@@ -1,6 +1,7 @@
 ﻿// Angular2
 import {Component, OnInit} from "angular2/core";
-import {RouteParams, Router, RouteDefinition, RouteConfig, Location, ROUTER_DIRECTIVES} from "angular2/router";
+import {RouteDefinition, RouteConfig, ROUTER_DIRECTIVES, Router, RouteParams} from "angular2/router";
+import {Location} from "angular2/platform/common";
 
 // Components
 import {StudentOptionsComponent} from "./student-options.component";

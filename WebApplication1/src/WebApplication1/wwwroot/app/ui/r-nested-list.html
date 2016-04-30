@@ -3,12 +3,12 @@
     <button>?</button>
 </div>
 <ul *ngIf="data != null && data != undefined">
-    <li #li *ngFor="let d of data; #index = index">
+    <li #li *ngFor="let d of data; let i = index">
         <h3 (click)="expand(li)">
             <span class="outer">{{d.outer.s}}</span>
             <!--<span class="indicator">▲</span>-->
         </h3>
-        <ul [class.collapsed]="!index==0">
+        <ul [class.collapsed]="!i == 0">
             <li *ngFor="let inner of d.inner"
                 [class.selected]="isSelected(inner.id)">
                 <a (click)="onSelectItem(inner.id)">
@@ -18,3 +18,4 @@
         </ul>
     </li>
 </ul>
+ 

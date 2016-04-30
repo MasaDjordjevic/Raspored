@@ -1,16 +1,14 @@
 {
-  "name": "Sample",
+  "name": "Raspored",
   "version": "0.0.1",
   "dependencies": {
     "angular2": "2.0.0-beta.17",
-    "bootstrap": "3.3.6",
     "systemjs": "0.19.6",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",
-    "zone.js": "0.6.12",
-    "jquery": "2.1.4"
+    "zone.js": "0.6.12"
   },
   "devDependencies": {
     "gulp": "3.8.11",
@@ -25,7 +23,7 @@
   },
   "scripts": {
     "start" : "npm run prestart && concurrently \"npm run pokemon\" \"npm run watch\"",
-	"prestart": "npm run tsc && npm run sass",
+	"prestart": "gulp && npm run tsc && npm run sass",
 	"pokemon": "nodemon --ext cs --exec \"dnx web ASPNET_ENV=Development\"",
 	"watch": "concurrently \"npm run tsc:w\" \"npm run sass:w\"",
     "tsc": "tsc",

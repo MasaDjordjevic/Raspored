@@ -1,8 +1,12 @@
-﻿import {Component, OnInit} from "angular2/core";
-import {AsyncRoute, Router, RouteDefinition, RouteConfig, Location, ROUTER_DIRECTIVES, Route} from "angular2/router";
+﻿// Angular2
+import {Component, OnInit} from "angular2/core";
+import {AsyncRoute, Router, RouteDefinition, RouteConfig, ROUTER_DIRECTIVES, Route} from "angular2/router";
+import {Location} from "angular2/platform/common";
 
+// Components
 import {StaticComponent} from "./examples/static.component";
 import {AssistantPanelComponent} from "./assistant-panel/assistant-panel.component";
+import {RolesComponent} from "./admin/roles.component";
 
 declare var System: any;
 
@@ -13,18 +17,24 @@ declare var System: any;
         name: 'AssistantPanel',
     }
 ])
+
 @Component({
     selector: "app",
     templateUrl: "/app/app.html",
-    //template: `<h1>Početak sajta</h1> <a [routerLink]="['AssistantPanel']">Otvori asistentski panel</a> <router-outlet></router-outlet>`,
     directives: [ROUTER_DIRECTIVES],
 })
-export class AppComponent implements OnInit {
-    public routes: RouteDefinition[] = null;
-    constructor(private router: Router,
-        private location: Location) {
 
-    }
+export class AppComponent implements OnInit {
+
+    arej = [1, 2, 3, 4];
+
+    public routes: RouteDefinition[] = null;
+    constructor(
+        private router: Router
+        //private location: Location
+        //TODO Ne znam cemu sluzi, ali ne radi od prelaska na beta17.
+        // Lik sa chata je pomenuo https://github.com/angular/angular/pull/8300 ali ne znam sta da radim.
+    ) {  }
 
     ngOnInit() {
         if (this.routes === null) {
@@ -60,8 +70,8 @@ export class AppComponent implements OnInit {
                     name: "Assistant Edit",
                     loader: () => System.import("app/assistant-panel/assistant-edit.component").then(c => c["AssistantEditComponent"])
                 }),
-                new AsyncRoute({                 
-					path: "/courses",
+                new AsyncRoute({
+                    path: "/courses",
                     name: "Courses",
                     loader: () => System.import("app/admin/admin.courses.component").then(c => c["AdminCoursesComponent"])
                 }),
@@ -80,8 +90,8 @@ export class AppComponent implements OnInit {
             this.router.config(this.routes);
         }
     }
-
+    /*
     getLinkStyle(route: RouteDefinition) {
         return this.location.path().indexOf(route.path) > -1;
-    }
+    }*/
 }
