@@ -5,7 +5,7 @@
     width: 100%;
     margin: 12px;
     padding: 12px;
-    background-color: palette($blue-grey, 900);
-    color: rgba(white, .85);
+    background-color: white;
+    color: rgba(black, .85);
     @include z-depth(1);
 }

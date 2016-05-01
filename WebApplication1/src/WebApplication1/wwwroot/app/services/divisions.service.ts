@@ -23,6 +23,7 @@ export class DivisionsService {
     }
 
 
+
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);

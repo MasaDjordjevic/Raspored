@@ -60,9 +60,11 @@ export class GroupsListComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        //TODO sta je ovo dole?
         this.selectedDivisionID = 2;
         //TODO puca aplikacija kada dodam routParams
-        this.selectedDivisionID = +this.routeParams.get('id');
+        this.selectedDivisionID = +this.routeParams.get('divid');
+        console.log(this.routeParams);
         this.getGroups();
     }
 

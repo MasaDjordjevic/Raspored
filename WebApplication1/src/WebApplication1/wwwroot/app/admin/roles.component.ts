@@ -1,5 +1,5 @@
-﻿import {Component, OnInit} from "angular2/core";
-import {CORE_DIRECTIVES} from "angular2/src/common/directives/core_directives";
+﻿// Angular2
+import {Component, OnInit} from "angular2/core";
 
 // Services
 import {RolesService} from "../services/roles.service";
@@ -11,8 +11,7 @@ import {Role} from '../models/Role';
 @Component({
     selector: "r-roles",
     templateUrl: "app/admin/roles.component.html",
-    providers: [RolesService],
-    directives: CORE_DIRECTIVES
+    providers: [RolesService]
 })
 
 export class RolesComponent implements OnInit {

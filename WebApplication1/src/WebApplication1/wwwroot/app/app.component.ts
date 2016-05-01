@@ -26,8 +26,6 @@ declare var System: any;
 
 export class AppComponent implements OnInit {
 
-    arej = [1, 2, 3, 4];
-
     public routes: RouteDefinition[] = null;
     constructor(
         private router: Router

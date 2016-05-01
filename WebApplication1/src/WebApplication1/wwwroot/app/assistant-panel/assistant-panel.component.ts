@@ -31,7 +31,7 @@ import {INestedList, NestedList} from "../INestedList";
         useAsDefault: true,
     },
     {
-        path: '/department/:id/...',
+        path: '/department/:depid/...',
         name: 'DivisionList',
         component: DivisionsListComponent,
     }
@@ -61,7 +61,6 @@ export class AssistantPanelComponent implements OnInit {
 
     ngOnInit() {
         this.getDepartmentsByYear();
-        //this.getNestedListData();
     }
 
     ngAfterViewInit() {
@@ -101,7 +100,7 @@ export class AssistantPanelComponent implements OnInit {
 
     onSelect($event) {
         this.selectedDepartmentID = $event;
-        this._router.navigate(['DivisionList', { id: this.selectedDepartmentID }]);
+        this._router.navigate(['DivisionList', { depid: this.selectedDepartmentID }]);
     }
 
     onDeselect() {

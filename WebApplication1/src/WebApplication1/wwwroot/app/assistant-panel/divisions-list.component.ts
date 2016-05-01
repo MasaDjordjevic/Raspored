@@ -14,7 +14,6 @@ import {DivisionsService} from '../services/divisions.service';
 import {TypeDivisions} from '../models/TypeDivisions';
 import {Division} from '../models/Division';
 
-
 // UI
 import {R_NESTED_LIST_DIRECTIVES} from "../ui/r-nested-list";
 
@@ -30,7 +29,7 @@ import {INestedList, NestedList} from "../INestedList";
         useAsDefault: true,
     }, 
     {
-        path: '/division/:id/...',
+        path: '/division/:divid/...',
         component: GroupsListComponent,
         name: 'GroupsList'
     }
@@ -45,6 +44,7 @@ import {INestedList, NestedList} from "../INestedList";
 })
 
 export class DivisionsListComponent implements OnInit {
+
     typeDivisions: TypeDivisions[];
     errorMessage: string;
     selectedDivisionID: number;
@@ -53,12 +53,19 @@ export class DivisionsListComponent implements OnInit {
 
     private _nestedListData = null;
 
-    constructor(private routeParams: RouteParams, private _router: Router, private _divisionsService: DivisionsService) { }
+    constructor(
+        private routeParams: RouteParams,
+        private _router: Router,
+        private _divisionsService: DivisionsService
+    ) { }
 
     ngOnInit() {
+        //TODO sta ce ti ovo dole?
         this.selectedDepartmentID = 1;
-        //puca aplikacija kada dodam routParams
-        this.selectedDepartmentID = +this.routeParams.get('id');
+        //puca aplikacija kada dodam routParams //TODO ??? pa dodala si ga i radi?
+        this.selectedDepartmentID = +this.routeParams.get('depid');
+        console.log(this.selectedDepartmentID);
+        console.log(this.routeParams);
         this.getDivisionsByType();
     }
 
@@ -95,9 +102,8 @@ export class DivisionsListComponent implements OnInit {
     }
 
     onSelect(divisionID: number) {
-        console.log("Division ID " + divisionID);
         this.selectedDivisionID = divisionID;
-        this._router.navigate(['GroupsList', { id: divisionID }]);
+        this._router.navigate(['GroupsList', { divid: divisionID }]);
     }
 
     onDeselect() {
