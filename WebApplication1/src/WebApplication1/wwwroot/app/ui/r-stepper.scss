@@ -23,6 +23,7 @@
   box-sizing: border-box;
   @include z-depth(.5);
   position: relative;
+  overflow: hidden; // zbog ripple
 
   // Linija kroz sve
   &::before {
@@ -52,7 +53,7 @@
     color: rgba(white, .9);
     border-radius: 50%;
     font-size: .85em;
-    z-index: 3;
+    z-index: 10;
     position: relative;
 
     // Da sakrije malo linije ispod koraka
@@ -66,6 +67,21 @@
       top: 0;
       bottom: 0;
       z-index: 2;
+    }
+
+    // Ripple efekat
+    &::after {
+      content: '';
+      position: absolute;
+      background-color: transparent;
+      width: 90%;
+      height: 90%;
+      top:  5%;
+      left: 5%;
+      z-index: 3;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0px rgba(desaturate(palette($blue), 100%), 0.5);
+      transition: box-shadow 0s ease-out;
     }
   }
 
@@ -82,6 +98,11 @@
 
     .r-stepper-step-circle {
       background-color: palette($blue);
+
+      &::after {
+        box-shadow: 0 0 0 64px rgba(palette($blue), 0);
+        transition: box-shadow .33s ease-out;
+      }
     }
 
     .r-stepper-step-title {

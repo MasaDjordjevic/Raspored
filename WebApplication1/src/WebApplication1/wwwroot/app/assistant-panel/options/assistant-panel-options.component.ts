@@ -16,9 +16,15 @@ import {R_STEPPER} from "../../ui/r-stepper.component"
     <button disabled>Good Ol' Button</button>-->
 
     <r-stepper>
-        <r-step [stepTitle]="'Prvi korak'">step no1</r-step>
-        <r-step [stepTitle]="'Drugi korak'">step no2</r-step>
-        <r-step [stepTitle]="'Treci korak'">step no3</r-step>
+        <r-step [stepTitle]="'Prvi korak'">
+            <button r-button flat [text]="'testing'"></button>
+        </r-step>
+        <r-step [stepTitle]="'Drugi korak'">
+            step no2
+        </r-step>
+        <r-step [stepTitle]="'Treci korak'">
+            step no3
+        </r-step>
     </r-stepper>
     `,
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
