@@ -19,14 +19,15 @@
     "rimraf": "2.2.8",
     "lodash": "3.10.1",
 	"concurrently": "^2.0.0",
-	"typings": "^0.8.1"
+	"typings": "^0.8.1",
+	"typescript": "^1.8.10"
   },
   "scripts": {
     "start" : "npm run prestart && concurrently \"npm run pokemon\" \"npm run watch\"",
-	"prestart": "gulp && npm run tsc && npm run sass",
+	"prestart": "gulp && npm run sass",
 	"pokemon": "nodemon --ext cs --exec \"dnx web ASPNET_ENV=Development\"",
 	"watch": "concurrently \"npm run tsc:w\" \"npm run sass:w\"",
-    "tsc": "tsc",
+	"npm-tsc": "tsc",
     "tsc:w": "tsc -w",
 	"sass": "sass --update wwwroot:wwwroot",
 	"sass:w": "sass --watch wwwroot:wwwroot"
