@@ -1,0 +1,66 @@
+@import "../palette";
+@import "../ljubenovic-toolkit";
+
+:host {
+
+  // Reset
+  background-color: transparent;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+
+  // Material
+  height: 36px;
+  padding: 8px 16px;
+  margin: 8px;
+  border-radius: 2px;
+  font-weight: bold;
+  font-family: Roboto, Arial, sans-serif;
+  text-transform: uppercase;
+
+  transition: all .1s ease-in;
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+
+}
+
+:host.r-button-flat {
+  background-color: transparent;
+  color: rgba(palette($blue), .9);
+
+  &:hover:not([disabled]) {
+    @include z-depth(.5);
+    background-color: rgba(palette($blue), .1);
+  }
+
+  &:active {
+    @include z-depth(1);
+  }
+
+  &[disabled] {
+    color: rgba(palette($blue), .5);
+  }
+}
+
+:host.r-button-raised {
+  background-color: palette($blue, 500);
+  color: rgba(white, .9);
+  @include z-depth(1);
+
+  &:hover:not([disabled]) {
+    background-color: palette($blue, 400);
+  }
+
+  &:active {
+    @include z-depth(1.5);
+  }
+
+  &[disabled] {
+    background-color: rgba(palette($blue, 500), .7);
+    color: rgba(white, .6);
+  }
+}
