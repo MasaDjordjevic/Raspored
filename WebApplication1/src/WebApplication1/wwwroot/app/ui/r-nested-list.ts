@@ -2,25 +2,6 @@
 
 import {INestedList, NestedList} from "../INestedList";
 
-/*
-@Component({
-    selector: 'r-nested-list-item-inner',
-    template: `<ng-content></ng-content>`,
-    styleUrls: ['app/r-nested-item-inner.css']
-})
-export class RNestedListItemInner { }
-
-@Component({
-    selector: '[r-nested-list-item-outer]',
-    template: `
-    <ng-content select="[r-nested-item-outer-title]"></ng-content>
-    <div><ng-content></ng-content></div>
-`,
-    styleUrls: ['app/r-nested-item-outer.css']
-})
-export class RNestedListItemOuter { }
-*/
-
 @Component({
     selector: 'r-nested-list',
     templateUrl: 'app/ui/r-nested-list.html',
@@ -97,5 +78,3 @@ export class RNestedList implements AfterViewInit {
     }
 
 }
-
-export const R_NESTED_LIST_DIRECTIVES: any[] = [RNestedList];

@@ -2,16 +2,11 @@
 @import "../ljubenovic-toolkit";
 
 :host {
+    display: block;
     @include z-depth(1);
     overflow-x: hidden;
     overflow-y: auto;
-    overflow-y: overlay;
     border-radius: 2px;
-    min-width: 240px;
-    width: 12%;
-    max-width: 320px;
-    height: 600px;
-    margin: 12px;
 
     &::-webkit-scrollbar {
       width: 6px;

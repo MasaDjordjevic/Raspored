@@ -8,7 +8,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Divisions")]
+    [Route("api/[controller]/[action]")]
     public class DivisionsController : Controller
     {
         private RasporedContext _context;
@@ -17,8 +17,7 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
-
-   
+        
 
         // GET: api/Divisions
         [HttpGet]
@@ -27,8 +26,32 @@ namespace WebApplication1.Controllers
             return _context.Divisions;
         }
 
-        // GET: api/Divisions/5
+        // GET: api/Divisions/GetDivision/{id}
+        // Vrati raspodelu ciji ID odgovara prosledjenom.
+        [HttpGet("{id}", Name = "GetDivision")]
+        public IActionResult GetDivision(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            Divisions divisions = _context.Divisions.Single(m => m.divisionID == id);
+
+            if (divisions == null)
+            {
+                return HttpNotFound();
+            }
+
+            //TODO vrati gresku ako ne postoji raspodela (division) sa tim ID-jem.
+            //TODO ne samo ovde nego svuda
+            return Ok(divisions);
+        }
+
+        // GET: api/Divisions/GetDivisions/5
+        // Vrati sve raspodele (divisions) koje pripadaju smeru (department) ciji je ID prosledjen.
         [HttpGet("{id}", Name = "GetDivisions")]
+        [Route("{id:int}")]
         public IActionResult GetDivisions([FromRoute] int id)
         {
             if (!ModelState.IsValid)

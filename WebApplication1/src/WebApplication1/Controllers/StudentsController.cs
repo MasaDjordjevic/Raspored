@@ -8,7 +8,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Students")]
+    [Route("api/[controller]/[action]")]
     public class StudentsController : Controller
     {
         private RasporedContext _context;
@@ -25,7 +25,33 @@ namespace WebApplication1.Controllers
             return _context.Students;
         }
 
-        // GET: api/Students/5
+        // GET: api/Students/GetStudent/{student-id}
+        /**
+         * Vrati studente ciji je ID prosleðen.
+         */
+        [HttpGet("{id}", Name = "GetStudent")]
+        public IActionResult GetStudent(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            Students students = _context.Students.Single(m => m.studentID == id);
+
+            if (students == null)
+            {
+                return HttpNotFound();
+            }
+
+            //TODO vrati gresku ako ne postoji raspodela (division) sa tim ID-jem.
+            return Ok(students);
+        }
+
+        // GET: api/Students/GetStudents/{group-id}
+        /**
+         * Vrati studente koji pripadaju grupi ?iji je ID prosleðen.
+         */
         [HttpGet("{id}", Name = "GetStudents")]
         public IActionResult GetStudents([FromRoute] int id)
         {

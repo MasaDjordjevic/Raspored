@@ -15,13 +15,27 @@ export class StudentsService {
 
     private _url = "api/Students";
 
-    getGroups(groupID: number): Promise<Student[]> {
-        return this.http.get(this._url + '/' + groupID)
+    /**
+     * GET: api/Students/GetStudent/{studentId}
+     * Uzmi grupu čiji se ID poklapa sa prosleðenim parametrom.
+     */
+    getStudent(studentId: number): Promise<Student> {
+        return this.http.get(this._url + '/GetStudent/' + studentId)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
+    /**
+     * GET: api/Students/GetStudents/{groupId}
+     * Uzmi studente koji pripadaju grupi sa prosleðenim ID-jem.
+     */
+    getStudents(groupId: number): Promise<Student[]> {
+        return this.http.get(this._url + '/GetStudents/' + groupId)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {

@@ -2,13 +2,13 @@
 import {CORE_DIRECTIVES} from "angular2/src/common/directives/core_directives";
 
 // Services
-import {AssistantService} from "../services/assistant.service";
+import {AssistantService} from "../../services/assistant.service";
 
 // Models
-import {Assistant} from "../models/assistant";
+import {Assistant} from "../../models/Assistant";
 
 // UI
-import {RInputText} from "../ui/r-input-text.component";
+import {RInputText} from "../../ui/r-input-text.component";
 
 @Component({
     selector: "r-assistant-edit",

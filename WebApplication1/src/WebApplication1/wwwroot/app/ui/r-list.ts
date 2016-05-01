@@ -1,5 +1,7 @@
 ﻿import {Component, Input, Output, EventEmitter} from "angular2/core";
 
+
+
 @Component({
     selector: 'r-list',
     templateUrl: 'app/ui/r-list.html',

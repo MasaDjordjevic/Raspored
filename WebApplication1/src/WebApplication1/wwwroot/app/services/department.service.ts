@@ -13,6 +13,13 @@ export class DepartmentService {
 
     private _url = "api/departments";
 
+    getDepartment(id: number): Promise<Department> {
+        return this.http.get(this._url + '/GetDepartments/' + id)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     getDepartments(): Promise<Department[]> {
         return this.http.get(this._url + '/GetDepartments')
             .toPromise()

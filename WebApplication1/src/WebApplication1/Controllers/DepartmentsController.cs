@@ -41,7 +41,7 @@ namespace WebApplication1.Controllers
             return Ok(departments);
         }
 
-        // GET: api/Departments/5
+        // GET: api/Departments/GetDepartments/5
         [HttpGet("{id}", Name = "GetDepartments")]
         [Route("{id:int}")]
         public IActionResult GetDepartments([FromRoute] int id)

@@ -15,14 +15,25 @@ export class DivisionsService {
 
     private _url = "api/Divisions";
 
-    getDivisionsByType(departmentID: number): Promise<TypeDivisions[]> {
-        return this.http.get(this._url + '/' + departmentID)
+
+    getDivision(id: number) : Promise<Division> {
+        return this.http.get(this._url + '/GetDivision/' + id)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
-
+    /**
+     * Zahteva od servera sve raspodele (divisions) koje pripadaju smeru
+     * (department) ciji je ID prosledjen.
+     * GET: api/Divisions/GetDivisions/{id}
+     */
+    getDivisionsByType(departmentID: number): Promise<TypeDivisions[]> {
+        return this.http.get(this._url + '/GetDivisions/' + departmentID)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {

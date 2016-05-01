@@ -1,19 +1,65 @@
 ﻿<header>
-    Header
+    Assistant Panel
 </header>
 
 <main>
-    
-    <r-nested-list
-        [titleString]="titleString"
-        [data]="nestedListData"
-        (selectItem)="onSelect($event)">
-    </r-nested-list>
 
-    <router-outlet></router-outlet>
+    <!-- Liste -->
+    <r-departments-list
+            (selectDepartment)="onDepartmentSelect($event)"
+    >
+    </r-departments-list>
+    <r-divisions-list
+            *ngIf="_selectedDepartmentId != -1"
+            [selectedDepartmentId]="_selectedDepartmentId"
+            (selectDivision)="onDivisionSelect($event)"
+    >
+    </r-divisions-list>
+    <r-groups-list
+            *ngIf="_selectedDivisionId != -1"
+            [selectedDivisionId]="_selectedDivisionId"
+            (selectGroup)="onGroupSelect($event)"
+    >
+    </r-groups-list>
+    <r-students-list
+            *ngIf="_selectedGroupId != -1"
+            [selectedGroupId]="_selectedGroupId"
+            (selectStudent)="onStudentSelect($event)"
+    >
+    </r-students-list>
+
+    <!-- Opcije -->
+    <r-assistant-panel-options
+            *ngIf="isAtRoot"
+    >
+    </r-assistant-panel-options>
+
+    <r-department-options
+            *ngIf="isAtDepartment"
+            [departmentId]="_selectedDepartmentId"
+    ></r-department-options>
+
+    <r-division-options
+            *ngIf="isAtDivision"
+            [divisionId]="_selectedDivisionId"
+    >
+    </r-division-options>
+
+    <r-group-options
+            *ngIf="isAtGroup"
+            [groupId]="_selectedGroupId"
+    ></r-group-options>
+
+    <r-student-options
+            *ngIf="isAtStudent"
+            [studentId]="_selectedStudentId"
+    ></r-student-options>
 
 </main>
 
 <footer>
-    Footer
+    dep: {{_selectedDepartmentId}}
+    div: {{_selectedDivisionId}}
+    gr: {{_selectedGroupId}}
+    stud: {{_selectedStudentId}}
 </footer>

@@ -1,0 +1,8 @@
+@import "../../palette";
+@import "../../ljubenovic-toolkit";
+
+:host {
+  display: block;
+  margin: 12px;
+  @include force-width(240px);
+}

@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         if (this.routes === null) {
             this.routes = [
-                { path: "/index", component: StaticComponent, name: "Index", useAsDefault: true },
+                { path: "/index", component: StaticComponent, name: "Index", useAsDefault: false },
                 new AsyncRoute({
                     path: "/sub",
                     name: "Sub",
@@ -81,6 +81,7 @@ export class AppComponent implements OnInit {
                 new AsyncRoute({
                     path: "/assistant-panel",
                     name: "AssistantPanel",
+                    useAsDefault: true,
                     loader: () => System.import("app/assistant-panel/assistant-panel.component").then(c => c["AssistantPanelComponent"])
                 }),
             ];

@@ -15,12 +15,31 @@ export class GroupsService {
 
     private _url = "api/Groups";
 
-    getGroups(divisionID: number): Promise<Group[]> {
-        return this.http.get(this._url + '/' + divisionID)
+    /**
+     * GET: api/Groups/GetGroup/{group-id}
+     * Uzima grupu čiji se ID poklapa sa prosleðenim parametrom.
+     */
+    getGroup(groupId: number): Promise<Group> {
+        return this.http.get(this._url + '/GetGroup/' + groupId)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
+
+    /**
+     * GET: api/Groups/GetGroups/{division-id}
+     * Uzima grupe koje pripadaju smeru čiji je ID prosleðen kao parametar.
+     */
+    getGroups(divisionID: number): Promise<Group[]> {
+        return this.http.get(this._url + '/GetGroups/' + divisionID)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /**
+     * Uzima grupu sa prosleðenim ID-jem.
+     */
 
 
     private extractData(res: Response) {

@@ -6,7 +6,6 @@
     height: calc(100vh - #{16px}); // body ima marginu 8px nzm zasto
     margin: 0;
     padding: 0;
-    display: flex;
     flex-flow: column;
     justify-content: space-between;
 }
@@ -20,9 +19,5 @@ header, footer {
 main {
     height: 100%;
     display: flex;
-    justify-content: space-between;
-}
-
-router-outlet {
-    background-color: blue;
+    justify-content: flex-start;
 }

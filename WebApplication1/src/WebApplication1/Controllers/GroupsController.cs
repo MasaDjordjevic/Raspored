@@ -8,7 +8,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Groups")]
+    [Route("api/[controller]/[action]")]
     public class GroupsController : Controller
     {
         private RasporedContext _context;
@@ -18,14 +18,43 @@ namespace WebApplication1.Controllers
             _context = context;
         }
 
-        // GET: api/Groups
+        /**
+         * GET: api/Groups
+         * Vrati sve grupe.
+         */
         [HttpGet]
         public IEnumerable<Groups> GetGroups()
         {
             return _context.Groups;
         }
 
-        // GET: api/Groups/5
+        // GET: api/Groups/GetGroup/{group-id}
+        /**
+         * Vrati studente ciji je ID prosledjen.
+         */
+        [HttpGet("{id}", Name = "GetGroup")]
+        public IActionResult GetGroup(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            Groups group = _context.Groups.Single(m => m.groupID == id);
+
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
+
+            //TODO vrati gresku ako ne postoji raspodela (division) sa tim ID-jem.
+            return Ok(group);
+        }
+
+        // GET: api/Groups/GetGroups/{id}
+        /**
+         * Vrati sve grupe koje pripadaju prosledjenoj raspodeli (division).
+         */
         [HttpGet("{id}", Name = "GetGroups")]
         public IActionResult GetGroups([FromRoute] int id)
         {
