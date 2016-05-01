@@ -12,6 +12,7 @@
 *.css.map
 WebApplication1/.vs/
 Startup.cs
+.idea/
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
