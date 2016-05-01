@@ -42,7 +42,7 @@ export class RFlatButtonDirective {
 
 //TODO Nece <ng-content> kad se primeni direktiva na element.
 // Workaround je da se tekst prosledi kao Input, ali je ruzno
-// kad se pise :/
+// kad se pise, nemam pojma
 
 @Component({
     selector: 'button[r-button]',

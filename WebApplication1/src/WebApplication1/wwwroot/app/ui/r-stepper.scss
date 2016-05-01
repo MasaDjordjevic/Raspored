@@ -1,0 +1,122 @@
+@import "../palette";
+@import "../ljubenovic-toolkit";
+
+:host {
+  background-color: white;
+  @include z-depth(1);
+  width: 860px;
+  height: 480px;
+  margin: 24px;
+  overflow: hidden;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+:host r-stepper-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 36px 28px;
+  width: 100%;
+  height: 64px;
+  box-sizing: border-box;
+  @include z-depth(.5);
+  position: relative;
+
+  // Linija kroz sve
+  &::before {
+    content: "";
+    position: absolute;
+    background-color: rgba(black, .1);
+    height: 1px;
+    left: 36px;
+    right: 36px;
+    bottom: 50%;
+    z-index: 1;
+  }
+
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+
+  .r-stepper-step-circle {
+    background-color: desaturate(palette($blue), 100%);
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    padding: 8px;
+    font-weight: bold;
+    text-align: center;
+    color: rgba(white, .9);
+    border-radius: 50%;
+    font-size: .85em;
+    z-index: 3;
+    position: relative;
+
+    // Da sakrije malo linije ispod koraka
+    &::before {
+      content: '';
+      position: absolute;
+      background-color: white;
+      left: -12px;
+      width: 12px;
+      height: 100%;
+      top: 0;
+      bottom: 0;
+      z-index: 2;
+    }
+  }
+
+  .r-stepper-step-title {
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: white;
+    z-index: 3;
+    padding-bottom: .4ex; // da se malo bolje gadja sa linijom ispod koraka
+  }
+
+
+  .current {
+
+    .r-stepper-step-circle {
+      background-color: palette($blue);
+    }
+
+    .r-stepper-step-title {
+      //font-weight: bold; //TODO zbog ovoga zdrakne malo http://stackoverflow.com/questions/556153/inline-elements-shifting-when-made-bold-on-hover
+    }
+  }
+
+  .finished {
+
+    .r-stepper-step-circle {
+      background-color: palette($green);
+    }
+  }
+}
+
+:host .r-steps-container {
+  flex: 1 1 auto;
+  //background-color: rgba(black, .05);
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  position: relative;
+
+  .r-step-wrapper {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+}
+
+:host .r-stepper-footer {
+  padding: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
