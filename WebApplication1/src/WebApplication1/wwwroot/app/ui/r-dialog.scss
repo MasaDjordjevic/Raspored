@@ -1,0 +1,28 @@
+@import "../ljubenovic-toolkit";
+
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(black, .33);
+  z-index: 100;
+  -webkit-transform: translateZ(0);
+}
+
+:host.visible {
+  display: block;
+  opacity: 1;
+}
+
+:host.visible .r-dialog-wrapper-outer {
+  display: flex;
+  position: absolute;
+  background-color: white;
+  @include z-depth(2);
+  border-radius: 2px;
+  overflow: hidden;
+}
