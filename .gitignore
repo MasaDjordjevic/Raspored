@@ -13,6 +13,7 @@
 WebApplication1/.vs/
 Startup.cs
 .idea/
+!gulpfile.js
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)

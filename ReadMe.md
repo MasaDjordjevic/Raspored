@@ -1,6 +1,6 @@
 # Upustvo za pokretanje i pojašnjenja
 
-## Instaliranje NodeJS i npm
+## Instaliranje NodeJS, npm, sass
 
 1. Instalirati [**NodeJS**](https://nodejs.org/en/).
    - Tokom instalacije instlairati i **npm package manager** (trebalo bi da je podrazumevano već selektiran).
@@ -9,6 +9,8 @@
    - Iz komandne linije pokrenuti komandu `node -v`.
    - Izlaz treba da bude instalirana verzija, npr. `v5.8.0`.
 3. Apdejtovanje NodeJS-a se obavlja ponovnim pokretanjem instalacije. Nova verzija se automatski instalira preko stare (nije potrebno najpre obrisati staru).
+4. Da bi instalirali Sass neophono je prvo instalirati Ruby pa onda Sass
+	- Ispratiti prva dva koraka na [**Sass**](http://www.impressivewebs.com/sass-on-windows/)
 
 ## Inicijalno pokretanje projekta
 
