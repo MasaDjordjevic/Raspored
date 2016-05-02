@@ -6,7 +6,6 @@
   @include z-depth(1);
   width: 860px;
   height: 480px;
-  margin: 24px;
   overflow: hidden;
 
   display: flex;
@@ -81,7 +80,6 @@
       z-index: 3;
       border-radius: 50%;
       box-shadow: 0 0 0 0px rgba(desaturate(palette($blue), 100%), 0.5);
-      transition: box-shadow 0s ease-out;
     }
   }
 
@@ -99,6 +97,7 @@
     .r-stepper-step-circle {
       background-color: palette($blue);
 
+      // Ripple effect
       &::after {
         box-shadow: 0 0 0 64px rgba(palette($blue), 0);
         transition: box-shadow .33s ease-out;

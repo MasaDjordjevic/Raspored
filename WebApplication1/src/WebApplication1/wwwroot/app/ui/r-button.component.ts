@@ -52,7 +52,11 @@ export class RFlatButtonDirective {
 
 export class RButtonComponent {
 
-    constructor( ) {}
+    public nativeElement: HTMLButtonElement;
+
+    constructor(element: ElementRef) {
+        this.nativeElement = element.nativeElement;
+    }
 
     @Input() text: string; //TODO vidi gore
 
