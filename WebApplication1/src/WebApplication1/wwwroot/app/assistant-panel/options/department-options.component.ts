@@ -11,6 +11,9 @@ import {R_BUTTON} from "../../ui/r-button.component";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_DL} from "../../ui/r-dl";
 
+// Pipes
+import {TrimPipe} from "../../pipes/trim.pipe";
+
 
 
 @Component({
@@ -45,9 +48,7 @@ import {R_DL} from "../../ui/r-dl";
         </r-dialog>
 
         <r-dialog #debuggingDialog [source]="debuggingButton">
-            <pre style='padding: 3em; width: 60%; font-family: "Source Code Pro", Consolas, Consolas, "Liberation Mono", Menlo, Courier, monospace '>
-                {{department | json}}
-            </pre>
+            <pre style='padding: 3em; width: 60%; font-family: "Source Code Pro", Consolas, Consolas, "Liberation Mono", Menlo, Courier, monospace '>{{department | json | trim}}</pre>
         </r-dialog>
 
         <div class="footer-buttons" style="display: flex">
@@ -69,6 +70,7 @@ import {R_DL} from "../../ui/r-dl";
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
     providers: [DepartmentService],
     directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL],
+    pipes: [TrimPipe]
 })
 
 export class DepartmentOptionsComponent {
