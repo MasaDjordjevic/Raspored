@@ -11,7 +11,7 @@ using WebApplication1.Models;
 
 namespace MyFirstDnxUnitTests
 {
-    public class Class1
+    public class Testing
     {
         [Fact]
         public void PassingTest()

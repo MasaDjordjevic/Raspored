@@ -46,7 +46,7 @@ Svaki sledeći put se projekat pokreće samo komandom `npm start`.
 
     dnx ef dbcontext scaffold "Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;" EntityFramework.MicrosoftSqlServer --outputDir Models
 	
-## Celo uputstvo
+## Celo uputstvo za mapiranje baze
 
 	http://docs.efproject.net/en/latest/platforms/aspnetcore/existing-db.html
 	
