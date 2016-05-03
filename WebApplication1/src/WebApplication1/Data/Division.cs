@@ -23,24 +23,17 @@ namespace WebApplication1.Data
         public static Object GetDivison(int divisionID)
         {
             RasporedContext _context = new RasporedContext();
-            var pom = _context.Divisions.Include(a => a.creator).Where(a=> a.divisionID == divisionID).First();
-                
-                //where a.divisionID == divisionID
-                //select new
-                //{
-                //    divisionID = a.divisionID,
-                //    creator = a.creator,
-                //    divisionType = a.divisionType,
-                //    beginning = a.beginning,
-                //    ending = a.ending,
-                //    department = a.department,
-                //    course = a.course
-                //}).ToList();
-            var a1 = pom.creator;
-            var a2 = pom.divisionType;
-            var a3 = pom.department;
-            var a4 = pom.course;
+            var pom = (from a in _context.Divisions
+                       .Include(p => p.creator)
+                       .Include(p => p.divisionType)
+                       .Include(p => p.department)
+                       .Include(p => p.course)
+                       .Include(p => p.Groups)
+                       where a.divisionID == divisionID
+                       select a).ToList();
+
             return pom;
+            
         }
 
         public static string GetDivisionTypeName(int divisionTypeID)
