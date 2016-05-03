@@ -236,6 +236,8 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.uniMemberID);
 
+                entity.HasIndex(e => e.studentID).HasName("studentUnique").IsUnique();
+
                 entity.Property(e => e.address).HasMaxLength(200);
 
                 entity.Property(e => e.avatar).HasColumnType("image");
@@ -260,7 +262,7 @@ namespace WebApplication1.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.student).WithMany(p => p.UniMembers).HasForeignKey(d => d.studentID);
+                entity.HasOne(d => d.student).WithOne(p => p.UniMembers).HasForeignKey<UniMembers>(d => d.studentID);
             });
 
             modelBuilder.Entity<UniMembersRoles>(entity =>

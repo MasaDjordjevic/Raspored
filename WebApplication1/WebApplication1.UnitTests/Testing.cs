@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using WebApplication1.Controllers;
 using Xunit;
@@ -51,8 +52,8 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 3, 5, 20, 30, 0);
             b.period = null;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(true, con.Overlap(a, b));
+            
+            Assert.Equal(true, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
         [Fact]
@@ -68,8 +69,7 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 3, 5, 20, 30, 0);
             b.period = null;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(false, con.Overlap(a, b));
+            Assert.Equal(false, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
         [Fact]
@@ -85,8 +85,7 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 3, 5, 20, 30, 0);
             b.period = null;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(false, con.Overlap(a, b));
+            Assert.Equal(false, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
         [Fact]
@@ -102,8 +101,7 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 3, 5, 20, 30, 0);
             b.period = 1;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(false, con.Overlap(a, b));
+            Assert.Equal(false, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
         [Fact]
@@ -119,8 +117,7 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 3, 8, 20, 30, 0);
             b.period = 1;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(false, con.Overlap(a, b));
+            Assert.Equal(false, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
         [Fact]
@@ -136,8 +133,7 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 3, 5, 20, 30, 0);
             b.period = 1;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(true, con.Overlap(a, b));
+            Assert.Equal(true, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
 
@@ -154,8 +150,7 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 5, 9, 20, 30, 0);
             b.period = 2;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(true, con.Overlap(a, b));
+            Assert.Equal(true, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
 
@@ -172,8 +167,7 @@ namespace MyFirstDnxUnitTests
             b.endDate = new DateTime(2016, 5, 2, 20, 30, 0);
             b.period = 2;
 
-            TimeSpansController con = new TimeSpansController(new WebApplication1.Models.RasporedContext());
-            Assert.Equal(true, con.Overlap(a, b));
+            Assert.Equal(true, WebApplication1.Data.TimeSpan.Overlap(a, b));
         }
 
         [Fact]
@@ -187,6 +181,15 @@ namespace MyFirstDnxUnitTests
         public void DevideOnX()
         {
             var groups = WebApplication1.Data.Division.DevadeOnX(10, 2, 0);
+
+        }
+
+        [Fact]
+        public void student()
+        {
+            RasporedContext _context = new RasporedContext();
+            Students s = _context.Students.Include(a=> a.UniMembers).Single(a => a.studentID == 2);
+            var uni = s.UniMembers;
 
         }
     }

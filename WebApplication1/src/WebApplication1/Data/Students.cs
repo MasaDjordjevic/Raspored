@@ -60,5 +60,29 @@ namespace WebApplication1.Data
                     where u.studentID == studentID &&  u.studentID == s.studentID
                     select u.name + u.surname).First();
         }
+
+        public static List<TimeSpans> GetSchedule(int studentID)
+        {
+            RasporedContext _context = new RasporedContext();
+            List<TimeSpans> groups = (from gs in _context.GroupsStudents
+                                from g in _context.Groups
+                                where gs.studentID == studentID && gs.groupID == g.groupID
+                                select g.timeSpan).ToList();
+            List<TimeSpans> activities = (from a in _context.Activities
+                                            where a.studentID == studentID
+                                            select a.timeSpan).ToList();
+            return groups.Concat(activities).ToList();
+        }
+
+        public static bool CheckIfAveable(int studentID, TimeSpans time)
+        {
+            List<TimeSpans> schedule = GetSchedule(studentID);
+            foreach (TimeSpans ts in schedule)
+            {
+                if (TimeSpan.Overlap(ts, time))
+                    return false;
+            }
+            return true;
+        }
     }
 }

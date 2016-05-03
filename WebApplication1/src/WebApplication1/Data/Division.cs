@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Microsoft.AspNet.Razor.Chunks;
+using Microsoft.Data.Entity;
 using WebApplication1.Models;
 
 namespace WebApplication1.Data
@@ -17,6 +18,29 @@ namespace WebApplication1.Data
             return (from div in _context.Divisions
                 where div.departmentID == departmentID
                 select div).ToList();
+        }
+
+        public static Object GetDivison(int divisionID)
+        {
+            RasporedContext _context = new RasporedContext();
+            var pom = _context.Divisions.Include(a => a.creator).Where(a=> a.divisionID == divisionID).First();
+                
+                //where a.divisionID == divisionID
+                //select new
+                //{
+                //    divisionID = a.divisionID,
+                //    creator = a.creator,
+                //    divisionType = a.divisionType,
+                //    beginning = a.beginning,
+                //    ending = a.ending,
+                //    department = a.department,
+                //    course = a.course
+                //}).ToList();
+            var a1 = pom.creator;
+            var a2 = pom.divisionType;
+            var a3 = pom.department;
+            var a4 = pom.course;
+            return pom;
         }
 
         public static string GetDivisionTypeName(int divisionTypeID)

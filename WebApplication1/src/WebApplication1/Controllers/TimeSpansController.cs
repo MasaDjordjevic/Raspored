@@ -28,32 +28,6 @@ namespace WebApplication1.Controllers
             return _context.TimeSpans;
         }
 
-
-        public bool Overlap(TimeSpans a, TimeSpans b)
-        {
-            if (a.period == null && b.period == null)
-                return DatesOverlap(a.startDate, a.endDate, b.startDate, b.endDate);
-
-            if (a.period != null)
-            {
-                a.startDate = a.startDate.DayOfReferencedWeek(b.startDate, a.period.Value);
-                a.endDate = a.endDate.DayOfReferencedWeek(b.endDate, a.period.Value);
-            }
-
-            if (b.period != null)
-            {
-                b.startDate = b.startDate.DayOfReferencedWeek(a.startDate, b.period.Value);
-                b.endDate = b.endDate.DayOfReferencedWeek(a.endDate, b.period.Value);
-            }
-
-            return DatesOverlap(a.startDate, a.endDate, b.startDate, b.endDate);
-        }
-        
-        public bool DatesOverlap(DateTime aStart, DateTime aEnd, DateTime bStart, DateTime bEnd)
-        {
-            return ((aStart <= bStart && bStart <= aEnd) || (bStart <= aStart && aStart <= bEnd));
-        }
-
        
 
         // GET: api/TimeSpans/5

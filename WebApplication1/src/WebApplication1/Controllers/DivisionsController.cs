@@ -62,14 +62,14 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            Divisions divisions = _context.Divisions.Single(m => m.divisionID == id);
+            var division = Data.Division.GetDivison(id);
 
-            if (divisions == null)
+            if (division == null)
             {
                 return HttpNotFound();
             }
 
-            return Ok(divisions);
+            return Ok(division);
         }
 
         [HttpGet]

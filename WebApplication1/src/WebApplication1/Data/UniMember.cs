@@ -20,6 +20,13 @@ namespace WebApplication1.Data
             return (from a in _context.UniMembers where a.uniMemberID == uniMmeberID select a.name + a.surname).First();
         }
 
+        public static UniMembers GetUniMemeber(int sutudentID)
+        {
+            RasporedContext _context = new RasporedContext();
+            return (from a in _context.UniMembers
+                where a.studentID == sutudentID
+                select a).First();
+        }
         
     }
 }
