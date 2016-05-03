@@ -33,7 +33,7 @@ namespace WebApplication1.Controllers
             {
                 return HttpBadRequest(ModelState);
             }
-            //nepotreban komentar
+            
             //TODO: sredi da vraca samo ono sto ti treba, i nemoj uvek da vracas ok
             var courses = (from c in _context.Courses where c.departmentID == id select c).ToList();
             return Ok(courses);

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
@@ -43,8 +44,7 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
-
-            //TODO vrati gresku ako ne postoji raspodela (division) sa tim ID-jem.
+            
             return Ok(students);
         }
 
@@ -60,17 +60,7 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var students = (from s in _context.Students
-                            from u in _context.UniMembers
-                            from g in _context.GroupsStudents
-                            where s.studentID == u.studentID.Value && s.studentID == g.studentID && g.groupID == id
-                            select new
-                            {
-                                studentID = s.studentID,
-                                name = u.name,
-                                surname = u.surname,
-                                indexNumber = s.indexNumber
-                            }).ToList();
+            var students = Data.Student.GetStudentsOfGroup(id);
 
             if (students == null)
             {
@@ -79,6 +69,8 @@ namespace WebApplication1.Controllers
 
             return Ok(students);
         }
+
+        
 
         // PUT: api/Students/5
         [HttpPut("{id}")]

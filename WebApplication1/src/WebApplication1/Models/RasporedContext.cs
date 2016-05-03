@@ -5,10 +5,10 @@ namespace WebApplication1.Models
 {
     public partial class RasporedContext : DbContext
     {
-        //protected override void OnConfiguring(DbContextOptionsBuilder options)
-        //{
-        //    options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -214,6 +214,15 @@ namespace WebApplication1.Models
                 entity.HasOne(d => d.student).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
             });
 
+            modelBuilder.Entity<StudentsCourses>(entity =>
+            {
+                entity.HasKey(e => e.studentsCourseID);
+
+                entity.HasOne(d => d.course).WithMany(p => p.StudentsCourses).HasForeignKey(d => d.courseID).OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(d => d.student).WithMany(p => p.StudentsCourses).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
+            });
+
             modelBuilder.Entity<TimeSpans>(entity =>
             {
                 entity.HasKey(e => e.timeSpanID);
@@ -289,6 +298,7 @@ namespace WebApplication1.Models
         public virtual DbSet<RolesPermissions> RolesPermissions { get; set; }
         public virtual DbSet<Students> Students { get; set; }
         public virtual DbSet<StudentsActivities> StudentsActivities { get; set; }
+        public virtual DbSet<StudentsCourses> StudentsCourses { get; set; }
         public virtual DbSet<TimeSpans> TimeSpans { get; set; }
         public virtual DbSet<UniMembers> UniMembers { get; set; }
         public virtual DbSet<UniMembersRoles> UniMembersRoles { get; set; }
