@@ -1,0 +1,22 @@
+@import "../ljubenovic-toolkit";
+
+$dt-width: 140px;
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+
+  dt, dd {
+    box-sizing: border-box;
+    padding: .5em;
+  }
+
+  dt {
+    @include force-width($dt-width);
+    font-weight: bold;
+  }
+
+  dd {
+    width: calc(100% - #{$dt-width});
+  }
+}
