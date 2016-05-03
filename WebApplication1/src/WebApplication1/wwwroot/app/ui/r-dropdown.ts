@@ -182,11 +182,44 @@ export class RDropdownComponent implements AfterContentInit {
         sum += parseFloat(window.getComputedStyle(el.children[0]).getPropertyValue("padding-top"));
         el.style.display = el.parentNode.style.display = "";
 
+        /**
+         * TODO
+         * Trenutno ignoriše 0.23ex, taman mu daje malo paddinga. Ako ima smisla raditi,
+         * može da se unapredi da se da prozivoljna margina koju mora da zadovolji.
+         */
+
+        var parentTop: number = this.element.nativeElement.children[0].getBoundingClientRect().top;
+        if (sum > parentTop) {
+            sum = parentTop;
+        }
+
         this._topOffsetStyle = {
             "top": `calc(1.23ex - ${sum}px - 1ex)`
         }
 
-        //TODO Dodaj korekciju da ne ode van ekrana
+        /**
+         * TODO
+         * Ovo sa tajmautom je hak i ko zna kako radi na sporojim racunarima.
+         * Saznaj pravi Angular nacin da se ovo resi. U sustini treba da  se
+         * sve ovo po tajmautom okine tek kada se _topOffsetStyle upise u
+         * [ngClass].
+         */
+
+        /*
+        setTimeout(() => {
+            debugger;
+            var childTop: number = parseFloat(window.getComputedStyle(this.element.nativeElement.children[0].children[1]).getPropertyValue("top"));
+            var parentTop: number = this.element.nativeElement.children[0].getBoundingClientRect().top;
+
+            console.log(childTop + parentTop);
+
+            // Ako je dropdown pobegao van ekrana
+            if (childTop + parentTop < 0) {
+                debugger;
+                this.element.nativeElement.children[0].children[1].style.top = -parentTop;
+            }
+        }, 1);
+        */
 
     }
     get currentSelectedOffset() {
@@ -195,7 +228,10 @@ export class RDropdownComponent implements AfterContentInit {
 
     private isExpanded: boolean = false;
 
-    constructor(public emitter: RDropdownEmitterService) {
+    constructor(
+        public emitter: RDropdownEmitterService,
+        public element: ElementRef
+    ) {
 
         this.emitter.get("channel1").subscribe(msg => {
             console.log(msg);
