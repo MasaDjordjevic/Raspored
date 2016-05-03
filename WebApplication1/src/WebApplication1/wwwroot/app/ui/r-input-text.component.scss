@@ -1,12 +1,17 @@
 ﻿@import "../palette";
 
+// Vreme koje treba labeli da se pomeri nagore/nadole
+$time-label: .2s;
+
+// Vreme koje treba onom čudu ispod inputa da se pojavi pri fokusiranju
+$time-highlight: .5s;
+
 :host {
     position: relative;
-    height: 2.2em; 
+    height: 2em;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    margin: 5px;
     font-size: 1.5em;
 
     label {
@@ -14,14 +19,14 @@
         color: rgba(white, .6);
         padding: 0;
         margin: 0;
-        top: 1ex;
-        transition: all .2s;
+        top: 1.23ex; // Trial and error, ne dirati. Isprobano na font-size 12px, 16px, 24px i 36px.
+        transition: all $time-label;
         font-weight: normal;
 
         &::after {
             content: ":";
             opacity: 0;
-            transition: opacity .2s;
+            transition: opacity $time-label;
         }
 
         &.collapsed {
@@ -37,6 +42,7 @@
 
     input[type="text"] {
         background-color: transparent;
+        font-size: 1em;
         outline: none;
         border: none;
         box-shadow: 0 -1px 0 0 rgba(white, .2) inset;
@@ -44,15 +50,16 @@
         color: rgba(white, 9);
     }
 
+    // Ono čudo ispod što se pojavljuje na fokus
     div:last-child {
         width: 0;
         left: 50%;
-        height: 2px;
+        height: 3px;
         opacity: .5;
         position: absolute;
         bottom: -2px;
-        background-color: rgba(white, .2);
-        transition: all .33s;
+        background-color: palette($blue);
+        transition: all $time-highlight ease;
 
         &.highlight {
             width: 100%;
@@ -76,7 +83,7 @@
         box-shadow: 0 -1px 0 0 rgba(black, .2) inset;
     }
 
+    // Čudo što se pojavljuje na dnu pri fokusu
     div:last-child {
-        background-color: rgba(black, .2);
     }
 }
