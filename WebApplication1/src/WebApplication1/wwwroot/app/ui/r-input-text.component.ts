@@ -20,7 +20,7 @@ export class RInputText {
 
     @Input() val: string = "Inicijalna vrednost";
     @Input() label: string = "Labela";
-    @Output() valChange: EventEmitter = new EventEmitter();
+    @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
     // Internal stuff
     private _isFocused: boolean = false;
