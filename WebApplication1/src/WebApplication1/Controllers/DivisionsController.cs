@@ -26,6 +26,12 @@ namespace WebApplication1.Controllers
             return _context.Divisions;
         }
 
+        [HttpGet]
+        public IActionResult DevideOnX(int courseID, int x, int sortOrder)
+        {
+            return null;
+        }
+
         // GET: api/Divisions/GetDivision/{id}
         // Vrati raspodelu ciji ID odgovara prosledjenom.
         [HttpGet("{id}", Name = "GetDivision")]
@@ -46,6 +52,13 @@ namespace WebApplication1.Controllers
             //TODO vrati gresku ako ne postoji raspodela (division) sa tim ID-jem.
             //TODO ne samo ovde nego svuda
             return Ok(divisions);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllDivisionTypes()
+        {
+            var divisionTypes = (from a in _context.DivisionTypes select a).ToList();
+            return Ok(divisionTypes);
         }
 
         // GET: api/Divisions/GetDivisions/5

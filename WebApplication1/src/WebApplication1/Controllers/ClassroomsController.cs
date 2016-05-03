@@ -8,7 +8,7 @@ using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Classrooms")]
+    [Route("api/[controller]/[action]")]
     public class ClassroomsController : Controller
     {
         private RasporedContext _context;
@@ -24,6 +24,13 @@ namespace WebApplication1.Controllers
         {
             var classrooms = (from a in _context.Classrooms select a).ToList();
             return Ok(classrooms);
+        }
+
+        //TODO
+        [HttpGet]
+        public IActionResult CheckIfAveable(int classroomID, TimeSpans time)
+        {
+            return null;
         }
 
         // GET: api/Classrooms/5
