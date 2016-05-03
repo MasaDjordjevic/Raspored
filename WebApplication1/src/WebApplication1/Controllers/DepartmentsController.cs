@@ -32,12 +32,8 @@ namespace WebApplication1.Controllers
         [HttpGet(Name = "GetDepartmentsByYear")]
         public IActionResult GetDepartmentsByYear()
         {
-            var departments =
-                (from dep in _context.Departments
-                 group dep by dep.year
-                    into newdeps
-                 orderby newdeps.Key
-                 select new {year = newdeps.Key, departments = newdeps}).ToList();
+            var departments = Data.Department.GetDepartmentsByYear();
+                
             return Ok(departments);
         }
 

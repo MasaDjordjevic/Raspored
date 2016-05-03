@@ -176,6 +176,18 @@ namespace MyFirstDnxUnitTests
             Assert.Equal(true, con.Overlap(a, b));
         }
 
+        [Fact]
+        public void GetDivsionsOfDepartentByType()
+        {
+            var divisions = WebApplication1.Data.Division.GetDivisionsOfDeparmentByType(3);
 
+        }
+
+        [Fact]
+        public void DevideOnX()
+        {
+            var groups = WebApplication1.Data.Division.DevadeOnX(10, 2, 0);
+
+        }
     }
 }

@@ -27,9 +27,29 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
+        public IActionResult DevideWithX(int courseID, int x, int sortOrder)
+        {
+            var groups =  Data.Division.DevideWithX(courseID, x, sortOrder);
+
+            if (groups == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(groups);
+        }
+
+        [HttpGet]
         public IActionResult DevideOnX(int courseID, int x, int sortOrder)
         {
-            return null;
+            var groups = Data.Division.DevadeOnX(courseID, x, sortOrder);
+
+            if (groups == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(groups);
         }
 
         // GET: api/Divisions/GetDivision/{id}
@@ -49,8 +69,6 @@ namespace WebApplication1.Controllers
                 return HttpNotFound();
             }
 
-            //TODO vrati gresku ako ne postoji raspodela (division) sa tim ID-jem.
-            //TODO ne samo ovde nego svuda
             return Ok(divisions);
         }
 
@@ -72,28 +90,7 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var allDivisions = (from div in _context.Divisions
-                                where div.departmentID == id
-                select
-                    new
-                    {
-                        divisionID = div.divisionID,
-                        creatorID = div.creatorID,
-                        creatorName = (from a in _context.UniMembers where a.uniMemberID == div.creatorID select a.name).First(),
-                        divisionTypeID = div.divisionTypeID,
-                        divisionTypeName =
-                            (from a in _context.DivisionTypes where a.divisionTypeID == div.divisionTypeID select a.type).First(),
-                        beginning = div.beginning,
-                        ending = div.ending,
-                        departmentID = div.departmentID,
-                        departmentName = (from a in _context.Departments where a.departmentID == div.departmentID select a.departmentName).First(),
-                        }).ToList();
-
-            var divisions = (from div in allDivisions
-                             group div by div.divisionTypeName
-                                into newDivs
-                                orderby newDivs.Key
-                                select new {type = newDivs.Key, divisions = newDivs}).ToList();
+            var divisions = Data.Division.GetDivisionsOfDeparmentByType(id);
 
             if (divisions == null)
             {
