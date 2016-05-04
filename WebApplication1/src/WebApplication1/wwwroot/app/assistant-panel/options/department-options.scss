@@ -1,0 +1,27 @@
+.department-options {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  .footer-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .json-debugging {
+
+    pre {
+      min-width: 800px;
+      padding: 3em;
+      font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+      span.key {
+        font-width: bold;
+      }
+    }
+  }
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+}

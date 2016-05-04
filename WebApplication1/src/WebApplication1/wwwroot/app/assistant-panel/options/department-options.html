@@ -1,0 +1,49 @@
+<div class="department-options" *ngIf="department">
+
+    <h1>{{department.departmentName}}</h1>
+
+    <dl r-dl>
+        <dt>ID</dt>
+        <dd>{{department.departmentID}}</dd>
+        <dt>Ime</dt>
+        <dd>{{department.departmentName}}</dd>
+        <dt>Godina</dt>
+        <dd>{{department.year}}</dd>
+    </dl>
+
+    <p>{{errorMessage}}</p>
+
+    <div class="flex-spacer"></div>
+
+    <r-dialog #newDivisionDialog [source]="newDivisionButton">
+        <r-stepper>
+            <r-step stepTitle="Prvi korak">
+                <p>Ovo je prvi korak.</p>
+            </r-step>
+            <r-step stepTitle="Drugi korak">
+                <p>Ovo je drugi korak.</p>
+            </r-step>
+            <r-step stepTitle="Treci korak">
+                <p>Ovo je treci korak.</p>
+            </r-step>
+        </r-stepper>
+    </r-dialog>
+
+    <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
+        <pre>{{department | json | trim}}</pre>
+    </r-dialog>
+
+    <div class="footer-buttons">
+
+        <button r-button flat #debuggingButton
+                text="JSON" (click)="debuggingDialog.open()">
+        </button>
+
+        <div class="flex-spacer"></div>
+
+        <button r-button raised #newDivisionButton
+                [text]="'Nova raspodela'"
+                (click)="newDivisionDialog.open()">
+        </button>
+    </div>
+</div>
