@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using Newtonsoft.Json;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -68,8 +69,11 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
-
-            return Ok(division);
+            return Ok(JsonConvert.SerializeObject(division, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
         }
 
         [HttpGet]
