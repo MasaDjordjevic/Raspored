@@ -50,23 +50,50 @@ $time-highlight: .5s;
         color: rgba(white, 9);
     }
 
-    // Ono čudo ispod što se pojavljuje na fokus
-    div:last-child {
-        width: 0;
-        left: 50%;
-        height: 3px;
-        opacity: .5;
-        position: absolute;
-        bottom: -2px;
-        background-color: palette($blue);
-        transition: all $time-highlight ease;
-
-        &.highlight {
-            width: 100%;
-            left: 0;
-            opacity: 1;
-        }
+    .validation-icon {
+      position: absolute;
+      width: 1em;
+      height: 1em;
+      font-size: 1em;
+      line-height: 1em;
+      top: calc((100% - #{1em}) / 2); // 1em kao height
+      right: 0;
     }
+
+  %line-effect-hidden {
+    position: absolute;
+    width: 0;
+    left: 50%;
+    height: 3px;
+    bottom: -2px;
+    opacity: .5;
+    transition: all $time-highlight ease;
+  }
+
+  %line-effect-visible {
+    width: 100%;
+    left: 0;
+    opacity: 1;
+  }
+
+  .validation-effect {
+    @extend %line-effect-hidden;
+    background-color: palette($red);
+
+    &.visible {
+      @extend %line-effect-visible;
+    }
+  }
+
+    // Ono čudo ispod što se pojavljuje na fokus
+  .line-effect {
+    @extend %line-effect-hidden;
+    background-color: palette($blue);
+
+    &.highlight {
+      @extend %line-effect-visible;
+    }
+  }
 }
 
 :host.light-theme {
@@ -84,6 +111,6 @@ $time-highlight: .5s;
     }
 
     // Čudo što se pojavljuje na dnu pri fokusu
-    div:last-child {
+    .line-effect {
     }
 }

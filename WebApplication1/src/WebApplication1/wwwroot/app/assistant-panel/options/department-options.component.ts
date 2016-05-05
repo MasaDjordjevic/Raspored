@@ -10,6 +10,9 @@ import {R_DIALOG} from "../../ui/r-dialog";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_DL} from "../../ui/r-dl";
+import {R_DROPDOWN} from "../../ui/r-dropdown";
+import {R_INPUT} from "../../ui/r-input-text.component";
+import {DivisionCreatorComponent} from "../dialogs/division-creator.component";
 
 // Pipes
 import {TrimPipe} from "../../pipes/trim.pipe";
@@ -24,7 +27,7 @@ import {TrimPipe} from "../../pipes/trim.pipe";
         'app/assistant-panel/options/department-options.css'
     ],
     providers: [DepartmentService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent],
     pipes: [TrimPipe]
 })
 
