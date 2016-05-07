@@ -21,7 +21,7 @@ import {TrimPipe} from "../../pipes/trim.pipe";
 
 @Component({
     selector: 'r-department-options',
-    templateUrl: ['app/assistant-panel/options/department-options.html'],
+    templateUrl: 'app/assistant-panel/options/department-options.html',
     styleUrls: [
         'app/assistant-panel/options/assistant-panel-options.css',
         'app/assistant-panel/options/department-options.css'

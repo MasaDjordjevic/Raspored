@@ -17,9 +17,7 @@ export class CoursesService {
 
     getCourses(): Promise<Course[]> {
         return this.http.get(this._url)
-            .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .toPromise().then(this.extractData).catch(this.handleError);
     }
 
     addCourse(code:string, alias:string, name: string, departmentID: number, semester:number): Promise<Course> {
@@ -27,9 +25,7 @@ export class CoursesService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/PostCourses', body, options)
-            .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .toPromise().then(this.extractData).catch(this.handleError);
     }
 
     deleteCourse(courseID: number) {
@@ -39,14 +35,12 @@ export class CoursesService {
             .toPromise().then(this.extractData).catch(this.handleError);
     }
 
-    
+    // Vrati predmete (courses) koji odgovaraju prosledjenom smeru (department).
+    // [GET] api/Courses/GetCoursesOfDepartment/{department-id}
     getCoursesOfDepartment(departmentID: number): Promise<Course[]> {
         return this.http.get(this._url + '/GetCoursesOfDepartment/' + departmentID)
-            .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .toPromise().then(this.extractData).catch(this.handleError);
     }
-    
 
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
