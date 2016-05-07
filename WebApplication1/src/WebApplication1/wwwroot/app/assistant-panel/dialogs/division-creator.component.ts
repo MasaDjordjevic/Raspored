@@ -1,9 +1,11 @@
-import {Component, Input} from "angular2/core";
+import {Component, OnInit, Input, AfterViewInit} from "angular2/core";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {Control} from "angular2/common";
+import {Course} from "../../models/Course";
+import {CoursesService} from "../../services/courses.service";
 
 /**
  * Za pravljenje nove raspodele (division), neophodno je znati sledeće:
@@ -52,10 +54,12 @@ import {Control} from "angular2/common";
             <input type="text" ngControl="divisionName" id="divisionName">
             <br/>
             
-            <select name="class" ngControl="class">
-                <option value="uur" selected>Uvod u računarstvo</option>
-                <option value="de">Digitalna elektronika</option>
-                <option value="aip">Algoritmi i programiranje</option>
+
+            <lablel>Class</lablel>
+            <select name="class" ngControl="class" *ngIf="courses != null">
+                <option *ngFor="let c of courses" value = "c.courseID">
+                    {{c.name}}
+                </option> 
             </select>
             <br/>
             
@@ -78,14 +82,28 @@ import {Control} from "angular2/common";
         <button type="submit">Submit</button>
     </form>
     `,
-    directives: [R_STEPPER, R_INPUT, R_DROPDOWN]
+    directives: [R_STEPPER, R_INPUT, R_DROPDOWN],
+    providers: [CoursesService],
 })
 
-export class DivisionCreatorComponent {
-
-    @Input() assistantId: number;
+export class DivisionCreatorComponent implements OnInit, AfterViewInit{
+    @Input() assistantId: number; //ne znam sta ce nam ovo?
+    @Input() departmentID: number;
+    courses: Course[];
+    errorMessage:string;
     
-    constructor() {
+    constructor(private _coursesService: CoursesService) {
+    }
+
+    ngAfterViewInit() {
+        this.getCoursesOfDepartment();
+    }
+
+    getCoursesOfDepartment() {
+        this._coursesService.getCoursesOfDepartment(this.departmentID)
+            .then(
+                crs => this.courses = crs,
+                error => this.errorMessage = <any>error);
     }
 
     logForm(value) {
