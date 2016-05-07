@@ -36,8 +36,8 @@ export class RNestedList implements AfterViewInit {
     // Stil
 
     // Expandovanje innera klikom na outer
-    // http://stackoverflow.com/a/26476282/2131286
     expand(li: HTMLHeadingElement): void {
+
         // Trazimo dete li-ja, ul.
         var el: HTMLUListElement = null;
         for (var i = 0; i < li.children.length; i++) {
@@ -50,31 +50,12 @@ export class RNestedList implements AfterViewInit {
             }
         }
 
-        // Ako nista ne pise u height, to je jer dosad nije kliknuto na njega a on je
-        // inicijalno prikazan (nije collapsed). Zato moramo da upisemo pravu visinu
-        // u height, kao kad otvaramo element (nece biti vidljivo jer auto -> actual).
-
-        // ... Ali ipak ne radi :/
-
-        if (!el.style.height) {
-            el.style.height = Array.prototype.reduce.call(
-                el.childNodes, function (p, c) {
-                    return p + (c.offsetHeight || 0);
-                },
-                0) + 'px';
-        }
-
-        if (el.classList.contains("collapsed")) {
-            el.style.height = Array.prototype.reduce.call(
-                el.childNodes, function (p, c) {
-                    return p + (c.offsetHeight || 0);
-                },
-                0) + 'px';
-            el.classList.remove("collapsed");
+        if (!el.style.height || el.style.height == "0px") {
+            el.style.height = "auto"
         } else {
-            el.style.height = '0px';
-            el.classList.add("collapsed");
+            el.style.height = "0px";
         }
+
     }
 
 }

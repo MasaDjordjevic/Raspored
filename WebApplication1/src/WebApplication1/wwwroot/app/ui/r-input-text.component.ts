@@ -28,8 +28,8 @@ export class RInputText implements AfterViewInit {
 
     @Input() required: boolean = false;
     @Input() control: Control;
-    @Input() val: string;
     @Input() label: string = "";
+    @Input() val: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
     ngAfterViewInit() {

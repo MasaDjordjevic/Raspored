@@ -6,6 +6,12 @@ import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {Control} from "angular2/common";
 import {Course} from "../../models/Course";
 import {CoursesService} from "../../services/courses.service";
+import {DivisionsService} from "../../services/divisions.service";
+import {Group} from "../../models/Group";
+import {Student} from "../../models/Student";
+import {TypeDivisions} from "../../models/TypeDivisions";
+import {DivisionType} from "../../models/DivisionType";
+import {bindDirectiveAfterViewLifecycleCallbacks} from "angular2/src/compiler/view_compiler/lifecycle_binder";
 
 /**
  * Za pravljenje nove raspodele (division), neophodno je znati sledeće:
@@ -55,8 +61,8 @@ import {CoursesService} from "../../services/courses.service";
             <br/>
             
 
-            <lablel>Class</lablel>
-            <select name="class" ngControl="class" *ngIf="courses != null">
+            <lablel>Courses</lablel>
+            <select name="course" ngControl="course" *ngIf="courses != null">
                 <option *ngFor="let course of courses" [value]="course.courseID">
                     {{course.name}}
                 </option> 
@@ -69,28 +75,60 @@ import {CoursesService} from "../../services/courses.service";
             
             <label>Kraj važenja</label>
             <input type="text" ngControl="divisionEnding">
+            
+            <label>Divison type</label>
+            <select name="divisionType" ngControl="divisionType">
+                <option *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</option>
+            </select>
         </fieldset>
+        
         
         <fieldset ngControlGroup="secondPart">
             <select name="creationWay" ngControl="creationWay">
-                <option value="nax" selected>Podeli na X</option>
-                <option value="daimax">Podeli da ima X</option>
+                <option value="on_x" selected>Podeli na X</option>
+                <option value="with_x">Podeli da ima X</option>
                 <option value="manual">Manuelno</option>
             </select>
+            
+            <input type="text" ngControl="x">
+            
+            <select name="studentsOrder" ngControl="studentsOrder">
+                <option value="0" selected>po indeksu</option>
+                <option value="1">nasumice</option>
+            </select>
+            
+            <br/>
+            
+            <button type="button" (click)="getList(form.value)">Get list</button>
+        </fieldset>
+        
+        <fieldset style="height: 300px;">
+            <ul>
+                <li *ngFor="let group of createdGroups; let i = index">{{i}}
+                    <ul>
+                        <li *ngFor="let student of group">{{student.name}}</li>
+                    </ul>
+                </li>
+            </ul>            
         </fieldset>
         
         <button type="submit">Submit</button>
         {{departmentID}}
+        <br/><br/>
+        {{ createdGroups | json }}
     </form>
     `,
     directives: [R_STEPPER, R_INPUT, R_DROPDOWN],
-    providers: [CoursesService]
+    providers: [CoursesService, DivisionsService]
 })
 
 export class DivisionCreatorComponent implements AfterViewInit {
 
     courses: Course[];
     errorMessage: string;
+
+    createdGroups: Array<Array<Student>>;
+    divisionTypes: DivisionType;
 
     private _departmentID: number;
 
@@ -103,10 +141,15 @@ export class DivisionCreatorComponent implements AfterViewInit {
         return this._departmentID;
     }
     
-    constructor(private _coursesService: CoursesService) { }
+    constructor(
+        private _coursesService: CoursesService,
+        private _divisionsService: DivisionsService
+    ) { }
 
     ngAfterViewInit() {
         this.getCoursesOfDepartment();
+        this.getAllDivisionTypes();
+        console.log(this.divisionTypes);
     }
 
     getCoursesOfDepartment() {
@@ -114,6 +157,27 @@ export class DivisionCreatorComponent implements AfterViewInit {
             .then(
                 crs => this.courses = crs,
                 error => this.errorMessage = <any>error);
+    }
+
+    // Vraca listu studenata po grupama za prikaz kako ce se grupe napraviti kad se klikne na Submit
+    getList(value) {
+        console.log(value);
+        console.log(+value.firstPart.course, +value.secondPart.x, +value.secondPart.studentsOrder);
+        if (value.secondPart.creationWay == "with_x") {
+            this._divisionsService.getGroupsWithX(+value.firstPart.course, +value.secondPart.x, +value.secondPart.studentsOrder)
+                .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
+        } else if (value.secondPart.creationWay == "on_x") {
+            this._divisionsService.getGroupsOnX(+value.firstPart.course, +value.secondPart.x, +value.secondPart.studentsOrder)
+                .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
+        } else {
+            // manual
+        }
+    }
+
+    // Iz look-up tabele
+    public getAllDivisionTypes() {
+        this._divisionsService.getAllDivisionTypes()
+            .then(type => this.divisionTypes = type, error => this.errorMessage = <any>error);
     }
 
     logForm(value) {

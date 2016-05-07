@@ -27,6 +27,7 @@ namespace WebApplication1.Controllers
             return _context.Divisions;
         }
 
+
         [HttpGet]
         public IActionResult DevideWithX(int courseID, int x, int sortOrder)
         {

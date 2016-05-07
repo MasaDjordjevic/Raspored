@@ -16,7 +16,7 @@ export class DivisionsService {
     private _url = "api/Divisions";
 
 
-    getDivision(id: number) : Promise<Division> {
+    public getDivision(id: number) : Promise<Division> {
         return this.http.get(this._url + '/GetDivision/' + id)
             .toPromise()
             .then(this.extractData)
@@ -28,11 +28,31 @@ export class DivisionsService {
      * (department) ciji je ID prosledjen.
      * GET: api/Divisions/GetDivisions/{id}
      */
-    getDivisionsByType(departmentID: number): Promise<TypeDivisions[]> {
+    public getDivisionsByType(departmentID: number): Promise<TypeDivisions[]> {
         return this.http.get(this._url + '/GetDivisions/' + departmentID)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
+    }
+
+    /**
+     * Vraca grupe studenata kada se svi studenti koji slusaju kurs podele na X grupa.
+     */
+    public getGroupsOnX(courseID: number, x: number, sortOrder: number) {
+        return this.http.get(this._url + `/DevideOnX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
+            .toPromise().then(this.extractData).catch(this.handleError);
+    }
+
+    /**
+     * Vraca grupe studenata kada se svi studenti koji slusaju kurs podele tako da svaka grupa ima X studenata.
+     */
+    public getGroupsWithX(courseID: number, x: number, sortOrder: number) {
+        return this.http.get(this._url + `/DevideWithX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
+            .toPromise().then(this.extractData).catch(this.handleError);
+    }
+    
+    public getAllDivisionTypes() {
+        return this.http.get(this._url + '/GetAllDivisionTypes').toPromise().then(this.extractData).catch(this.handleError);
     }
 
     private extractData(res: Response) {

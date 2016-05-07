@@ -39,9 +39,8 @@ namespace WebApplication1.Controllers
             return Ok(courses);
         }
 
-        // GET: api/Courses/5
+        // [GET] api/Courses/GetCourses/{course-id}
         [HttpGet("{id}", Name = "GetCourses")]
-        [Route("{id:int}")]
         public IActionResult GetCourses([FromRoute] int id)
         {
             if (!ModelState.IsValid)

@@ -33,7 +33,7 @@ namespace WebApplication1.Controllers
             return null;
         }
 
-        // GET: api/Classrooms/5
+        // [GET] api/Classrooms/GetClassrooms/{id-classroom}
         [HttpGet("{id}", Name = "GetClassrooms")]
         public IActionResult GetClassrooms([FromRoute] int id)
         {

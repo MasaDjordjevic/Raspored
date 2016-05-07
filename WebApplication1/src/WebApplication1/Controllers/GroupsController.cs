@@ -18,20 +18,16 @@ namespace WebApplication1.Controllers
             _context = context;
         }
 
-        /**
-         * GET: api/Groups
-         * Vrati sve grupe.
-         */
+         // [GET] api/Groups
+         // Vrati sve grupe.
         [HttpGet]
         public IEnumerable<Groups> GetGroups()
         {
             return _context.Groups;
         }
 
-        // GET: api/Groups/GetGroup/{group-id}
-        /**
-         * Vrati studente ciji je ID prosledjen.
-         */
+        // [GET] api/Groups/GetGroup/{group-id}
+        // Vrati studente ciji je ID prosledjen.
         [HttpGet("{id}", Name = "GetGroup")]
         public IActionResult GetGroup(int id)
         {
@@ -51,10 +47,8 @@ namespace WebApplication1.Controllers
             return Ok(group);
         }
 
-        // GET: api/Groups/GetGroups/{id}
-        /**
-         * Vrati sve grupe koje pripadaju prosledjenoj raspodeli (division).
-         */
+        // GET: api/Groups/GetGroups/{division-id}
+        // Vrati sve grupe koje pripadaju prosledjenoj raspodeli (division).
         [HttpGet("{id}", Name = "GetGroups")]
         public IActionResult GetGroups([FromRoute] int id)
         {

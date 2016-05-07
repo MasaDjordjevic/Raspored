@@ -147,13 +147,20 @@ export class RDropdownDefaultItemDirective implements AfterContentInit {
         </div>
     `,
     styleUrls: ['app/ui/r-dropdown.css'],
-    providers: [RDropdownEmitterService]
+    providers: [RDropdownEmitterService],
+    host: {
+        "[value]": "val",
+        "(input)": "valChange.next($event.target.value)"
+    }
 })
 
 export class RDropdownComponent implements AfterContentInit {
 
     @ContentChildren(RDropdownItemComponent) _items:
         QueryList<RDropdownItemComponent>;
+
+    @Input() val: string;
+    @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
     public currentSelectedValue: number;
     public currentSelectedStr: string;
@@ -179,6 +186,7 @@ export class RDropdownComponent implements AfterContentInit {
         // Na sumu dodajemo gornji padding trenutnog elementa
         let el = this._items.toArray()[this.currentSelectedOffset].element.nativeElement;
         el.style.dispaly = el.parentNode.style.display = "block";
+        
         // Mora children da ne uzme angular selector nego bas .r-dropdown-item
         sum += parseFloat(window.getComputedStyle(el.children[0]).getPropertyValue("padding-top"));
         el.style.display = el.parentNode.style.display = "";
