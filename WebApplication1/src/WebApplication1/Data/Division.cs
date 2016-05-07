@@ -119,6 +119,7 @@ namespace WebApplication1.Data
             RasporedContext _context = new RasporedContext();
             Divisions div = new Divisions
             {
+                name = name,
                 creatorID = 1, //TODO vadi iz sesije
                 divisionTypeID = divisionTypeID,
                 beginning = beginning,

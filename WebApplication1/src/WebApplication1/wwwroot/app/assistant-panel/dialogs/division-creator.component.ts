@@ -53,7 +53,7 @@ import {bindDirectiveAfterViewLifecycleCallbacks} from "angular2/src/compiler/vi
         fieldset { padding: 1em; margin: 1em; }
     `],
     template: `
-    <form #form="ngForm" (ngSubmit)="logForm(form.value)">
+    <form #form="ngForm" (ngSubmit)="createInitialDivision(form.value)">
         
         <fieldset ngControlGroup="firstPart">
             <label for="divisionName">Ime raspodele</label>
@@ -70,11 +70,11 @@ import {bindDirectiveAfterViewLifecycleCallbacks} from "angular2/src/compiler/vi
             <br/>
             
             <label>Početak važenja</label>
-            <input type="text" ngControl="divisionBeginning">
+            <input type="text" ngControl="divisionBeginning" value="21.03.1995">
             <br/>
             
             <label>Kraj važenja</label>
-            <input type="text" ngControl="divisionEnding">
+            <input type="text" ngControl="divisionEnding" value="21.03.1996">
             
             <label>Divison type</label>
             <select name="divisionType" ngControl="divisionType">
@@ -180,8 +180,30 @@ export class DivisionCreatorComponent implements AfterViewInit {
             .then(type => this.divisionTypes = type, error => this.errorMessage = <any>error);
     }
 
-    logForm(value) {
-        console.log(value);
+    private getNamedGroups() {
+        var ret: Array<any> = new Array<any>();
+        debugger;
+        for (let i = 0; i < this.createdGroups.length; i++) {
+            ret[i] = {
+                name: "Grupa " + i,
+                students: this.createdGroups[i]
+            };
+        }
+        console.log("Ret iz getNamedGroups");
+        console.log(ret);
+        return ret;
+    }
+
+    createInitialDivision(value) {
+        this._divisionsService.createInitialDivision(
+            value.firstPart.divisionName,
+            this.departmentID,
+            value.firstPart.course,
+            value.firstPart.divisionType,
+            value.firstPart.divisionBeginning,
+            value.firstPart.divisionEnding,
+            this.getNamedGroups()
+        ).then(status => this.errorMessage = <any>status, error => this.errorMessage = <any>error);
     }
 
 }

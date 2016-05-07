@@ -93,7 +93,7 @@ export class DivisionsListComponent implements OnInit {
             this._nestedListData[i].inner = this._nestedListData[i].inner.slice(0, this.typeDivisions[i].divisions.length)
             for (let j = 0; j < this.typeDivisions[i].divisions.length; j++) {
                 this._nestedListData[i].inner[j] = {
-                    s: this.typeDivisions[i].divisions[j].departmentName,
+                    s: this.typeDivisions[i].divisions[j].creatorName + " " + this.typeDivisions[i].divisions[j].beginning,
                     id: this.typeDivisions[i].divisions[j].divisionID
                 };
             }

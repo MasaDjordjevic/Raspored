@@ -52,7 +52,31 @@ export class DivisionsService {
     }
     
     public getAllDivisionTypes() {
-        return this.http.get(this._url + '/GetAllDivisionTypes').toPromise().then(this.extractData).catch(this.handleError);
+        return this.http.get(this._url + '/GetAllDivisionTypes')
+            .toPromise().then(this.extractData).catch(this.handleError);
+    }
+
+    public createInitialDivision(name: string, departmentID: number,
+                                 courseID: number, divisionTypeID: number,
+                                 beginning: Date, ending: Date,
+                                 groups: Array<any>) {
+        let body = JSON.stringify({
+            name: name,
+            departmentID: departmentID,
+            courseID: courseID,
+            divisionTypeID: divisionTypeID,
+            beginning: beginning,
+            ending: ending,
+            groups: groups
+        });
+        debugger;
+        console.log(body);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this._url + '/CreateInitialDivision', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
     }
 
     private extractData(res: Response) {

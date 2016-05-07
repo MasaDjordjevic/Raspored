@@ -86,15 +86,24 @@ namespace WebApplication1.Controllers
             return Ok(divisionTypes);
         }
 
-        [HttpPost]
-        public IActionResult CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning,
-            DateTime ending,
-            List<Division.GroupOfStudents> groups)
+        public class CreateInitialDivisionParameterBinding
         {
+            public string name;
+            public int departmentID;
+            public int courseID;
+            public int divisionTypeID;
+            public DateTime beginning;
+            public DateTime ending;
+            public IEnumerable<Division.GroupOfStudents> groups;
+        }
+
+        [HttpPost]
+        public IActionResult CreateInitialDivision([FromBody] CreateInitialDivisionParameterBinding obj)
+        {
+            
             try
             {
-                Data.Division.CreateInitialDivision(name, departmentID, courseID, divisionTypeID, beginning, ending, groups);
-
+                Data.Division.CreateInitialDivision(obj.name, obj.departmentID, obj.courseID, obj.divisionTypeID, obj.beginning, obj.ending, obj.groups.ToList());
             }
             catch (Exception)
             {
