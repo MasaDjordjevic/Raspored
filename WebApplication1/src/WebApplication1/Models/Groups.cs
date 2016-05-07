@@ -14,9 +14,10 @@ namespace WebApplication1.Models
         }
 
         public int groupID { get; set; }
-        public int classroomID { get; set; }
+        public int? classroomID { get; set; }
         public int divisionID { get; set; }
-        public int timeSpanID { get; set; }
+        public string name { get; set; }
+        public int? timeSpanID { get; set; }
 
         public virtual ICollection<Activities> Activities { get; set; }
         public virtual ICollection<GroupsAssistants> GroupsAssistants { get; set; }

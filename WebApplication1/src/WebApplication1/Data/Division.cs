@@ -105,7 +105,57 @@ namespace WebApplication1.Data
                    .GroupBy(a => a.Index / x)
                    .Select(a => a.Select(v => v.Value).ToList())
                    .ToList();
-        } 
+        }
+
+        public class GroupOfStudents
+        {
+            public string name;
+            public List<Students> students; 
+        }
+
+        public static void CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning, DateTime ending,
+            List<GroupOfStudents>  groups)
+        {
+            RasporedContext _context = new RasporedContext();
+            Divisions div = new Divisions
+            {
+                creatorID = 1, //TODO vadi iz sesije
+                divisionTypeID = divisionTypeID,
+                beginning = beginning,
+                ending = ending,
+                departmentID = departmentID,
+                courseID = courseID
+            };
+
+            _context.Divisions.Add(div);
+            _context.SaveChanges();
+
+            foreach (GroupOfStudents group in groups)
+            {
+                Groups g = new Groups
+                {
+                    classroomID = null,
+                    divisionID = div.divisionID,
+                    timeSpanID = null,
+                    name = group.name,
+                };
+
+                _context.Groups.Add(g);
+                _context.SaveChanges();
+
+                foreach (Students stud in group.students)
+                {
+                    GroupsStudents gs = new GroupsStudents
+                    {
+                        groupID = g.groupID,
+                        studentID = stud.studentID
+                    };
+                    _context.GroupsStudents.Add(gs);
+                }
+
+                _context.SaveChanges();
+            }
+        }
 
     }
 }

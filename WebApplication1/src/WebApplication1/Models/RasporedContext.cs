@@ -124,6 +124,8 @@ namespace WebApplication1.Models
 
                 entity.Property(e => e.ending).HasColumnType("date");
 
+                entity.Property(e => e.name).HasMaxLength(50);
+
                 entity.HasOne(d => d.course).WithMany(p => p.Divisions).HasForeignKey(d => d.courseID);
 
                 entity.HasOne(d => d.creator).WithMany(p => p.Divisions).HasForeignKey(d => d.creatorID).OnDelete(DeleteBehavior.Restrict);
@@ -137,11 +139,13 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.groupID);
 
-                entity.HasOne(d => d.classroom).WithMany(p => p.Groups).HasForeignKey(d => d.classroomID).OnDelete(DeleteBehavior.Restrict);
+                entity.Property(e => e.name).HasMaxLength(50);
+
+                entity.HasOne(d => d.classroom).WithMany(p => p.Groups).HasForeignKey(d => d.classroomID);
 
                 entity.HasOne(d => d.division).WithMany(p => p.Groups).HasForeignKey(d => d.divisionID).OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(d => d.timeSpan).WithMany(p => p.Groups).HasForeignKey(d => d.timeSpanID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.timeSpan).WithMany(p => p.Groups).HasForeignKey(d => d.timeSpanID);
             });
 
             modelBuilder.Entity<GroupsAssistants>(entity =>
