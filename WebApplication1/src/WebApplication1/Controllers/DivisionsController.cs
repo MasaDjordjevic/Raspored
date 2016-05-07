@@ -86,13 +86,13 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateInitialDivision(string name, int departmentID, int courseID, DateTime beginning,
+        public IActionResult CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning,
             DateTime ending,
             List<Division.GroupOfStudents> groups)
         {
             try
             {
-                Data.Division.CreateInitialDivision(name, departmentID, courseID, beginning, ending, groups);
+                Data.Division.CreateInitialDivision(name, departmentID, courseID, divisionTypeID, beginning, ending, groups);
 
             }
             catch (Exception)

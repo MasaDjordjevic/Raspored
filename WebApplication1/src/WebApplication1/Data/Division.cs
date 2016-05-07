@@ -113,14 +113,14 @@ namespace WebApplication1.Data
             public List<Students> students; 
         }
 
-        public static void CreateInitialDivision(string name, int departmentID, int courseID, DateTime beginning, DateTime ending,
+        public static void CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning, DateTime ending,
             List<GroupOfStudents>  groups)
         {
             RasporedContext _context = new RasporedContext();
             Divisions div = new Divisions
             {
                 creatorID = 1, //TODO vadi iz sesije
-                divisionTypeID = 2,
+                divisionTypeID = divisionTypeID,
                 beginning = beginning,
                 ending = ending,
                 departmentID = departmentID,
