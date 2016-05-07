@@ -57,8 +57,8 @@ import {CoursesService} from "../../services/courses.service";
 
             <lablel>Class</lablel>
             <select name="class" ngControl="class" *ngIf="courses != null">
-                <option *ngFor="let c of courses" value = "c.courseID">
-                    {{c.name}}
+                <option *ngFor="let course of courses" [value]="course.courseID">
+                    {{course.name}}
                 </option> 
             </select>
             <br/>
@@ -80,20 +80,30 @@ import {CoursesService} from "../../services/courses.service";
         </fieldset>
         
         <button type="submit">Submit</button>
+        {{departmentID}}
     </form>
     `,
     directives: [R_STEPPER, R_INPUT, R_DROPDOWN],
-    providers: [CoursesService],
+    providers: [CoursesService]
 })
 
-export class DivisionCreatorComponent implements OnInit, AfterViewInit{
-    @Input() assistantId: number; //ne znam sta ce nam ovo?
-    @Input() departmentID: number;
+export class DivisionCreatorComponent implements AfterViewInit {
+
     courses: Course[];
-    errorMessage:string;
-    
-    constructor(private _coursesService: CoursesService) {
+    errorMessage: string;
+
+    private _departmentID: number;
+
+    @Input() set departmentID(departmentID: number) {
+        this._departmentID = departmentID;
+        this.getCoursesOfDepartment();
     }
+
+    get departmentID(): number {
+        return this._departmentID;
+    }
+    
+    constructor(private _coursesService: CoursesService) { }
 
     ngAfterViewInit() {
         this.getCoursesOfDepartment();
