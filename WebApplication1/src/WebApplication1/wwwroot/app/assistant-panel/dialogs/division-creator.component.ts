@@ -40,51 +40,43 @@ import {Control} from "angular2/common";
 
 @Component({
     selector: 'r-division-creator',
+    styles: [`
+        form { padding: 3em; }
+        fieldset { padding: 1em; margin: 1em; }
+    `],
     template: `
-    <r-stepper>
-    
-        <r-step stepTitle="Osnovni podaci">
-            <form ngForm>
-            
-                <r-input
-                    class="light-theme"
-                    label="Ime raspodele"
-                    [control]="divisionNameControl"
-                    [required]="true">
-                </r-input>
-                
-                <r-dropdown>
-                    <r-dropdown-item default>Algoritmi i programiranje</r-dropdown-item>
-                    <r-dropdown-item>Uvod u računarstvo</r-dropdown-item>
-                    <r-dropdown-item>Digitalna elektronika</r-dropdown-item>
-                </r-dropdown>
-            
-                <r-input
-                    class="light-theme"
-                    label="Početak važenja"
-                    [control]="beginningControl"
-                    [required]="true">
-                </r-input>
-            
-                <r-input
-                    class="light-theme"
-                    label="Kraj važenja"
-                    [control]="endControl"
-                    [required]="true">
-                </r-input>
-                
-            </form>
-        </r-step>
+    <form #form="ngForm" (ngSubmit)="logForm(form.value)">
         
-        <r-step stepTitle="Način kreiranja">
-            <p>Ovo je drugi korak.</p>
-        </r-step>
+        <fieldset ngControlGroup="firstPart">
+            <label for="divisionName">Ime raspodele</label>
+            <input type="text" ngControl="divisionName" id="divisionName">
+            <br/>
+            
+            <select name="class" ngControl="class">
+                <option value="uur" selected>Uvod u računarstvo</option>
+                <option value="de">Digitalna elektronika</option>
+                <option value="aip">Algoritmi i programiranje</option>
+            </select>
+            <br/>
+            
+            <label>Početak važenja</label>
+            <input type="text" ngControl="divisionBeginning">
+            <br/>
+            
+            <label>Kraj važenja</label>
+            <input type="text" ngControl="divisionEnding">
+        </fieldset>
         
-        <r-step stepTitle="Finaliziranje">
-            <p>Ovo je treci korak.</p>
-        </r-step>
+        <fieldset ngControlGroup="secondPart">
+            <select name="creationWay" ngControl="creationWay">
+                <option value="nax" selected>Podeli na X</option>
+                <option value="daimax">Podeli da ima X</option>
+                <option value="manual">Manuelno</option>
+            </select>
+        </fieldset>
         
-    </r-stepper>
+        <button type="submit">Submit</button>
+    </form>
     `,
     directives: [R_STEPPER, R_INPUT, R_DROPDOWN]
 })
@@ -93,14 +85,11 @@ export class DivisionCreatorComponent {
 
     @Input() assistantId: number;
     
-    divisionNameControl: Control;
-    beginningControl: Control;
-    endControl: Control;
-    
     constructor() {
-        this.divisionNameControl = new Control();
-        this.beginningControl = new Control();
-        this.endControl = new Control();
+    }
+
+    logForm(value) {
+        console.log(value);
     }
 
 }
