@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Newtonsoft.Json;
+using WebApplication1.Data;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -81,6 +83,27 @@ namespace WebApplication1.Controllers
         {
             var divisionTypes = (from a in _context.DivisionTypes select a).ToList();
             return Ok(divisionTypes);
+        }
+
+        [HttpPost]
+        public IActionResult CreateInitialDivision(string name, int departmentID, int courseID, DateTime beginning,
+            DateTime ending,
+            List<Division.GroupOfStudents> groups)
+        {
+            try
+            {
+                Data.Division.CreateInitialDivision(name, departmentID, courseID, beginning, ending, groups);
+
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(new {status = "uspelo"});
+
+
+            //return CreatedAtRoute("GetDivisions", new { id = divisions.divisionID }, divisions);
         }
 
         // GET: api/Divisions/GetDivisions/5

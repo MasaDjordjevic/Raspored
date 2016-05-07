@@ -18,6 +18,7 @@ namespace WebApplication1.Models
         public int? departmentID { get; set; }
         public int divisionTypeID { get; set; }
         public DateTime ending { get; set; }
+        public string name { get; set; }
 
         public virtual ICollection<Ads> Ads { get; set; }
         public virtual ICollection<Groups> Groups { get; set; }
