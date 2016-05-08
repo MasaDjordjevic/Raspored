@@ -57,14 +57,7 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var groups = (from g in _context.Groups where g.divisionID == id
-                          select new
-                          {
-                              groupID = g.groupID,
-                              classroomID = g.classroomID,
-                              classroomNumber = (from a in _context.Classrooms where a.classroomID == g.classroomID select a.number).First(),
-                              timeSpan = (from a in _context.TimeSpans where a.timeSpanID == g.timeSpanID select a).First()
-                          }).ToList();
+            var groups = Data.Group.GetGroupsOfDivision(id);
 
             if (groups == null)
             {
