@@ -18,6 +18,9 @@ import {Pipe, PipeTransform} from "angular2/core";
 
 export class TrimPipe implements PipeTransform {
     transform(value: string): string {
+        if (value == null || value == undefined) {
+            return "";
+        }
         return value.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     }
 }
