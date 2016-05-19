@@ -1,0 +1,35 @@
+<div class="group-options" *ngIf="group">
+
+    <h1>{{group.name}}</h1>
+
+    <dl r-dl>
+        <dt>ID</dt>
+        <dd>{{group.groupID}}</dd>
+    </dl>
+
+    <p>{{errorMessage}}</p>
+
+    <div class="flex-spacer"></div>
+
+    <r-dialog #editGroupDialog [source]="editDivisionButton">
+        Edit Group Dialog
+    </r-dialog>
+
+    <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
+        <pre>{{group | json | trim}}</pre>
+    </r-dialog>
+
+    <div class="footer-buttons">
+
+        <button r-button flat #debuggingButton
+                text="JSON" (click)="debuggingDialog.open()">
+        </button>
+
+        <div class="flex-spacer"></div>
+
+        <button r-button raised #editDivisionButton
+                text="Izmeni grupu"
+                (click)="editGroupDialog.open()">
+        </button>
+    </div>
+</div>

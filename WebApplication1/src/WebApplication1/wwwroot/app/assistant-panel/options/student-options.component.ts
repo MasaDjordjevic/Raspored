@@ -1,18 +1,20 @@
 ﻿import {Component, Input} from "angular2/core";
 import {StudentsService} from "../../services/students.service";
 import {Student} from "../../models/Student";
+import {R_DIALOG} from "../../ui/r-dialog";
+import {R_BUTTON} from "../../ui/r-button.component";
+import {R_STEPPER} from "../../ui/r-stepper.component";
+import {R_DL} from "../../ui/r-dl";
+import {TrimPipe} from "../../pipes/trim.pipe";
 
 
 @Component({
     selector: 'r-student-options',
-    template: `
-    <div *ngIf="student">
-        {{student | json}}
-    </div>
-    {{errorMessage}}
-    `,
+    templateUrl: 'app/assistant-panel/options/student-options.html',
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
-    providers: [StudentsService]
+    providers: [StudentsService],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL],
+    pipes: [TrimPipe]
 })
 
 export class StudentOptionsComponent {

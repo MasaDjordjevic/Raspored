@@ -1,0 +1,28 @@
+<div class="student-options" *ngIf="student">
+
+    <h1>{{student.name}} {{student.surname}}</h1>
+
+    <dl r-dl>
+        <dt>ID</dt>
+        <dd>{{student.studentID}}</dd>
+        <dt>Indeks</dt>
+        <dd>{{student.indexNumber}}</dd>
+    </dl>
+
+    <p>{{errorMessage}}</p>
+
+    <div class="flex-spacer"></div>
+
+    <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
+        <pre>{{student | json | trim}}</pre>
+    </r-dialog>
+
+    <div class="footer-buttons">
+
+        <button r-button flat #debuggingButton
+                text="JSON" (click)="debuggingDialog.open()">
+        </button>
+
+        <div class="flex-spacer"></div>
+    </div>
+</div>

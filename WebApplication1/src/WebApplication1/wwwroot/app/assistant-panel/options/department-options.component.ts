@@ -1,20 +1,11 @@
-﻿// Angular2
-import {Component, Input, Output} from "angular2/core";
-
-// Services
+﻿import {Component, Input, Output} from "angular2/core";
 import {DepartmentService} from "../../services/department.service";
-
-// Models
 import {Department} from "../../models/Department";
 import {R_DIALOG} from "../../ui/r-dialog";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_DL} from "../../ui/r-dl";
-import {R_DROPDOWN} from "../../ui/r-dropdown";
-import {R_INPUT} from "../../ui/r-input-text.component";
 import {DivisionCreatorComponent} from "../dialogs/division-creator.component";
-
-// Pipes
 import {TrimPipe} from "../../pipes/trim.pipe";
 
 
@@ -23,8 +14,7 @@ import {TrimPipe} from "../../pipes/trim.pipe";
     selector: 'r-department-options',
     templateUrl: 'app/assistant-panel/options/department-options.html',
     styleUrls: [
-        'app/assistant-panel/options/assistant-panel-options.css',
-        'app/assistant-panel/options/department-options.css'
+        'app/assistant-panel/options/assistant-panel-options.css'
     ],
     providers: [DepartmentService],
     directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent],

@@ -1,18 +1,24 @@
 ﻿import {Component, Input} from "angular2/core";
 import {Division} from "../../models/Division";
 import {DivisionsService} from "../../services/divisions.service";
+import {R_DIALOG} from "../../ui/r-dialog";
+import {R_BUTTON} from "../../ui/r-button.component";
+import {R_STEPPER} from "../../ui/r-stepper.component";
+import {R_DL} from "../../ui/r-dl";
+import {DivisionCreatorComponent} from "../dialogs/division-creator.component";
+import {TrimPipe} from "../../pipes/trim.pipe";
+
 
 
 @Component({
     selector: 'r-division-options',
-    template: `
-    <div *ngIf="division">
-        {{division | json}}
-    </div>
-    {{errorMessage}}
-    `,
-    styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
-    providers: [DivisionsService]
+    templateUrl: 'app/assistant-panel/options/division-options.html',
+    styleUrls: [
+        'app/assistant-panel/options/assistant-panel-options.css'
+    ],
+    providers: [DivisionsService],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent],
+    pipes: [TrimPipe]
 })
 
 export class DivisionOptionsComponent {
