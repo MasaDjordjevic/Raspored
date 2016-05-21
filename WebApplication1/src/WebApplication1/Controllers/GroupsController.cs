@@ -4,6 +4,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using WebApplication1.Models;
+using Newtonsoft.Json;
 
 namespace WebApplication1.Controllers
 {
@@ -21,9 +22,9 @@ namespace WebApplication1.Controllers
          // [GET] api/Groups
          // Vrati sve grupe.
         [HttpGet]
-        public IEnumerable<Groups> GetGroups()
+        public IActionResult GetAllGroups()
         {
-            return _context.Groups;
+            return Ok(Data.Group.GetAllGroups());
         }
 
         // [GET] api/Groups/GetGroup/{group-id}
@@ -36,15 +37,18 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            Groups group = _context.Groups.Single(m => m.groupID == id);
+            Groups group = Data.Group.GetGroup(id);
 
             if (group == null)
             {
                 return HttpNotFound();
             }
 
-            //TODO vrati gresku ako ne postoji raspodela (division) sa tim ID-jem.
-            return Ok(group);
+            return Ok(JsonConvert.SerializeObject(group, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
         }
 
         // GET: api/Groups/GetGroups/{division-id}
@@ -64,7 +68,11 @@ namespace WebApplication1.Controllers
                 return HttpNotFound();
             }
 
-            return Ok(groups);
+            return Ok(JsonConvert.SerializeObject(groups, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
         }
 
         // PUT: api/Groups/5
