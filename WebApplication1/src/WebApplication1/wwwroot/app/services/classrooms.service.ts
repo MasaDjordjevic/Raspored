@@ -14,7 +14,7 @@ export class ClassroomsService {
    
 
     getClassrooms(): Promise<Classroom[]> {
-        return this.http.get(this._url)
+        return this.http.get(this._url + "/getClassrooms" )
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
