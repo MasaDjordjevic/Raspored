@@ -30,7 +30,7 @@ import {RList} from '../../ui/r-list';
 
 export class GroupsListComponent implements OnInit {
 
-    groups: Group[];
+    groups: any[];
     errorMessage: string;
     titleString: string = "Grupe";
     private selectedGroupId: number;
@@ -64,7 +64,7 @@ export class GroupsListComponent implements OnInit {
         this._listData = this._listData.slice(0, this.groups.length);
         for (let i = 0; i < this.groups.length; i++) {
             this._listData[i] = {
-                s: this.groups[i].classroomNumber,
+                s: this.groups[i].classroom ? this.groups[i].classroom.number : "???????",
                 id: this.groups[i].groupID
             };
         }

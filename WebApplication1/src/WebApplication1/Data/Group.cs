@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.Entity;
 using WebApplication1.Models;
 using WebApplication1.Models.DTOs;
 
@@ -10,33 +11,37 @@ namespace WebApplication1.Data
 {
     public static class Group
     {
+
+        public static IEnumerable GetAllGroups()
+        {
+            RasporedContext _context = new RasporedContext();
+
+            return _context.Groups.Include(a => a.classroom).Include(a => a.timeSpan).ToList();
+        }
+
+        public static Groups GetGroup(int groupID)
+        {
+            RasporedContext _context = new RasporedContext();
+
+            return _context.Groups
+                .Include(a => a.classroom)
+                .Include(a => a.timeSpan)
+                .Include(a => a.GroupsStudents).ThenInclude(aa => aa.student).ThenInclude(aa => aa.UniMembers)
+                .Include(a => a.GroupsAssistants).ThenInclude(aa => aa.assistant)
+                .Include(a => a.division).ThenInclude(aa => aa.department)
+                .First(a => a.groupID == groupID);
+        }
+
         public static IEnumerable GetGroupsOfDivision(int divisionID)
         {
             RasporedContext _context = new RasporedContext();
-            var groups = (from g in _context.Groups
-                          where g.divisionID == divisionID
-                          select new GroupDTO
-                          {
-                              groupID = g.groupID,
-                              classroomID = g.classroomID,
-                              timeSpanID = g.timeSpanID,
-                              timeSpan = (TimeSpans)null,
-                              classroomNumber = "nepoznato"
-                          }).ToList();
-            foreach (var g in groups)
-            {
-                if (g.classroomID != null)
-                    g.classroomNumber =
-                        (from a in _context.Classrooms where a.classroomID == g.classroomID select a.number).First();
 
-                if (g.timeSpanID != null)
-                {
-                    g.timeSpan = (from a in _context.TimeSpans where a.timeSpanID == g.timeSpanID select a).First();
-                }
-
-            }
-
-            return groups;
+            return _context.Groups
+                .Include(a => a.classroom)
+                .Include(a => a.timeSpan)
+                .Where(a => a.divisionID == divisionID)
+                .OrderBy(a => a.classroom.number)
+                .ToList();
         }
 
         public static void CancelClass(int groupID, string title, string content)
