@@ -12,7 +12,7 @@
     <div class="flex-spacer"></div>
 
     <r-dialog #editGroupDialog [source]="editDivisionButton">
-        Edit Group Dialog
+        <group-edit [group]="group"></group-edit>
     </r-dialog>
 
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">

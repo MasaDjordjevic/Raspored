@@ -28,6 +28,7 @@ namespace WebApplication1.Data
                 .Include(a => a.timeSpan)
                 .Include(a => a.GroupsStudents).ThenInclude(aa => aa.student).ThenInclude(aa => aa.UniMembers)
                 .Include(a => a.GroupsAssistants).ThenInclude(aa => aa.assistant)
+                .Include(a => a.division).ThenInclude(aa => aa.department)
                 .First(a => a.groupID == groupID);
         }
 
@@ -35,7 +36,12 @@ namespace WebApplication1.Data
         {
             RasporedContext _context = new RasporedContext();
 
-            return _context.Groups.Include(a => a.classroom).Include(a => a.timeSpan).Where(a => a.divisionID == divisionID).ToList();
+            return _context.Groups
+                .Include(a => a.classroom)
+                .Include(a => a.timeSpan)
+                .Where(a => a.divisionID == divisionID)
+                .OrderBy(a => a.classroom.number)
+                .ToList();
         }
 
         public static void CancelClass(int groupID, string title, string content)

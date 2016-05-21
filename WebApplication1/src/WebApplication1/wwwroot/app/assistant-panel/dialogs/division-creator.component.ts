@@ -11,7 +11,6 @@ import {Group} from "../../models/Group";
 import {Student} from "../../models/Student";
 import {TypeDivisions} from "../../models/TypeDivisions";
 import {DivisionType} from "../../models/DivisionType";
-import {bindDirectiveAfterViewLifecycleCallbacks} from "angular2/src/compiler/view_compiler/lifecycle_binder";
 
 /**
  * Za pravljenje nove raspodele (division), neophodno je znati sledeće:

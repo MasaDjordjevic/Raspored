@@ -37,11 +37,6 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
-    /**
-     * Uzima grupu sa prosleðenim ID-jem.
-     */
-
-
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);

@@ -6,6 +6,7 @@ import {R_BUTTON} from "../../ui/r-button.component";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_DL} from "../../ui/r-dl";
 import {TrimPipe} from "../../pipes/trim.pipe";
+import {GroupEditComponent} from "../dialogs/group-edit.component";
 
 
 
@@ -16,7 +17,7 @@ import {TrimPipe} from "../../pipes/trim.pipe";
         'app/assistant-panel/options/assistant-panel-options.css',
     ],
     providers: [GroupsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, GroupEditComponent],
     pipes: [TrimPipe]
 })
 
