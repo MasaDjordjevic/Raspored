@@ -64,7 +64,7 @@ export class GroupsListComponent implements OnInit {
         this._listData = this._listData.slice(0, this.groups.length);
         for (let i = 0; i < this.groups.length; i++) {
             this._listData[i] = {
-                s: this.groups[i].classroom ? this.groups[i].classroom.number : "???????",
+                s: (this.groups[i].classroom ? this.groups[i].classroom.number : "???????") + " " + this.groups[i].name,
                 id: this.groups[i].groupID
             };
         }

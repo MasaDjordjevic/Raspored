@@ -26,6 +26,22 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
+    updateGroup(groupID: number, name: string, classroomID: number, students: Array<number>) {
+        let body = JSON.stringify({
+            groupID: groupID,
+            name: name,
+            classroomID: classroomID,
+            students: students
+        });
+        console.log(body);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this._url + '/Update', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     /**
      * GET: api/Groups/GetGroups/{division-id}
      * Uzima grupe koje pripadaju smeru čiji je ID prosleðen kao parametar.
