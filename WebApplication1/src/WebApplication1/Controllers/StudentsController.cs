@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using Newtonsoft.Json;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -21,9 +22,9 @@ namespace WebApplication1.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public IEnumerable<Students> GetStudents()
+        public IEnumerable GetStudents()
         {
-            return _context.Students;
+            return Data.Student.GetAllStudents();
         }
 
         // GET: api/Students/GetStudent/{student-id}
@@ -38,14 +39,18 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            Students students = _context.Students.Single(m => m.studentID == id);
+            var student = Data.Student.GetStudent(id);
 
-            if (students == null)
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            
-            return Ok(students);
+
+            return Ok(JsonConvert.SerializeObject(student, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
         }
 
         // GET: api/Students/GetStudents/{group-id}
@@ -66,8 +71,11 @@ namespace WebApplication1.Controllers
             {
                 return HttpNotFound();
             }
-
-            return Ok(students);
+            return Ok(JsonConvert.SerializeObject(students, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
         }
 
         // GET: api/Students/GetStudentsOfDepartment/{department-id}

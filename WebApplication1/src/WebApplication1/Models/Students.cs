@@ -15,7 +15,7 @@ namespace WebApplication1.Models
         }
 
         public int studentID { get; set; }
-        public int deparmentID { get; set; }
+        public int departmentID { get; set; }
         public int indexNumber { get; set; }
 
         public virtual ICollection<Activities> Activities { get; set; }
@@ -24,6 +24,6 @@ namespace WebApplication1.Models
         public virtual ICollection<StudentsActivities> StudentsActivities { get; set; }
         public virtual ICollection<StudentsCourses> StudentsCourses { get; set; }
         public virtual UniMembers UniMembers { get; set; }
-        public virtual Departments deparment { get; set; }
+        public virtual Departments department { get; set; }
     }
 }

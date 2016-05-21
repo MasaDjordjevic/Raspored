@@ -192,5 +192,11 @@ namespace MyFirstDnxUnitTests
             var uni = s.UniMembers;
 
         }
+
+        [Fact]
+        public void studentsOfGroup()
+        {
+            var s = WebApplication1.Data.Student.GetStudentsOfGroup(8);
+        }
     }
 }

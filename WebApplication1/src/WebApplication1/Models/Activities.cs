@@ -13,6 +13,7 @@ namespace WebApplication1.Models
         public int activityID { get; set; }
         public string activityContent { get; set; }
         public int? activityScheduleID { get; set; }
+        public bool? cancelling { get; set; }
         public int? classroomID { get; set; }
         public int? groupID { get; set; }
         public string place { get; set; }

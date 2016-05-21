@@ -7,8 +7,7 @@ namespace WebApplication1.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
-            options.UseSqlServer(@"Server=DESKTOP-RFKNG80\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -207,7 +206,7 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.studentID);
 
-                entity.HasOne(d => d.deparment).WithMany(p => p.Students).HasForeignKey(d => d.deparmentID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.department).WithMany(p => p.Students).HasForeignKey(d => d.departmentID).OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<StudentsActivities>(entity =>
