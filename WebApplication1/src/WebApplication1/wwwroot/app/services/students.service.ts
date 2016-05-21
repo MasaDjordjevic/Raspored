@@ -8,7 +8,6 @@ import {Student} from "../models/Student";
 
 
 
-
 @Injectable()
 export class StudentsService {
     constructor(private http: Http) { }
@@ -32,6 +31,17 @@ export class StudentsService {
      */
     getStudents(groupId: number): Promise<Student[]> {
         return this.http.get(this._url + '/GetStudents/' + groupId)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /**
+     * GET: api/Students/GetStudentsOfDepartment/{departmentID}
+     * Uzmi studente koji pripadaju smeru (department) sa prosleðenim ID-jem.
+     */
+    getStudentsOfDepartment(departmentID: number): Promise<Student[]> {
+        return this.http.get(this._url + '/GetStudentsOfDepartment/' + departmentID)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

@@ -28,7 +28,7 @@ namespace WebApplication1.Controllers
 
         // GET: api/Students/GetStudent/{student-id}
         /**
-         * Vrati studente ciji je ID prosleðen.
+         * Vrati studente ciji je ID prosledjen.
          */
         [HttpGet("{id}", Name = "GetStudent")]
         public IActionResult GetStudent(int id)
@@ -50,7 +50,7 @@ namespace WebApplication1.Controllers
 
         // GET: api/Students/GetStudents/{group-id}
         /**
-         * Vrati studente koji pripadaju grupi ?iji je ID prosleðen.
+         * Vrati studente koji pripadaju grupi ciji je ID prosledjen.
          */
         [HttpGet("{id}", Name = "GetStudents")]
         public IActionResult GetStudents([FromRoute] int id)
@@ -61,6 +61,26 @@ namespace WebApplication1.Controllers
             }
 
             var students = Data.Student.GetStudentsOfGroup(id);
+
+            if (students == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(students);
+        }
+
+        // GET: api/Students/GetStudentsOfDepartment/{department-id}
+        // Vrati sve sudente koji pripadaju smeru (department) ciji je ID prosledjen.
+        [HttpGet("{id}", Name = "GetStudentsOfDepartment")]
+        public IActionResult GetStudentsOfDepartment([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var students = Data.Student.GetStudentsOfDepartment(id);
 
             if (students == null)
             {

@@ -16,8 +16,9 @@ namespace WebApplication1.Data
         {
             RasporedContext _context = new RasporedContext();
             return (from div in _context.Divisions
-                where div.departmentID == departmentID
-                select div).ToList();
+                    where div.departmentID == departmentID
+                    select div)
+                .ToList();
         }
 
         public static Object GetDivison(int divisionID)
@@ -30,7 +31,8 @@ namespace WebApplication1.Data
                        .Include(p => p.course)
                        .Include(p => p.Groups)
                        where a.divisionID == divisionID
-                       select a).ToList();
+                       select a)
+                   .ToList();
 
             return pom;
             
