@@ -102,6 +102,23 @@ namespace WebApplication1.Controllers
             return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
         }
 
+        public class UpdateGroupBinding
+        {
+            public int groupID;
+            public string name;
+            public int classroomID;
+            public IEnumerable<int> students;
+        }
+
+        // POST: api/Groups/Update
+        [HttpPost]
+        public IActionResult Update([FromBody] UpdateGroupBinding obj)
+        {
+            Data.Group.Update(obj.groupID, obj.name, obj.classroomID);
+            Data.Group.ChangeSudents(obj.groupID, obj.students.ToList());
+            return Ok(new { status = "uspelo" });
+        }
+
         // POST: api/Groups
         [HttpPost]
         public IActionResult PostGroups([FromBody] Groups groups)
