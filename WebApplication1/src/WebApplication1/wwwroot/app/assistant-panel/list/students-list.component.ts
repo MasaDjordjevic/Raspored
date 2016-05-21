@@ -30,7 +30,7 @@ import {RList} from '../../ui/r-list';
 
 export class StudentsListComponent implements OnInit {
 
-    students: Student[];
+    students: any[];
     errorMessage: string;
     selectedStudentID: number;
     titleString: string = "Students";
@@ -65,7 +65,7 @@ export class StudentsListComponent implements OnInit {
         this._listData = this._listData.slice(0, this.students.length);
         for (let i = 0; i < this.students.length; i++) {
             this._listData[i] = {
-                s: this.students[i].name + " " + this.students[i].surname,
+                s: this.students[i].UniMembers.name + " " + this.students[i].UniMembers.surname,
                 id: this.students[i].studentID
             };
         }

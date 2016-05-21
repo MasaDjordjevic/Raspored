@@ -1,19 +1,19 @@
 <div class="division-options" *ngIf="division">
 
-    <h1>{{division[0].name}}</h1>
-    <h2>({{division[0].divisionType.type}})</h2>
+    <h1>{{division.name}}</h1>
+    <h2>({{division.divisionType.type}})</h2>
 
     <dl r-dl>
         <dt>ID</dt>
-        <dd>{{division[0].divisionID}}</dd>
+        <dd>{{division.divisionID}}</dd>
         <dt>Ime</dt>
-        <dd>{{division[0].name}}</dd>
+        <dd>{{division.name}}</dd>
         <dt>Početak</dt>
-        <dd>{{division[0].beginning}}</dd>
+        <dd>{{division.beginning}}</dd>
         <dt>Kraj</dt>
-        <dd>{{division[0].ending}}</dd>
+        <dd>{{division.ending}}</dd>
         <dt>Broj grupa</dt>
-        <dd>{{division[0].Groups.length}}</dd>
+        <dd>{{division.Groups.length}}</dd>
     </dl>
 
     <p>{{errorMessage}}</p>

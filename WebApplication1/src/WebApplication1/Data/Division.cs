@@ -16,7 +16,10 @@ namespace WebApplication1.Data
         {
             RasporedContext _context = new RasporedContext();
             return (from div in _context.Divisions
-                where div.departmentID == departmentID
+                        .Include(p => p.creator)
+                       .Include(p => p.divisionType)
+                       .Include(p => p.department)
+                    where div.departmentID == departmentID
                 select div).ToList();
         }
 
@@ -28,19 +31,15 @@ namespace WebApplication1.Data
                        .Include(p => p.divisionType)
                        .Include(p => p.department)
                        .Include(p => p.course)
-                       .Include(p => p.Groups)
+                       .Include(p => p.Groups).ThenInclude(a=>a.GroupsStudents).ThenInclude(a=>a.student).ThenInclude(a=>a.UniMembers)
+                       .Include(p => p.Groups).ThenInclude(a=>a.classroom)
                        where a.divisionID == divisionID
-                       select a).ToList();
-
+                       select a).First();
+           
             return pom;
             
         }
-
-        public static string GetDivisionTypeName(int divisionTypeID)
-        {
-            RasporedContext _context = new RasporedContext();
-            return _context.DivisionTypes.Single(a => a.divisionTypeID == divisionTypeID).type;
-        }
+     
 
         public static IEnumerable GetDivisionsOfDeparmentByType(int departmentID)
         {
@@ -51,13 +50,13 @@ namespace WebApplication1.Data
                         {
                             divisionID = div.divisionID,
                             creatorID = div.creatorID,
-                            creatorName = Data.UniMember.GetUniMemberName(div.creatorID),
+                            creatorName = div.creator.name,
                             divisionTypeID = div.divisionTypeID,
-                            divisionTypeName = Data.Division.GetDivisionTypeName(div.divisionTypeID),
+                            divisionTypeName = div.divisionType.type,
                             beginning = div.beginning,
                             ending = div.ending,
                             departmentID = div.departmentID,
-                            departmentName = Data.Department.GetdepartmentName(div.departmentID),
+                            departmentName = div.department.departmentName,
                         }).ToList();
 
             return (from div in divisions
@@ -80,8 +79,8 @@ namespace WebApplication1.Data
                          {
                              studentID = s.studentID,
                              indexNumber = s.indexNumber,
-                             name = Data.Student.GetStudentName(s.studentID),
-                             surname = Data.Student.GetStudentSurname(s.studentID)
+                             name = s.UniMembers.name,
+                             surname = s.UniMembers.surname
                          }).ToList();
         } 
 
@@ -155,6 +154,18 @@ namespace WebApplication1.Data
                 }
 
                 _context.SaveChanges();
+            }
+        }
+
+        public static void CancelClasses(int divisionID, string title, string content)
+        {
+            RasporedContext _context = new RasporedContext();
+            List<Groups> groups =
+                (from a in _context.Divisions.Include(a => a.Groups) where a.divisionID == divisionID select a.Groups.ToList())
+                    .First();
+            foreach (Groups group in groups)
+            {
+                Group.CancelClass(group.groupID, title, content);
             }
         }
 

@@ -1,8 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using Newtonsoft.Json;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -20,9 +22,9 @@ namespace WebApplication1.Controllers
 
         // GET: api/Courses
         [HttpGet]
-        public IEnumerable<Courses> GetCourses()
+        public IEnumerable GetCourses()
         {
-            return _context.Courses;
+            return Data.Course.GetAllCourses();
         }
 
         [HttpGet]
@@ -33,10 +35,14 @@ namespace WebApplication1.Controllers
             {
                 return HttpBadRequest(ModelState);
             }
-            
-            //TODO: sredi da vraca samo ono sto ti treba, i nemoj uvek da vracas ok
-            var courses = (from c in _context.Courses where c.departmentID == id select c).ToList();
-            return Ok(courses);
+           
+            var courses = Data.Course.GetCoursesOfDepartment(id);
+
+            return Ok(JsonConvert.SerializeObject(courses, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
         }
 
         // [GET] api/Courses/GetCourses/{course-id}

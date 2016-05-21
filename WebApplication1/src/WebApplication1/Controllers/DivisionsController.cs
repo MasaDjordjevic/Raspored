@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.Data.Entity;
 using Newtonsoft.Json;
 using WebApplication1.Data;
 using WebApplication1.Models;
+
 
 namespace WebApplication1.Controllers
 {
@@ -78,6 +80,22 @@ namespace WebApplication1.Controllers
                                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                                     }));
         }
+
+        [HttpGet("{id}", Name = "ExportDivisionToPdf")]
+        public ActionResult ExportDivisionToPdf(int id)
+        {
+            var division = Data.Division.GetDivison(id);
+
+            if (division == null)
+            {
+               // return HttpNotFound();
+            }
+
+            return View(division);
+        }
+
+       
+
 
         [HttpGet]
         public IActionResult GetAllDivisionTypes()
