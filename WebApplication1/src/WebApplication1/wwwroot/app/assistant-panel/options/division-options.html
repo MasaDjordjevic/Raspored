@@ -25,7 +25,7 @@
     </r-dialog>
 
     <r-dialog #newGroupDialog [source]="newGroupButton">
-        New Group Dialog
+       <group-edit [group]="emptyGroup"></group-edit>
     </r-dialog>
 
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">

@@ -40,8 +40,8 @@ class WithoutStudentsPipe implements PipeTransform {
     <input type="text" [(ngModel)]="group.name" ngControl="groupName"/>
     <br/>
     <label>Učionica</label>
-    <select *ngIf="classrooms" name="classroom" ngControl="classroom">
-        <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID">{{classroom.number}}</option>
+    <select *ngIf="classrooms" name="classroom" ngControl="classroom"  [(ngModel)]="group.classroomID">
+        <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
     </select>
     <br/><br/>
     <div class="students">
@@ -117,7 +117,7 @@ export class GroupEditComponent implements AfterContentInit {
         console.log(value);
         var pom: Array<number> = this.chosenStudents.map(i=>i.studentID);
         console.log(pom);
-        this._groupsService.updateGroup(this.group.groupID, value.groupName, value.classroom, pom);
+        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.groupName, value.classroom, pom);
     }
 
     ngAfterContentInit() {

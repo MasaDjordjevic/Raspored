@@ -142,11 +142,27 @@ namespace WebApplication1.Data
         {
             RasporedContext _context = new RasporedContext();
             Groups g = _context.Groups.First(a => a.groupID == groupID);
-            g.name = name;
+            if(name != null)
+                g.name = name;
             if(classroomID != null)
                 g.classroomID = classroomID;
             _context.SaveChanges();
 
+        }
+
+        public static Groups Create(int divisionID, string name, int? classroomID)
+        {
+            RasporedContext _context = new RasporedContext();
+            Groups g = new Groups
+            {
+                divisionID = divisionID,
+                name = name,
+                classroomID = classroomID
+            };
+            _context.Groups.Add(g);
+            _context.SaveChanges();
+
+            return g;
         }
 
         public static void AddActivity(int groupID, TimeSpans timeSpan, string place, string title, string content)
