@@ -58,6 +58,28 @@ namespace WebApplication1.Controllers
             return Ok(groups);
         }
 
+        [HttpGet("{id}", Name = "GetDivisionsOfDepartment")]
+        public IActionResult GetDivisionsOfDepartment(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var divisions = Data.Division.GetDivisionsOfDepartment(id);
+
+            if (divisions == null)
+            {
+                return HttpNotFound();
+            }
+            return Ok(JsonConvert.SerializeObject(divisions, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
+        }
+
+
         // GET: api/Divisions/GetDivision/{id}
         // Vrati raspodelu ciji ID odgovara prosledjenom.
         [HttpGet("{id}", Name = "GetDivision")]

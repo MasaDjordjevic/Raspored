@@ -91,5 +91,20 @@ namespace WebApplication1.Data
             }
             return true;
         }
+
+        public static void AddToGroup(int studentID, int groupID)
+        {
+            RasporedContext _context = new RasporedContext();
+
+            //proveri da li dolazi do nekonzistentnosti raspodele
+
+            GroupsStudents gs = new GroupsStudents
+            {
+                groupID = groupID,
+                studentID = studentID
+            };
+            _context.GroupsStudents.Add(gs);
+            _context.SaveChanges();
+        }
     }
 }

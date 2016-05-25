@@ -5,6 +5,7 @@ import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 
 import {Student} from "../models/Student";
+import any = jasmine.any;
 
 
 
@@ -45,6 +46,20 @@ export class StudentsService {
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
+    }
+
+    getStudentsOfCourse(courseID: number): Promise<any[]> {
+        return this.http.get(this._url + '/GetStudentsOfCourse/' + courseID)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    addToGroup(studentID: number, groupID: number): Promise<any[]> {
+            return this.http.get(this._url + `/AddToGroup?studentID=${studentID}&groupID=${groupID}`)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
     }
 
     private extractData(res: Response) {

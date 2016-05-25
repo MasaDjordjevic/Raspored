@@ -33,7 +33,7 @@ export class DivisionsService {
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
-    }
+    }   
 
     /**
      * Vraca grupe studenata kada se svi studenti koji slusaju kurs podele na X grupa.

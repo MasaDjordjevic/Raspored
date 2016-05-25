@@ -6,6 +6,7 @@ import {R_BUTTON} from "../../ui/r-button.component";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_DL} from "../../ui/r-dl";
 import {TrimPipe} from "../../pipes/trim.pipe";
+import {AddStudentToGroupComponent} from "../dialogs/student-add-to-group.component";
 
 
 @Component({
@@ -13,13 +14,13 @@ import {TrimPipe} from "../../pipes/trim.pipe";
     templateUrl: 'app/assistant-panel/options/student-options.html',
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
     providers: [StudentsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, AddStudentToGroupComponent],
     pipes: [TrimPipe]
 })
 
 export class StudentOptionsComponent {
 
-    student: Student;
+    student: any;
     errorMessage: string;
 
     private _studentId: number = 0;

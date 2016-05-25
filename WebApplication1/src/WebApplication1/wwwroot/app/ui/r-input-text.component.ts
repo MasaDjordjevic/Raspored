@@ -26,7 +26,7 @@ import {Control, ControlGroup} from "angular2/common";
 
 export class RInputText implements AfterViewInit {
 
-    @Input() required: boolean = false;
+    @Input() required: boolean = true;
     @Input() control: Control;
     @Input() label: string = "";
     @Input() val: string;

@@ -45,7 +45,13 @@ namespace WebApplication1.Data
                     select new GroupsStudents
                     {
                         studentID = a.studentID,
-                        student = a.student
+                        student = _context.Students.Where(m=>m.studentID == a.studentID).Select(m=>new Students
+                        {
+                            studentID = m.studentID,
+                            departmentID = m.departmentID,
+                            indexNumber = m.indexNumber,
+                            UniMembers = (from d in _context.UniMembers where d.studentID == m.studentID select d).First()
+                        }).First()
                     }).ToList();
             }
 
