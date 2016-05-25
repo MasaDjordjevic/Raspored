@@ -9,6 +9,7 @@ import {DivisionCreatorComponent} from "../dialogs/division-creator.component";
 import {TrimPipe} from "../../pipes/trim.pipe";
 import {GroupEditComponent} from "../dialogs/group-edit.component";
 import {GroupsService} from "../../services/groups.service";
+import {DivisionEditComponent} from "../dialogs/division-edit.component";
 
 
 
@@ -19,7 +20,7 @@ import {GroupsService} from "../../services/groups.service";
         'app/assistant-panel/options/assistant-panel-options.css'
     ],
     providers: [DivisionsService, GroupsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent, GroupEditComponent],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent, GroupEditComponent, DivisionEditComponent],
     pipes: [TrimPipe]
 })
 
