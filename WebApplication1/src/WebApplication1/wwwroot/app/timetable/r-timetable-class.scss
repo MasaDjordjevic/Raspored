@@ -1,0 +1,29 @@
+@import "../ljubenovic-toolkit";
+
+:host {
+  display: flex;
+  flex-flow: column;
+  width: 95%;
+  left: 2.5%;
+  position: absolute;
+  padding: 0.5em;
+  box-sizing: border-box;
+  border-radius: 3px;
+  @include z-depth(1);
+
+  & > span {
+    display: inline-block;
+    width: 100%;
+  }
+}
+
+.times { font-size: 0.8em; }
+.title { font-size: 1.2em; font-weight: bold; }
+.type  { font-size: 0.8em; opacity: .7; font-style: italic; }
+.text  { font-size: 0.9em; font-style: italic; }
+
+.announcement-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

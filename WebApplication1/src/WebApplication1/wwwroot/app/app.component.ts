@@ -84,6 +84,11 @@ export class AppComponent implements OnInit {
                     useAsDefault: true,
                     loader: () => System.import("app/assistant-panel/assistant-panel.component").then(c => c["AssistantPanelComponent"])
                 }),
+                new AsyncRoute({
+                    path: "/timetable",
+                    name: "Timetable",
+                    loader: () => System.import("app/timetable/r-timetable.component").then(c => c["TimetableComponent"])
+                }),
             ];
 
             this.router.config(this.routes);
