@@ -3,6 +3,7 @@ import {Control} from "angular2/common";
 import {Group} from "../../models/Group";
 import {ClassroomsService} from "../../services/classrooms.service";
 import {StudentsService} from "../../services/students.service";
+import {GroupsService} from "../../services/groups.service";
 
 
 @Pipe({
@@ -34,25 +35,26 @@ class WithoutStudentsPipe implements PipeTransform {
 @Component({
     selector: 'group-edit',
     template: `
+<form #form="ngForm" (ngSubmit)="save(form.value)">
     <label>Ime</label>
-    <input type="text" [(ngModel)]="group.name"/>
+    <input type="text" [(ngModel)]="group.name" ngControl="groupName"/>
     <br/>
     <label>Učionica</label>
-    <select *ngIf="classrooms" name="classroom">
-        <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID">{{classroom.number}}</option>
+    <select *ngIf="classrooms" name="classroom" ngControl="classroom"  [(ngModel)]="group.classroomID">
+        <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
     </select>
     <br/><br/>
     <div class="students">
         <div>
             <h2>Studenti u grupi</h2>
-            <select #chosenStuds name="chosen-students" multiple size="10">
+            <select #chosenStuds name="chosen-students" multiple size="10" >
                 <option *ngFor="let student of chosenStudents" [value]="student.studentID">
                     {{student.indexNumber}}
                     {{student.UniMembers.name}}
                     {{student.UniMembers.surname}}
                 </option>
             </select> 
-            <button (click)="moveToOthers(chosenStuds.selectedOptions)"> >> </button>
+            <button type="button" (click)="moveToOthers(chosenStuds.selectedOptions)"> >> </button>
         </div>
         <div>
             <h2>Ostali sa smera</h2>
@@ -63,10 +65,11 @@ class WithoutStudentsPipe implements PipeTransform {
                     {{student.UniMembers.surname}}
                 </option>
             </select>
-            <button (click)="moveToChosen(otherStuds.selectedOptions)"> << </button>
+            <button type="button" (click)="moveToChosen(otherStuds.selectedOptions)"> << </button>
         </div>
     </div>
-    <button (click)="save()">SAVE</button>
+     <button type="submit">SAVE</button>
+</form>
     `,
     providers: [ClassroomsService, StudentsService],
     pipes: [WithoutStudentsPipe],
@@ -84,6 +87,7 @@ export class GroupEditComponent implements AfterContentInit {
 
     constructor(
         private _service: ClassroomsService,
+        private _groupsService: GroupsService,
         private _studentsService: StudentsService
     ) {
         this.getClassrooms();
@@ -109,8 +113,11 @@ export class GroupEditComponent implements AfterContentInit {
         }
     }
     
-    save() {
-        
+    save(value) {
+        console.log(value);
+        var pom: Array<number> = this.chosenStudents.map(i=>i.studentID);
+        console.log(pom);
+        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.groupName, value.classroom, pom);
     }
 
     ngAfterContentInit() {
@@ -121,7 +128,7 @@ export class GroupEditComponent implements AfterContentInit {
             ret.push(this.group.GroupsStudents[i].student);
         }
         this.chosenStudents = ret;
-        debugger;
+        //debugger;
     }
 
     getClassrooms() {

@@ -13,6 +13,15 @@
 
     <div class="flex-spacer"></div>
 
+    <r-dialog #addToGroupDialog [source]="addToGroupButton">
+        <div style="width: 500px; height:600px;">
+            <add-student-to-group
+                    *ngIf="_studentId > 0"
+                    [studentId]="_studentId">
+            </add-student-to-group>
+        </div>
+    </r-dialog>
+
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
         <pre>{{student | json | trim}}</pre>
     </r-dialog>
@@ -24,5 +33,10 @@
         </button>
 
         <div class="flex-spacer"></div>
+
+        <button r-button raised #addToGroupButton
+                text="Dodaj u grupu"
+                (click)="addToGroupDialog.open()">
+        </button>
     </div>
 </div>

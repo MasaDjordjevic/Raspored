@@ -11,8 +11,20 @@
 
     <div class="flex-spacer"></div>
 
-    <r-dialog #editGroupDialog [source]="editDivisionButton">
+    <r-dialog #editGroupDialog [source]="editGroupButton">
         <group-edit [group]="group"></group-edit>
+    </r-dialog>
+
+    <r-dialog #cancelClassDialog [source]="cancelClassButton">
+        Otkazivanje casa
+    </r-dialog>
+
+    <r-dialog #combinedScheduleDialog [source]="combinedScheduleButton">
+        Kombinovani raspored
+    </r-dialog>
+
+    <r-dialog #addNotificationDialog [source]="addNotificationButton">
+        Obavestenje
     </r-dialog>
 
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
@@ -27,9 +39,25 @@
 
         <div class="flex-spacer"></div>
 
-        <button r-button raised #editDivisionButton
+        <button r-button raised #editGroupButton
                 text="Izmeni grupu"
                 (click)="editGroupDialog.open()">
         </button>
+
+        <button r-button raised #cancelClassButton
+                text="Otkazi cas"
+                (click)="cancelClassDialog.open()">
+        </button>
+
+        <button r-button raised #combinedScheduleButton
+                text="Kombinovani raspored"
+                (click)="combinedScheduleDialog.open()">
+        </button>
+
+        <button r-button raised #addNotificationButton
+                text="Dodaj obaveštenje"
+                (click)="addNotificationDialog.open()">
+        </button>
+
     </div>
 </div>

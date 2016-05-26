@@ -11,7 +11,7 @@
         <dd>{{department.year}}</dd>
     </dl>
 
-    <student-search [students]="students"></student-search>
+
 
     <p>{{errorMessage}}</p>
 
@@ -21,6 +21,16 @@
         <r-division-creator departmentID ="{{department.departmentID}}">
 
         </r-division-creator>
+    </r-dialog>
+
+    <r-dialog #allStudentsDialog [source]="allStudentsButton">
+        <div style="height: 500px;width: 500px;">
+            <student-search [students]="students"></student-search>
+        </div>
+    </r-dialog>
+
+    <r-dialog #globalScheduleDialog [source]="globalScheduleButton">
+        Globalni raspored
     </r-dialog>
 
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
@@ -38,6 +48,18 @@
         <button r-button raised #newDivisionButton
                 text="Nova raspodela"
                 (click)="newDivisionDialog.open()">
+        </button>
+
+
+        <button r-button raised #allStudentsButton
+                [text]="'Studenti'"
+                (click)="allStudentsDialog.open()">
+        </button>
+
+
+        <button r-button raised #globalScheduleButton
+                [text]="'Globani raspored'"
+                (click)="globalScheduleDialog.open()">
         </button>
     </div>
 </div>

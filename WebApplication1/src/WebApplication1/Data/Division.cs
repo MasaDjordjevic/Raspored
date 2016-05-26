@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using Microsoft.AspNet.Mvc.ActionConstraints;
 using Microsoft.AspNet.Razor.Chunks;
 using Microsoft.Data.Entity;
 using WebApplication1.Models;
@@ -31,10 +32,29 @@ namespace WebApplication1.Data
                        .Include(p => p.divisionType)
                        .Include(p => p.department)
                        .Include(p => p.course)
-                       .Include(p => p.Groups).ThenInclude(a=>a.GroupsStudents).ThenInclude(a=>a.student).ThenInclude(a=>a.UniMembers)
+                       .Include(p => p.Groups)//.ThenInclude(a=>a.GroupsStudents)//.ThenInclude(a=>a.student).ThenInclude(a=>a.UniMembers)
                        .Include(p => p.Groups).ThenInclude(a=>a.classroom)
                        where a.divisionID == divisionID
                        select a).First();
+
+            // morala sam iz dva koraka i sa selectom da ne bi izvuko previse informacija, inace ulazi u petlju...
+            foreach (var g in pom.Groups)
+            {
+                g.GroupsStudents = (from a in _context.GroupsStudents
+                    where a.groupID == g.groupID
+                    select new GroupsStudents
+                    {
+                        studentID = a.studentID,
+                        student = _context.Students.Where(m=>m.studentID == a.studentID).Select(m=>new Students
+                        {
+                            studentID = m.studentID,
+                            departmentID = m.departmentID,
+                            indexNumber = m.indexNumber,
+                            UniMembers = (from d in _context.UniMembers where d.studentID == m.studentID select d).First()
+                        }).First()
+                    }).ToList();
+            }
+
             return pom;
             
         }

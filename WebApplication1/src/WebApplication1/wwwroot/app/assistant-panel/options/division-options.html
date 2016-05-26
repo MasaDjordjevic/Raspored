@@ -21,11 +21,23 @@
     <div class="flex-spacer"></div>
 
     <r-dialog #editDivisionDialog [source]="editDivisionButton">
-        Edit Division Dialog
+        <division-edit [division]="division"></division-edit>
     </r-dialog>
 
     <r-dialog #newGroupDialog [source]="newGroupButton">
-        New Group Dialog
+       <group-edit [group]="emptyGroup"></group-edit>
+    </r-dialog>
+
+    <r-dialog #copyDivisionDialog [source]="copyDivisionButton">
+        <division-edit [division]="copyDivision()"></division-edit>
+    </r-dialog>
+
+    <r-dialog #groupsDialog [source]="groupsButton">
+        Sve grupe raspodele
+    </r-dialog>
+
+    <r-dialog #exportDivisionDialog [source]="exportDivisionButton">
+        PDF
     </r-dialog>
 
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
@@ -48,6 +60,21 @@
         <button r-button raised #newGroupButton
                 text="Nova grupa"
                 (click)="newGroupDialog.open()">
+        </button>
+
+        <button r-button raised #copyDivisionButton
+                text="Kopiraj raspodelu"
+                (click)="copyDivisionDialog.open()">
+        </button>
+
+        <button r-button raised #groupsButton
+                text="Grupe"
+                (click)="groupsDialog.open()">
+        </button>
+
+        <button r-button raised #exportDivisionButton
+                text="Izvezi raspodelu"
+                (click)="exportDivisionDialog.open()">
         </button>
     </div>
 </div>

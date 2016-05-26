@@ -12,7 +12,8 @@ import {Control} from "angular2/common";
     selector: 'r-assistant-panel-options',
     template: `
     <form ngForm style="font-size: 2em">
-        <r-input class="light-theme" label="meh" [control]="control"></r-input>
+        <r-input class="light-theme" label="meh" [control]="control"></r-input> <br>
+
     </form>
     `,
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],

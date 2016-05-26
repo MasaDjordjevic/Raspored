@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Query.Expressions;
 using WebApplication1.Models;
 using Newtonsoft.Json;
 
@@ -108,6 +109,48 @@ namespace WebApplication1.Controllers
             }
 
             return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
+        }
+
+
+        //svi parametri moraju da budu nullable da ceo objekat ne bi bio null ukoliko se jedan od paremetara ne posalje
+        public class UpdateGroupBinding
+        {
+            public int? groupID;
+            public string name;
+            public int? classroomID;
+            public IEnumerable<int> students;
+            public int? divisionID;
+        }
+
+        // POST: api/Groups/Update
+        [HttpPost]
+        public IActionResult Update([FromBody] GroupsController.UpdateGroupBinding obj)
+        {
+            if (obj == null)
+            {
+                return Ok(new {status="parameter error"});
+            }
+
+            //dodavanje group
+            if (obj.groupID == null)
+            {
+                if (obj.divisionID == null)
+                {
+                    return Ok(new { status = "parameter error" });
+                }
+
+                Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID);
+                Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
+                return Ok(new { status = "uspelo" });
+            }
+            else //update grupe
+            {
+                Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID);
+                Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
+                return Ok(new { status = "uspelo" });
+            }
+
+         
         }
 
         // POST: api/Groups

@@ -75,6 +75,22 @@ namespace WebApplication1.Data
             _context.SaveChanges();
         }
 
+        public static void AddStudnets(int groupID, List<int> students)
+        {
+            RasporedContext _context = new RasporedContext();
+
+            foreach (int studID in students)
+            {
+                GroupsStudents gs = new GroupsStudents
+                {
+                    groupID = groupID,
+                    studentID = studID
+                };
+                _context.GroupsStudents.Add(gs);
+            }
+            _context.SaveChanges();
+        }
+
         public static void RemoveStudents(int groupID, List<Students> students)
         {
             RasporedContext _context = new RasporedContext();
@@ -88,6 +104,65 @@ namespace WebApplication1.Data
                 _context.GroupsStudents.Remove(gs);
             }
             _context.SaveChanges();
+        }
+
+        public static void RemoveStudents(int groupID, List<int> students)
+        {
+            RasporedContext _context = new RasporedContext();
+
+            foreach (int studID in students)
+            {
+                var gs =
+                    (from a in _context.GroupsStudents
+                     where a.studentID == studID && a.groupID == groupID
+                     select a).First();
+                _context.GroupsStudents.Remove(gs);
+            }
+            _context.SaveChanges();
+        }
+
+        public static void RemoveAllStudents(int groupID)
+        {
+            RasporedContext _context = new RasporedContext();
+            var gs = _context.GroupsStudents.Where(a => a.groupID == groupID);
+            foreach (GroupsStudents g in gs)
+            {
+                _context.GroupsStudents.Remove(g);
+            }
+            _context.SaveChanges();
+        }
+
+        public static void ChangeSudents(int groupID, List<int> newStudents)
+        {
+            RemoveAllStudents(groupID);
+            AddStudnets(groupID, newStudents);
+        }
+
+        public static void Update(int groupID, string name, int? classroomID)
+        {
+            RasporedContext _context = new RasporedContext();
+            Groups g = _context.Groups.First(a => a.groupID == groupID);
+            if(name != null)
+                g.name = name;
+            if(classroomID != null)
+                g.classroomID = classroomID;
+            _context.SaveChanges();
+
+        }
+
+        public static Groups Create(int divisionID, string name, int? classroomID)
+        {
+            RasporedContext _context = new RasporedContext();
+            Groups g = new Groups
+            {
+                divisionID = divisionID,
+                name = name,
+                classroomID = classroomID
+            };
+            _context.Groups.Add(g);
+            _context.SaveChanges();
+
+            return g;
         }
 
         public static void AddActivity(int groupID, TimeSpans timeSpan, string place, string title, string content)

@@ -98,7 +98,52 @@ namespace WebApplication1.Controllers
             return Ok(students);
         }
 
-        
+        // GET: api/Students/GetStudentsOfCourse/{course-id}
+        // Vrati sve sudente koji pripadaju kursu ciji je ID prosledjen.
+        [HttpGet("{id}", Name = "GetStudentsOfCourse")]
+        public IActionResult GetStudentsOfCourse([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var students = Data.Student.GetStudentsOfCourse(id);
+
+            if (students == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(JsonConvert.SerializeObject(students, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }));
+        }
+
+        [HttpGet]
+        public IActionResult AddToGroup(int studentID, int groupID)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            try
+            {
+                Data.Student.AddToGroup(studentID, groupID);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+               throw;
+                
+            }
+
+            return Ok(new { status = "uspelo" });
+        }
+
+
 
         // PUT: api/Students/5
         [HttpPut("{id}")]
