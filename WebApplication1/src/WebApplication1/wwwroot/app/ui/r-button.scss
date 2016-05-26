@@ -64,3 +64,13 @@
     color: rgba(white, .6);
   }
 }
+
+:host.r-button-fab {
+  background-color: palette($blue, 500);
+  color: rgba(white, .9);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  font-size: 36px;
+  @include z-depth(1.5);
+}

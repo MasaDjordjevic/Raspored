@@ -40,9 +40,31 @@ export class RFlatButtonDirective {
 
 }
 
+
+
+@Directive({
+    selector: 'button[r-button][fab]',
+})
+export class RFabButtonDirective {
+
+    //TODO
+    @Input() _color: string;
+
+    @HostBinding('class.r-button-fab') private _fab = false;
+
+    constructor (private _el: ElementRef) {
+        this._fab = true;
+    }
+
+}
+
+
+
 //TODO Nece <ng-content> kad se primeni direktiva na element.
 // Workaround je da se tekst prosledi kao Input, ali je ruzno
 // kad se pise, nemam pojma
+
+// Ovo je bug u beta17, ispravljen je u RC1.
 
 @Component({
     selector: 'button[r-button]',
@@ -65,5 +87,6 @@ export class RButtonComponent {
 export const R_BUTTON = [
     RRasiedButtonDirective,
     RFlatButtonDirective,
-    RButtonComponent
+    RButtonComponent,
+    RFabButtonDirective,
 ];
