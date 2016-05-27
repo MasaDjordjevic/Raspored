@@ -9,7 +9,12 @@ import {R_BUTTON} from "../ui/r-button.component";
         <span class="start">{{startMinutes | toTimestamp}}</span> — <span class="end">{{endMinutes | toTimestamp}}</span>
     </span>
     <template [ngIf]="abbr && classroom">
-        <span class="title">{{abbr}} u {{classroom}}</span>
+        <span class="title">
+            <template [ngIf]="!expanded">{{abbr}}</template>
+            <template [ngIf]="expanded">{{className}}</template>
+            u
+            {{classroom}}
+        </span>
         <span class="type">{{type}}</span>
         <span class="assistant">{{assistant}}</span>
     </template>
@@ -81,9 +86,14 @@ export class TimetableClassComponent {
     public expand() {
         this.expanded = true;
         this.expandedLeft = "-" + this.elementRef.nativeElement.getBoundingClientRect().left;
+        if (this.expandedLeft.charAt(1) === "-")
+            this.expandedLeft = this.expandedLeft.substring(2);
         this.expandedLeft += "px";
         this.expandedLeft = `calc(5vw + ${this.expandedLeft})`;
         this.expandedTop = "-" + this.elementRef.nativeElement.getBoundingClientRect().top;
+        debugger;
+        if (this.expandedTop.charAt(1) === "-")
+            this.expandedTop = this.expandedTop.substring(2);
         this.expandedTop += "px";
         this.expandedTop = `calc(5vh + ${this.expandedTop})`;
     }
