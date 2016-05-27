@@ -10,25 +10,27 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
     template: `
     <div class="day-title">{{title}}</div>
     <div class="container">
-        <r-timetable-class
+        <div class="class-wrapper"
             *ngFor="let c of classes"
             [ngStyle]="{'top': ((c.startMinutes - beginningMinutes) * scale) + 'px',
-                        'height': ((c.durationMinutes) * scale) + 'px'}"
-            [className]="c.className"
-            [abbr]="c.abbr"
-            [classroom]="c.classroom"
-            [assistant]="c.assistant"
-            [color]="c.color"
-            [type]="c.type"
-            [activityContent]="c.activityContent"
-            [activityTitle]="c.activityTitle"
-            [active]="c.active"
-            [announcement]="c.announcement"
-            [startMinutes]="c.startMinutes"
-            [durationMinutes]="c.durationMinutes"
-            [endMinutes]="c.startMinutes + c.durationMinutes"
-        >
-        </r-timetable-class>
+                        'height': ((c.durationMinutes) * scale) + 'px'}">
+            <r-timetable-class    
+                [className]="c.className"
+                [abbr]="c.abbr"
+                [classroom]="c.classroom"
+                [assistant]="c.assistant"
+                [color]="c.color"
+                [type]="c.type"
+                [activityContent]="c.activityContent"
+                [activityTitle]="c.activityTitle"
+                [active]="c.active"
+                [announcement]="c.announcement"
+                [startMinutes]="c.startMinutes"
+                [durationMinutes]="c.durationMinutes"
+                [endMinutes]="c.startMinutes + c.durationMinutes"
+            >
+            </r-timetable-class>
+        </div>
     </div>
     `,
     styles: [`
@@ -45,6 +47,15 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
        width: inherit;
        font-size: 1.2em;
        font-weight: bold;
+    }
+    .container {
+        width: 95%;
+        left: 2.5%;
+        position: relative;
+    }
+    .class-wrapper {
+        position: absolute;
+        width: 100%;
     }
     `],
     directives: [TimetableClassComponent],

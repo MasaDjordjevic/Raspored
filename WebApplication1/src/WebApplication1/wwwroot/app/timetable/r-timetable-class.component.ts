@@ -1,4 +1,4 @@
-import {Component, Input} from "angular2/core";
+import {Component, Input, ElementRef} from "angular2/core";
 import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 import {R_BUTTON} from "../ui/r-button.component";
 
@@ -26,6 +26,12 @@ import {R_BUTTON} from "../ui/r-button.component";
         "[style.backgroundColor]": "color",
         "[style.color]": "textColor",
         "[style.opacity]": "active ? 1 : 0.5",
+        "[class.expanded]": "expanded",
+        "[style.left]": "expanded ? expandedLeft : ''",
+        "[style.top]": "expanded ? expandedTop : ''",
+        "[style.boxShadow]": "expanded ? '0 0 0 0.7em ' + color + ' inset' : ''",
+        "[style.color]": "expanded ? 'black' : textColor",
+        "(click)": "toggle()",
     },
     pipes: [ToTimestampPipe],
     directives: [R_BUTTON]
@@ -67,6 +73,34 @@ export class TimetableClassComponent {
         } catch (e) {
             return "black";
         }
+    }
+    private expanded: boolean = false;
+    private expandedLeft: string;
+    private expandedTop: string;
+
+    public expand() {
+        this.expanded = true;
+        this.expandedLeft = "-" + this.elementRef.nativeElement.getBoundingClientRect().left;
+        this.expandedLeft += "px";
+        this.expandedLeft = `calc(5vw + ${this.expandedLeft})`;
+        this.expandedTop = "-" + this.elementRef.nativeElement.getBoundingClientRect().top;
+        this.expandedTop += "px";
+        this.expandedTop = `calc(5vh + ${this.expandedTop})`;
+    }
+
+    public collapse() {
+        this.expanded = false;
+    }
+
+    public toggle() {
+        if (this.expanded) this.collapse();
+        else this.expand();
+    }
+
+    constructor(
+        private elementRef: ElementRef
+    ) {
+
     }
 
 }

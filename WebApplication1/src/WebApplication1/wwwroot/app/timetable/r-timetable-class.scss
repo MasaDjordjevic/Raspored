@@ -1,26 +1,64 @@
 @import "../ljubenovic-toolkit";
+@import "../palette";
 
 :host {
   display: flex;
   flex-flow: column;
-  width: 95%;
-  left: 2.5%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
   position: absolute;
-  padding: 0.5em;
+  $padding: 0.5em;
+  padding: $padding;
   box-sizing: border-box;
   border-radius: 3px;
+  transition: all .3s ease;
+  z-index: 2;
   @include z-depth(1);
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
 
   & > span {
-    display: inline-block;
-    width: 100%;
+    cursor: default;
+    display: block;
+    transition: all .3s ease;
+
+    &.times { font-size: 0.8em; }
+    &.title { font-size: 1.2em; font-weight: bold; }
+    &.type  { font-size: 0.8em; opacity: .7; font-style: italic; }
+    &.text  { font-size: 0.9em; font-style: italic; }
   }
 }
 
-.times { font-size: 0.8em; }
-.title { font-size: 1.2em; font-weight: bold; }
-.type  { font-size: 0.8em; opacity: .7; font-style: italic; }
-.text  { font-size: 0.9em; font-style: italic; }
+:host.expanded {
+  $h: 90vh;
+  $w: 90vw;
+  height: $h!important;
+  width: $w!important;
+  z-index: 20!important;
+  @include z-depth(2);
+  padding: 1.5em;
+  border-radius: 10px;
+  background-color: white!important;
+
+  & > span {
+
+    &.times { font-size: 1.2em; }
+    &.title { font-size: 2.4em; font-weight: bold; }
+    &.full-name { font-size: 3em; font-weight: bold; }
+    &.type  { font-size: 1.0em; opacity: .8; font-style: italic; }
+    &.text  { font-size: 1.0em; font-style: italic; }
+  }
+}
+
 
 .announcement-button {
   position: absolute;
