@@ -40,7 +40,7 @@ namespace WebApplication1.Data
                 .Include(a => a.classroom)
                 .Include(a => a.timeSpan)
                 .Where(a => a.divisionID == divisionID)
-                .OrderBy(a => a.classroom.number)
+                //.OrderBy(a => a.classroom.number)
                 .ToList();
         }
 

@@ -23,9 +23,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
        public IActionResult GetDepartments()
         {
-            var departments =
-                (from a in _context.Departments
-                    select new {departmentID = a.departmentID, departmentName = a.departmentName}).ToList();
+            var departments = _context.Departments.OrderBy(a => a.departmentName).ThenBy(a => a.year).ToList();
             return Ok(departments);
         }
         
