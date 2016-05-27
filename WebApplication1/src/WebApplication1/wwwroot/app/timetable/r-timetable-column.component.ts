@@ -1,4 +1,4 @@
-import {Component, Input} from "angular2/core";
+import {Component, Input, OnInit} from "angular2/core";
 import {TimetableClassComponent} from "./r-timetable-class.component";
 import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 
@@ -13,10 +13,12 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
         <div class="class-wrapper"
             *ngFor="let c of classes"
             [ngStyle]="{'top': ((c.startMinutes - beginningMinutes) * scale) + 'px',
-                        'height': ((c.durationMinutes) * scale) + 'px'}">
+                        'height': ((c.durationMinutes) * scale) + 'px',
+                        'left': (c.overlapIndex * 100 / c.overlapNumber) + '%',
+                        'width': (100 / c.overlapNumber) + '%'}">
             <r-timetable-class    
-                [className]="c.className"
-                [abbr]="c.abbr"
+                [className]="c.className" 
+                [abbr]="c.overlapIndex + '/' + c.overlapNumber"
                 [classroom]="c.classroom"
                 [assistant]="c.assistant"
                 [color]="c.color"
@@ -61,7 +63,7 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
     directives: [TimetableClassComponent],
     pipes: [ToTimestampPipe]
 })
-export class TimetableColumnComponent {
+export class TimetableColumnComponent implements OnInit {
 
     @Input() classes: any[]; // niz časova
     // mora da ima startMinutes, durationMinutes
@@ -73,6 +75,54 @@ export class TimetableColumnComponent {
     @Input() showEvery: number; // npr. prikaži liniju na svakih 15 minuta
     @Input() scale: number; // koliko piksela je jedan minut
     
-    constructor() { }
+    constructor() {
+    }
+
+    ngOnInit() {
+
+        if (this.classes.length === 0) return;
+
+        // sortiranje
+        this.classes.sort(function(a, b) {
+            var keyA = a.startMinutes;
+            var keyB = b.startMinutes;
+            if (keyA < keyB) return -1;
+            if (keyA > keyB) return  1;
+            return 0;
+        });
+
+        // inicijalno su svi samostalni
+        for (let i = 0; i < this.classes.length; i++) {
+            this.classes[i].overlapNumber = 1;
+            this.classes[i].overlapIndex = 0;
+            this.classes[i].endMinutes =
+                this.classes[i].startMinutes +
+                    this.classes[i].durationMinutes;
+        }
+
+        var overlapGroupBeginIndex = 0;
+        var overlapBegin = this.classes[0].startMinutes;
+        var overlapEnd = this.classes[0].endMinutes;
+
+        debugger;
+
+        for (let i = 1; i < this.classes.length; i++) {
+            // trenutni se preklapa sa grupom
+            if (this.classes[i].startMinutes < overlapEnd) {
+                overlapEnd = Math.max(this.classes[i].endMinutes, overlapEnd);
+                // svima koji su u grupi, plus ovom na kom smo sad
+                // postavljamo overlap podatke
+                for (let j = overlapGroupBeginIndex; j <= i; j++) {
+                    this.classes[j].overlapNumber = i - overlapGroupBeginIndex + 1;
+                    this.classes[j].overlapIndex = j - overlapGroupBeginIndex;
+                }
+            } else { // nema poklapanja
+                overlapGroupBeginIndex = i;
+                overlapBegin = this.classes[i].startMinutes;
+                overlapEnd = this.classes[i].endMinutes;
+            }
+        }
+
+    }
 
 }
