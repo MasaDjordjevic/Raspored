@@ -352,5 +352,49 @@ namespace MyFirstDnxUnitTests
               .OrderBy(a => a.name)//.ThenBy(a=>a.classroom.number)
               .ToList();
         }
+
+        //[Fact]
+        //public void srediBazu3()
+        //{
+        //    RasporedContext _context = new RasporedContext();
+        //    var studs = _context.Students.ToList();
+        //    int indeks = 16000;
+        //    foreach (var stud in studs)
+        //    {
+        //        var q = _context.Students.Where(a => a.studentID != stud.studentID && a.indexNumber == stud.indexNumber);
+        //        if (q.Any())
+        //        {
+        //            foreach (Students s in q)
+        //            {
+                        
+        //                s.indexNumber = indeks++;
+        //            }
+        //        }
+        //    }
+        //    _context.SaveChanges();
+
+        //}
+
+        //[Fact]
+        //public void srediBazu4()
+        //{
+        //    RasporedContext _context = new RasporedContext();
+        //    var unis = _context.UniMembers.ToList();
+          
+        //    foreach (var uni in unis)
+        //    {
+        //        var q = _context.UniMembers.Where(a => a.uniMemberID != uni.uniMemberID && a.username == uni.username);
+        //        if (q.Any())
+        //        {
+        //            int indeks = 1;
+        //            foreach (UniMembers u in q)
+        //            {
+        //                u.username = u.username + (indeks++).ToString();
+        //            }
+        //        }
+        //    }
+        //    _context.SaveChanges();
+
+        //}
     }
 }
