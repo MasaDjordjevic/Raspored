@@ -18,7 +18,7 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
                         'width': (100 / c.overlapNumber) + '%'}">
             <r-timetable-class    
                 [className]="c.className" 
-                [abbr]="c.overlapIndex + '/' + c.overlapNumber"
+                [abbr]="c.abbr"
                 [classroom]="c.classroom"
                 [assistant]="c.assistant"
                 [color]="c.color"
@@ -35,31 +35,7 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
         </div>
     </div>
     `,
-    styles: [`
-    :host {
-        display: block;
-        height: 100%;
-        position: relative;
-    }
-    .day-title {
-       text-align: center;
-       background-color: white;
-       position: absolute;
-       z-index: 5;
-       width: inherit;
-       font-size: 1.2em;
-       font-weight: bold;
-    }
-    .container {
-        width: 95%;
-        left: 2.5%;
-        position: relative;
-    }
-    .class-wrapper {
-        position: absolute;
-        width: 100%;
-    }
-    `],
+    styleUrls: ['app/timetable/r-timetable-column.css'],
     directives: [TimetableClassComponent],
     pipes: [ToTimestampPipe]
 })
@@ -103,8 +79,6 @@ export class TimetableColumnComponent implements OnInit {
         var overlapGroupBeginIndex = 0;
         var overlapBegin = this.classes[0].startMinutes;
         var overlapEnd = this.classes[0].endMinutes;
-
-        debugger;
 
         for (let i = 1; i < this.classes.length; i++) {
             // trenutni se preklapa sa grupom
