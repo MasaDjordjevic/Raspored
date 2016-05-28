@@ -62,17 +62,17 @@ import {R_DIALOG} from "../ui/r-dialog";
                 <form #form="ngForm" (submit)="addNewActivity(form.value)"><fieldset style="padding:.5em">
                     <legend>Nova lična aktivnost</legend>
                     <label>Dan</label>
-                    <select #newActivityDay ngControl="newActivityDay">
+                    <select #newActivityDay ngControl="newActivityDay" required>
                         <option *ngFor="let dayName of dayNames; let i = index" [value]="i">{{dayName}}</option>
                     </select> {{newActivityDay.value}}<br/>
                     <label>Početak</label>
-                    <input type="number" min="0" max="1440" step="10" value="730" #newActivityStart ngControl="newActivityStart"/> {{newActivityStart.value | toTimestamp}} <br/>
+                    <input required type="number" min="0" max="1440" step="10" value="730" #newActivityStart ngControl="newActivityStart"/> {{newActivityStart.value | toTimestamp}} <br/>
                     <label>Trajanje</label>
-                    <input type="number" min="1" max="1439" step="1" value="60" #newActivityDuration ngControl="newActivityDuration"/> {{newActivityDuration.value | toTimestamp}} <br/>
+                    <input required type="number" min="1" max="1439" step="1" value="60" #newActivityDuration ngControl="newActivityDuration"/> {{newActivityDuration.value | toTimestamp}} <br/>
                     <label>Naslov</label>
-                    <input type="text" value="Moja Aktivnost" #newActivityTitle ngControl="newActivityTitle"/> {{newActivityTitle.value}} <br/>
+                    <input required type="text" value="Moja Aktivnost" #newActivityTitle ngControl="newActivityTitle"/> {{newActivityTitle.value}} <br/>
                     <label>Opis</label>
-                    <textarea #newActicityDesc ngControl="newActivityDesc">Opis moje aktivnosti.</textarea> {{newActicityDesc.value}} <br/>
+                    <textarea required #newActicityDesc ngControl="newActivityDesc">Opis moje aktivnosti.</textarea> {{newActicityDesc.value}} <br/>
                     <button type="submit">Dodaj</button>
                 </fieldset></form>
             </div>
