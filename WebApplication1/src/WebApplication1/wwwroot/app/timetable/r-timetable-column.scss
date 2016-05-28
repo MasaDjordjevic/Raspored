@@ -1,0 +1,29 @@
+@import "../ljubenovic-toolkit";
+@import "../palette";
+
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+}
+
+.day-title {
+  text-align: center;
+  background-color: white;
+  position: absolute;
+  z-index: 5;
+  width: inherit;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.container {
+  width: 95%;
+  left: 2.5%;
+  position: relative;
+}
+
+.class-wrapper {
+  position: absolute;
+  width: 100%;
+}

@@ -1,0 +1,17 @@
+<svg version="1.1"
+     baseProfile="full"
+     width="1280"
+     height="240"
+     style="stoke-width:0px;"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <text x="50%" y="90%" font-family="Roboto" font-size="240" text-anchor="middle">
+    <tspan font-weight="400" fill="#CFD8DC">RASPO</tspan><tspan font-weight="900" fill="#f44336">RED</tspan>
+  </text>
+
+  <rect x="810" y="76" width="55" height="44" fill="#37474F"></rect>
+
+  <image x="820" y="80" width="36" height="36" xlink:href="cal.svg" fill="#CFD8DC"></image>
+
+</svg>

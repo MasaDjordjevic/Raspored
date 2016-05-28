@@ -89,6 +89,11 @@ export class AppComponent implements OnInit {
                     name: "Timetable",
                     loader: () => System.import("app/timetable/r-timetable.component").then(c => c["TimetableComponent"])
                 }),
+                new AsyncRoute({
+                    path: "/login",
+                    name: "Login",
+                    loader: () => System.import("app/login.component").then(c => c["LoginComponent"])
+                }),
             ];
 
             this.router.config(this.routes);

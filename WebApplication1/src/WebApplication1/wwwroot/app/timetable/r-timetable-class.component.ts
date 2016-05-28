@@ -25,18 +25,24 @@ import {R_BUTTON} from "../ui/r-button.component";
     <template [ngIf]="announcement">
         <button r-button raised class="announcement-button" text="!" [title]="announcement">!</button>
     </template>
+    <template [ngIf]="expanded">
+        <div class="controls">
+            <button r-button raised text="Dodaj u lični" (click)="addToPersonal()">Dodaj u lični</button>
+            <button r-button flat text="Odzumiraj" (click)="toggle()">Odzumiraj</button>
+        </div>
+    </template>
     `,
     styleUrls: ['app/timetable/r-timetable-class.css'],
     host: {
         "[style.backgroundColor]": "color",
-        "[style.color]": "textColor",
+        //"[style.color]": "textColor",
         "[style.opacity]": "active ? 1 : 0.5",
         "[class.expanded]": "expanded",
         "[style.left]": "expanded ? expandedLeft : ''",
         "[style.top]": "expanded ? expandedTop : ''",
         "[style.boxShadow]": "expanded ? '0 0 0 0.7em ' + color + ' inset' : ''",
         "[style.color]": "expanded ? 'black' : textColor",
-        "(click)": "toggle()",
+        "(click)": "expand($event)",
     },
     pipes: [ToTimestampPipe],
     directives: [R_BUTTON]
@@ -79,11 +85,15 @@ export class TimetableClassComponent {
             return "black";
         }
     }
+
     private expanded: boolean = false;
     private expandedLeft: string;
     private expandedTop: string;
 
-    public expand() {
+    public expand($event = null) {
+        // Da se ne pozove expandovanje odmah nakon collapse() klikom an dugme. Hakic.
+        if ($event && $event.target.nodeName === "BUTTON") return;
+        if (this.expanded) return;
         this.expanded = true;
         this.expandedLeft = "-" + this.elementRef.nativeElement.getBoundingClientRect().left;
         if (this.expandedLeft.charAt(1) === "-")
@@ -91,7 +101,6 @@ export class TimetableClassComponent {
         this.expandedLeft += "px";
         this.expandedLeft = `calc(5vw + ${this.expandedLeft})`;
         this.expandedTop = "-" + this.elementRef.nativeElement.getBoundingClientRect().top;
-        debugger;
         if (this.expandedTop.charAt(1) === "-")
             this.expandedTop = this.expandedTop.substring(2);
         this.expandedTop += "px";
@@ -105,6 +114,12 @@ export class TimetableClassComponent {
     public toggle() {
         if (this.expanded) this.collapse();
         else this.expand();
+    }
+
+    // dodavanje u lični
+    public addToPersonal() {
+        // TODO
+        alert("TODO");
     }
 
     constructor(

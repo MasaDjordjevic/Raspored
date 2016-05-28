@@ -1,0 +1,50 @@
+@import "palette";
+@import "ljubenovic-toolkit";
+
+:host {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: palette($blue-grey, 800);
+
+  .logo {
+    font-size: 3em;
+    color: palette($red);
+    margin-bottom: 5vh;
+    margin-top: -5vh;
+    background-image: url('logo.svg');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 400px;
+    height: 80px;
+  }
+
+  form {
+    background-color: palette($blue-grey, 50);
+    @include z-depth(3);
+    padding: 2em;
+    border-radius: 0.2em;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-flow: column;
+
+    .flex-spacer {
+      flex: 1 1 auto;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    r-input {
+      font-size: 1.3em;
+      margin-bottom: 3ex;
+    }
+  }
+}

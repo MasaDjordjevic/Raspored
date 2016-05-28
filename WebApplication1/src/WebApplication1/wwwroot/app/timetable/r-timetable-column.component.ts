@@ -8,7 +8,7 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 @Component({
     selector: 'r-timetable-column',
     template: `
-    <div class="day-title">{{title}}</div>
+    <div class="day-title" #dayTitle>{{title}}</div>
     <div class="container">
         <div class="class-wrapper"
             *ngFor="let c of classes"
@@ -18,7 +18,7 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
                         'width': (100 / c.overlapNumber) + '%'}">
             <r-timetable-class    
                 [className]="c.className" 
-                [abbr]="c.overlapIndex + '/' + c.overlapNumber"
+                [abbr]="c.abbr"
                 [classroom]="c.classroom"
                 [assistant]="c.assistant"
                 [color]="c.color"
@@ -35,38 +35,23 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
         </div>
     </div>
     `,
-    styles: [`
-    :host {
-        display: block;
-        height: 100%;
-        position: relative;
-    }
-    .day-title {
-       text-align: center;
-       background-color: white;
-       position: absolute;
-       z-index: 5;
-       width: inherit;
-       font-size: 1.2em;
-       font-weight: bold;
-    }
-    .container {
-        width: 95%;
-        left: 2.5%;
-        position: relative;
-    }
-    .class-wrapper {
-        position: absolute;
-        width: 100%;
-    }
-    `],
+    styleUrls: ['app/timetable/r-timetable-column.css'],
     directives: [TimetableClassComponent],
     pipes: [ToTimestampPipe]
 })
 export class TimetableColumnComponent implements OnInit {
 
-    @Input() classes: any[]; // niz časova
+    @Input('classes') _classes: any[]; // niz časova
     // mora da ima startMinutes, durationMinutes
+
+    get classes() {
+        this.sortAndOverlap();
+        return this._classes;
+    }
+
+    set classes(classes) {
+        this._classes = classes;
+    }
 
     @Input() title: string; // npr. "ponedeljak"
     @Input() titleAbbr: string; // npr. "pon"
@@ -78,12 +63,11 @@ export class TimetableColumnComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
-
-        if (this.classes.length === 0) return;
+    public sortAndOverlap() {
+        if (this._classes.length === 0) return;
 
         // sortiranje
-        this.classes.sort(function(a, b) {
+        this._classes.sort(function(a, b) {
             var keyA = a.startMinutes;
             var keyB = b.startMinutes;
             if (keyA < keyB) return -1;
@@ -92,37 +76,38 @@ export class TimetableColumnComponent implements OnInit {
         });
 
         // inicijalno su svi samostalni
-        for (let i = 0; i < this.classes.length; i++) {
-            this.classes[i].overlapNumber = 1;
-            this.classes[i].overlapIndex = 0;
-            this.classes[i].endMinutes =
-                this.classes[i].startMinutes +
-                    this.classes[i].durationMinutes;
+        for (let i = 0; i < this._classes.length; i++) {
+            this._classes[i].overlapNumber = 1;
+            this._classes[i].overlapIndex = 0;
+            this._classes[i].endMinutes =
+                this._classes[i].startMinutes +
+                this._classes[i].durationMinutes;
         }
 
         var overlapGroupBeginIndex = 0;
-        var overlapBegin = this.classes[0].startMinutes;
-        var overlapEnd = this.classes[0].endMinutes;
+        var overlapBegin = this._classes[0].startMinutes;
+        var overlapEnd = this._classes[0].endMinutes;
 
-        debugger;
-
-        for (let i = 1; i < this.classes.length; i++) {
+        for (let i = 1; i < this._classes.length; i++) {
             // trenutni se preklapa sa grupom
-            if (this.classes[i].startMinutes < overlapEnd) {
-                overlapEnd = Math.max(this.classes[i].endMinutes, overlapEnd);
+            if (this._classes[i].startMinutes < overlapEnd) {
+                overlapEnd = Math.max(this._classes[i].endMinutes, overlapEnd);
                 // svima koji su u grupi, plus ovom na kom smo sad
                 // postavljamo overlap podatke
                 for (let j = overlapGroupBeginIndex; j <= i; j++) {
-                    this.classes[j].overlapNumber = i - overlapGroupBeginIndex + 1;
-                    this.classes[j].overlapIndex = j - overlapGroupBeginIndex;
+                    this._classes[j].overlapNumber = i - overlapGroupBeginIndex + 1;
+                    this._classes[j].overlapIndex = j - overlapGroupBeginIndex;
                 }
             } else { // nema poklapanja
                 overlapGroupBeginIndex = i;
-                overlapBegin = this.classes[i].startMinutes;
-                overlapEnd = this.classes[i].endMinutes;
+                overlapBegin = this._classes[i].startMinutes;
+                overlapEnd = this._classes[i].endMinutes;
             }
         }
+    }
 
+    ngOnInit() {
+        this.sortAndOverlap();
     }
 
 }
