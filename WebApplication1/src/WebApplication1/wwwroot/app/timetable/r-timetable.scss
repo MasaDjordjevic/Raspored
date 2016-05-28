@@ -27,7 +27,7 @@ r-timetable-column {
 
   div {
     width: 100%;
-    @include z-depth(0.5);
+    box-shadow: 1px 0 rgba(black, .1) inset;
     text-align: center;
     font-size: 1.2em;
     font-weight: bold;
