@@ -5,6 +5,7 @@ import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 
 import {Group} from "../models/Group";
+import {TimeSpan} from "../models/TimeSpan";
 
 
 
@@ -38,6 +39,25 @@ export class GroupsService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/Update', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    addActivity(groupID: number, courseID:number, classroomID:number, place: string, title: string, content:string, timespan: TimeSpan) {
+        let body = JSON.stringify({
+            groupID: groupID,
+            classroomID: classroomID,
+            courseID: courseID,
+            place: place,
+            title: title,
+            content: content,
+            timespan: timespan
+        });
+        console.log(body);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this._url + '/AddActivity', body, options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

@@ -153,6 +153,33 @@ namespace WebApplication1.Controllers
          
         }
 
+        public class AddActivityBinding
+        {
+            public int? groupID;
+            public int? classroomID;
+            public int? courseID;
+            public string place;
+            public string title;
+            public string content;
+            public TimeSpans timespan;
+        }
+
+        // POST: api/Groups/AddActivity
+        [HttpPost]
+        public IActionResult AddActivity([FromBody] AddActivityBinding obj)
+        {
+            if (obj == null || obj.groupID == null)
+            {
+                return Ok(new { status = "parameter error" });
+            }
+
+            Data.Group.AddActivity(obj.groupID.Value, obj.classroomID, obj.courseID, obj.timespan, obj.place, obj.title, obj.content);
+
+            return Ok(new { status = "uspelo" });
+        }
+
+
+
         // POST: api/Groups
         [HttpPost]
         public IActionResult PostGroups([FromBody] Groups groups)

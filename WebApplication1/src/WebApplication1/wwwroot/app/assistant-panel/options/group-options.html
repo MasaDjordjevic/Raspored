@@ -15,6 +15,12 @@
         <group-edit [group]="group"></group-edit>
     </r-dialog>
 
+    <r-dialog #addClassDialog [source]="addClass">
+        <div style="width: 400px; height: 500px;">
+            <add-activity [groupId]="group.groupID"></add-activity>
+        </div>
+    </r-dialog>
+
     <r-dialog #cancelClassDialog [source]="cancelClassButton">
         Otkazivanje casa
     </r-dialog>
@@ -42,6 +48,11 @@
         <button r-button raised #editGroupButton
                 text="Izmeni grupu"
                 (click)="editGroupDialog.open()">
+        </button>
+
+        <button r-button raised #addClass
+                text="Zakazi cas"
+                (click)="addClassDialog.open()">
         </button>
 
         <button r-button raised #cancelClassButton
