@@ -24,7 +24,7 @@ export class ClassroomsService {
         let body = JSON.stringify({ number, projector, sunnySide });
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post(this._url, body, options)
+        return this.http.post(this._url + "/PostClassrooms", body, options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

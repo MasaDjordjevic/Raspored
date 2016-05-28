@@ -198,5 +198,203 @@ namespace MyFirstDnxUnitTests
         {
             var s = WebApplication1.Data.Student.GetStudentsOfGroup(8);
         }
+
+        //[Fact]
+        //public void popuniBazu()
+        //{
+        //    RasporedContext _context = new RasporedContext();
+
+        //    int indeks = 11012;
+
+        //    for (int i = 0; i < 170; i++)
+        //    {
+        //        Students stud = new Students
+        //        {
+        //            indexNumber = indeks++,
+        //            departmentID = 9
+        //        };
+        //        _context.Students.Add(stud);
+        //    }
+
+        //    //druga
+
+        //    indeks = 12000;
+
+        //    for (int i = 0; i < 54; i++)
+        //    {
+        //        Students stud = new Students
+        //        {
+        //            indexNumber = indeks++,
+        //            departmentID = 20
+        //        };
+        //        _context.Students.Add(stud);
+        //    }
+
+         
+
+        //    for (int i = 0; i < 130; i++)
+        //    {
+        //        Students stud = new Students
+        //        {
+        //            indexNumber = indeks++,
+        //            departmentID = 3
+        //        };
+        //        _context.Students.Add(stud);
+        //    }
+
+            
+
+
+        //    //treca
+
+        //    indeks = 13520;
+
+        //    for (int i = 0; i < 103; i++)
+        //    {
+        //        Students stud = new Students
+        //        {
+        //            indexNumber = indeks++,
+        //            departmentID = 1
+        //        };
+        //        _context.Students.Add(stud);
+        //    }
+
+        //    for (int i = 0; i < 32; i++)
+        //    {
+        //        Students stud = new Students
+        //        {
+        //            indexNumber = indeks++,
+        //            departmentID = 18
+        //        };
+        //        _context.Students.Add(stud);
+        //    }
+
+        //    //cetvrta 
+
+        //    indeks = 15007;
+
+        //    for (int i = 0; i < 20; i++)
+        //    {
+        //        Students stud = new Students
+        //        {
+        //            indexNumber = indeks++,
+        //            departmentID = 10
+        //        };
+        //        _context.Students.Add(stud);
+        //    }
+
+            
+
+           
+        //    for (int i = 0; i < 20; i++)
+        //    {
+        //        Students stud = new Students
+        //        {
+        //            indexNumber = indeks++,
+        //            departmentID = 19
+        //        };
+        //        _context.Students.Add(stud);
+        //    }
+
+        //    _context.SaveChanges();
+        //}
+
+        //[Fact]
+        //public void srediBazu()
+        //{
+        //    RasporedContext _context = new RasporedContext();
+
+        //    var pom = _context.UniMembers.Select(a => a.studentID).ToList();
+        //    var studs =  _context.Students.Where(a => !pom.Contains(a.studentID)).ToList();
+
+        //    foreach (var stud in studs)
+        //    {
+        //        _context.Students.Remove(stud);
+        //    }
+        //    _context.SaveChanges();
+        //}
+
+        //[Fact]
+        //public void srediBazu2()
+        //{
+        //    RasporedContext _context = new RasporedContext();
+        //    Random rnd = new Random();
+        //    List<Courses> cours = _context.Courses.ToList();
+        //    foreach (Courses cour in cours)
+        //    {
+        //        List<Students> studs = _context.Students.Where(a => a.departmentID == cour.departmentID).ToList();
+        //        foreach (Students stud in studs)
+        //        {
+                    
+        //            StudentsCourses sc = new StudentsCourses
+        //            {
+        //                studentID = stud.studentID,
+        //                courseID = cour.courseID,
+        //            };
+        //            _context.StudentsCourses.Add(sc);
+                    
+                 
+        //        }
+        //    }
+        //    _context.SaveChanges();
+
+        //}
+
+        [Fact]
+        public void trenutnoNeRadi()
+        {
+            RasporedContext _context = new RasporedContext();
+            var divisionID = 1005;
+            var pom =  _context.Groups
+              .Include(a => a.classroom)
+              .Include(a => a.timeSpan)
+              .Where(a => a.divisionID == divisionID)
+              .OrderBy(a => a.name)//.ThenBy(a=>a.classroom.number)
+              .ToList();
+        }
+
+        //[Fact]
+        //public void srediBazu3()
+        //{
+        //    RasporedContext _context = new RasporedContext();
+        //    var studs = _context.Students.ToList();
+        //    int indeks = 16000;
+        //    foreach (var stud in studs)
+        //    {
+        //        var q = _context.Students.Where(a => a.studentID != stud.studentID && a.indexNumber == stud.indexNumber);
+        //        if (q.Any())
+        //        {
+        //            foreach (Students s in q)
+        //            {
+                        
+        //                s.indexNumber = indeks++;
+        //            }
+        //        }
+        //    }
+        //    _context.SaveChanges();
+
+        //}
+
+        //[Fact]
+        //public void srediBazu4()
+        //{
+        //    RasporedContext _context = new RasporedContext();
+        //    var unis = _context.UniMembers.ToList();
+          
+        //    foreach (var uni in unis)
+        //    {
+        //        var q = _context.UniMembers.Where(a => a.uniMemberID != uni.uniMemberID && a.username == uni.username);
+        //        if (q.Any())
+        //        {
+        //            int indeks = 1;
+        //            foreach (UniMembers u in q)
+        //            {
+        //                u.username = u.username + (indeks++).ToString();
+        //            }
+        //        }
+        //    }
+        //    _context.SaveChanges();
+
+        //}
     }
 }

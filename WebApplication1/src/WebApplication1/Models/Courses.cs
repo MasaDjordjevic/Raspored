@@ -17,6 +17,7 @@ namespace WebApplication1.Models
         public string code { get; set; }
         public int? departmentID { get; set; }
         public string name { get; set; }
+        public bool? obavezni { get; set; }
         public int? semester { get; set; }
 
         public virtual ICollection<AssistantsCourses> AssistantsCourses { get; set; }

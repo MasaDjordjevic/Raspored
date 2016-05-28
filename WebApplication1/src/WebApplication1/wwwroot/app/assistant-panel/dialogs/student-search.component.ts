@@ -8,7 +8,7 @@ import {TrimPipe} from "../../pipes/trim.pipe";
 @Component({
     selector: 'student-search',
     template: `
-    <div class="list-of-students">
+    <div class="list-of-students" *ngIf="students">
         <div class="student-item" *ngFor="let student of students | match: _query ">
             <a (click)="openStudent(student.indexNumber)">
                 <span class="index" [innerHTML]="student.indexNumber.toString() | highlight : _query"></span>

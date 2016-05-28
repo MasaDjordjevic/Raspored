@@ -24,7 +24,7 @@
     </r-dialog>
 
     <r-dialog #allStudentsDialog [source]="allStudentsButton">
-        <div style="height: 500px;width: 500px;">
+        <div style="height: 500px;width: 500px; overflow: scroll;">
             <student-search [students]="students"></student-search>
         </div>
     </r-dialog>
