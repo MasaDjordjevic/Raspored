@@ -15,48 +15,53 @@ namespace WebApplication1.Data
     {
         public static List<Divisions> GetDivisionsOfDepartment(int departmentID)
         {
-            RasporedContext _context = new RasporedContext();
-            return (from div in _context.Divisions
-                        .Include(p => p.creator)
-                       .Include(p => p.divisionType)
-                       .Include(p => p.department)
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return (from div in _context.Divisions
+                    .Include(p => p.creator)
+                    .Include(p => p.divisionType)
+                    .Include(p => p.department)
                     where div.departmentID == departmentID
-                select div).ToList();
+                    select div).ToList();
+            }
         }
 
         public static Object GetDivison(int divisionID)
         {
-            RasporedContext _context = new RasporedContext();
-            var pom = (from a in _context.Divisions
-                       .Include(p => p.creator)
-                       .Include(p => p.divisionType)
-                       .Include(p => p.department)
-                       .Include(p => p.course)
-                       .Include(p => p.Groups)//.ThenInclude(a=>a.GroupsStudents)//.ThenInclude(a=>a.student).ThenInclude(a=>a.UniMembers)
-                       .Include(p => p.Groups).ThenInclude(a=>a.classroom)
-                       where a.divisionID == divisionID
-                       select a).First();
-
-            // morala sam iz dva koraka i sa selectom da ne bi izvuko previse informacija, inace ulazi u petlju...
-            foreach (var g in pom.Groups)
+            using (RasporedContext _context = new RasporedContext())
             {
-                g.GroupsStudents = (from a in _context.GroupsStudents
-                    where a.groupID == g.groupID
-                    select new GroupsStudents
-                    {
-                        studentID = a.studentID,
-                        student = _context.Students.Where(m=>m.studentID == a.studentID).Select(m=>new Students
-                        {
-                            studentID = m.studentID,
-                            departmentID = m.departmentID,
-                            indexNumber = m.indexNumber,
-                            UniMembers = (from d in _context.UniMembers where d.studentID == m.studentID select d).First()
-                        }).First()
-                    }).ToList();
-            }
+                var pom = (from a in _context.Divisions
+                    .Include(p => p.creator)
+                    .Include(p => p.divisionType)
+                    .Include(p => p.department)
+                    .Include(p => p.course)
+                    .Include(p => p.Groups)
+                    //.ThenInclude(a=>a.GroupsStudents)//.ThenInclude(a=>a.student).ThenInclude(a=>a.UniMembers)
+                    .Include(p => p.Groups).ThenInclude(a => a.classroom)
+                    where a.divisionID == divisionID
+                    select a).First();
 
-            return pom;
-            
+                // morala sam iz dva koraka i sa selectom da ne bi izvuko previse informacija, inace ulazi u petlju...
+                foreach (var g in pom.Groups)
+                {
+                    g.GroupsStudents = (from a in _context.GroupsStudents
+                        where a.groupID == g.groupID
+                        select new GroupsStudents
+                        {
+                            studentID = a.studentID,
+                            student = _context.Students.Where(m => m.studentID == a.studentID).Select(m => new Students
+                            {
+                                studentID = m.studentID,
+                                departmentID = m.departmentID,
+                                indexNumber = m.indexNumber,
+                                UniMembers =
+                                    (from d in _context.UniMembers where d.studentID == m.studentID select d).First()
+                            }).First()
+                        }).ToList();
+                }
+
+                return pom;
+            }
         }
      
 
@@ -134,57 +139,63 @@ namespace WebApplication1.Data
         public static void CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning, DateTime ending,
             List<GroupOfStudents>  groups)
         {
-            RasporedContext _context = new RasporedContext();
-            Divisions div = new Divisions
+            using (RasporedContext _context = new RasporedContext())
             {
-                name = name,
-                creatorID = 1, //TODO vadi iz sesije
-                divisionTypeID = divisionTypeID,
-                beginning = beginning,
-                ending = ending,
-                departmentID = departmentID,
-                courseID = courseID
-            };
-
-            _context.Divisions.Add(div);
-            _context.SaveChanges();
-
-            foreach (GroupOfStudents group in groups)
-            {
-                Groups g = new Groups
+                Divisions div = new Divisions
                 {
-                    classroomID = null,
-                    divisionID = div.divisionID,
-                    timeSpanID = null,
-                    name = group.name,
+                    name = name,
+                    creatorID = 1, //TODO vadi iz sesije
+                    divisionTypeID = divisionTypeID,
+                    beginning = beginning,
+                    ending = ending,
+                    departmentID = departmentID,
+                    courseID = courseID
                 };
 
-                _context.Groups.Add(g);
+                _context.Divisions.Add(div);
                 _context.SaveChanges();
 
-                foreach (Students stud in group.students)
+                foreach (GroupOfStudents group in groups)
                 {
-                    GroupsStudents gs = new GroupsStudents
+                    Groups g = new Groups
                     {
-                        groupID = g.groupID,
-                        studentID = stud.studentID
+                        classroomID = null,
+                        divisionID = div.divisionID,
+                        timeSpanID = null,
+                        name = group.name,
                     };
-                    _context.GroupsStudents.Add(gs);
-                }
 
-                _context.SaveChanges();
+                    _context.Groups.Add(g);
+                    _context.SaveChanges();
+
+                    foreach (Students stud in group.students)
+                    {
+                        GroupsStudents gs = new GroupsStudents
+                        {
+                            groupID = g.groupID,
+                            studentID = stud.studentID
+                        };
+                        _context.GroupsStudents.Add(gs);
+                    }
+
+                    _context.SaveChanges();
+                }
             }
         }
 
         public static void CancelClasses(int divisionID, string title, string content)
         {
-            RasporedContext _context = new RasporedContext();
-            List<Groups> groups =
-                (from a in _context.Divisions.Include(a => a.Groups) where a.divisionID == divisionID select a.Groups.ToList())
-                    .First();
-            foreach (Groups group in groups)
+            using (RasporedContext _context = new RasporedContext())
             {
-                Group.CancelClass(group.groupID, title, content);
+                List<Groups> groups =
+                    (from a in _context.Divisions.Include(a => a.Groups)
+                        where a.divisionID == divisionID
+                        select a.Groups.ToList())
+                        .First();
+                foreach (Groups group in groups)
+                {
+                    Group.CancelClass(group.groupID, title, content);
+                }
             }
         }
 

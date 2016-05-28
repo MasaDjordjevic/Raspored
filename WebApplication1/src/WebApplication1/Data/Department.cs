@@ -11,21 +11,25 @@ namespace WebApplication1.Data
     {
         public static IEnumerable GetDepartmentsByYear()
         {
-            RasporedContext _context = new RasporedContext();
-            
-            return (from dep in _context.Departments
-                    group dep by dep.year
-                    into newdeps
-                    orderby newdeps.Key
-                    select new { year = newdeps.Key, departments = newdeps }).ToList();
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return (from dep in _context.Departments
+                        group dep by dep.year
+                   into newdeps
+                        orderby newdeps.Key
+                        select new { year = newdeps.Key, departments = newdeps }).ToList();
+            }
         }
 
         public static string GetdepartmentName(int? deparmentID)
         {
             if (deparmentID == null)
                 return null;
-            RasporedContext _context = new RasporedContext();
-            return _context.Departments.Single(a => a.departmentID == deparmentID).departmentName;
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return _context.Departments.Single(a => a.departmentID == deparmentID).departmentName;
+            }
+                
         }
         
     }

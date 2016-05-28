@@ -12,36 +12,45 @@ namespace WebApplication1.Data
     {
         public static void AddAssistantToCourse(int assistantID, int courseID, string classType)
         {
-            RasporedContext _context = new RasporedContext();
-
-            AssistantsCourses ass  = new AssistantsCourses
+            using (RasporedContext _context = new RasporedContext())
             {
-                assistantID = assistantID,
-                courseID = courseID,
-                classType = classType
-            };
+                AssistantsCourses ass = new AssistantsCourses
+                {
+                    assistantID = assistantID,
+                    courseID = courseID,
+                    classType = classType
+                };
 
-            _context.AssistantsCourses.Add(ass);
-            _context.SaveChanges();
+                _context.AssistantsCourses.Add(ass);
+                _context.SaveChanges();
+            }
         }
 
         public static IEnumerable GetAllCourses()
         {
-            RasporedContext _context = new RasporedContext();
-            return _context.Courses.Include(a => a.department).ToList();
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return _context.Courses.Include(a => a.department).ToList();
+            }
         }
 
         public static IEnumerable GetCoursesOfDepartment(int departmentID)
         {
-            RasporedContext _context = new RasporedContext();
-            return _context.Courses.Include(a => a.department).Where(a=>a.departmentID == departmentID).ToList();
-
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return _context.Courses.Include(a => a.department).Where(a => a.departmentID == departmentID).ToList();
+            }
         }
 
         public static IEnumerable GetCoursesOfDepartmentOfSemester(int departmentID, int semester)
         {
-            RasporedContext _context = new RasporedContext();
-            return _context.Courses.Include(a => a.department).Where(a => a.departmentID == departmentID && a.semester == semester).ToList();
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return
+                    _context.Courses.Include(a => a.department)
+                        .Where(a => a.departmentID == departmentID && a.semester == semester)
+                        .ToList();
+            }
         }
 
 
