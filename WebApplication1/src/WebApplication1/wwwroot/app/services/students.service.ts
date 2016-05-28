@@ -5,7 +5,6 @@ import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 
 import {Student} from "../models/Student";
-import any = jasmine.any;
 
 
 

@@ -35,7 +35,7 @@ import {R_BUTTON} from "../ui/r-button.component";
     styleUrls: ['app/timetable/r-timetable-class.css'],
     host: {
         "[style.backgroundColor]": "color",
-        "[style.color]": "textColor",
+        //"[style.color]": "textColor",
         "[style.opacity]": "active ? 1 : 0.5",
         "[class.expanded]": "expanded",
         "[style.left]": "expanded ? expandedLeft : ''",

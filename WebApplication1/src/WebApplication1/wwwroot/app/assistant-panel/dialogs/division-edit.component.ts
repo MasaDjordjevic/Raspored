@@ -62,7 +62,7 @@ export class DivisionEditComponent implements AfterViewInit{
         this._coursesService.getCoursesOfDepartment(this.division.departmentID) //izmenila sam ovaj parametar
             .then(
                 crs => this.courses = crs,
-                error => this.errorMessage = <any>error).then(this.getStudents());
+                error => this.errorMessage = <any>error).then(() => this.getStudents());
     }
 
     // Iz look-up tabele
