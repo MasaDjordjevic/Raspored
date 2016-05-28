@@ -7,8 +7,7 @@ namespace WebApplication1.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
-            options.UseSqlServer(@"Server=DESKTOP-RFKNG80\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,6 +27,8 @@ namespace WebApplication1.Models
                 entity.HasOne(d => d.activitySchedule).WithMany(p => p.Activities).HasForeignKey(d => d.activityScheduleID);
 
                 entity.HasOne(d => d.classroom).WithMany(p => p.Activities).HasForeignKey(d => d.classroomID);
+
+                entity.HasOne(d => d.course).WithMany(p => p.Activities).HasForeignKey(d => d.courseID);
 
                 entity.HasOne(d => d.group).WithMany(p => p.Activities).HasForeignKey(d => d.groupID);
 
@@ -207,6 +208,8 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.studentID);
 
+                entity.HasIndex(e => e.indexNumber).HasName("Index_unique").IsUnique();
+
                 entity.HasOne(d => d.department).WithMany(p => p.Students).HasForeignKey(d => d.departmentID).OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -242,6 +245,8 @@ namespace WebApplication1.Models
                 entity.HasKey(e => e.uniMemberID);
 
                 entity.HasIndex(e => e.studentID).HasName("studentUnique").IsUnique();
+
+                entity.HasIndex(e => e.username).HasName("indexUnique").IsUnique();
 
                 entity.Property(e => e.address).HasMaxLength(200);
 

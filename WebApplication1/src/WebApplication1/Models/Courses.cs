@@ -7,6 +7,7 @@ namespace WebApplication1.Models
     {
         public Courses()
         {
+            Activities = new HashSet<Activities>();
             AssistantsCourses = new HashSet<AssistantsCourses>();
             Divisions = new HashSet<Divisions>();
             StudentsCourses = new HashSet<StudentsCourses>();
@@ -20,6 +21,7 @@ namespace WebApplication1.Models
         public bool? obavezni { get; set; }
         public int? semester { get; set; }
 
+        public virtual ICollection<Activities> Activities { get; set; }
         public virtual ICollection<AssistantsCourses> AssistantsCourses { get; set; }
         public virtual ICollection<Divisions> Divisions { get; set; }
         public virtual ICollection<StudentsCourses> StudentsCourses { get; set; }
