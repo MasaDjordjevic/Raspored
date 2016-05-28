@@ -8,7 +8,7 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 @Component({
     selector: 'r-timetable-column',
     template: `
-    <div class="day-title">{{title}}</div>
+    <div class="day-title" #dayTitle>{{title}}</div>
     <div class="container">
         <div class="class-wrapper"
             *ngFor="let c of classes"

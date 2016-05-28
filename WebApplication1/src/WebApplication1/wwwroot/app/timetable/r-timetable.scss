@@ -15,6 +15,25 @@ r-timetable-column {
   @include force-width(60px);
 }
 
+.day-titles-fixed {
+  position: fixed;
+  left: 60px; // isto kao gutter width
+  right: 0;
+  top: 0;
+  display: flex;
+  z-index: 20;
+  background-color: white;
+  @include z-depth(1);
+
+  div {
+    width: 100%;
+    @include z-depth(0.5);
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+}
+
 .time-marks {
   position: absolute;
   width: 100%;

@@ -9,6 +9,12 @@ import {R_DIALOG} from "../ui/r-dialog";
 @Component({
     selector: 'r-timetable',
     template: `
+        <div class="day-titles-fixed">
+            <template ngFor let-i [ngForOf]="[0, 1, 2, 3, 4, 5, 6]">
+                <div *ngIf="displayDay[i]">{{dayNames[i]}}</div>
+            </template>
+        </div>
+
         <div class="time-marks">
             <div *ngFor="let timeStamp of timeStamps"
                  [style.height]="showEvery * scale + 'px'">
