@@ -61,6 +61,13 @@ export class StudentsService {
                 .catch(this.handleError);
     }
 
+    getSchedule(studentID: number): Promise<any[]> {
+        return this.http.get(this._url + '/GetSchedule/' + studentID)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);

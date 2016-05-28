@@ -122,6 +122,25 @@ namespace WebApplication1.Controllers
                                     }));
         }
 
+        // GET: api/Students/GetSchedule/{student-id}
+        [HttpGet("{id}", Name = "GetSchedule")]
+        public IActionResult GetSchedule([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var schedule = Data.Student.GetSchedule(id);
+
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(schedule);
+        }
+
         [HttpGet]
         public IActionResult AddToGroup(int studentID, int groupID)
         {

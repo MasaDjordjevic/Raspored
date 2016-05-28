@@ -396,5 +396,11 @@ namespace MyFirstDnxUnitTests
         //    _context.SaveChanges();
 
         //}
+
+        [Fact]
+        public void GetAssistant()
+        {
+            string a = WebApplication1.Data.Student.GetAssistant(3);
+        }
     }
 }

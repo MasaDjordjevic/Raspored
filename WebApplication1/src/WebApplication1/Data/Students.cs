@@ -73,32 +73,83 @@ namespace WebApplication1.Data
         }
       
 
-        public static List<TimeSpans> GetSchedule(int studentID)
+        public static IEnumerable GetSchedule(int studentID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                List<TimeSpans> groups = (from gs in _context.GroupsStudents
-                    from g in _context.Groups
-                    where gs.studentID == studentID && gs.groupID == g.groupID
-                    select g.timeSpan).ToList();
+                List<int> groups = _context.GroupsStudents.Where(a => a.studentID == studentID).Select(a => a.groupID).ToList();
 
-                //ovako neakko bi trebalo ali nedaj boze da to radi zapravo
-                //List<TimeSpans> groups2 = (from s in _context.GroupsStudents
-                //                           .Include(a=>a.group)
-                //                           where s.studentID == studentID
-                //                           select s.group.timeSpan).ToList();
+                
 
-                List<TimeSpans> activities = (from a in _context.Activities
-                    where a.studentID == studentID
-                    select a.timeSpan).ToList();
+                var returnValue =
+                    _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
+                        .Select(a => new
+                        {
+                            day = a.timeSpan.startDate.DayOfWeek,
+                            startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
+                            durationMinutes = (int)(a.timeSpan.endDate.Subtract(a.timeSpan.startDate)).TotalMinutes,
+                            className = a.course.name,
+                            abbr = a.course.alias,
+                            classroom = a.classroom.number, 
+                            assistant = GetAssistant(a.activityID),
+                            type = a.group.division.divisionType.type,
+                            active = true,
+                            //active = !a.cancelling ?? true,
+                            color = "#f44336",
+                        }).ToList();
 
-                return groups.Concat(activities).ToList();
+                return (from a in returnValue
+                    group a by a.day
+                    into newGroup
+                    orderby newGroup.Key
+                    select newGroup).ToList();
+            }
+        }
+
+        public static string GetAssistant(int activityID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                string res;
+                Activities act = _context.Activities.Include(a=>a.group).First(a => a.activityID == activityID);
+                var assi = _context.GroupsAssistants.Where(a => a.groupID == act.groupID).Select(a => a.assistant);
+                if (assi.Any())
+                {
+                    UniMembers assistant = assi.First();
+                    res = assistant.name + " " +
+                          assistant.surname;
+                }
+                else
+                {
+                    UniMembers creator =
+                        _context.Divisions.Where(a => a.divisionID == act.group.divisionID).Select(a => a.creator).First();
+                    res = creator.name + " " + creator.surname;
+                }
+
+                return res;
+
+            }
+        }
+
+
+        public static
+            List<TimeSpans> GetScheduleTimes(int studentID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                List<int> groups = _context.GroupsStudents.Where(a => a.studentID == studentID).Select(a => a.groupID).ToList();
+
+                return 
+                    _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
+                        .Select(a => a.timeSpan).ToList();
+
+              
             }
         }
 
         public static bool CheckIfAveable(int studentID, TimeSpans time)
         {
-            List<TimeSpans> schedule = GetSchedule(studentID);
+            List<TimeSpans> schedule = GetScheduleTimes(studentID);
             foreach (TimeSpans ts in schedule)
             {
                 if (TimeSpan.Overlap(ts, time))
