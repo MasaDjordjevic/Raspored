@@ -50,6 +50,13 @@ Svaki sledeći put se projekat pokreće samo komandom `npm start`.
 
 	http://docs.efproject.net/en/latest/platforms/aspnetcore/existing-db.html
 	
+## Cudan upit koji nekim cudom radi: 
+	
+Radi UNIQUE constraint ali tako da vrednost kolone moze da bude i NULL
+	
+	CREATE UNIQUE NONCLUSTERED INDEX idx_yourcolumn_notnull
+	ON YourTable(yourcolumn)
+	WHERE yourcolumn IS NOT NULL;
 	
 # Angularove greske
 
