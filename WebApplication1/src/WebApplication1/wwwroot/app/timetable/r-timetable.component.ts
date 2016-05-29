@@ -10,7 +10,7 @@ import {StudentsService} from "../services/students.service";
 @Component({
     selector: 'r-timetable',
     template: `
-    <div *ngIf="classes">
+    <template [ngIf]="classes">
     
 
         <div class="day-titles-fixed">
@@ -95,7 +95,7 @@ import {StudentsService} from "../services/students.service";
             </r-timetable-column>
         </template>
         
-    </div>
+    </template>
     `,
     styleUrls: ['app/timetable/r-timetable.css'],
     providers: [StudentsService],
@@ -133,7 +133,11 @@ export class TimetableComponent {
             .then(
                 sch => this.classes = sch,
                 error => this.errorMessage = error
-            );
+            ).then(() => this.pom());
+    }
+
+    pom(){
+        console.log(this.classes);
     }
 
     dayNames: Array<string> = ["Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak", "Subota", "Nedelja"];
@@ -153,9 +157,9 @@ export class TimetableComponent {
 
         // TODO Ne znam zašto se dole buni Webstorm, TS lepo kompajlira i JS se lepo izvršava.
         var theDay = this.classes[+value.newActivityDay].push(newClass);
-    }
+    } 
 
-    /* public classes = [
+     /*public classes = [
         [
             // ponedeljak
             {startMinutes: 615, durationMinutes: 65, className: "Sistemi baza podataka", abbr: "SBP", classroom: "A2", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#f44336", active: true},
@@ -165,6 +169,7 @@ export class TimetableComponent {
             {startMinutes: 840, durationMinutes: 90, className: "Sistemi baza podataka", abbr: "SBP", classroom: "2xx", assistant: "Medica Dobrog Srca", type: "laboratorijske", color: "#f44336", active: true},
             {startMinutes: 930, durationMinutes: 90, className: "Veb programiranje", abbr: "WEB", classroom: "234", assistant: "Ivica Comic Sans", type: "laboratorijske", color: "#2196F3", active: true},
             {startMinutes: 795, durationMinutes: 45, className: "Veštačka inteligencija", abbr: "VI", classroom: "431", assistant: "Vlada Mihajlovitj", type: "računske", color: "#673AB7", active: true},
+
         ],
         [
             // utorak

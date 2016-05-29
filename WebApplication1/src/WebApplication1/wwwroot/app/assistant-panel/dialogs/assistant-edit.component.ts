@@ -12,8 +12,8 @@ import {RInputText} from "../../ui/r-input-text.component";
 
 @Component({
     selector: "r-assistant-edit",
-    templateUrl: "app/assistant-panel/assistant-edit.component.html",
-    styleUrls:  ["app/assistant-panel/assistant-edit.css"],
+    templateUrl: "app/assistant-panel/dialogs/assistant-edit.component.html",
+    styleUrls:  ["app/assistant-panel/dialogs/assistant-edit.css"],
     providers: [AssistantService],
     directives: [CORE_DIRECTIVES, RInputText],
 })
@@ -26,12 +26,19 @@ export class AssistantEditComponent implements OnInit {
     _hasUnsavedChanges: boolean = false;
 
     constructor(private _service: AssistantService) {
-        this.oldAssistant = this._service.getAssistantById(1);
-        this.newAssistant = this.oldAssistant;
+        //TODO prosledi mu ID ili da funkcija cita ID
+        this.getAssistant();
     }
 
     ngOnInit() {
         
+    }
+
+    getAssistant() {
+        this._service.getAssistant(1).then(
+            asst => this.oldAssistant = asst,
+            error => this.errorMessage = error
+        ).then(()=> this.newAssistant = this.oldAssistant);
     }
 
     onChangeAnything() {

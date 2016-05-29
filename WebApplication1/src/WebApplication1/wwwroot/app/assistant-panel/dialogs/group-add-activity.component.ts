@@ -81,17 +81,10 @@ export class AddActivityComponent {
 
     getGroup(): void {
         this._groupsService.getGroup(this.groupId).then(
-            group => this.pom(group),
+            group => this.group = group,
             error => this.errorMessage = <any>error
-        )
+        ).then(()=> this.getCoursesOfDepartment())
     }
-
-    //opet nece then...
-    pom(gr) {
-        this.group = gr;
-        this.getCoursesOfDepartment();
-    }
-
 
     constructor(private _classroomsService: ClassroomsService,
                 private _coursesService: CoursesService,
