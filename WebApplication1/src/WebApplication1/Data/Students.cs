@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.Data.Entity;
@@ -71,6 +72,20 @@ namespace WebApplication1.Data
                     select s).ToList();
             }
         }
+
+        private static int colorCounter = -1;
+
+        public static string GetNextColor()
+        {
+            string[] boje = new string[] { "#f44336", "#673AB7", "#2196F3", "#8BC34A", "#FFC107" };
+
+            colorCounter++;
+            if (colorCounter == boje.Length)
+                colorCounter = 0;
+
+            return boje[colorCounter];
+
+        }
       
 
         public static IEnumerable GetSchedule(int studentID)
@@ -78,8 +93,6 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 List<int> groups = _context.GroupsStudents.Where(a => a.studentID == studentID).Select(a => a.groupID).ToList();
-
-                
 
                 var returnValue =
                     _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
@@ -93,17 +106,32 @@ namespace WebApplication1.Data
                             classroom = a.classroom.number, 
                             assistant = GetAssistant(a.activityID),
                             type = a.group.division.divisionType.type,
-                            active = true,
-                            //active = !a.cancelling ?? true,
-                            color = "#f44336",
+                            active = CancellingToActive(a.cancelling),
+                            color = GetNextColor(),
                         }).ToList();
+                
 
-                return (from a in returnValue
-                    group a by a.day
-                    into newGroup
-                    orderby newGroup.Key
-                    select newGroup).ToList();
+                var ret = new ArrayList();
+
+                var daysOfWeek = Enum.GetValues(typeof(DayOfWeek))
+                                .OfType<DayOfWeek>()
+                                .OrderBy(day => day < DayOfWeek.Monday);
+
+                // svaki dan mora da postoji bez obzira da li ima casova u njemu
+                foreach (DayOfWeek day in daysOfWeek)
+                {
+                    ret.Add(
+                        (from a in returnValue where a.day == day select a).ToArray()
+                        );
+                }
+
+                return ret;
             }
+        }
+
+        public static bool CancellingToActive(bool? cancelling)
+        {
+            return !cancelling ?? true;
         }
 
         public static string GetAssistant(int activityID)
