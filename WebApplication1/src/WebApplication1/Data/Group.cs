@@ -192,11 +192,18 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                //TODO moguce je da ovo ne radi
+                //proveri da li svi studenti iz grupe slusaju izabrani kurs
+                if (courseID != null)
+                {
+                    var studs = _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
+                    foreach (var stud in studs)
+                    {
+                        if (!_context.StudentsCourses.Any(a => a.studentID == stud && a.courseID == courseID.Value))
+                            return;
+                    }
+                }
+
                 _context.TimeSpans.Add(timeSpan);
-
-                //TODO proveri da li svi studenti iz grupe slusaju izabrani kurs
-
 
                 Activities act = new Activities
                 {
@@ -210,6 +217,35 @@ namespace WebApplication1.Data
                     cancelling = false,
                 };
                 _context.Activities.Add(act);
+                _context.SaveChanges();
+            }
+        }
+
+        public static void AddAsstant(int groupID, int assistantID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                GroupsAssistants gs = new GroupsAssistants
+                {
+                    assistantID = assistantID,
+                    groupID = groupID
+                };
+                _context.GroupsAssistants.Add(gs);
+
+
+                // ako asistent nije bio zaduzen za kurs dodati ga
+
+                int? courseID = _context.Groups.Where(a => a.groupID == groupID).Select(a => a.division.courseID).First();
+                if (courseID != null && !_context.AssistantsCourses.Any(a => a.assistantID == assistantID && a.courseID == courseID.Value))
+                {
+                    AssistantsCourses asscour = new AssistantsCourses
+                    {
+                        assistantID = assistantID,
+                        courseID = courseID.Value
+                    };
+                    _context.AssistantsCourses.Add(asscour);
+                }
+
                 _context.SaveChanges();
             }
         }
