@@ -11,9 +11,17 @@ import {Control} from "angular2/common";
 @Component({
     selector: 'r-assistant-panel-options',
     template: `
-    <form ngForm style="font-size: 2em">
-        <r-input class="light-theme" label="meh" [control]="control"></r-input> <br>
-
+    <form ngForm style="font-size: 1.2em">
+        <r-input class="light-theme" label="Labela" [(val)]="inputText"></r-input> <br/>
+        {{inputText}}
+        <br/> <br/>
+        <r-dropdown [(val)]="dropdown" label="Labela bre">
+            <r-dropdown-item value="b1">boob1</r-dropdown-item>
+            <r-dropdown-item value="b2">boob2</r-dropdown-item>
+            <r-dropdown-item value="b3">boob3</r-dropdown-item>
+            <r-dropdown-item value="b4">boob4</r-dropdown-item>
+        </r-dropdown> <br/>
+        {{dropdown}}
     </form>
     `,
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
@@ -22,12 +30,10 @@ import {Control} from "angular2/common";
 
 export class AssistantPanelOptionsComponent {
 
-    control: Control;
-    controlValue$: any;
+    public inputText: string = "boobs";
+    public dropdown: string = "b2";
 
     constructor() {
-        this.control = new Control();
-        this.controlValue$ = this.control.valueChanges;
     }
 
     assistant: Assistant;

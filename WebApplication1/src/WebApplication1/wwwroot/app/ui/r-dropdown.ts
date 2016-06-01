@@ -1,7 +1,9 @@
-import {Component, Directive, Input, Output,
+import {
+    Component, Directive, Input, Output,
     ContentChildren, EventEmitter, ElementRef,
-    AfterContentInit}
-        from "angular2/core";
+    AfterContentInit, OnInit
+}
+    from "angular2/core";
 import {QueryList} from "angular2/src/core/linker/query_list";
 
 
@@ -73,7 +75,7 @@ export class RDropdownEmitterService {
     `
 })
 
-export class RDropdownItemComponent {
+export class RDropdownItemComponent implements OnInit {
 
     // Jednoznačno definise opciju
     @Input() public value: string;
@@ -88,9 +90,11 @@ export class RDropdownItemComponent {
     }
 
     constructor(
-        private _element: ElementRef,
+        public _element: ElementRef,
         private _emitter: RDropdownEmitterService
     ) { }
+
+    ngOnInit() { }
 
     // on click
     select() {
@@ -117,7 +121,7 @@ export class RDropdownItemComponent {
 export class RDropdownDefaultItemDirective implements AfterContentInit {
 
     constructor(
-        private _emitter: RDropdownEmitterService,
+        public _emitter: RDropdownEmitterService,
         private _dropdownItem: RDropdownItemComponent
     ) { }
 
@@ -137,6 +141,7 @@ export class RDropdownDefaultItemDirective implements AfterContentInit {
     selector: 'r-dropdown',
     template: `
         <div class="r-dropdown" (click)="toggleExpanded()">
+            <label>{{label}}</label>
             <span>{{currentSelectedStr}}</span>
             <div class="r-dropdown-items-wrapper"
                  [class.hidden]="!isExpanded"
@@ -150,19 +155,27 @@ export class RDropdownDefaultItemDirective implements AfterContentInit {
     providers: [RDropdownEmitterService],
     host: {
         "[value]": "val",
-        "(input)": "valChange.next($event.target.value)"
+        "(click)": "onClick($event)"
     }
 })
 
 export class RDropdownComponent implements AfterContentInit {
 
+    public onClick($event) {
+        //console.log($event);
+        if (!$event.target.classList.contains("r-dropdown-item")) return; // nastavi samo ako je klik na r-dropdown-item
+        //console.log($event.target.parentElement.attributes.value.nodeValue);
+        this.valChange.next($event.target.parentElement.attributes.value.nodeValue); // pomozi bog
+    }
+
     @ContentChildren(RDropdownItemComponent) _items:
         QueryList<RDropdownItemComponent>;
 
-    @Input() val: string;
+    @Input()  val: string;
+    @Input()  label: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
-    public currentSelectedValue: number;
+    public currentSelectedValue: string;
     public currentSelectedStr: string;
     private _currentSelectedOffset: number = 0; // redni broj, počinje od nule
 
@@ -175,7 +188,7 @@ export class RDropdownComponent implements AfterContentInit {
         // Prodji kroz sve elemente do i bez offseta i saberi im visine
         // Ove visine uključuju padding, margine, itd. U pikselima.
         var sum = 0;
-        console.log(this._items.toArray());
+        //console.log(this._items.toArray());
         for (let i = 0; i < this.currentSelectedOffset; i++) {
             let el = this._items.toArray()[i].element.nativeElement;
             el.parentNode.style.display = el.style.display = "block";
@@ -219,7 +232,7 @@ export class RDropdownComponent implements AfterContentInit {
     ) {
 
         this.emitter.get("channel1").subscribe(msg => {
-            console.log(msg);
+            //console.log(msg);
             this.currentSelectedValue = msg.value;
             this.currentSelectedStr = msg.str;
             this.currentSelectedOffset = msg.offset;
@@ -228,9 +241,29 @@ export class RDropdownComponent implements AfterContentInit {
     }
 
     ngAfterContentInit() {
-        // Dodeli offset (redni broj) svima
-        for (let i = 0; i < this._items.toArray().length; i++) {
-            this._items.toArray()[i].offset = i;
+        var itemsArray = this._items.toArray();
+        var len = itemsArray.length;
+        for (let i = 0; i < len; i++) {
+            var currItem = itemsArray[i];
+            // Dodeli offset (redni broj) svima
+            currItem.offset = i;
+
+            // Pronadji dete koje ima isti value kao this.val i selektiraj ga
+            if (currItem.value === this.val) {
+                this.currentSelectedStr = currItem._element.nativeElement.innerText.trim();
+                this.currentSelectedValue = currItem.value;
+                this.currentSelectedOffset = currItem.offset;
+            }
+        }
+
+        // Ako nije nadjeno dete koje ime ima isti value kao this.val,
+        // selektiramo prvu ponudjenu opciju iz dropdowna.
+        console.log(this.currentSelectedValue);
+        //debugger;
+        if (!this.currentSelectedValue) {
+            this.currentSelectedStr = itemsArray[0]._element.nativeElement.innerText.trim();
+            this.currentSelectedValue = currItem.value;
+            this.currentSelectedOffset = currItem.offset;
         }
     }
 

@@ -15,6 +15,20 @@
     align-items: flex-end; // dole
     cursor: pointer;
 
+    label {
+      position: absolute;
+      color: rgba(black, .45);
+      padding: 0;
+      margin: 0;
+      top: 0;
+      font-size: .6em;
+      font-weight: normal;
+
+      &::after {
+        content: ':';
+      }
+    }
+
     span {
       display: inline-block;
       box-shadow: 0 -1px 0 0 rgba(black, .2) inset;

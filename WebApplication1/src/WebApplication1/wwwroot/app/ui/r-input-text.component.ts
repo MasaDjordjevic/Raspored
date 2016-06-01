@@ -10,16 +10,16 @@ import {Control, ControlGroup} from "angular2/common";
     selector: "r-input",
     template: `
     <label [ngClass]="{collapsed: val && val != '' || _isFocused}">{{label}}</label>
-    <input type="text" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" [ngFormControl]="control" [required]="required ? 'true' : null" #spy/>
-    <div class="validation-icon">
+    <input type="text" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" [required]="required ? 'true' : null" #spy/>
+    <!--<div class="validation-icon">
         <span *ngIf="control._touched && !control.valid">X</span>
-    </div>
-    <div class="validation-effect" [class.visible]="control._touched && !control.valid"></div>
+    </div>-->
+    <!--<div class="validation-effect" [class.visible]="control._touched && !control.valid"></div>-->
     <div class="line-effect" [ngClass]="{highlight: _isFocused}"></div>
     `,
     styleUrls: ["app/ui/r-input-text.component.css"],
     host: {
-        "[value]": 'val',
+        "[value]": "val",
         "(input)": "valChange.next($event.target.value)"
     }
 })
@@ -27,7 +27,6 @@ import {Control, ControlGroup} from "angular2/common";
 export class RInputText implements AfterViewInit {
 
     @Input() required: boolean = true;
-    @Input() control: Control;
     @Input() label: string = "";
     @Input() val: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
