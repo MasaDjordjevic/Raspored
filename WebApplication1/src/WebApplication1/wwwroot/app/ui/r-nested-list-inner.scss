@@ -1,0 +1,33 @@
+﻿@import "../palette";
+@import "../ljubenovic-toolkit";
+
+:host {
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  box-shadow: 0 -1px rgba(black, .05) inset;
+
+  .list-title {
+    font-weight: bold;
+    cursor: pointer;
+    padding: .6em .4em;
+    font-size: 1.05em;
+    display: flex;
+    justify-content: space-between;
+
+    .carat {
+      font-size: .7em;
+      color: rgba(black, .2);
+      transition: transform .2s ease;
+
+      &.rotate {
+        transform: rotate(180deg);
+      }
+    }
+
+  }
+
+  .list-content {
+  }
+}

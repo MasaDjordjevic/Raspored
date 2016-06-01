@@ -30,11 +30,11 @@
 
 :host.r-button-flat {
   background-color: transparent;
-  color: rgba(palette($blue), .9);
+  color: rgba(palette($blue, 500), .9); // default
 
   &:hover:not([disabled]) {
     @include z-depth(.5);
-    background-color: rgba(palette($blue), .1);
+    background-color: rgba(palette($blue), .1); // default
   }
 
   &:active {
@@ -42,7 +42,49 @@
   }
 
   &[disabled] {
-    color: rgba(palette($blue), .5);
+    color: rgba(palette($blue), .5); // default
+  }
+
+  &.red {
+    color: rgba( palette($red, 500), .9);
+    &:hover:not([disabled]) {
+      background-color: rgba(palette($red), .1);
+    }
+  }
+
+  &.yellow {
+    color: rgba( palette($yellow, 500), .9);
+    &:hover:not([disabled]) {
+      background-color: rgba(palette($yellow), .1);
+    }
+  }
+
+  &.blue {
+    color: rgba( palette($blue, 500), .9);
+    &:hover:not([disabled]) {
+      background-color: rgba(palette($blue), .1);
+    }
+  }
+
+  &.green {
+    color: rgba( palette($green, 500), .9);
+    &:hover:not([disabled]) {
+      background-color: rgba(palette($green), .1);
+    }
+  }
+
+  &.orange {
+    color: rgba( palette($orange, 500), .9);
+    &:hover:not([disabled]) {
+      background-color: rgba(palette($orange), .1);
+    }
+  }
+
+  &.purple {
+    color: rgba( palette($purple, 500), .9);
+    &:hover:not([disabled]) {
+      background-color: rgba(palette($purple), .1);
+    }
   }
 }
 
@@ -62,6 +104,56 @@
   &[disabled] {
     background-color: rgba(palette($blue, 500), .7);
     color: rgba(white, .6);
+  }
+
+  // Boje
+
+  &.red {
+    background-color: palette($red, 500);
+
+    &:hover:not([disabled]) {
+      background-color: palette($red, 400);
+    }
+  }
+
+  &.yellow {
+    background-color: palette($yellow, 500);
+
+    &:hover:not([disabled]) {
+      background-color: palette($yellow, 400);
+    }
+  }
+
+  &.blue {
+    background-color: palette($blue, 500);
+
+    &:hover:not([disabled]) {
+      background-color: palette($blue, 400);
+    }
+  }
+
+  &.orange {
+    background-color: palette($orange, 500);
+
+    &:hover:not([disabled]) {
+      background-color: palette($orange, 400);
+    }
+  }
+
+  &.green {
+    background-color: palette($green, 500);
+
+    &:hover:not([disabled]) {
+      background-color: palette($green, 400);
+    }
+  }
+
+  &.purple {
+    background-color: palette($purple, 500);
+
+    &:hover:not([disabled]) {
+      background-color: palette($purple, 400);
+    }
   }
 }
 

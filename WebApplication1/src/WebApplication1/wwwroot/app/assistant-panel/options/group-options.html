@@ -40,34 +40,40 @@
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
-                text="JSON" (click)="debuggingDialog.open()">
+                text="JSON" (click)="debuggingDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <div class="flex-spacer"></div>
 
         <button r-button raised #editGroupButton
                 text="Izmeni grupu"
-                (click)="editGroupDialog.open()">
+                (click)="editGroupDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #addClass
                 text="Zakazi cas"
-                (click)="addClassDialog.open()">
+                (click)="addClassDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #cancelClassButton
                 text="Otkazi cas"
-                (click)="cancelClassDialog.open()">
+                (click)="cancelClassDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #combinedScheduleButton
                 text="Kombinovani raspored"
-                (click)="combinedScheduleDialog.open()">
+                (click)="combinedScheduleDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #addNotificationButton
                 text="Dodaj obaveštenje"
-                (click)="addNotificationDialog.open()">
+                (click)="addNotificationDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
     </div>

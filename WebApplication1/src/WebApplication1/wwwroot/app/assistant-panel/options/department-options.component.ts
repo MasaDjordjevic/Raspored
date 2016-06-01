@@ -26,6 +26,9 @@ import {StudentSearchComponent} from "../dialogs/student-search.component";
 
 export class DepartmentOptionsComponent {
 
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
     department: Department;
     errorMessage: string;
 

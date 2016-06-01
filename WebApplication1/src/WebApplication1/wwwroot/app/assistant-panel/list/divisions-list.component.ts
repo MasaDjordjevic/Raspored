@@ -14,7 +14,7 @@ import {TypeDivisions} from '../../models/TypeDivisions';
 import {Division} from '../../models/Division';
 
 // UI
-import {RNestedList} from "../../ui/r-nested-list";
+import {R_NESTED_LIST} from "../../ui/r-nested-list";
 
 // Interfaces
 import {INestedList, NestedList} from "../../INestedList";
@@ -23,20 +23,29 @@ import {INestedList, NestedList} from "../../INestedList";
 
 @Component({
     selector: 'r-divisions-list',
-    template: `
-    <r-nested-list
-        [titleString]="titleString"
-        [data]="nestedListData"
-        (selectItem)="onSelect($event)"
-    >
+    template: `    
+    <r-nested-list title="Raspodele" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
+        <r-nested-list-inner *ngFor="let typeDivision of typeDivisions" [title]="typeDivision.type">
+            <r-list-inner-item
+                *ngFor="let division of typeDivision.divisions"
+                [value]="division.divisionID"
+                (click)="onSelect(division.divisionID)"
+                [class.selected]="division.divisionID === selectedDivisionId"
+            >
+                <pre>{{division | json}}</pre>
+            </r-list-inner-item>
+        </r-nested-list-inner>
     </r-nested-list>
     `,
     styleUrls: ['app/assistant-panel/list/assistant-panel-list.css'],
-    directives: [RNestedList],
+    directives: [R_NESTED_LIST],
     providers: [DivisionsService],
 })
 
 export class DivisionsListComponent implements OnInit {
+
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     typeDivisions: TypeDivisions[];
     errorMessage: string;

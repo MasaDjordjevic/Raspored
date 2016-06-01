@@ -26,6 +26,9 @@ import {DivisionEditComponent} from "../dialogs/division-edit.component";
 
 export class DivisionOptionsComponent {
 
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
     division: Division;
     errorMessage: string;
     emptyGroup: any; //sluzi za dodavanje nove grupe preko edit-group komponente

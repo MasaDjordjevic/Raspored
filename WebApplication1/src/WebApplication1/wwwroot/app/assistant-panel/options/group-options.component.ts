@@ -24,6 +24,9 @@ import {AddActivityComponent} from "../dialogs/group-add-activity.component";
 
 export class GroupOptionsComponent {
 
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
     group: Group;
     errorMessage: string;
 

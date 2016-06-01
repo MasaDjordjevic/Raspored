@@ -47,34 +47,40 @@
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
-                text="JSON" (click)="debuggingDialog.open()">
+                text="JSON" (click)="debuggingDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <div class="flex-spacer"></div>
 
         <button r-button raised #editDivisionButton
                 text="Izmeni raspodelu"
-                (click)="editDivisionDialog.open()">
+                (click)="editDivisionDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #newGroupButton
                 text="Nova grupa"
-                (click)="newGroupDialog.open()">
+                (click)="newGroupDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #copyDivisionButton
                 text="Kopiraj raspodelu"
-                (click)="copyDivisionDialog.open()">
+                (click)="copyDivisionDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #groupsButton
                 text="Grupe"
-                (click)="groupsDialog.open()">
+                (click)="groupsDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #exportDivisionButton
                 text="Izvezi raspodelu"
-                (click)="exportDivisionDialog.open()">
+                (click)="exportDivisionDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
     </div>
 </div>

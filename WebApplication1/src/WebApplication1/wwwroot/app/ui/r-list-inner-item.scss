@@ -1,0 +1,12 @@
+@import "../ljubenovic-toolkit";
+@import "../palette";
+
+:host {
+  display: block;
+  padding: 1ex 1em;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(black, .1);
+  }
+}

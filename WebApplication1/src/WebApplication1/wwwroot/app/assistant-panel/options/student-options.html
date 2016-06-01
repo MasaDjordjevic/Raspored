@@ -29,14 +29,16 @@
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
-                text="JSON" (click)="debuggingDialog.open()">
+                text="JSON" (click)="debuggingDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <div class="flex-spacer"></div>
 
         <button r-button raised #addToGroupButton
                 text="Dodaj u grupu"
-                (click)="addToGroupDialog.open()">
+                (click)="addToGroupDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
     </div>
 </div>

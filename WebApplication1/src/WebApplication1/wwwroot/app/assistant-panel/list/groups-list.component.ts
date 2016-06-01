@@ -13,22 +13,34 @@ import {GroupsService} from '../../services/groups.service';
 
 // UI
 import {RList} from '../../ui/r-list';
+import {R_NESTED_LIST} from "../../ui/r-nested-list";
 
 
 @Component({
     selector: 'r-groups-list',
     template: `
-    <r-list [titleString]="titleString"
-            [data]="listData"
-            (selectItem)="onSelect($event)">
-    </r-list>
+    <r-nested-list title="Grupe" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
+        <r-list-inner-item
+            *ngFor="let group of groups"
+            [value]="group.groupID"
+            (click)="onSelect(group.groupID)"
+            [class.selected]="group.groupID === selectedGroupId"
+            style="display: flex; justify-content: space-between;"
+        >
+            <span>{{group.name}}</span>
+            <span>({{group.classroom.number}})</span>
+        </r-list-inner-item>
+    </r-nested-list>
     `,
     styleUrls: ['app/assistant-panel/list/assistant-panel-list.css'],
-    directives: [RList],
+    directives: [RList, R_NESTED_LIST],
     providers: [GroupsService],
 })
 
 export class GroupsListComponent implements OnInit {
+
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     groups: any[];
     errorMessage: string;

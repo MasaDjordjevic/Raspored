@@ -117,6 +117,7 @@ export class TimetableComponent {
     displayDay: Array<boolean> = [true, true, true, true, true, true, false];
 
     public addNewActivity(value) {
+        //TODO
         alert("Sledi mock dodavanje. Implementirati AJAX poziv.");
         var newClass = {
             startMinutes: value.newActivityStart,

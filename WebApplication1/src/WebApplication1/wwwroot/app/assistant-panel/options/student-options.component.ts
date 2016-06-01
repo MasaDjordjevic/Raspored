@@ -19,6 +19,9 @@ import {AddStudentToGroupComponent} from "../dialogs/student-add-to-group.compon
 })
 
 export class StudentOptionsComponent {
+    
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     student: any;
     errorMessage: string;

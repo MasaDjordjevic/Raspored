@@ -5,24 +5,34 @@ import {YearDepartments} from "../../models/YearDepartments";
 import {DepartmentService} from "../../services/department.service";
 import {Department} from "../../models/Department";
 import {NestedList} from "../../INestedList";
-import {RNestedList} from "../../ui/r-nested-list";
+import {R_NESTED_LIST} from "../../ui/r-nested-list";
 
 
 @Component({
     selector: 'r-departments-list',
     template: `
-    <r-nested-list
-        [titleString]="titleString"
-        [data]="nestedListData"
-        (selectItem)="onSelect($event)">
+    <r-nested-list title="Smerovi" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
+        <r-nested-list-inner *ngFor="let yearDepartment of yearDepartments" [title]="'Godina '.concat(yearDepartment.year)">
+            <r-list-inner-item
+                *ngFor="let department of yearDepartment.departments"
+                [value]="department.departmentID"
+                (click)="onSelect(department.departmentID)"
+                [class.selected]="department.departmentID === selectedDepartmentID"
+            >
+                {{department.departmentName}}
+            </r-list-inner-item>
+        </r-nested-list-inner>
     </r-nested-list>
     `,
     styleUrls: ['app/assistant-panel/list/assistant-panel-list.css'],
-    directives: [RNestedList],
+    directives: [R_NESTED_LIST],
     providers: [DepartmentService]
 })
 
 export class DepartmentsListComponent implements OnInit {
+
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     titleString: string = "Smerovi";
     private yearDepartments: YearDepartments[];
@@ -40,26 +50,6 @@ export class DepartmentsListComponent implements OnInit {
 
     ngOnInit() {
         this.getDepartmentsByYear();
-    }
-
-    get nestedListData() {
-        if (!this.yearDepartments) return;
-        if (!this._nestedListData) this._nestedListData = new Array<NestedList>();
-        for (let i = 0; i < this.yearDepartments.length; i++) {
-            if (!this._nestedListData[i]) this._nestedListData[i] = new NestedList;
-            this._nestedListData[i].outer = {
-                s: this.yearDepartments[i].year + " godina",
-                id: this.yearDepartments[i].year
-            };
-            if (!this._nestedListData[i].inner) this._nestedListData[i].inner = [];
-            for (let j = 0; j < this.yearDepartments[i].departments.length; j++) {
-                this._nestedListData[i].inner[j] = {
-                    s: this.yearDepartments[i].departments[j].departmentName,
-                    id: this.yearDepartments[i].departments[j].departmentID
-                };
-            }
-        }
-        return this._nestedListData;
     }
 
     set nestedListData(data) {

@@ -33,6 +33,11 @@ import {StudentOptionsComponent} from "./options/student-options.component";
 
 export class AssistantPanelComponent {
 
+    public departmentPrimaryColor: string = "MaterialOrange";
+    public divisionPrimaryColor: string = "MaterialBlue";
+    public groupPrimaryColor: string = "MaterialRed";
+    public studentPrimaryColor: string = "MaterialGreen";
+
     private _assistant: Assistant;
     private _selectedDepartmentId: number = -1;
     private _selectedDivisionId: number = -1;

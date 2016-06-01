@@ -40,26 +40,30 @@
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
-                text="JSON" (click)="debuggingDialog.open()">
+                text="JSON" (click)="debuggingDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
         <div class="flex-spacer"></div>
 
         <button r-button raised #newDivisionButton
                 text="Nova raspodela"
-                (click)="newDivisionDialog.open()">
+                (click)="newDivisionDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
 
         <button r-button raised #allStudentsButton
                 [text]="'Studenti'"
-                (click)="allStudentsDialog.open()">
+                (click)="allStudentsDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
 
 
         <button r-button raised #globalScheduleButton
                 [text]="'Globani raspored'"
-                (click)="globalScheduleDialog.open()">
+                (click)="globalScheduleDialog.open()"
+                [primaryColor]="primaryColor">
         </button>
     </div>
 </div>
