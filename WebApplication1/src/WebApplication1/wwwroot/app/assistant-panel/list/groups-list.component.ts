@@ -28,7 +28,7 @@ import {R_NESTED_LIST} from "../../ui/r-nested-list";
             style="display: flex; justify-content: space-between;"
         >
             <span>{{group.name}}</span>
-            <span>({{group.classroom.number}})</span>
+            <span *ngIf="group.classroom">({{group.classroom.number}})</span>
         </r-list-inner-item>
     </r-nested-list>
     `,
