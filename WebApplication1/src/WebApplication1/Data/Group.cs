@@ -39,6 +39,25 @@ namespace WebApplication1.Data
             }
         }
 
+        public static void RemoveGroup(Groups group)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                //brisanje oglasa (nekim cudom se ne obrise)
+
+                var ads = _context.Periods.Where(a => a.groupID == group.groupID).Select(a => a.ad).ToList();
+                foreach (Ads ad in ads)
+                {
+                    _context.Ads.Remove(ad);
+                }
+                
+
+                //brisanje same grupe
+                _context.Groups.Remove(group);
+                _context.SaveChanges();
+            }
+        }
+
         public static IEnumerable GetGroupsOfDivision(int divisionID)
         {
             using (RasporedContext _context = new RasporedContext())

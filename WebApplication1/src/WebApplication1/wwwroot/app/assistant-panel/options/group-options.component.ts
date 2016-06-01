@@ -49,5 +49,10 @@ export class GroupOptionsComponent {
             error => this.errorMessage = <any>error
         )
     }
+    
+    removeGroup() {
+        //TODO uradi nesto pametnije sa odgovorom
+        this._service.removeGroup(this.groupId).then(any => console.log(any));
+    }
 
 }

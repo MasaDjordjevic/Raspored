@@ -241,16 +241,15 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            Groups groups = _context.Groups.Single(m => m.groupID == id);
-            if (groups == null)
+            Groups group = _context.Groups.Single(m => m.groupID == id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
 
-            _context.Groups.Remove(groups);
-            _context.SaveChanges();
+            Data.Group.RemoveGroup(group);
 
-            return Ok(groups);
+            return Ok(group);
         }
 
         protected override void Dispose(bool disposing)
