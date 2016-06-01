@@ -190,8 +190,11 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-
                 //proveri da li dolazi do nekonzistentnosti raspodele
+                if (Data.Group.CheckConsistencyOfGroup(groupID, new List<int>() { studentID }))
+                {
+                    return;
+                }
 
                 GroupsStudents gs = new GroupsStudents
                 {
