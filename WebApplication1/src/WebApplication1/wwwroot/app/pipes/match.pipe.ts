@@ -2,6 +2,7 @@ import {Pipe, PipeTransform} from "angular2/core";
 
 /**
  * Filtrira se niz ARR na osnovnu stringa STR.
+ * Radi samo sa studentima.
  */
 
 @Pipe({
@@ -15,7 +16,7 @@ export class MatchPipe implements PipeTransform {
         }
 
         // Ako je search query prazan
-        if (str == "" || str == null || str == undefined) {
+        if (!str) {
             return arr;
         }
 
@@ -27,7 +28,7 @@ export class MatchPipe implements PipeTransform {
             //ret2 = arr.filter(item => !!item.UniMembers.surname.match(regex));
             ret3 = arr.filter(item => !!item.indexNumber.toString().match(regex));
         } catch (e) {
-            console.log("exception");
+            console.warn("exception");
         }
 
         // Unija... Prvo spojimo sve

@@ -16,6 +16,6 @@ export class HighlightPipe implements PipeTransform {
         var s: string = "(" + query + ")";
         var regex = new RegExp(s, "gi");
         
-        return value.replace(regex, "<b>$1</b>");
+        return value.replace(regex, "<mark>$1</mark>");
     }
 }

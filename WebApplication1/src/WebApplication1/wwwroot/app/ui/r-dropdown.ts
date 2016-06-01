@@ -86,7 +86,7 @@ export class RDropdownItemComponent implements OnInit {
     // Tekst koji je prikazan kao opcija (u ng-content)
     // Read-only
     get str() {
-        return this._element.nativeElement.innerText.trim();
+        return this.element.nativeElement.innerText.trim();
     }
 
     constructor(
