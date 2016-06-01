@@ -99,8 +99,8 @@ namespace WebApplication1.Data
                 //provera konzistentnosti raspodele
                 var groups =
                     _context.Groups.Where(
-                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID);
-                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID);
+                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID).ToList();
+                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList();
 
                 foreach (Students stud in students)
                 {
@@ -134,8 +134,8 @@ namespace WebApplication1.Data
                 //provera konzistentnosti raspodele
                 var groups =
                     _context.Groups.Where(
-                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID);
-                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID);
+                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID).ToList();
+                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList();
 
                 foreach (int stud in students)
                 {
@@ -165,17 +165,6 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                //provera da li studenti vec postoje u toj grupi
-                if (groupID != null)
-                {
-                    var otherStuds =
-                        _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
-                    if (students.Any(stud => otherStuds.Contains(stud)))
-                    {
-                        return false;
-                    }
-                }
-
                 //proverava studente u ostalim grupama raspodele
 
                 var groups =

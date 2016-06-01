@@ -191,6 +191,17 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 //proveri da li dolazi do nekonzistentnosti raspodele
+                //provera da li student vec postoji u toj grupi
+                if (groupID != null)
+                {
+                    var otherStuds =
+                        _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
+                    if (otherStuds.Contains(studentID))
+                    {
+                        return;
+                    }
+                }
+                //proverva konzistentnost sa ostalim grupama
                 if (Data.Group.CheckConsistencyOfGroup(groupID, new List<int>() { studentID }))
                 {
                     return;
