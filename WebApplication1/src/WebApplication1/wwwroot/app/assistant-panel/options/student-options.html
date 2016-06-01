@@ -22,6 +22,15 @@
         </div>
     </r-dialog>
 
+    <r-dialog #removeFromGroupDialog [source]="removeFromGroupButton">
+        <div style="width: 500px; height:600px;">
+            <label>Da li ste sigurni?</label>
+            <button r-button raised text="izbaci" (click)="removeFromGroup()"></button>
+            <!-- TODO na ne da se minimizira dialog -->
+            <button r-button flat text="otkazi"></button>
+        </div>
+    </r-dialog>
+
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
         <pre>{{student | json | trim}}</pre>
     </r-dialog>
@@ -38,6 +47,12 @@
         <button r-button raised #addToGroupButton
                 text="Dodaj u grupu"
                 (click)="addToGroupDialog.open()"
+                [primaryColor]="primaryColor">
+        </button>
+
+        <button r-button raised #removeFromGroupButton
+                text="Izbaci iz grupe"
+                (click)="removeFromGroupDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
     </div>

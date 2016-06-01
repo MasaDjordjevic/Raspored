@@ -23,6 +23,7 @@ export class StudentOptionsComponent {
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
+
     student: any;
     errorMessage: string;
 
@@ -37,6 +38,9 @@ export class StudentOptionsComponent {
         return this._studentId;
     }
 
+    //grupa koja je selektirana trenutno
+    @Input() groupId: number;
+
     constructor(private _service: StudentsService) { }
 
     getStudent(): void {
@@ -44,6 +48,11 @@ export class StudentOptionsComponent {
             student => this.student = student,
             error => this.errorMessage = <any>error
         );
+    }
+
+    removeFromGroup(){
+        //TODO nesto pametnije sa odgovorom
+        this._service.removeFromGroup(this.studentId, this.groupId).then(any => console.log(any));
     }
 
 }

@@ -202,5 +202,21 @@ namespace WebApplication1.Data
                 _context.SaveChanges();
             }
         }
+
+        public static bool RemoveFromGroup(int studentID, int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var query = _context.GroupsStudents.Where(a => a.studentID == studentID && a.groupID == groupID);
+                if (query.Any())
+                {
+                    _context.GroupsStudents.Remove(query.First());
+                    _context.SaveChanges();
+                    return true;
+                }
+                else 
+                    return false;
+            }
+        }
     }
 }
