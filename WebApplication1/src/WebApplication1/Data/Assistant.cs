@@ -25,17 +25,23 @@ namespace WebApplication1.Data
             }
         }
 
+
+        //vraca asistente na osnovu grupe, ako grupa pripada raspodeli koja odgovara kursu onda vraca sve asistente zaduzene za taj kurs, inace vraca sve asistente
         public static IEnumerable GetAssistantsByGroupID(int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
                 int? courseID = _context.Groups.Where(a => a.groupID == groupID).Select(a => a.division.courseID).First();
                 if (courseID == null)
-                    _context.UniMembers.Where(a => a.studentID == null).ToList();
-                return
-                    _context.AssistantsCourses.Where(a => a.courseID == courseID.Value)
-                        .Select(a => a.assistant)
-                        .ToList();
+                {
+                    return _context.UniMembers.Where(a => a.studentID == null).ToList();
+                }
+                else
+                {
+                    return _context.AssistantsCourses.Where(a => a.courseID == courseID.Value)
+                                            .Select(a => a.assistant)
+                                            .ToList();
+                }
             }
         }
 

@@ -25,6 +25,7 @@ export class AssistantService {
             .catch(this.handleError);
     }
 
+    //vraca sve asistente ako raspodela kojoj pripada grupa nije kreirana po kursu ili vraca sve asistente tog kursa
     getAssistantsByGroupID(groupID: number): Promise<Assistant[]>{
         return this.http.get(this._url + "/GetAssistantsByGroupID/" + groupID )
             .toPromise()
