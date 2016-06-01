@@ -7,8 +7,8 @@ namespace WebApplication1.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
-            options.UseSqlServer(@"Server=DESKTOP-RFKNG80\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            //options.UseSqlServer(@"Server=DESKTOP-RFKNG80\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,17 +25,17 @@ namespace WebApplication1.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.activitySchedule).WithMany(p => p.Activities).HasForeignKey(d => d.activityScheduleID);
+                entity.HasOne(d => d.activitySchedule).WithMany(p => p.Activities).HasForeignKey(d => d.activityScheduleID).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.assistant).WithMany(p => p.Activities).HasForeignKey(d => d.assistantID);
 
-                entity.HasOne(d => d.classroom).WithMany(p => p.Activities).HasForeignKey(d => d.classroomID);
+                entity.HasOne(d => d.classroom).WithMany(p => p.Activities).HasForeignKey(d => d.classroomID).OnDelete(DeleteBehavior.SetNull);
 
-                entity.HasOne(d => d.course).WithMany(p => p.Activities).HasForeignKey(d => d.courseID);
+                entity.HasOne(d => d.course).WithMany(p => p.Activities).HasForeignKey(d => d.courseID).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(d => d.group).WithMany(p => p.Activities).HasForeignKey(d => d.groupID);
+                entity.HasOne(d => d.group).WithMany(p => p.Activities).HasForeignKey(d => d.groupID).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(d => d.student).WithMany(p => p.Activities).HasForeignKey(d => d.studentID);
+                entity.HasOne(d => d.student).WithMany(p => p.Activities).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.timeSpan).WithMany(p => p.Activities).HasForeignKey(d => d.timeSpanID).OnDelete(DeleteBehavior.Restrict);
             });
@@ -59,9 +59,9 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.adID);
 
-                entity.HasOne(d => d.division).WithMany(p => p.Ads).HasForeignKey(d => d.divisionID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.division).WithMany(p => p.Ads).HasForeignKey(d => d.divisionID);
 
-                entity.HasOne(d => d.student).WithMany(p => p.Ads).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.student).WithMany(p => p.Ads).HasForeignKey(d => d.studentID);
             });
 
             modelBuilder.Entity<AssistantsCourses>(entity =>
@@ -70,9 +70,9 @@ namespace WebApplication1.Models
 
                 entity.Property(e => e.classType).HasMaxLength(50);
 
-                entity.HasOne(d => d.assistant).WithMany(p => p.AssistantsCourses).HasForeignKey(d => d.assistantID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.assistant).WithMany(p => p.AssistantsCourses).HasForeignKey(d => d.assistantID);
 
-                entity.HasOne(d => d.course).WithMany(p => p.AssistantsCourses).HasForeignKey(d => d.courseID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.course).WithMany(p => p.AssistantsCourses).HasForeignKey(d => d.courseID);
             });
 
             modelBuilder.Entity<Classrooms>(entity =>
@@ -131,11 +131,11 @@ namespace WebApplication1.Models
 
                 entity.Property(e => e.name).HasMaxLength(50);
 
-                entity.HasOne(d => d.course).WithMany(p => p.Divisions).HasForeignKey(d => d.courseID);
+                entity.HasOne(d => d.course).WithMany(p => p.Divisions).HasForeignKey(d => d.courseID).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.creator).WithMany(p => p.Divisions).HasForeignKey(d => d.creatorID).OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(d => d.department).WithMany(p => p.Divisions).HasForeignKey(d => d.departmentID);
+                entity.HasOne(d => d.department).WithMany(p => p.Divisions).HasForeignKey(d => d.departmentID).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(d => d.divisionType).WithMany(p => p.Divisions).HasForeignKey(d => d.divisionTypeID).OnDelete(DeleteBehavior.Restrict);
             });
@@ -150,34 +150,34 @@ namespace WebApplication1.Models
 
                 entity.HasOne(d => d.division).WithMany(p => p.Groups).HasForeignKey(d => d.divisionID).OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(d => d.timeSpan).WithMany(p => p.Groups).HasForeignKey(d => d.timeSpanID);
+                entity.HasOne(d => d.timeSpan).WithMany(p => p.Groups).HasForeignKey(d => d.timeSpanID).OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<GroupsAssistants>(entity =>
             {
                 entity.HasKey(e => e.groupsAssistantID);
 
-                entity.HasOne(d => d.assistant).WithMany(p => p.GroupsAssistants).HasForeignKey(d => d.assistantID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.assistant).WithMany(p => p.GroupsAssistants).HasForeignKey(d => d.assistantID);
 
-                entity.HasOne(d => d.group).WithMany(p => p.GroupsAssistants).HasForeignKey(d => d.groupID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.group).WithMany(p => p.GroupsAssistants).HasForeignKey(d => d.groupID);
             });
 
             modelBuilder.Entity<GroupsStudents>(entity =>
             {
                 entity.HasKey(e => e.groupsStudentID);
 
-                entity.HasOne(d => d.group).WithMany(p => p.GroupsStudents).HasForeignKey(d => d.groupID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.group).WithMany(p => p.GroupsStudents).HasForeignKey(d => d.groupID);
 
-                entity.HasOne(d => d.student).WithMany(p => p.GroupsStudents).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.student).WithMany(p => p.GroupsStudents).HasForeignKey(d => d.studentID);
             });
 
             modelBuilder.Entity<Periods>(entity =>
             {
                 entity.HasKey(e => e.periodID);
 
-                entity.HasOne(d => d.ad).WithMany(p => p.Periods).HasForeignKey(d => d.adID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.ad).WithMany(p => p.Periods).HasForeignKey(d => d.adID);
 
-                entity.HasOne(d => d.group).WithMany(p => p.Periods).HasForeignKey(d => d.groupID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.group).WithMany(p => p.Periods).HasForeignKey(d => d.groupID);
             });
 
             modelBuilder.Entity<Permissions>(entity =>
@@ -202,9 +202,9 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.rolesPermissionID);
 
-                entity.HasOne(d => d.permission).WithMany(p => p.RolesPermissions).HasForeignKey(d => d.permissionID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.permission).WithMany(p => p.RolesPermissions).HasForeignKey(d => d.permissionID);
 
-                entity.HasOne(d => d.role).WithMany(p => p.RolesPermissions).HasForeignKey(d => d.roleID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.role).WithMany(p => p.RolesPermissions).HasForeignKey(d => d.roleID);
             });
 
             modelBuilder.Entity<Students>(entity =>
@@ -222,16 +222,16 @@ namespace WebApplication1.Models
 
                 entity.HasOne(d => d.activity).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.activityID).OnDelete(DeleteBehavior.Restrict);
 
-                entity.HasOne(d => d.student).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.student).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.studentID);
             });
 
             modelBuilder.Entity<StudentsCourses>(entity =>
             {
                 entity.HasKey(e => e.studentsCourseID);
 
-                entity.HasOne(d => d.course).WithMany(p => p.StudentsCourses).HasForeignKey(d => d.courseID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.course).WithMany(p => p.StudentsCourses).HasForeignKey(d => d.courseID);
 
-                entity.HasOne(d => d.student).WithMany(p => p.StudentsCourses).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.student).WithMany(p => p.StudentsCourses).HasForeignKey(d => d.studentID);
             });
 
             modelBuilder.Entity<TimeSpans>(entity =>
@@ -273,16 +273,16 @@ namespace WebApplication1.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.student).WithOne(p => p.UniMembers).HasForeignKey<UniMembers>(d => d.studentID);
+                entity.HasOne(d => d.student).WithOne(p => p.UniMembers).HasForeignKey<UniMembers>(d => d.studentID).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<UniMembersRoles>(entity =>
             {
                 entity.HasKey(e => e.uniMembersRoleID);
 
-                entity.HasOne(d => d.role).WithMany(p => p.UniMembersRoles).HasForeignKey(d => d.roleID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.role).WithMany(p => p.UniMembersRoles).HasForeignKey(d => d.roleID);
 
-                entity.HasOne(d => d.uniMember).WithMany(p => p.UniMembersRoles).HasForeignKey(d => d.uniMemberID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.uniMember).WithMany(p => p.UniMembersRoles).HasForeignKey(d => d.uniMemberID);
             });
 
             modelBuilder.Entity<sysdiagrams>(entity =>
