@@ -120,6 +120,7 @@ namespace WebApplication1.Controllers
             public int? classroomID;
             public IEnumerable<int> students;
             public int? divisionID;
+            public int? assistantID;
         }
 
         // POST: api/Groups/Update
@@ -131,6 +132,11 @@ namespace WebApplication1.Controllers
                 return Ok(new {status="parameter error"});
             }
 
+            if (obj.assistantID != null)
+            {
+                Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
+            }
+
             //dodavanje group
             if (obj.groupID == null)
             {
@@ -138,6 +144,7 @@ namespace WebApplication1.Controllers
                 {
                     return Ok(new { status = "parameter error" });
                 }
+                
 
                 Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID);
                 Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
@@ -145,6 +152,12 @@ namespace WebApplication1.Controllers
             }
             else //update grupe
             {
+                
+                if (obj.assistantID != null)
+                {
+                    Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
+                }
+
                 Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID);
                 Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
                 return Ok(new { status = "uspelo" });

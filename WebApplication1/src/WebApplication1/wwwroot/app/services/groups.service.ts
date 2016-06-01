@@ -27,13 +27,14 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
-    updateGroup(groupID: number, divisionID: number, name: string, classroomID: number, students: Array<number>) {
+    updateGroup(groupID: number, divisionID: number, assistantID:number, name: string, classroomID: number, students: Array<number>) {
         let body = JSON.stringify({
             groupID: groupID,
             name: name,
             classroomID: classroomID,
             students: students,
             divisionID: divisionID,
+            assistantID: assistantID,
         });
         console.log(body);
         let headers = new Headers({ 'Content-Type': 'application/json' });

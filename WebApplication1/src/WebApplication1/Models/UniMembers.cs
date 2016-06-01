@@ -7,6 +7,7 @@ namespace WebApplication1.Models
     {
         public UniMembers()
         {
+            Activities = new HashSet<Activities>();
             AssistantsCourses = new HashSet<AssistantsCourses>();
             Divisions = new HashSet<Divisions>();
             GroupsAssistants = new HashSet<GroupsAssistants>();
@@ -23,6 +24,7 @@ namespace WebApplication1.Models
         public string surname { get; set; }
         public string username { get; set; }
 
+        public virtual ICollection<Activities> Activities { get; set; }
         public virtual ICollection<AssistantsCourses> AssistantsCourses { get; set; }
         public virtual ICollection<Divisions> Divisions { get; set; }
         public virtual ICollection<GroupsAssistants> GroupsAssistants { get; set; }

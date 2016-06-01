@@ -66,7 +66,7 @@ export class AppComponent implements OnInit {
                 new AsyncRoute({
                     path: "/assistant-edit",
                     name: "Assistant Edit",
-                    loader: () => System.import("app/assistant-panel/assistant-edit.component").then(c => c["AssistantEditComponent"])
+                    loader: () => System.import("app/assistant-panel/dialogs/assistant-edit.component").then(c => c["AssistantEditComponent"])
                 }),
                 new AsyncRoute({
                     path: "/courses",

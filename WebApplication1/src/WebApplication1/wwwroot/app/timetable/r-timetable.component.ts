@@ -4,11 +4,15 @@ import {TimetableColumnComponent} from "./r-timetable-column.component";
 import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 import {R_BUTTON} from "../ui/r-button.component";
 import {R_DIALOG} from "../ui/r-dialog";
+import {StudentsService} from "../services/students.service";
 
 
 @Component({
     selector: 'r-timetable',
     template: `
+    <template [ngIf]="classes">
+    
+
         <div class="day-titles-fixed">
             <template ngFor let-i [ngForOf]="[0, 1, 2, 3, 4, 5, 6]">
                 <div *ngIf="displayDay[i]">{{dayNames[i]}}</div>
@@ -78,9 +82,10 @@ import {R_DIALOG} from "../ui/r-dialog";
             </div>
         </r-dialog>
         
+        
         <template ngFor let-i [ngForOf]="[0, 1, 2, 3, 4, 5, 6]">
             <r-timetable-column
-                *ngIf="displayDay[i]"
+                *ngIf="displayDay[i] && classes[i]"
                 [title]="dayNames[i]"
                 [titleAbbr]="dayNamesAbbr[i]"
                 [classes]="classes[i]"
@@ -89,8 +94,11 @@ import {R_DIALOG} from "../ui/r-dialog";
                 [scale]="scale">
             </r-timetable-column>
         </template>
+        
+    </template>
     `,
     styleUrls: ['app/timetable/r-timetable.css'],
+    providers: [StudentsService],
     directives: [TimetableColumnComponent, R_BUTTON, R_DIALOG],
     pipes: [ToTimestampPipe]
 })
@@ -100,6 +108,9 @@ export class TimetableComponent {
     endingMinutes: number = 1200; // npr. 20:00 je 1200
     showEvery: number = 15; // npr. prikǎzi liniju na svakih 15 minuta
     scale: number = 2.2; // koliko piksela je jedan minut
+
+    errorMessage: string;
+    classes: any[];
     
     get timeStamps(): Array<string> {
         var ret = [];
@@ -111,6 +122,23 @@ export class TimetableComponent {
         }
         return ret;
     };
+
+    constructor(private _studentsService: StudentsService){
+        this.getSchedule()
+    }
+
+    getSchedule(){
+        //TODO prosledi lepo ID
+        this._studentsService.getSchedule(2951)
+            .then(
+                sch => this.classes = sch,
+                error => this.errorMessage = error
+            ).then(() => this.pom());
+    }
+
+    pom(){
+        console.log(this.classes);
+    }
 
     dayNames: Array<string> = ["Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak", "Subota", "Nedelja"];
     dayNamesAbbr: Array<string> = ["pon", "uto", "sre", "čet", "pet", "sub", "ned"];
@@ -130,9 +158,9 @@ export class TimetableComponent {
 
         // TODO Ne znam zašto se dole buni Webstorm, TS lepo kompajlira i JS se lepo izvršava.
         var theDay = this.classes[+value.newActivityDay].push(newClass);
-    }
+    } 
 
-    public classes = [
+     /*public classes = [
         [
             // ponedeljak
             {startMinutes: 615, durationMinutes: 65, className: "Sistemi baza podataka", abbr: "SBP", classroom: "A2", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#f44336", active: true},
@@ -142,6 +170,7 @@ export class TimetableComponent {
             {startMinutes: 840, durationMinutes: 90, className: "Sistemi baza podataka", abbr: "SBP", classroom: "2xx", assistant: "Medica Dobrog Srca", type: "laboratorijske", color: "#f44336", active: true},
             {startMinutes: 930, durationMinutes: 90, className: "Veb programiranje", abbr: "WEB", classroom: "234", assistant: "Ivica Comic Sans", type: "laboratorijske", color: "#2196F3", active: true},
             {startMinutes: 795, durationMinutes: 45, className: "Veštačka inteligencija", abbr: "VI", classroom: "431", assistant: "Vlada Mihajlovitj", type: "računske", color: "#673AB7", active: true},
+
         ],
         [
             // utorak
@@ -176,6 +205,6 @@ export class TimetableComponent {
         [
             // nedelja
         ],
-    ]
+    ]*/
 
 }

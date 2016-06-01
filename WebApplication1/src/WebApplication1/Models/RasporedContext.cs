@@ -27,6 +27,8 @@ namespace WebApplication1.Models
 
                 entity.HasOne(d => d.activitySchedule).WithMany(p => p.Activities).HasForeignKey(d => d.activityScheduleID);
 
+                entity.HasOne(d => d.assistant).WithMany(p => p.Activities).HasForeignKey(d => d.assistantID);
+
                 entity.HasOne(d => d.classroom).WithMany(p => p.Activities).HasForeignKey(d => d.classroomID);
 
                 entity.HasOne(d => d.course).WithMany(p => p.Activities).HasForeignKey(d => d.courseID);
@@ -244,8 +246,6 @@ namespace WebApplication1.Models
             modelBuilder.Entity<UniMembers>(entity =>
             {
                 entity.HasKey(e => e.uniMemberID);
-
-                entity.HasIndex(e => e.studentID).HasName("studentUnique").IsUnique();
 
                 entity.HasIndex(e => e.username).HasName("indexUnique").IsUnique();
 

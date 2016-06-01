@@ -9,32 +9,27 @@ export class AssistantService {
 
     constructor(private http: Http) { }
 
-    private _url = "api/unimembers";
+    private _url = "api/assistants";
 
-    getAssistant(): Assistant[] {
-        return [
-            {
-                id: 1,
-                username: 'wlada',
-                name: 'Vlada',
-                surname: 'Mihajlovic',
-                address: '331',
-                email: 'wlada@elfak.ni.ac.rs',
-                title: 'asistent',
-            }
-        ];
+    getAssistant(assistantId: number): Promise<Assistant>{
+        return this.http.get(this._url + "/GetAssistant/" + assistantId )
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
     }
 
-    getAssistantById(id: number): Assistant {
-        return {
-            id: 1,
-            username: 'wlada',
-            name: 'Vlada',
-            surname: 'Mihajlovic',
-            address: '331',
-            email: 'wlada@elfak.ni.ac.rs',
-            title: 'asistent'
-        };
+    getAssistants(): Promise<Assistant[]>{
+        return this.http.get(this._url + "/GetAssistants" )
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getAssistantsByGroupID(groupID: number): Promise<Assistant[]>{
+        return this.http.get(this._url + "/GetAssistantsByGroupID/" + groupID )
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
     }
 
     alter(newAssistant: Assistant) {

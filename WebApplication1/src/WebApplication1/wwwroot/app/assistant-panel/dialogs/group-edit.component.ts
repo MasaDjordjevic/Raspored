@@ -4,6 +4,7 @@ import {Group} from "../../models/Group";
 import {ClassroomsService} from "../../services/classrooms.service";
 import {StudentsService} from "../../services/students.service";
 import {GroupsService} from "../../services/groups.service";
+import {AssistantService} from "../../services/assistant.service";
 
 
 @Pipe({
@@ -43,6 +44,12 @@ class WithoutStudentsPipe implements PipeTransform {
     <select *ngIf="classrooms" name="classroom" ngControl="classroom"  [(ngModel)]="group.classroomID">
         <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
     </select>
+    <label>Asistent</label>
+    <select *ngIf="assistants" name="assistant" ngControl="assistant"  [(ngModel)]="group.GroupsAssistants[0].assistantID">
+        <option *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</option>
+        {{assistant | json}}
+    </select>
+    <button type="button" (click)="getAllAssistants()">Svi asistenti </button>
     <br/><br/>
     <div class="students">
         <div>
@@ -71,7 +78,7 @@ class WithoutStudentsPipe implements PipeTransform {
      <button type="submit">SAVE</button>
 </form>
     `,
-    providers: [ClassroomsService, StudentsService],
+    providers: [ClassroomsService, StudentsService, AssistantService],
     pipes: [WithoutStudentsPipe],
     //changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -80,6 +87,7 @@ export class GroupEditComponent implements AfterContentInit {
     @Input() group: any;
 
     private classrooms;
+    private assistants;
     private errorMessage;
 
     otherStudents;
@@ -88,10 +96,47 @@ export class GroupEditComponent implements AfterContentInit {
     constructor(
         private _service: ClassroomsService,
         private _groupsService: GroupsService,
-        private _studentsService: StudentsService
+        private _studentsService: StudentsService,
+        private _assistantsService: AssistantService
     ) {
         this.getClassrooms();
     }
+
+    getAssisatnts() {
+        this._assistantsService.getAssistantsByGroupID(this.group.groupID).then(
+            asst => this.assistants = asst,
+            error => this.errorMessage = error
+        );
+    }
+    getAllAssistants(){
+        this._assistantsService.getAssistants().then(
+            asst => this.concatAssistanst(asst),
+            error => this.errorMessage = error
+        );
+    }
+
+    concatAssistanst(asst) {
+        this.assistants = this.assistants.concat(asst);
+
+        //brisanje duplikata
+        this.assistants = this.uniq_fast(this.assistants)
+    }
+
+    uniq_fast(a) {
+        var seen = {};
+        var out = [];
+        var len = a.length;
+        var j = 0;
+        for(var i = 0; i < len; i++) {
+            var item = a[i];
+            if(seen[item.uniMemberID] !== 1) {
+                seen[item.uniMemberID] = 1;
+                out[j++] = item;
+            }
+        }
+        return out;
+    }
+
 
     moveToOthers(arr) {
         for (let i = 0; i < arr.length; i++) {
@@ -117,7 +162,7 @@ export class GroupEditComponent implements AfterContentInit {
         console.log(value);
         var pom: Array<number> = this.chosenStudents.map(i=>i.studentID);
         console.log(pom);
-        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.groupName, value.classroom, pom);
+        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.assistant, value.groupName, value.classroom, pom);
     }
 
     ngAfterContentInit() {
@@ -128,6 +173,10 @@ export class GroupEditComponent implements AfterContentInit {
             ret.push(this.group.GroupsStudents[i].student);
         }
         this.chosenStudents = ret;
+
+        if(this.group.groupID) {
+            this.getAssisatnts();
+        }
         //debugger;
     }
 
