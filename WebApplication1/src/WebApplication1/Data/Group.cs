@@ -26,13 +26,16 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
 
-                return _context.Groups
+                Groups pom = _context.Groups
+                    //.Include(a => a.division).ThenInclude(aa => aa.department)
                     .Include(a => a.classroom)
                     .Include(a => a.timeSpan)
                     .Include(a => a.GroupsStudents).ThenInclude(aa => aa.student).ThenInclude(aa => aa.UniMembers)
                     .Include(a => a.GroupsAssistants).ThenInclude(aa => aa.assistant)
-                    .Include(a => a.division).ThenInclude(aa => aa.department)
                     .First(a => a.groupID == groupID);
+
+                pom.division = _context.Divisions.First(a => a.divisionID == pom.divisionID);
+                return pom;
             }
         }
 
