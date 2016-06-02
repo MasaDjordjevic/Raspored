@@ -190,8 +190,22 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-
                 //proveri da li dolazi do nekonzistentnosti raspodele
+                //provera da li student vec postoji u toj grupi
+                if (groupID != null)
+                {
+                    var otherStuds =
+                        _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
+                    if (otherStuds.Contains(studentID))
+                    {
+                        return;
+                    }
+                }
+                //proverva konzistentnost sa ostalim grupama
+                if (Data.Group.CheckConsistencyOfGroup(groupID, new List<int>() { studentID }))
+                {
+                    return;
+                }
 
                 GroupsStudents gs = new GroupsStudents
                 {
@@ -200,6 +214,22 @@ namespace WebApplication1.Data
                 };
                 _context.GroupsStudents.Add(gs);
                 _context.SaveChanges();
+            }
+        }
+
+        public static bool RemoveFromGroup(int studentID, int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var query = _context.GroupsStudents.Where(a => a.studentID == studentID && a.groupID == groupID);
+                if (query.Any())
+                {
+                    _context.GroupsStudents.Remove(query.First());
+                    _context.SaveChanges();
+                    return true;
+                }
+                else 
+                    return false;
             }
         }
     }

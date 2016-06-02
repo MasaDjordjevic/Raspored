@@ -26,13 +26,35 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
 
-                return _context.Groups
+                Groups pom = _context.Groups
+                    //.Include(a => a.division).ThenInclude(aa => aa.department)
                     .Include(a => a.classroom)
                     .Include(a => a.timeSpan)
                     .Include(a => a.GroupsStudents).ThenInclude(aa => aa.student).ThenInclude(aa => aa.UniMembers)
                     .Include(a => a.GroupsAssistants).ThenInclude(aa => aa.assistant)
-                    .Include(a => a.division).ThenInclude(aa => aa.department)
                     .First(a => a.groupID == groupID);
+
+                pom.division = _context.Divisions.First(a => a.divisionID == pom.divisionID);
+                return pom;
+            }
+        }
+
+        public static void RemoveGroup(Groups group)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                //brisanje oglasa (nekim cudom se ne obrise)
+
+                var ads = _context.Periods.Where(a => a.groupID == group.groupID).Select(a => a.ad).ToList();
+                foreach (Ads ad in ads)
+                {
+                    _context.Ads.Remove(ad);
+                }
+                
+
+                //brisanje same grupe
+                _context.Groups.Remove(group);
+                _context.SaveChanges();
             }
         }
 
@@ -67,10 +89,27 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void AddStudnets(int groupID, List<Students> students)
+        
+        public static bool AddStudnets(int groupID, List<Students> students)
         {
             using (RasporedContext _context = new RasporedContext())
             {
+
+
+                //provera konzistentnosti raspodele
+                var groups =
+                    _context.Groups.Where(
+                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID).ToList();
+                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList();
+
+                foreach (Students stud in students)
+                {
+                    if (studs.Contains(stud.studentID))
+                    {
+                        return false;
+                    }
+                }
+
 
                 foreach (Students stud in students)
                 {
@@ -82,13 +121,29 @@ namespace WebApplication1.Data
                     _context.GroupsStudents.Add(gs);
                 }
                 _context.SaveChanges();
+                return true;
             }
         }
 
-        public static void AddStudnets(int groupID, List<int> students)
+        // TODO mozda neka poruka ukoliko se ne dodaju studenti
+        public static bool AddStudnets(int groupID, List<int> students)
         {
             using (RasporedContext _context = new RasporedContext())
             {
+
+                //provera konzistentnosti raspodele
+                var groups =
+                    _context.Groups.Where(
+                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID).ToList();
+                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList();
+
+                foreach (int stud in students)
+                {
+                    if (studs.Contains(stud))
+                    {
+                        return false;
+                    }
+                }
 
                 foreach (int studID in students)
                 {
@@ -100,6 +155,27 @@ namespace WebApplication1.Data
                     _context.GroupsStudents.Add(gs);
                 }
                 _context.SaveChanges();
+                return true;
+            }
+        }
+
+        //proverava da li svi studenti te grupe nisu clanovi neke druge grupe te raspodele
+        //groupID moze da bude null u slucaju provere prilikom kreiranja nove grupe
+        public static bool CheckConsistencyOfGroup(int? groupID, List<int> students)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                //proverava studente u ostalim grupama raspodele
+
+                var groups =
+                    _context.Groups.Where(
+                        a => (groupID == null || a.groupID != groupID) && //bez te konkrentne grupe
+                        a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID) //sve grupe raspodele kojo ta grupa pripada
+                        .Select(a => a.groupID).ToList();
+                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList(); //studenti koji pripadaju tim grupama
+
+                //proverava da li za svakog studenta vazi da nije u studs odnosno ne pripada ni jednoj drugoj grupi
+                return students.All(stud => !studs.Contains(stud));
             }
         }
 

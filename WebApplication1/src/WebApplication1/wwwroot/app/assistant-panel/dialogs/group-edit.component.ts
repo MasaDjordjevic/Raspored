@@ -45,7 +45,8 @@ class WithoutStudentsPipe implements PipeTransform {
         <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
     </select>
     <label>Asistent</label>
-    <select *ngIf="assistants" name="assistant" ngControl="assistant" [(ngModel)]="assistants[0].uniMemberID">
+    <!-- [(ngModel)]="assistants[0].uniMemberID" -->
+    <select *ngIf="assistants" name="assistant" ngControl="assistant" >
         <option *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</option>
         {{assistant | json}}
     </select>

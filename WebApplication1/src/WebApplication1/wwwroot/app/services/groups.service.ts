@@ -45,6 +45,13 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
+    removeGroup(groupId:number) {
+        return this.http.delete(this._url + '/DeleteGroups/' + groupId)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     addActivity(groupID: number, courseID:number, classroomID:number, place: string, title: string, content:string, timespan: TimeSpan) {
         let body = JSON.stringify({
             groupID: groupID,

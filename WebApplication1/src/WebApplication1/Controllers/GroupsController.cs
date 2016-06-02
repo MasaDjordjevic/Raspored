@@ -137,14 +137,19 @@ namespace WebApplication1.Controllers
                 Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
             }
 
-            //dodavanje group
+            //dodavanje groupe
             if (obj.groupID == null)
             {
                 if (obj.divisionID == null)
                 {
                     return Ok(new { status = "parameter error" });
                 }
-                
+
+                //provera konzistentnosti raspodele
+                if (!Data.Group.CheckConsistencyOfGroup(null, obj.students.ToList()))
+                {
+                    return Ok(new {status = "inconsistent division"});
+                }
 
                 Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID);
                 Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
@@ -152,7 +157,12 @@ namespace WebApplication1.Controllers
             }
             else //update grupe
             {
-                
+                //provera konzistentnosti raspodele
+                if (!Data.Group.CheckConsistencyOfGroup(obj.groupID.Value, obj.students.ToList()))
+                {
+                    return Ok(new { status = "inconsistent division" });
+                }
+
                 if (obj.assistantID != null)
                 {
                     Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
@@ -231,16 +241,15 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            Groups groups = _context.Groups.Single(m => m.groupID == id);
-            if (groups == null)
+            Groups group = _context.Groups.Single(m => m.groupID == id);
+            if (group == null)
             {
                 return HttpNotFound();
             }
 
-            _context.Groups.Remove(groups);
-            _context.SaveChanges();
+            Data.Group.RemoveGroup(group);
 
-            return Ok(groups);
+            return Ok(group);
         }
 
         protected override void Dispose(bool disposing)

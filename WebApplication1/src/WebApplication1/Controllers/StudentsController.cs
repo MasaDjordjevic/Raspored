@@ -149,6 +149,12 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
+            //proveri da li dolazi do nekonzistentnosti raspodele
+            if (!Data.Group.CheckConsistencyOfGroup(groupID, new List<int>() { studentID }))
+            {
+                return Ok(new { status = "inconsistent division" });
+            }
+
             try
             {
                 Data.Student.AddToGroup(studentID, groupID);
@@ -157,6 +163,25 @@ namespace WebApplication1.Controllers
             {
                throw;
                 
+            }
+
+            return Ok(new { status = "uspelo" });
+        }
+
+        [HttpGet]
+        public IActionResult RemoveFromGroup(int studentID, int groupID)
+        {
+            try
+            {
+                if (!Data.Student.RemoveFromGroup(studentID, groupID))
+                {
+                    return Ok(new { status = "student not in the group" });
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+
             }
 
             return Ok(new { status = "uspelo" });

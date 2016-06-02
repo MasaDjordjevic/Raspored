@@ -12,7 +12,9 @@
     <div class="flex-spacer"></div>
 
     <r-dialog #editGroupDialog [source]="editGroupButton">
-        <group-edit [group]="group"></group-edit>
+        <div style="width: 500px; height: 600px;">
+            <group-edit [group]="group"></group-edit>
+        </div>
     </r-dialog>
 
     <r-dialog #addClassDialog [source]="addClass">
@@ -31,6 +33,15 @@
 
     <r-dialog #addNotificationDialog [source]="addNotificationButton">
         Obavestenje
+    </r-dialog>
+
+    <r-dialog #removeGroupDialog [source]="removeGroupButton">
+        <div style="width: 500px; height:600px;">
+            <label>Da li ste sigurni?</label>
+            <button r-button raised text="obrisi" (click)="removeGroup()"></button>
+            <!-- TODO na ne da se minimizira dialog -->
+            <button r-button flat text="otkazi"></button>
+        </div>
     </r-dialog>
 
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
@@ -73,6 +84,12 @@
         <button r-button raised #addNotificationButton
                 text="Dodaj obaveštenje"
                 (click)="addNotificationDialog.open()"
+                [primaryColor]="primaryColor">
+        </button>
+
+        <button r-button raised #removeGroupButton
+                text="Obriši grupu"
+                (click)="removeGroupDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 

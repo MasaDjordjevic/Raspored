@@ -68,6 +68,16 @@ export class StudentsService {
             .catch(this.handleError);
     }
 
+    removeFromGroup(studentID:number, groupID:number): Promise<any[]> {
+            return this.http.get(this._url + `/RemoveFromGroup/?studentID=${studentID}&groupID=${groupID}`)
+                .toPromise()
+                .then(this.extractData)
+                .catch(this.handleError);
+        }
+
+
+
+
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
