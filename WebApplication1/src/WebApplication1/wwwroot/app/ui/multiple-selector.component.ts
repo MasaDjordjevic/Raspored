@@ -3,6 +3,7 @@ import {
     AfterViewInit, AfterContentInit
 } from "angular2/core";
 import {HighlightPipe} from "../pipes/highlight.pipe";
+import {R_INPUT} from "./r-input-text.component";
 
 
 
@@ -26,6 +27,7 @@ export class RMultipleSelectorEmitterService {
 @Component({
     selector: 'r-multiple-selector-item',
     template: `
+    <div class="checkbox"><i class="fa fa-check"></i></div>
     <ng-content></ng-content>
     `,
     host: {
@@ -33,7 +35,6 @@ export class RMultipleSelectorEmitterService {
         "[class.selected]": "selected",
         "[style.display]": "display ? 'block' : 'none'",
     },
-    styleUrls: ['app/ui/r-multiple-selector.css'],
     pipes: [HighlightPipe],
 })
 
@@ -41,7 +42,7 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 
     private highlightPipe = new HighlightPipe();
 
-    public initInnerHTML: string;
+    public initElement: HTMLElement;
     
     public _query: string = "";
 
@@ -49,8 +50,24 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 
     set query(q) {
         this._query = q;
-        if (!!q) this._element.nativeElement.innerHTML = this.highlightPipe.transform(this.initInnerHTML, this.query);
-        else this._element.nativeElement.innerHTML = this.initInnerHTML;
+        if (!!q) {
+            this._element.nativeElement.innerHTML = this.initElement.innerHTML; // prvo reset
+            this.markMatches(this._element.nativeElement); // pa matchujemo string
+        } else {
+            this._element.nativeElement.innerHTML = this.initElement.innerHTML;
+        }
+    }
+
+    public markMatches(element) {
+        var childNodes = element.childNodes;
+        if (element.childNodes.length == 1) {
+            var markedText = this.highlightPipe.transform(element.textContent, this.query);
+            element.innerHTML = markedText;
+            return;
+        }
+        for (let i = 0; i < childNodes.length; i++) {
+            this.markMatches(childNodes[i]);
+        }
     }
 
     // jednoznacno definise opciju
@@ -76,7 +93,7 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         setTimeout(() =>
-            this.initInnerHTML = this._element.nativeElement.innerHTML,
+            this.initElement = this._element.nativeElement.cloneNode(true), // true - klonira u dubinu
         0);
     }
 
@@ -97,20 +114,26 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     template: `
     {{values | json}}<br/>
     <ng-content></ng-content>
-    <input type="text" [(ngModel)]="query"/>
-    {{query}}<br/>
-    {{itemsValueText | json}}
-    <br/>
+    <div class="search">
+        <r-input class="light-theme" type="text" [(val)]="query" label="Pretraga"></r-input>
+    </div>
+    <!--{{query}}<br/>--> 
+    <!--{{itemsValueText | json}}-->
     `,
     host: {
         //"[value]": "val",
     },
     providers: [RMultipleSelectorEmitterService],
+    directives: [R_INPUT],
+    styleUrls: ['app/ui/r-multiple-selector.css'],
 })
 
 export class MultipleSelectorComponent implements AfterContentInit {
 
-    @Input("val") _values: string[];
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
+    _values: string[];
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
     public itemsValueText: any[] = []; // {value: ___, text: ___}
@@ -125,7 +148,7 @@ export class MultipleSelectorComponent implements AfterContentInit {
         var regex = new RegExp(this.query, 'gi');
         for (let i = 0; i < this.itemsValueText.length; i++) {
             this._items.toArray()[i].query = this.query;
-            if (!this.query || (<any>this._items.toArray()[i]).selected || this.itemsValueText[i].text.match(regex)) {
+            if (!this.query || (<any>this._items.toArray()[i]).selected || (this.itemsValueText[i].text.match(regex))) {
                 (<any>this._items.toArray()[i]).display = true;
             } else {
                 (<any>this._items.toArray()[i]).display = false;
@@ -133,11 +156,18 @@ export class MultipleSelectorComponent implements AfterContentInit {
         }
     }
 
-    get values() { return this._values; }
+    get values() {
+        console.log("get");
+        // this.checkItems(); // poludi TODO
+        return this._values;
+    }
 
-    set val(v) {
+    @Input("val") set values(v) {
+        console.log("set");
         this._values = v;
         this.valChange.next(this._values);
+        debugger;
+        this.checkItems();
     }
 
     public toggleOption(val) {
@@ -182,10 +212,26 @@ export class MultipleSelectorComponent implements AfterContentInit {
                     value: currItem.value,
                     text: currItem._element.nativeElement.innerText.trim(),
                 });
+            }
 
+            this.checkItems();
+        }, 0);
+    }
+
+    // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
+    checkItems() {
+        // TODO HACK
+        setTimeout(() => {
+            var itemsArray = this._items.toArray();
+            var len = itemsArray.length;
+            for (let i = 0; i < len; i++) {
+                var currItem: any = itemsArray[i];
+                debugger;
                 // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
-                if (~this.values.indexOf(currItem.value)) {
+                if (~this._values.indexOf(currItem.value)) {
                     currItem.selected = true;
+                } else {
+                    currItem.selected = false;
                 }
             }
         }, 0);

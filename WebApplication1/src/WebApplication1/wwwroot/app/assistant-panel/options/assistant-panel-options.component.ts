@@ -13,7 +13,7 @@ import {multicast} from "rxjs/operator/multicast";
 @Component({
     selector: 'r-assistant-panel-options',
     template: `
-    <div style="font-size: 1.1em">
+    <div style="font-size: 1em; display: flex; justify-content: space-between; flex-wrap: wrap">
         <!--<r-input class="light-theme" label="Labela" [(val)]="inputText"></r-input> <br/>
         {{inputText}}
         <br/> <br/>
@@ -26,12 +26,20 @@ import {multicast} from "rxjs/operator/multicast";
         {{dropdown}}
         <br/>
         <br/>-->
-        <r-multiple-selector [(val)]="multipleSelector">
+        <r-multiple-selector [(val)]="multipleSelector" style="width:45%">
             <r-multiple-selector-item *ngFor="let n of stuff; let i = index" [val]="i">
                 <span>{{n.split('').reverse().join('')}}</span>
                 <span>{{n.substring(5)}}</span>
             </r-multiple-selector-item>
         </r-multiple-selector>
+        <r-multiple-selector [(val)]="multipleSelector" style="width:45%">
+            <r-multiple-selector-item *ngFor="let n of stuff; let i = index" [val]="i">
+                <span>{{n.split('').reverse().join('')}}</span>
+                <span>{{n.substring(5)}}</span>
+            </r-multiple-selector-item>
+        </r-multiple-selector>
+        <div style="width: 100%; min-height: 40px;">
+        {{multipleSelector | json}}
     </div>
     `,
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
@@ -43,14 +51,23 @@ export class AssistantPanelOptionsComponent {
     public inputText: string = "boobs";
     public dropdown: string = "b2";
 
-    public multipleSelector: string[] = ["1", "4", "7"];
+    public _multipleSelector: string[] = ["1", "3"];
+
+    public get multipleSelector(): string[] {
+        return this._multipleSelector;
+    }
+
+    public set multipleSelector(m: string[]) {
+        this._multipleSelector = m;
+    }
 
     public stuff: string[] = [];
 
     public randomString = (n) => (Math.random() + 1).toString(36).substring(2, n + 2);
 
     constructor() {
-        for (let i = 0; i < 12; this.stuff[i++] = this.randomString(i * 10 % 7 + 10));
+        for (let i = 0; i < 5; this.stuff[i++] = this.randomString(i * 10 % 7 + 10));
+
     }
 
     assistant: Assistant;
