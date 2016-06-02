@@ -10,21 +10,16 @@
     <p>{{errorMessage}}</p>
 
     <div class="flex-spacer"></div>
-
     <r-dialog #editGroupDialog [source]="editGroupButton">
-        <div style="width: 500px; height: 600px;">
+        <div style="width: 500px; height: 600px; overflow: scroll;">
             <group-edit [group]="group"></group-edit>
         </div>
     </r-dialog>
 
-    <r-dialog #addClassDialog [source]="addClass">
-        <div style="width: 400px; height: 500px;">
-            <add-activity [groupId]="group.groupID"></add-activity>
-        </div>
-    </r-dialog>
-
     <r-dialog #cancelClassDialog [source]="cancelClassButton">
-        Otkazivanje casa
+        <div style="width: 500px; height:600px;">
+            <cancel-class [timespan]="group.timeSpan" [groupID]="group.groupID"></cancel-class>
+        </div>
     </r-dialog>
 
     <r-dialog #combinedScheduleDialog [source]="combinedScheduleButton">
@@ -32,7 +27,9 @@
     </r-dialog>
 
     <r-dialog #addNotificationDialog [source]="addNotificationButton">
-        Obavestenje
+        <div style="width: 400px; height: 500px;">
+            <add-activity [groupId]="group.groupID"></add-activity>
+        </div>
     </r-dialog>
 
     <r-dialog #removeGroupDialog [source]="removeGroupButton">
@@ -63,18 +60,12 @@
                 [primaryColor]="primaryColor">
         </button>
 
-        <button r-button raised #addClass
-                text="Zakazi cas"
-                (click)="addClassDialog.open()"
-                [primaryColor]="primaryColor">
-        </button>
-
         <button r-button raised #cancelClassButton
                 text="Otkazi cas"
                 (click)="cancelClassDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
-
+        {{group.timeSpan | json}}
         <button r-button raised #combinedScheduleButton
                 text="Kombinovani raspored"
                 (click)="combinedScheduleDialog.open()"

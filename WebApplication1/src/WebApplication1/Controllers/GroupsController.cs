@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
@@ -121,12 +122,14 @@ namespace WebApplication1.Controllers
             public IEnumerable<int> students;
             public int? divisionID;
             public int? assistantID;
+            public TimeSpans timespan;
         }
 
         // POST: api/Groups/Update
         [HttpPost]
         public IActionResult Update([FromBody] GroupsController.UpdateGroupBinding obj)
         {
+            
             if (obj == null)
             {
                 return Ok(new {status="parameter error"});
@@ -151,7 +154,7 @@ namespace WebApplication1.Controllers
                     return Ok(new {status = "inconsistent division"});
                 }
 
-                Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID);
+                Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID, obj.timespan);
                 Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
                 return Ok(new { status = "uspelo" });
             }
@@ -168,7 +171,7 @@ namespace WebApplication1.Controllers
                     Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
                 }
 
-                Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID);
+                Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
                 Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
                 return Ok(new { status = "uspelo" });
             }
@@ -180,7 +183,6 @@ namespace WebApplication1.Controllers
         {
             public int? groupID;
             public int? classroomID;
-            public int? courseID;
             public string place;
             public string title;
             public string content;
@@ -196,7 +198,28 @@ namespace WebApplication1.Controllers
                 return Ok(new { status = "parameter error" });
             }
 
-            Data.Group.AddActivity(obj.groupID.Value, obj.classroomID, obj.courseID, obj.timespan, obj.place, obj.title, obj.content);
+            Data.Group.AddActivity(obj.groupID.Value, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
+
+            return Ok(new { status = "uspelo" });
+        }
+
+        public class CancelClassBinding
+        {
+            public int groupID;
+            public string title;
+            public string content;
+            public int weekNumber;
+        }
+
+        [HttpPost]
+        public IActionResult CancelClass([FromBody] CancelClassBinding obj)
+        {
+            if (obj == null)
+            {
+                return Ok(new { status = "parameter error" });
+            }
+
+            Data.Group.CancelClass(obj.groupID, obj.title, obj.content, obj.weekNumber);
 
             return Ok(new { status = "uspelo" });
         }

@@ -166,7 +166,6 @@ export class MultipleSelectorComponent implements AfterContentInit {
         console.log("set");
         this._values = v;
         this.valChange.next(this._values);
-        debugger;
         this.checkItems();
     }
 
@@ -226,7 +225,6 @@ export class MultipleSelectorComponent implements AfterContentInit {
             var len = itemsArray.length;
             for (let i = 0; i < len; i++) {
                 var currItem: any = itemsArray[i];
-                debugger;
                 // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
                 if (~this._values.indexOf(currItem.value)) {
                     currItem.selected = true;

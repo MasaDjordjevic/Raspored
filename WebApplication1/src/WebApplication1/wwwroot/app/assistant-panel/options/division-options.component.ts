@@ -61,12 +61,4 @@ export class DivisionOptionsComponent {
 
     }
 
-    copyDivision() {
-        //TODO nadji bolji nacin
-        // trenutno http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-an-object
-        var newDiv:Division = JSON.parse(JSON.stringify(this.division));
-        newDiv.divisionID = null;
-        return newDiv;
-    }
-
 }

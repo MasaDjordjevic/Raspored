@@ -9,6 +9,7 @@ using Microsoft.Data.Entity;
 using Remotion.Linq.Clauses;
 using WebApplication1.Models;
 using Newtonsoft.Json;
+using WebApplication1.Extentions;
 
 namespace WebApplication1.Data
 {
@@ -94,19 +95,21 @@ namespace WebApplication1.Data
             {
                 List<int> groups = _context.GroupsStudents.Where(a => a.studentID == studentID).Select(a => a.groupID).ToList();
 
-                var returnValue =
-                    _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
+                var returnValue = _context.Groups.Where(a => groups.Contains(a.groupID))
+               // var returnValue = 
+                //    _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
                         .Select(a => new
                         {
                             day = a.timeSpan.startDate.DayOfWeek,
                             startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
                             durationMinutes = (int)(a.timeSpan.endDate.Subtract(a.timeSpan.startDate)).TotalMinutes,
-                            className = a.course.name,
-                            abbr = a.course.alias,
+                            className = a.division.course.name,
+                            abbr = a.division.course.alias,
                             classroom = a.classroom.number, 
-                            assistant = GetAssistant(a.activityID),
-                            type = a.group.division.divisionType.type,
-                            active = CancellingToActive(a.cancelling),
+                            assistant = GetAssistant(a.groupID),
+                            type = a.division.divisionType.type,
+                            active = GetCanceling(a.groupID, a.timeSpan),
+                            //active = CancellingToActive(a.cancelling),
                             color = GetNextColor(),
                         }).ToList();
                 
@@ -129,36 +132,43 @@ namespace WebApplication1.Data
             }
         }
 
+        public static string GetAssistant(int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var q = _context.GroupsAssistants.Where(a => a.groupID == groupID);
+                if (q.Any())
+                {
+                    var asst = q.Select(a=> a.assistant).First();
+                    return asst.name + " " + asst.surname;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static bool GetCanceling(int groupID, TimeSpans ts)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                TimeSpans tsThisWeek = new TimeSpans
+                {
+                    startDate = ts.startDate.DayOfCurrentWeek(),
+                    endDate = ts.endDate.DayOfCurrentWeek()
+                };
+                return !_context.Activities.Any( ac =>
+                    ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
+                    TimeSpan.Equal(ac.timeSpan, tsThisWeek));
+                
+            }
+        }
+
         public static bool CancellingToActive(bool? cancelling)
         {
             return !cancelling ?? true;
         }
-
-        public static string GetAssistant(int activityID)
-        {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                string res;
-                Activities act = _context.Activities.Include(a=>a.group).First(a => a.activityID == activityID);
-                var assi = _context.GroupsAssistants.Where(a => a.groupID == act.groupID).Select(a => a.assistant);
-                if (assi.Any())
-                {
-                    UniMembers assistant = assi.First();
-                    res = assistant.name + " " +
-                          assistant.surname;
-                }
-                else
-                {
-                    UniMembers creator =
-                        _context.Divisions.Where(a => a.divisionID == act.group.divisionID).Select(a => a.creator).First();
-                    res = creator.name + " " + creator.surname;
-                }
-
-                return res;
-
-            }
-        }
-
 
         public static
             List<TimeSpans> GetScheduleTimes(int studentID)

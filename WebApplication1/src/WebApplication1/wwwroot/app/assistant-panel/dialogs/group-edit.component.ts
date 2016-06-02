@@ -5,6 +5,7 @@ import {ClassroomsService} from "../../services/classrooms.service";
 import {StudentsService} from "../../services/students.service";
 import {GroupsService} from "../../services/groups.service";
 import {AssistantService} from "../../services/assistant.service";
+import {TimeSpan} from "../../models/TimeSpan";
 
 
 @Pipe({
@@ -52,6 +53,19 @@ class WithoutStudentsPipe implements PipeTransform {
     </select>
     <button type="button" (click)="getAllAssistants()">Svi asistenti </button>
     <br/><br/>
+    
+    <label>Pocetak (2016-02-17T08:15:00)</label>
+        <input type="text"  ngControl="timeStart" [value]="group.timeSpan && group.timeSpan.startDate"/>
+       <br/>
+        
+        <label>Kraj</label>
+        <input type="text"  ngControl="timeEnd" [value]="group.timeSpan && group.timeSpan.endDate"/>
+        <br/>
+       
+       <label>Perioda</label>
+        <input type="text"  ngControl="period" [value]="group.timeSpan && group.timeSpan.period"/>
+       <br/>
+    
     <div class="students">
         <div>
             <h2>Studenti u grupi</h2>
@@ -163,7 +177,15 @@ export class GroupEditComponent implements AfterContentInit {
         console.log(value);
         var pom: Array<number> = this.chosenStudents.map(i=>i.studentID);
         console.log(pom);
-        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.assistant, value.groupName, value.classroom, pom);
+        var timespan:TimeSpan = new TimeSpan;
+        if(value.timeStart && value.timeEnd && value.period) {
+            timespan.startDate = value.timeStart;
+            timespan.endDate = value.timeEnd;
+            timespan.period = value.period;
+        }
+        timespan = null;
+        console.log(timespan);
+        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.assistant, value.groupName, value.classroom, timespan,  pom);
     }
 
     ngAfterContentInit() {

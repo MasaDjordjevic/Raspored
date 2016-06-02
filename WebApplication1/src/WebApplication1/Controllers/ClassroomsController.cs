@@ -22,7 +22,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult GetClassrooms()
         {
-            var classrooms = (from a in _context.Classrooms select a).ToList();
+            var classrooms = (from a in _context.Classrooms select a).OrderBy(a => a.number).ToList();
             return Ok(classrooms);
         }
 

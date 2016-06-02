@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.Entity;
+using WebApplication1.Extentions;
 using WebApplication1.Models;
 using WebApplication1.Models.DTOs;
 
@@ -72,17 +73,26 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void CancelClass(int groupID, string title, string content)
+        public static void CancelClass(int groupID, string title, string content, int weekNumber)
         {
             using (RasporedContext _context = new RasporedContext())
             {
+                TimeSpans gts = _context.Groups.Where(a => a.groupID == groupID).Select(a=> a.timeSpan).First();
+                TimeSpans ts = new TimeSpans
+                {
+                    startDate = gts.startDate.DayOfReferencedWeek(DateTime.Now, gts.period.Value).AddDays(7*weekNumber),
+                    endDate = gts.endDate.DayOfReferencedWeek(DateTime.Now, gts.period.Value).AddDays(7*weekNumber),
+                    period = gts.period
+                };
 
+                _context.TimeSpans.Add(ts);
                 Activities act = new Activities
                 {
                     title = title,
                     activityContent = content,
                     groupID = groupID,
-                    cancelling = true
+                    cancelling = true,
+                    timeSpanID = ts.timeSpanID
                 };
                 _context.Activities.Add(act);
                 _context.SaveChanges();
@@ -232,7 +242,7 @@ namespace WebApplication1.Data
             AddStudnets(groupID, newStudents);
         }
 
-        public static void Update(int groupID, string name, int? classroomID)
+        public static void Update(int groupID, string name, int? classroomID, TimeSpans timespan)
         {
             using (RasporedContext _context = new RasporedContext())
             {
@@ -241,20 +251,28 @@ namespace WebApplication1.Data
                     g.name = name;
                 if (classroomID != null)
                     g.classroomID = classroomID;
+                if (timespan != null)
+                {
+                    g.timeSpan = timespan;
+                }
+                   
                 _context.SaveChanges();
             }
 
         }
 
-        public static Groups Create(int divisionID, string name, int? classroomID)
+        public static Groups Create(int divisionID, string name, int? classroomID, TimeSpans timespan)
         {
             using (RasporedContext _context = new RasporedContext())
             {
+                _context.TimeSpans.Add(timespan);
+                _context.SaveChanges();
                 Groups g = new Groups
                 {
                     divisionID = divisionID,
                     name = name,
-                    classroomID = classroomID
+                    classroomID = classroomID,
+                    timeSpanID = timespan.timeSpanID
                 };
                 _context.Groups.Add(g);
                 _context.SaveChanges();
@@ -263,29 +281,17 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void AddActivity(int groupID, int? classroomID, int? courseID, TimeSpans timeSpan, string place,
+        public static void AddActivity(int groupID, int? classroomID, TimeSpans timeSpan, string place,
             string title, string content)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                //proveri da li svi studenti iz grupe slusaju izabrani kurs
-                if (courseID != null)
-                {
-                    var studs = _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
-                    foreach (var stud in studs)
-                    {
-                        if (!_context.StudentsCourses.Any(a => a.studentID == stud && a.courseID == courseID.Value))
-                            return;
-                    }
-                }
-
                 _context.TimeSpans.Add(timeSpan);
 
                 Activities act = new Activities
                 {
                     timeSpanID = timeSpan.timeSpanID,
                     classroomID = classroomID,
-                    courseID = courseID,
                     place = place,
                     title = title,
                     activityContent = content,
@@ -325,6 +331,5 @@ namespace WebApplication1.Data
                 _context.SaveChanges();
             }
         }
-
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using WebApplication1.Data;
 using WebApplication1.Models;
 
@@ -138,7 +139,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateInitialDivision([FromBody] CreateInitialDivisionParameterBinding obj)
+        public IActionResult CreateInitialDivision([FromBody] DivisionsController.CreateInitialDivisionParameterBinding obj)
         {
             
             try
@@ -179,21 +180,25 @@ namespace WebApplication1.Controllers
             return Ok(divisions);
         }
 
+
+       
+
         // PUT: api/Divisions/5
         [HttpPut("{id}")]
-        public IActionResult PutDivisions(int id, [FromBody] Divisions divisions)
+        public IActionResult PutDivisions(int id, [FromBody] Divisions division)
         {
+            //Divisions d = ((JObject) divisions).ToObject<Divisions>();
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            if (id != divisions.divisionID)
-            {
-                return HttpBadRequest();
-            }
+            //if (id != divisions.divisionID)
+            //{
+            //    return HttpBadRequest();
+            //}
 
-            _context.Entry(divisions).State = EntityState.Modified;
+            //_context.Entry(divisions).State = EntityState.Modified;
 
             try
             {
@@ -214,33 +219,30 @@ namespace WebApplication1.Controllers
             return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
         }
 
+        //nicemu ne sluzi, inace se ne konvertuju lepo podaci, nzm zasto
+        public class DivisionUpdateBinding
+        {
+            public Divisions division;
+            
+        }
+
         // POST: api/Divisions
         [HttpPost]
-        public IActionResult PostDivisions([FromBody] Divisions divisions)
+        public IActionResult UpdateDivision([FromBody] DivisionsController.DivisionUpdateBinding divisions)
         {
-            if (!ModelState.IsValid)
+            Divisions div = divisions.division;
+
+            //update
+            if (div.divisionID != -1)
             {
-                return HttpBadRequest(ModelState);
+                Data.Division.UpdateDivision(div);
+            }
+            else //create
+            {
+                Data.Division.AddDivision(div);
             }
 
-            _context.Divisions.Add(divisions);
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (DivisionsExists(divisions.divisionID))
-                {
-                    return new HttpStatusCodeResult(StatusCodes.Status409Conflict);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("GetDivisions", new { id = divisions.divisionID }, divisions);
+            return Ok(new { status = "uspelo" });
         }
 
         // DELETE: api/Divisions/5

@@ -27,7 +27,7 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
-    updateGroup(groupID: number, divisionID: number, assistantID:number, name: string, classroomID: number, students: Array<number>) {
+    updateGroup(groupID: number, divisionID: number, assistantID:number, name: string, classroomID: number, timespan: TimeSpan, students: Array<number>) {
         let body = JSON.stringify({
             groupID: groupID,
             name: name,
@@ -35,6 +35,7 @@ export class GroupsService {
             students: students,
             divisionID: divisionID,
             assistantID: assistantID,
+            timespan: timespan
         });
         console.log(body);
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -52,11 +53,10 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
-    addActivity(groupID: number, courseID:number, classroomID:number, place: string, title: string, content:string, timespan: TimeSpan) {
+    addActivity(groupID: number, classroomID:number, place: string, title: string, content:string, timespan: TimeSpan) {
         let body = JSON.stringify({
             groupID: groupID,
             classroomID: classroomID,
-            courseID: courseID,
             place: place,
             title: title,
             content: content,
@@ -66,6 +66,22 @@ export class GroupsService {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/AddActivity', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    cancelClass(groupID:number, title: string, content: string, weekNumber:number) {
+        let body = JSON.stringify({
+            groupID: groupID,
+            title: title,
+            content: content,
+            weekNumber: weekNumber
+        });
+        console.log(body);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this._url + '/CancelClass', body, options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

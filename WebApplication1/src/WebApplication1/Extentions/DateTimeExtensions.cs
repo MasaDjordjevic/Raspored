@@ -10,11 +10,15 @@ namespace WebApplication1.Extentions
         public static DateTime DayOfCurrentWeek(this DateTime date)
         {
             int diff = DateTime.Now.DayOfWeek - date.DayOfWeek;
-            if (diff < 0)
-            {
-                diff += 7;
-            }
-            return DateTime.Now.AddDays(-1 * diff).Date;
+            //if (diff < 0)
+            //{
+            //    diff += 7;
+            //}
+            var returnValue =  DateTime.Today.AddDays(-1 * diff).Date;
+            TimeSpan timeDiff = date.TimeOfDay - returnValue.TimeOfDay;
+            returnValue = returnValue.Add(timeDiff);
+            return returnValue;
+
         }
 
         //public static DateTime DayOfReferencedWeek(this DateTime date, DateTime refernce, int period)

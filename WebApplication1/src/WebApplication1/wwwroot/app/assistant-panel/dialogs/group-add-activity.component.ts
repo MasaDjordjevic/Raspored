@@ -10,21 +10,13 @@ import {Group} from "../../models/Group";
     selector: 'add-activity',
     template: `
     <form #form="ngForm" (ngSubmit)="save(form.value)">
-        <div style="display: flex; flex-flow: row;">
-            <div>
-                <label>Naziv</label>
-                <input type="text"  ngControl="title"/>
-                <br/>
-            </div>
-            <div>
-                <label>Kurs</label>
-                 <select name="course" *ngIf="courses != null"  [(ngModel)]="group.division.courseID"  ngControl="course">
-                        <option *ngFor="let course of courses" [value]="course.courseID">
-                            {{course.name}}
-                        </option>
-                 </select>
-            </div>
-        </div>
+    
+        <div>
+            <label>Naziv</label>
+            <input type="text"  ngControl="title"/>
+            <br/>
+        </div>          
+        
         
         <div style="display: flex; flex-flow: row;">
             <div>
@@ -59,7 +51,7 @@ import {Group} from "../../models/Group";
          <button type="submit">SAVE</button>
     </form>
     `,
-    providers: [ClassroomsService, GroupsService, CoursesService]
+    providers: [ClassroomsService, GroupsService]
 })
 export class AddActivityComponent {
 
@@ -83,22 +75,15 @@ export class AddActivityComponent {
         this._groupsService.getGroup(this.groupId).then(
             group => this.group = group,
             error => this.errorMessage = <any>error
-        ).then(()=> this.getCoursesOfDepartment())
+        );
     }
 
     constructor(private _classroomsService: ClassroomsService,
-                private _coursesService: CoursesService,
                 private _groupsService: GroupsService) {
         this.getClassrooms();
 
     }
 
-    nazivKursa(courseID: number){
-        for(let i=0; i < this.courses.length; i++) {
-            if(this.courses[i].courseID == courseID)
-                return this.courses[i].name;
-        }
-    }
 
     save(value) {
         var timespan:TimeSpan = new TimeSpan;
@@ -106,18 +91,7 @@ export class AddActivityComponent {
         timespan.endDate = value.timeEnd;
         timespan.period = value.period;
 
-        var title: string = value.title;
-        if(title == null) {
-            title = this.nazivKursa(value.course);
-        }
-        this._groupsService.addActivity(this.group.groupID, value.course,  value.classroom, value.place, title, value.content, timespan );
-    }
-
-    getCoursesOfDepartment() {
-        this._coursesService.getCoursesOfDepartment(this.group.division.departmentID)
-            .then(
-                crs => this.courses = crs,
-                error => this.errorMessage = <any>error);
+        this._groupsService.addActivity(this.group.groupID,  value.classroom, value.place, value.title, value.content, timespan );
     }
 
     getClassrooms() {

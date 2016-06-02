@@ -21,15 +21,21 @@
     <div class="flex-spacer"></div>
 
     <r-dialog #editDivisionDialog [source]="editDivisionButton">
-        <division-edit [division]="division"></division-edit>
+        <div style="height: 500px;width: 500px; overflow: scroll;">
+            <division-edit [division]="division" [new]="false"></division-edit>
+        </div>
     </r-dialog>
 
     <r-dialog #newGroupDialog [source]="newGroupButton">
-       <group-edit [group]="emptyGroup"></group-edit>
+        <div style="height: 500px;width: 500px; overflow: scroll;">
+            <group-edit [group]="emptyGroup"></group-edit>
+        </div>
     </r-dialog>
 
     <r-dialog #copyDivisionDialog [source]="copyDivisionButton">
-        <division-edit [division]="copyDivision()"></division-edit>
+        <div style="height: 1000px;width: 1000px; overflow: scroll;">
+            <division-edit [division]="division" [new]="true"></division-edit>
+        </div>
     </r-dialog>
 
     <r-dialog #groupsDialog [source]="groupsButton">

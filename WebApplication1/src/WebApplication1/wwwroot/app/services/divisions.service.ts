@@ -23,6 +23,19 @@ export class DivisionsService {
             .catch(this.handleError);
     }
 
+    public updateDivision(division) {
+        let body = JSON.stringify({
+            division: division
+        });
+        console.log(body);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this._url + '/UpdateDivision', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     /**
      * Zahteva od servera sve raspodele (divisions) koje pripadaju smeru
      * (department) ciji je ID prosledjen.

@@ -18,6 +18,7 @@ import {StudentsService} from "../../services/students.service";
 //komponenta se koristi i u slucaju kada se kopira raspodela, u tom slucaju se samo ne salje ID, tj. division.divisionID je null (unknown ili tako nesto)
 export class DivisionEditComponent implements AfterViewInit{
     @Input() division: any;
+    @Input() new: boolean;
     oldDivision: any;
 
     courses: Course[];
@@ -79,6 +80,17 @@ export class DivisionEditComponent implements AfterViewInit{
             .then(
                 studs => this.studentsOfCourse = studs,
                 error => this.errorMessage = error);
+    }
+
+    update() {
+        console.log(this.division.courseID);
+        //debugger;
+        if(this.new) {
+            this.division.divisionID = -1;
+        }
+
+        //TODO nesto pametnije sa odgovorom
+        this._divisionsService.updateDivision(this.division).then(any => console.log(any));
     }
 
 }

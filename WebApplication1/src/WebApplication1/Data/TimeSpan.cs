@@ -33,5 +33,10 @@ namespace WebApplication1.Data
         {
             return ((aStart <= bStart && bStart <= aEnd) || (bStart <= aStart && aStart <= bEnd));
         }
+
+        public static bool Equal(TimeSpans a, TimeSpans b)
+        {
+            return a.startDate == b.startDate && a.endDate == b.endDate;
+        }
     }
 }

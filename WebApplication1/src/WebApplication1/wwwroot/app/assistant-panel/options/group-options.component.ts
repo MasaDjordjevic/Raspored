@@ -1,4 +1,4 @@
-﻿import {Component, Input} from "angular2/core";
+﻿import {Component, Input, Pipe, PipeTransform} from "angular2/core";
 import {GroupsService} from "../../services/groups.service";
 import {Group} from "../../models/Group";
 import {R_DIALOG} from "../../ui/r-dialog";
@@ -8,7 +8,7 @@ import {R_DL} from "../../ui/r-dl";
 import {TrimPipe} from "../../pipes/trim.pipe";
 import {GroupEditComponent} from "../dialogs/group-edit.component";
 import {AddActivityComponent} from "../dialogs/group-add-activity.component";
-
+import {CancelClassComponent} from "../dialogs/Cancel-class.component";
 
 
 @Component({
@@ -18,7 +18,7 @@ import {AddActivityComponent} from "../dialogs/group-add-activity.component";
         'app/assistant-panel/options/assistant-panel-options.css',
     ],
     providers: [GroupsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, GroupEditComponent, AddActivityComponent],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, GroupEditComponent, AddActivityComponent, CancelClassComponent],
     pipes: [TrimPipe]
 })
 
@@ -29,6 +29,8 @@ export class GroupOptionsComponent {
 
     group: Group;
     errorMessage: string;
+
+    
 
     private _groupId: number = 0;
 
@@ -54,5 +56,7 @@ export class GroupOptionsComponent {
         //TODO uradi nesto pametnije sa odgovorom
         this._service.removeGroup(this.groupId).then(any => console.log(any));
     }
+
+    
 
 }

@@ -1,7 +1,7 @@
 
 <!-- morala sam da stavim visinu jer mi se nije prikazivalo sve -->
 <div class="division-edit" *ngIf="division" style="height: 500px;">
-    <div *ngIf="division != null && division.divisionID == null">
+    <div *ngIf="new">
         <h3>Raspodela je kopirana</h3>
     </div>
     <form ngForm>
@@ -40,11 +40,12 @@
                             {{course.name}}
                         </option>
                     </select>
+                    {{division.courseID}}
                     <br/>
 
                 </div>
 
-                <div class="otherStudents" *ngIf="studentsOfCourse">
+                <div class="otherStudents" *ngIf="studentsOfCourse" style="width: 100px; height: 100px; overflow: scroll;">
                     <h2>Ostali sa kursa</h2>
                     <div class="student" *ngFor="let student of studentsOfCourse" style="background-color: #cccccc">
                         <label><strong>{{student.indexNumber}}</strong> {{student.UniMembers.name}} {{student.UniMembers.surname}}</label>
@@ -57,7 +58,7 @@
 
             <div class="groups" >
 
-                <div class="group" *ngFor="let group of division.Groups" >
+                <div class="group" *ngFor="let group of division.Groups" style="width: 100px; height: 100px; overflow: scroll;">
                     <label>classroomID {{group.classroomID}}</label>
 
                     <div class="student" *ngFor="let stud of group.GroupsStudents"
@@ -68,6 +69,9 @@
                     </div>
                 </div>
             </div>
+
+            <button type="button" (click)="update()"> Save </button>
+
 
             <style>
                 .groups{

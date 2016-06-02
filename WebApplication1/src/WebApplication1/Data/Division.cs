@@ -21,6 +21,7 @@ namespace WebApplication1.Data
                     .Include(p => p.creator)
                     .Include(p => p.divisionType)
                     .Include(p => p.department)
+                    .Include(p => p.course)
                     where div.departmentID == departmentID
                     select div).ToList();
             }
@@ -81,6 +82,7 @@ namespace WebApplication1.Data
                             ending = div.ending,
                             departmentID = div.departmentID,
                             departmentName = div.department.departmentName,
+                            course = div.course?.name
                         }).ToList();
 
             return (from div in divisions
@@ -183,10 +185,11 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void CancelClasses(int divisionID, string title, string content)
+        public static void CancelClasses(int divisionID, string title, string content, int weekNumber)
         {
             using (RasporedContext _context = new RasporedContext())
             {
+                //TODO pogledaj sta si pisla ovde, deluje mi kao glupost
                 List<Groups> groups =
                     (from a in _context.Divisions.Include(a => a.Groups)
                         where a.divisionID == divisionID
@@ -194,8 +197,51 @@ namespace WebApplication1.Data
                         .First();
                 foreach (Groups group in groups)
                 {
-                    Group.CancelClass(group.groupID, title, content);
+                    Group.CancelClass(group.groupID, title, content, weekNumber);
                 }
+            }
+        }
+
+        public static void UpdateDivision(Divisions division)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                division.course = null;
+                _context.Divisions.Update(division);
+                _context.SaveChanges();
+            }
+        }
+
+        public static void AddDivision(Divisions division)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                //ovo radim jer nece da ignorise setovane IDjeve pa ih ovako unsetujem
+                Divisions newDiv = new Divisions
+                {
+
+                    courseID = division.courseID,
+                    Groups = division.Groups.Select(g => new Groups
+                    {
+                        classroomID = g.classroomID,
+                        divisionID = g.divisionID,
+                        timeSpan = g.timeSpan,
+                        name = g.name,
+                        GroupsStudents = g.GroupsStudents.Select(a => new GroupsStudents
+                        {
+                            groupID = a.groupID,
+                            studentID = a.studentID
+                        }).ToList()
+                    }).ToList(),
+                    beginning = division.beginning,
+                    ending = division.ending,
+                    creatorID = division.creatorID,
+                    divisionTypeID = division.divisionTypeID,
+                    departmentID = division.departmentID,
+                    name = division.name,
+                };
+                _context.Divisions.Add(newDiv);
+                _context.SaveChanges();
             }
         }
 
