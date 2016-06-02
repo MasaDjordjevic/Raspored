@@ -47,6 +47,10 @@ import {StudentsService} from "../services/students.service";
                 <form><fieldset style="padding:.5em">
                     <legend>Advanced</legend>
                     <label>
+                        Weeks from now ({{weeksFromNow}})
+                        <input type="number" min="0" max="1440" step="1" [(ngModel)]="weeksFromNow" (change)="updateSchedule()"/>
+                    </label><br/>
+                    <label>
                         Beginning minutes ({{beginningMinutes | toTimestamp}})
                         <input type="number" min="0" max="1440" step="5" [(ngModel)]="beginningMinutes"/>
                     </label><br/>
@@ -111,6 +115,8 @@ export class TimetableComponent {
 
     errorMessage: string;
     classes: any[];
+
+    weeksFromNow: number = 0;
     
     get timeStamps(): Array<string> {
         var ret = [];
@@ -127,9 +133,13 @@ export class TimetableComponent {
         this.getSchedule()
     }
 
+    updateSchedule() {
+        this.getSchedule();
+    }
+
     getSchedule(){
         //TODO prosledi lepo ID
-        this._studentsService.getSchedule(2951)
+        this._studentsService.getSchedule(2951, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
                 error => this.errorMessage = error

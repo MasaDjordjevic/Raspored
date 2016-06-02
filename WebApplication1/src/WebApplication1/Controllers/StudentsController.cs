@@ -122,16 +122,15 @@ namespace WebApplication1.Controllers
                                     }));
         }
 
-        // GET: api/Students/GetSchedule/{student-id}
-        [HttpGet("{id}", Name = "GetSchedule")]
-        public IActionResult GetSchedule([FromRoute] int id)
+      
+        public IActionResult GetSchedule(int studentID, int weeksFromNow)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            var schedule = Data.Student.GetSchedule(id);
+            var schedule = Data.Student.GetSchedule(studentID, weeksFromNow);
 
             if (schedule == null)
             {

@@ -89,15 +89,22 @@ namespace WebApplication1.Data
         }
       
 
-        public static IEnumerable GetSchedule(int studentID)
+        public static IEnumerable GetSchedule(int studentID, int weeksFromNow = 0)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                List<int> groups = _context.GroupsStudents.Where(a => a.studentID == studentID).Select(a => a.groupID).ToList();
-
-                var returnValue = _context.Groups.Where(a => groups.Contains(a.groupID))
-               // var returnValue = 
-                //    _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
+                DateTime now = DateTime.Now.AddDays(7 * weeksFromNow);
+                TimeSpans tsNow = new TimeSpans
+                {
+                    startDate = now.StartOfWeek(),
+                    endDate = now.EndOfWeek()
+                };
+                List<int> groups = _context.GroupsStudents
+                    .Where(a => a.studentID == studentID &&  
+                                TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
+                                .Select(a => a.groupID).ToList();
+                ;
+                var returnValue = _context.Groups.Where(a => groups.Contains(a.groupID) && CheckPeriod(a.timeSpan, tsNow))
                         .Select(a => new
                         {
                             day = a.timeSpan.startDate.DayOfWeek,
@@ -108,8 +115,7 @@ namespace WebApplication1.Data
                             classroom = a.classroom.number, 
                             assistant = GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = GetCanceling(a.groupID, a.timeSpan),
-                            //active = CancellingToActive(a.cancelling),
+                            active = GetCanceling(a.groupID, tsNow),
                             color = GetNextColor(),
                         }).ToList();
                 
@@ -132,6 +138,20 @@ namespace WebApplication1.Data
             }
         }
 
+        public static bool CheckPeriod(TimeSpans ts, TimeSpans tsNow)
+        {
+            //if period null bla bla
+            TimeSpans tsThisWeek = new TimeSpans
+            {
+                startDate = ts.startDate.DayOfReferencedWeek(tsNow.startDate, ts.period.Value),
+                endDate = ts.endDate.DayOfReferencedWeek(tsNow.startDate, ts.period.Value)
+            };
+
+            bool temp = TimeSpan.TimeSpanOverlap(tsNow, tsThisWeek);
+           
+            return temp;
+        }
+
         public static string GetAssistant(int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -149,18 +169,13 @@ namespace WebApplication1.Data
             }
         }
 
-        public static bool GetCanceling(int groupID, TimeSpans ts)
+        public static bool GetCanceling(int groupID, TimeSpans tsNow)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                TimeSpans tsThisWeek = new TimeSpans
-                {
-                    startDate = ts.startDate.DayOfCurrentWeek(),
-                    endDate = ts.endDate.DayOfCurrentWeek()
-                };
                 return !_context.Activities.Any( ac =>
                     ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
-                    TimeSpan.Equal(ac.timeSpan, tsThisWeek));
+                    TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
                 
             }
         }

@@ -9,6 +9,7 @@ namespace WebApplication1.Data
 {
     public static class TimeSpan
     {
+        
         public static bool Overlap(TimeSpans a, TimeSpans b)
         {
             if (a.period == null && b.period == null)
@@ -32,6 +33,11 @@ namespace WebApplication1.Data
         public static bool DatesOverlap(DateTime aStart, DateTime aEnd, DateTime bStart, DateTime bEnd)
         {
             return ((aStart <= bStart && bStart <= aEnd) || (bStart <= aStart && aStart <= bEnd));
+        }
+
+        public static bool TimeSpanOverlap(TimeSpans a, TimeSpans b)
+        {
+            return DatesOverlap(a.startDate, a.endDate, b.startDate, b.endDate);
         }
 
         public static bool Equal(TimeSpans a, TimeSpans b)
