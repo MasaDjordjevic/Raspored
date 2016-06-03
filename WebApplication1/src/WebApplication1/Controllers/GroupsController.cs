@@ -232,7 +232,7 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var schedule = Data.Group.GetSchedule(groupID, weeksFromNow);
+            var schedule = Data.Group.GetCombinedSchedule(groupID, weeksFromNow);
 
             if (schedule == null)
             {

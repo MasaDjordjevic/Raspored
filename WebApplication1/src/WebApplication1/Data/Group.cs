@@ -46,7 +46,7 @@ namespace WebApplication1.Data
             {
                 //brisanje oglasa (nekim cudom se ne obrise)
 
-                var ads = _context.Periods.Where(a => a.groupID == group.groupID).Select(a => a.ad).ToList();
+                var ads = _context.Periods.Where(a => a.groupID == @group.groupID).Select(a => a.ad).ToList();
                 foreach (Ads ad in ads)
                 {
                     _context.Ads.Remove(ad);
@@ -54,7 +54,7 @@ namespace WebApplication1.Data
                 
 
                 //brisanje same grupe
-                _context.Groups.Remove(group);
+                _context.Groups.Remove(@group);
                 _context.SaveChanges();
             }
         }
@@ -96,42 +96,6 @@ namespace WebApplication1.Data
                 };
                 _context.Activities.Add(act);
                 _context.SaveChanges();
-            }
-        }
-
-        
-        public static bool AddStudnets(int groupID, List<Students> students)
-        {
-            using (RasporedContext _context = new RasporedContext())
-            {
-
-
-                //provera konzistentnosti raspodele
-                var groups =
-                    _context.Groups.Where(
-                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID).ToList();
-                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList();
-
-                foreach (Students stud in students)
-                {
-                    if (studs.Contains(stud.studentID))
-                    {
-                        return false;
-                    }
-                }
-
-
-                foreach (Students stud in students)
-                {
-                    GroupsStudents gs = new GroupsStudents
-                    {
-                        groupID = groupID,
-                        studentID = stud.studentID
-                    };
-                    _context.GroupsStudents.Add(gs);
-                }
-                _context.SaveChanges();
-                return true;
             }
         }
 
@@ -188,24 +152,7 @@ namespace WebApplication1.Data
                 return students.All(stud => !studs.Contains(stud));
             }
         }
-
-        public static void RemoveStudents(int groupID, List<Students> students)
-        {
-            using (RasporedContext _context = new RasporedContext())
-            {
-
-                foreach (Students stud in students)
-                {
-                    var gs =
-                        (from a in _context.GroupsStudents
-                            where a.studentID == stud.studentID && a.groupID == groupID
-                            select a).First();
-                    _context.GroupsStudents.Remove(gs);
-                }
-                _context.SaveChanges();
-            }
-        }
-
+       
         public static void RemoveStudents(int groupID, List<int> students)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -332,7 +279,35 @@ namespace WebApplication1.Data
             }
         }
 
-        public static IEnumerable GetSchedule(int groupID, int weeksFromNow = 0)
+        public static string GetAssistant(int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var q = _context.GroupsAssistants.Where(a => a.groupID == groupID);
+                if (q.Any())
+                {
+                    var asst = q.Select(a => a.assistant).First();
+                    return asst.name + " " + asst.surname;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static bool GetActive(int groupID, TimeSpans tsNow)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return !_context.Activities.Any(ac =>
+                    ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
+                    TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
+
+            }
+        }
+
+        public static IEnumerable GetCombinedSchedule(int groupID, int weeksFromNow = 0)
         {
             using (RasporedContext _context = new RasporedContext())
             {
@@ -348,8 +323,7 @@ namespace WebApplication1.Data
                                 TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
                                 .Select(a => a.groupID).ToList();
                 ;
-                var returnValue = _context.Groups.Where(a => groups.Contains(a.groupID) && Student.CheckPeriod(a.timeSpan, tsNow))
-                        .Select(a => new
+                List<ScheduleDTO> groupsSchedule = Queryable.Select(_context.Groups.Where(a => groups.Contains(a.groupID) && TimeSpan.Overlap(a.timeSpan, tsNow)), a => new ScheduleDTO
                         {
                             day = a.timeSpan.startDate.DayOfWeek,
                             startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
@@ -357,28 +331,29 @@ namespace WebApplication1.Data
                             className = a.division.course.name,
                             abbr = a.division.course.alias,
                             classroom = a.classroom.number,
-                            assistant = Student.GetAssistant(a.groupID),
+                            assistant = GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = Student.GetCanceling(a.groupID, tsNow),
-                            color = Student.GetNextColor(),
+                            active = GetActive(a.groupID, tsNow),
+                            color = Schedule.GetNextColor(),
                         }).ToList();
+                
+                List<ScheduleDTO> activitiesSchedule =
+                    _context.Activities.Where(a => !a.cancelling.Value && groups.Contains(a.groupID.Value)).Select(a => new ScheduleDTO
+                    {
+                        day = a.timeSpan.startDate.DayOfWeek,
+                        startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
+                        durationMinutes = (int)(a.timeSpan.endDate.Subtract(a.timeSpan.startDate)).TotalMinutes,
+                        active = true,
+                        color = Schedule.GetNextColor(),
+                        activityTitle = a.title,
+                        activityContent = a.activityContent
+                    }).ToList();
+
+                List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();
 
 
-                var ret = new ArrayList();
+                return Schedule.Convert(returnValue);
 
-                var daysOfWeek = Enum.GetValues(typeof(DayOfWeek))
-                                .OfType<DayOfWeek>()
-                                .OrderBy(day => day < DayOfWeek.Monday);
-
-                // svaki dan mora da postoji bez obzira da li ima casova u njemu
-                foreach (DayOfWeek day in daysOfWeek)
-                {
-                    ret.Add(
-                        (from a in returnValue where a.day == day select a).ToArray()
-                        );
-                }
-
-                return ret;
             }
         }
     }

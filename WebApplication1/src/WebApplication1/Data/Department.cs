@@ -48,9 +48,9 @@ namespace WebApplication1.Data
                     .Where(a => a.division.departmentID == departmentID &&
                                 TimeSpan.DatesOverlap(a.division.beginning, a.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
                                 .Select(a => a.groupID).ToList();
-                ;
-                var returnValue = _context.Groups.Where(a => groups.Contains(a.groupID) && Student.CheckPeriod(a.timeSpan, tsNow))
-                        .Select(a => new
+
+                List<ScheduleDTO> returnValue = _context.Groups.Where(a => groups.Contains(a.groupID) && TimeSpan.Overlap(a.timeSpan, tsNow))
+                        .Select(a => new ScheduleDTO
                         {
                             day = a.timeSpan.startDate.DayOfWeek,
                             startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
@@ -58,28 +58,13 @@ namespace WebApplication1.Data
                             className = a.division.course.name + " " + a.name,
                             abbr = a.name + " " + a.division.course.alias,
                             classroom = a.classroom.number,
-                            assistant = Student.GetAssistant(a.groupID),
+                            assistant = Group.GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = Student.GetCanceling(a.groupID, tsNow),
-                            color = Student.GetNextColor(),
+                            active = Group.GetActive(a.groupID, tsNow),
+                            color = Schedule.GetNextColor(),
                         }).ToList();
 
-
-                var ret = new ArrayList();
-
-                var daysOfWeek = Enum.GetValues(typeof(DayOfWeek))
-                                .OfType<DayOfWeek>()
-                                .OrderBy(day => day < DayOfWeek.Monday);
-
-                // svaki dan mora da postoji bez obzira da li ima casova u njemu
-                foreach (DayOfWeek day in daysOfWeek)
-                {
-                    ret.Add(
-                        (from a in returnValue where a.day == day select a).ToArray()
-                        );
-                }
-
-                return ret;
+                return Schedule.Convert(returnValue);
             }
         }
 
