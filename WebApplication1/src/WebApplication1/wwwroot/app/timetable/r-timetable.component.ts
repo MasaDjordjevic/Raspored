@@ -8,6 +8,7 @@ import {StudentsService} from "../services/students.service";
 import {GroupsService} from "../services/groups.service";
 import {DivisionsService} from "../services/divisions.service";
 import {DepartmentService} from "../services/department.service";
+import {ClassroomsService} from "../services/classrooms.service";
 
 
 @Component({
@@ -58,11 +59,15 @@ import {DepartmentService} from "../services/department.service";
                         <option [value]="0">student</option>
                         <option [value]="1">grupa</option>
                         <option [value]="2">globalni</option>
+                        <option [value]="3">ucionica</option>
                     </select>
                     <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" (change)="updateSchedule()"/>
                     <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" (change)="updateSchedule()"/>
-                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="departmentID" (change)="updateSchedule()"/>
-                    {{mode}} {{studentID}} {{groupID}} nzm zasto nece kad je mode string
+                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="departmentID" (change)="updateSchedule()"/>                    
+                    <select *ngIf="classroomID" name="classroom"  [(ngModel)]="classroomID">
+                        <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
+                    </select>
+                    {{mode}} {{studentID}} {{groupID}} {{departmentID}} {{classroomID}}nzm zasto nece kad je mode string
                     <br/>
                         Beginning minutes ({{beginningMinutes | toTimestamp}})
                         <input type="number" min="0" max="1440" step="5" [(ngModel)]="beginningMinutes"/>
@@ -115,7 +120,7 @@ import {DepartmentService} from "../services/department.service";
     </template>
     `,
     styleUrls: ['app/timetable/r-timetable.css'],
-    providers: [StudentsService, GroupsService, DepartmentService],
+    providers: [StudentsService, GroupsService, DepartmentService, ClassroomsService],
     directives: [TimetableColumnComponent, R_BUTTON, R_DIALOG],
     pipes: [ToTimestampPipe]
 })
@@ -129,11 +134,15 @@ export class TimetableComponent {
     errorMessage: string;
     classes: any[];
 
+    classrooms: any;
+
+
     weeksFromNow: number = 0;
-    mode: number = 2;
+    mode: number = 3;
     groupID: number = 1016;
     studentID: number = 2951;
     departmentID: number = 9;
+    classroomID: number = 12;
 
     get timeStamps(): Array<string> {
         var ret = [];
@@ -148,8 +157,18 @@ export class TimetableComponent {
 
     constructor(private _studentsService: StudentsService,
                 private _groupsService: GroupsService,
-                private _departmentsService: DepartmentService){
-        this.changeMode()
+                private _departmentsService: DepartmentService,
+                private _clasroomsService: ClassroomsService)
+    {
+        this.getClassrooms();
+        this.changeMode();
+    }
+
+    getClassrooms() {
+        this._clasroomsService.getClassrooms()
+            .then(
+                cls => this.classrooms = cls,
+                error => this.errorMessage = <any>error);
     }
 
     updateSchedule() {
@@ -177,6 +196,15 @@ export class TimetableComponent {
     getDepartmentSchedule() {
         //TODO prosledi lepo ID
         this._departmentsService.getSchedule(this.departmentID, this.weeksFromNow)
+            .then(
+                sch => this.classes = sch,
+                error => this.errorMessage = error
+            ).then(() => this.pom());
+    }
+
+    getClassroomSchedule() {
+        //TODO prosledi lepo ID
+        this._clasroomsService.getSchedule(this.classroomID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
                 error => this.errorMessage = error
@@ -217,6 +245,7 @@ export class TimetableComponent {
                 break;
             case 2: this.getDepartmentSchedule();
                 break;
+            case 3: this.getClassroomSchedule();
         }
     }
 
