@@ -7,6 +7,7 @@ using System.Transactions;
 using Microsoft.AspNet.Mvc.ActionConstraints;
 using Microsoft.AspNet.Razor.Chunks;
 using Microsoft.Data.Entity;
+using WebApplication1.Extentions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Data
@@ -64,7 +65,6 @@ namespace WebApplication1.Data
                 return pom;
             }
         }
-     
 
         public static IEnumerable GetDivisionsOfDeparmentByType(int departmentID)
         {

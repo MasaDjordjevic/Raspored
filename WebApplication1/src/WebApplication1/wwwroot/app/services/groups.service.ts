@@ -87,6 +87,13 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
+    getSchedule(groupID: number, weeksFromNow:number): Promise<any[]> {
+        return this.http.get(this._url + `/GetSchedule/?groupID=${groupID}&weeksFromNow=${weeksFromNow}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     /**
      * GET: api/Groups/GetGroups/{division-id}
      * Uzima grupe koje pripadaju smeru čiji je ID prosleðen kao parametar.

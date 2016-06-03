@@ -5,6 +5,9 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 import {R_BUTTON} from "../ui/r-button.component";
 import {R_DIALOG} from "../ui/r-dialog";
 import {StudentsService} from "../services/students.service";
+import {GroupsService} from "../services/groups.service";
+import {DivisionsService} from "../services/divisions.service";
+import {DepartmentService} from "../services/department.service";
 
 
 @Component({
@@ -50,7 +53,17 @@ import {StudentsService} from "../services/students.service";
                         Weeks from now ({{weeksFromNow}})
                         <input type="number" min="0" max="1440" step="1" [(ngModel)]="weeksFromNow" (change)="updateSchedule()"/>
                     </label><br/>
-                    <label>
+                    <label>                    
+                    <select name="mode" [(ngModel)]="mode" (change)="changeMode()">
+                        <option [value]="0">student</option>
+                        <option [value]="1">grupa</option>
+                        <option [value]="2">globalni</option>
+                    </select>
+                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" (change)="updateSchedule()"/>
+                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" (change)="updateSchedule()"/>
+                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="departmentID" (change)="updateSchedule()"/>
+                    {{mode}} {{studentID}} {{groupID}} nzm zasto nece kad je mode string
+                    <br/>
                         Beginning minutes ({{beginningMinutes | toTimestamp}})
                         <input type="number" min="0" max="1440" step="5" [(ngModel)]="beginningMinutes"/>
                     </label><br/>
@@ -102,7 +115,7 @@ import {StudentsService} from "../services/students.service";
     </template>
     `,
     styleUrls: ['app/timetable/r-timetable.css'],
-    providers: [StudentsService],
+    providers: [StudentsService, GroupsService, DepartmentService],
     directives: [TimetableColumnComponent, R_BUTTON, R_DIALOG],
     pipes: [ToTimestampPipe]
 })
@@ -117,7 +130,11 @@ export class TimetableComponent {
     classes: any[];
 
     weeksFromNow: number = 0;
-    
+    mode: number = 2;
+    groupID: number = 1016;
+    studentID: number = 2951;
+    departmentID: number = 9;
+
     get timeStamps(): Array<string> {
         var ret = [];
         var toTimestampPipe = new ToTimestampPipe();
@@ -129,22 +146,44 @@ export class TimetableComponent {
         return ret;
     };
 
-    constructor(private _studentsService: StudentsService){
-        this.getSchedule()
+    constructor(private _studentsService: StudentsService,
+                private _groupsService: GroupsService,
+                private _departmentsService: DepartmentService){
+        this.changeMode()
     }
 
     updateSchedule() {
-        this.getSchedule();
+        this.changeMode();
     }
 
-    getSchedule(){
+    getStudentSchedule(){
         //TODO prosledi lepo ID
-        this._studentsService.getSchedule(2951, this.weeksFromNow)
+        this._studentsService.getSchedule(this.studentID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
                 error => this.errorMessage = error
             ).then(() => this.pom());
     }
+
+    getGroupSchedule(){
+        //TODO prosledi lepo ID
+        this._groupsService.getSchedule(this.groupID, this.weeksFromNow)
+            .then(
+                sch => this.classes = sch,
+                error => this.errorMessage = error
+            ).then(() => this.pom());
+    }
+
+    getDepartmentSchedule() {
+        //TODO prosledi lepo ID
+        this._departmentsService.getSchedule(this.departmentID, this.weeksFromNow)
+            .then(
+                sch => this.classes = sch,
+                error => this.errorMessage = error
+            ).then(() => this.pom());
+    }
+    
+    
 
     pom(){
         console.log(this.classes);
@@ -168,7 +207,18 @@ export class TimetableComponent {
 
         // TODO Ne znam zašto se dole buni Webstorm, TS lepo kompajlira i JS se lepo izvršava.
         var theDay = this.classes[+value.newActivityDay].push(newClass);
-    } 
+    }
+
+    changeMode(){
+        switch(+this.mode) {
+            case 0: this.getStudentSchedule();
+                break;
+            case 1: this.getGroupSchedule();
+                break;
+            case 2: this.getDepartmentSchedule();
+                break;
+        }
+    }
 
      /*public classes = [
         [

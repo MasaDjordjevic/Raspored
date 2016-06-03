@@ -57,7 +57,7 @@ namespace WebApplication1.Data
                         .ThenInclude(a => a.UniMembers)
                         .Where(a => a.groupID == groupID)
                         .ToList();
-                return (from a in pom select a.student).ToList();
+                return (from a in pom select a.student).OrderBy(a => a.indexNumber).ToList();
             }
 
         }

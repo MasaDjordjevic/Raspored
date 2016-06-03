@@ -55,6 +55,24 @@ namespace WebApplication1.Controllers
             return Ok(departments);
         }
 
+        [HttpGet]
+        public IActionResult GetSchedule(int departmentID, int weeksFromNow)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var schedule = Data.Department.GetSchedule(departmentID, weeksFromNow);
+
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(schedule);
+        }
+
         // PUT: api/Departments/5
         [HttpPut("{id}")]
         [Route("{id:int}")]

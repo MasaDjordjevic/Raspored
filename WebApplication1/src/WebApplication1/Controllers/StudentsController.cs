@@ -122,7 +122,7 @@ namespace WebApplication1.Controllers
                                     }));
         }
 
-      
+        [HttpGet]
         public IActionResult GetSchedule(int studentID, int weeksFromNow)
         {
             if (!ModelState.IsValid)
