@@ -1,19 +1,21 @@
-import {Component, AfterContentInit, ContentChildren, Input, ViewEncapsulation} from "angular2/core";
+import {Component, AfterContentInit, ContentChildren, Input, ViewEncapsulation, Output, EventEmitter} from "angular2/core";
 import {R_BUTTON} from "./r-button.component";
 import {QueryList} from "angular2/src/core/linker/query_list";
 
 @Component({
     selector: 'r-step',
     template: `
-    <div class="r-step-wrapper" *ngIf="isCurrent">
-        <ng-content></ng-content>
-    </div>
-    `
+    <ng-content></ng-content>
+    `,
+    host: {
+        "[class.show]": "isCurrent",
+    }
 })
 
 export class RStepComponent {
 
-    @Input() public stepTitle: string;
+    @Input() public valid: boolean = true; // ako se nista ne prosledi, true je da bi uopste moglo da se navigira
+    @Input() public stepTitle: string = "Još uvek bez dobrog naslova";
     public isCurrent: boolean = false;
 
 }
@@ -23,11 +25,13 @@ export class RStepComponent {
 @Component({
     selector: 'r-stepper-header',
     template: `
-    <div *ngFor="let step of stepTitles; let index = index"
-         [class.finished]="currentStep > index + 1"
-         [class.current]="currentStep == index + 1"
-     >
-        <div class="r-stepper-step-circle">{{index + 1}}</div>
+    <div *ngFor="let step of stepTitles; let i = index"
+        [class.done] = "markAsDone(i)"
+        [class.error] = "markAsError(i)"
+        [class.finished] = "isPast(i)"
+        [class.current] = "isCurrent(i)"
+    >
+        <div class="r-stepper-step-circle">{{i + 1}}</div>
         <div class="r-stepper-step-title">{{step}}</div>
     </div>
     `
@@ -35,11 +39,20 @@ export class RStepComponent {
 
 export class RStepperHeaderComponent {
 
+    @Input() stepValids: Array<boolean>;
     @Input() stepTitles: Array<string>;
     @Input() currentStep: number = 1;
 
     constructor() {
     }
+
+    public isPast = step => step + 1 < this.currentStep;
+    public isCurrent = step => step + 1 === this.currentStep;
+    public isFuture = step => step + 1 > this.currentStep;
+    public isValid = step => this.stepValids[step];
+
+    public markAsDone = step => this.isPast(step) && this.isValid(step);
+    public markAsError = step => this.isPast(step) && !this.isValid(step);
 
 }
 
@@ -49,15 +62,21 @@ export class RStepperHeaderComponent {
     selector: 'r-stepper',
     template: `
     <!-- Header -->
-    <r-stepper-header [stepTitles]="stepsArray" [currentStep]="currentStep"></r-stepper-header>
+    <r-stepper-header [stepTitles]="stepTitles" [stepValids]="stepValids" [currentStep]="currentStep"></r-stepper-header>
     <!-- Steps -->
     <div class="r-steps-container">
         <ng-content></ng-content>
     </div>
     <!-- Prev/Next buttons -->
     <div class="r-stepper-footer">
-        <button r-button flat [text]="'Nazad'" (click)="goToPrev()" [disabled]="isFirst()">Previous</button>
-        <button r-button raised [text]="'Dalje'" (click)="goToNext()" [disabled]="isLast()">Next</button>
+        {{allAreValid()}}
+        <button r-button flat text="Nazad" (click)="goToPrev()" [disabled]="currentIsFirst()">Nazad</button>
+        <template [ngIf]="!currentIsLast()">
+            <button r-button raised text="Sledeći korak" (click)="goToNext()" [disabled]="currentIsLast() || !currentIsValid()">Dalje</button>
+        </template>
+        <template [ngIf]="currentIsLast()">
+            <button r-button raised text="Kreiraj raspodelu" (click)="submit()" [disabled]="!currentIsLast() || !allAreValid()">Kreiraj raspodelu</button>
+        </template>
     </div>
     `,
     styleUrls: ['app/ui/r-stepper.css'],
@@ -65,6 +84,12 @@ export class RStepperHeaderComponent {
 })
 
 export class RStepperComponent implements AfterContentInit {
+
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
+    @Output() onSubmit = new EventEmitter();
+    public submit = () => {this.onSubmit.emit("submit")};
 
     @ContentChildren(RStepComponent) _steps: QueryList<RStepComponent>;
 
@@ -87,27 +112,43 @@ export class RStepperComponent implements AfterContentInit {
         this._notifySteps();
     }
 
-    _notifySteps() {
+    // Obavesti dete tako da zna da je on trenutni (da se prikaže).
+    private _notifySteps() {
         for (let i = 0; i < this._steps.toArray().length; i++) {
+            console.log(i, this.currentStep);
             this._steps.toArray()[i].isCurrent = (this.currentStep == i + 1);
         }
     }
 
-    get stepsArray(): Array<string> {
+    // vraca niz objekata koji imaju stepTitle i trenutnu vrednost validnosti podataka.
+    get stepsArray(): Array<any> {
         var _stepsArray = this._steps.toArray();
-        var ret: Array<string> = new Array<string>(_stepsArray.length);
+        var ret: Array<any> = new Array<string>(_stepsArray.length);
         for (let i = 0; i < _stepsArray.length; i++) {
-            ret[i] = _stepsArray[i].stepTitle;
+            ret[i] = {
+                stepTitle: _stepsArray[i].stepTitle,
+                valid: _stepsArray[i].valid,
+            };
         }
         return ret;
     }
 
+    public get stepTitles(): Array<string> {
+        return this.stepsArray.map(i => i.stepTitle);
+    }
+
+    public get stepValids(): Array<boolean> {
+        return this.stepsArray.map(i => i.valid);
+    }
+
     goToNext() {
-        if (!this.isLast()) this.currentStep++;
+        if (!this.currentIsLast())
+            this.currentStep++;
     }
 
     goToPrev() {
-        if (!this.isFirst()) this.currentStep--;
+        if (!this.currentIsFirst())
+            this.currentStep--;
     }
 
     finish() {
@@ -115,13 +156,10 @@ export class RStepperComponent implements AfterContentInit {
         //TODO event
     }
 
-    isLast() {
-        return this.currentStep == this.totalSteps;
-    }
-
-    isFirst() {
-        return this.currentStep == 1;
-    }
+    public currentIsFirst = () => this.currentStep === 1;
+    public currentIsLast = () => this.currentStep === this.totalSteps;
+    public currentIsValid = () => this.stepValids[this.currentStep - 1];
+    public allAreValid = () => !!this.stepValids.reduce((p, c) => p && c);
 
 }
 
