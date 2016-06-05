@@ -52,6 +52,24 @@ namespace WebApplication1.Controllers
             return Ok(classrooms);
         }
 
+        [HttpGet]
+        public IActionResult GetSchedule(int classroomID, int weeksFromNow)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var schedule = Data.Classroom.GetSchedule(classroomID, weeksFromNow);
+
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(schedule);
+        }
+
         // PUT: api/Classrooms/5
         [HttpPut("{id}")]
         public IActionResult PutClassrooms(int id, [FromBody] Classrooms classrooms)

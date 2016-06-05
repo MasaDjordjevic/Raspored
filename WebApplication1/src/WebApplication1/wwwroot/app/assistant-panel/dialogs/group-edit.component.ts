@@ -178,12 +178,14 @@ export class GroupEditComponent implements AfterContentInit {
         var pom: Array<number> = this.chosenStudents.map(i=>i.studentID);
         console.log(pom);
         var timespan:TimeSpan = new TimeSpan;
+        debugger;
         if(value.timeStart && value.timeEnd && value.period) {
             timespan.startDate = value.timeStart;
             timespan.endDate = value.timeEnd;
             timespan.period = value.period;
+        }else {
+            timespan = null;
         }
-        timespan = null;
         console.log(timespan);
         this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.assistant, value.groupName, value.classroom, timespan,  pom);
     }

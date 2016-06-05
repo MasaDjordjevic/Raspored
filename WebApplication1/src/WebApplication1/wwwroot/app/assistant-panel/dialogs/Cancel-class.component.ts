@@ -13,6 +13,8 @@ class AddWeeksPipe implements PipeTransform {
     transform(date, weekNumber) {
         //nije htelo normalno pa sam morala ovako da ga ukomplikujem
         //TODO ovo dodaje na taj datum, treba da nadje refentni tom datumu u tekucoj nedelji pa da doda na to
+        // ne treba da se doda na date, nego na datum koji odgovara dateu u tekucoj nedelji
+        // pazi na periodu, dodaj 7*periodu dok ne predjes danasnji datum
         var ret = new Date((new Date).setDate((new Date(date)).getDate() + 7*weekNumber));
         return ret;
     }

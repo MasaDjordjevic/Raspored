@@ -61,8 +61,8 @@ export class StudentsService {
                 .catch(this.handleError);
     }
 
-    getSchedule(studentID: number): Promise<any[]> {
-        return this.http.get(this._url + '/GetSchedule/' + studentID)
+    getSchedule(studentID: number, weeksFromNow:number): Promise<any[]> {
+        return this.http.get(this._url + `/GetSchedule/?studentID=${studentID}&weeksFromNow=${weeksFromNow}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

@@ -52,6 +52,13 @@ export class DepartmentService {
             .toPromise().then(this.extractData).catch(this.handleError);
     }
 
+    getSchedule(departmentID: number, weeksFromNow:number): Promise<any[]> {
+        return this.http.get(this._url + `/GetSchedule/?departmentID=${departmentID}&weeksFromNow=${weeksFromNow}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);

@@ -57,7 +57,7 @@ namespace WebApplication1.Data
                         .ThenInclude(a => a.UniMembers)
                         .Where(a => a.groupID == groupID)
                         .ToList();
-                return (from a in pom select a.student).ToList();
+                return (from a in pom select a.student).OrderBy(a => a.indexNumber).ToList();
             }
 
         }
@@ -74,31 +74,26 @@ namespace WebApplication1.Data
             }
         }
 
-        private static int colorCounter = -1;
-
-        public static string GetNextColor()
-        {
-            string[] boje = new string[] { "#f44336", "#673AB7", "#2196F3", "#8BC34A", "#FFC107" };
-
-            colorCounter++;
-            if (colorCounter == boje.Length)
-                colorCounter = 0;
-
-            return boje[colorCounter];
-
-        }
+        
       
 
-        public static IEnumerable GetSchedule(int studentID)
+        public static IEnumerable GetSchedule(int studentID, int weeksFromNow = 0)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                List<int> groups = _context.GroupsStudents.Where(a => a.studentID == studentID).Select(a => a.groupID).ToList();
+                DateTime now = DateTime.Now.AddDays(7 * weeksFromNow);
+                TimeSpans tsNow = new TimeSpans
+                {
+                    startDate = now.StartOfWeek(),
+                    endDate = now.EndOfWeek()
+                };
+                List<int> groups = _context.GroupsStudents
+                    .Where(a => a.studentID == studentID &&  
+                                TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
+                                .Select(a => a.groupID).ToList();
 
-                var returnValue = _context.Groups.Where(a => groups.Contains(a.groupID))
-               // var returnValue = 
-                //    _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
-                        .Select(a => new
+                List<ScheduleDTO> groupsSchedule = _context.Groups.Where(a => groups.Contains(a.groupID) && TimeSpan.Overlap(a.timeSpan, tsNow))
+                        .Select(a => new ScheduleDTO
                         {
                             day = a.timeSpan.startDate.DayOfWeek,
                             startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
@@ -106,88 +101,43 @@ namespace WebApplication1.Data
                             className = a.division.course.name,
                             abbr = a.division.course.alias,
                             classroom = a.classroom.number, 
-                            assistant = GetAssistant(a.groupID),
+                            assistant = Group.GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = GetCanceling(a.groupID, a.timeSpan),
-                            //active = CancellingToActive(a.cancelling),
-                            color = GetNextColor(),
+                            active = Group.GetActive(a.groupID, tsNow),
+                            color = Schedule.GetNextColor(),
                         }).ToList();
-                
 
-                var ret = new ArrayList();
+                List<ScheduleDTO> activitiesSchedule =
+                    _context.Activities.Where(a => a.studentID == studentID || (a.cancelling == false && groups.Contains(a.groupID.Value))).Select(a => new ScheduleDTO
+                    {
+                        day = a.timeSpan.startDate.DayOfWeek,
+                        startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
+                        durationMinutes = (int)(a.timeSpan.endDate.Subtract(a.timeSpan.startDate)).TotalMinutes,
+                        active = true,
+                        color = Schedule.GetNextColor(),
+                        activityTitle = a.title,
+                        activityContent = a.activityContent
+                    }).ToList();
 
-                var daysOfWeek = Enum.GetValues(typeof(DayOfWeek))
-                                .OfType<DayOfWeek>()
-                                .OrderBy(day => day < DayOfWeek.Monday);
+                List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();
 
-                // svaki dan mora da postoji bez obzira da li ima casova u njemu
-                foreach (DayOfWeek day in daysOfWeek)
-                {
-                    ret.Add(
-                        (from a in returnValue where a.day == day select a).ToArray()
-                        );
-                }
 
-                return ret;
+                return Schedule.Convert(returnValue);
             }
         }
 
-        public static string GetAssistant(int groupID)
-        {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                var q = _context.GroupsAssistants.Where(a => a.groupID == groupID);
-                if (q.Any())
-                {
-                    var asst = q.Select(a=> a.assistant).First();
-                    return asst.name + " " + asst.surname;
-                }
-                else
-                {
-                    return "";
-                }
-            }
-        }
-
-        public static bool GetCanceling(int groupID, TimeSpans ts)
-        {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                TimeSpans tsThisWeek = new TimeSpans
-                {
-                    startDate = ts.startDate.DayOfCurrentWeek(),
-                    endDate = ts.endDate.DayOfCurrentWeek()
-                };
-                return !_context.Activities.Any( ac =>
-                    ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
-                    TimeSpan.Equal(ac.timeSpan, tsThisWeek));
-                
-            }
-        }
+        
+       
 
         public static bool CancellingToActive(bool? cancelling)
         {
             return !cancelling ?? true;
         }
-
-        public static
-            List<TimeSpans> GetScheduleTimes(int studentID)
-        {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                List<int> groups = _context.GroupsStudents.Where(a => a.studentID == studentID).Select(a => a.groupID).ToList();
-
-                return 
-                    _context.Activities.Where(a => groups.Contains(a.groupID.Value) || a.studentID == studentID)
-                        .Select(a => a.timeSpan).ToList();
-
-              
-            }
-        }
+      
 
         public static bool CheckIfAveable(int studentID, TimeSpans time)
         {
-            List<TimeSpans> schedule = GetScheduleTimes(studentID);
+            List<TimeSpans> schedule = null;
             foreach (TimeSpans ts in schedule)
             {
                 if (TimeSpan.Overlap(ts, time))

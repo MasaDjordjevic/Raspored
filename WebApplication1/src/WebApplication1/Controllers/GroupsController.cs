@@ -224,7 +224,23 @@ namespace WebApplication1.Controllers
             return Ok(new { status = "uspelo" });
         }
 
+        [HttpGet]
+        public IActionResult GetSchedule(int groupID, int weeksFromNow)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
 
+            var schedule = Data.Group.GetCombinedSchedule(groupID, weeksFromNow);
+
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(schedule);
+        }
 
         // POST: api/Groups
         [HttpPost]
