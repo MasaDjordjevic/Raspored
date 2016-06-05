@@ -11,12 +11,15 @@ import {Component, Directive, HostBinding, Input, AfterContentInit, AfterViewIni
         </div>
     </div>
     `,
-    styleUrls: ['app/ui/r-dialog.css']
+    styleUrls: ['app/ui/r-dialog.css'],
+    host: {
+        "[class.visible]": "visible",
+    }
 })
 
 export class RDialogComponent implements AfterContentInit, AfterViewInit {
 
-    @HostBinding('class.visible') private _visible = true;
+    private _visible = false;
 
     @Input() source;
 
@@ -27,7 +30,7 @@ export class RDialogComponent implements AfterContentInit, AfterViewInit {
     public width;
     public height;
 
-    private _transitionDuration: number = 300; // in milliseconds
+    private _transitionDuration: number = 0; // in milliseconds
 
     ngAfterContentInit() {
         this.nativeElement.addEventListener("click", (e) => {
@@ -38,7 +41,11 @@ export class RDialogComponent implements AfterContentInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        var dialog: HTMLElement = <HTMLElement>this.nativeElement.children[0];
+        this.calculateSizes();
+    }
+
+    public calculateSizes() {
+        /*var dialog: HTMLElement = <HTMLElement>this.nativeElement.children[0];
 
         this.width = dialog.getBoundingClientRect().width;
         this.height = dialog.getBoundingClientRect().height;
@@ -54,14 +61,14 @@ export class RDialogComponent implements AfterContentInit, AfterViewInit {
         // i nista ne moze da se klikne.
         this.nativeElement.style.display = 'none';
 
-        console.log(this.top + " " + this.left + " " + this.width + " " + this.height);
+        console.log(this.top + " " + this.left + " " + this.width + " " + this.height);*/
     }
 
     set visible(v: boolean) {
         if (v) {
-            this.nativeElement.style.display = 'block';
+            //this.nativeElement.style.display = 'block';
         } else {
-            this.nativeElement.style.display = 'none';
+            //this.nativeElement.style.display = 'none';
         }
         this._visible = v;
     }
@@ -86,7 +93,7 @@ export class RDialogComponent implements AfterContentInit, AfterViewInit {
     }
 
     setPositionToStart() {
-        var source: HTMLElement = this.source.nativeElement;
+        /*var source: HTMLElement = this.source.nativeElement;
         var dialog: HTMLElement = <HTMLElement>this.nativeElement.children[0]; // .r-dialog-wrapper-outer
 
         dialog.style.transition = this.nativeElement.style.transition =
@@ -98,11 +105,11 @@ export class RDialogComponent implements AfterContentInit, AfterViewInit {
         dialog.style.top = source.getBoundingClientRect().top + 'px';
         dialog.style.left = source.getBoundingClientRect().left + 'px';
         dialog.style.width = source.getBoundingClientRect().width + 'px';
-        dialog.style.height = source.getBoundingClientRect().height + 'px';
+        dialog.style.height = source.getBoundingClientRect().height + 'px';*/
     }
 
     setPositionToEnd() {
-        var dialog: HTMLElement = <HTMLElement>this.nativeElement.children[0]; // .r-dialog-wrapper-outer
+        /*var dialog: HTMLElement = <HTMLElement>this.nativeElement.children[0]; // .r-dialog-wrapper-outer
 
         dialog.style.transition = this.nativeElement.style.transition =
             `all ${this._transitionDuration / 1000}s ease`;
@@ -113,7 +120,7 @@ export class RDialogComponent implements AfterContentInit, AfterViewInit {
         dialog.style.top = this.top + 'px';
         dialog.style.left = this.left + 'px';
         dialog.style.width = this.width + 'px';
-        dialog.style.height = this.height + 'px';
+        dialog.style.height = this.height + 'px';*/
     }
 
 }
