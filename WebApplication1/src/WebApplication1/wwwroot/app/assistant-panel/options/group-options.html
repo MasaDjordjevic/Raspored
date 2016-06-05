@@ -33,11 +33,12 @@
     </r-dialog>
 
     <r-dialog #removeGroupDialog [source]="removeGroupButton">
-        <div style="width: 500px; height:600px;">
-            <label>Da li ste sigurni?</label>
-            <button r-button raised text="obrisi" (click)="removeGroup()"></button>
-            <!-- TODO na ne da se minimizira dialog -->
-            <button r-button flat text="otkazi"></button>
+        <div class="remove-group-dialog">
+            <div class="dialog-text">Obriši grupu <strong>{{group.name}}</strong>?</div>
+            <div class="dialog-controls">
+                <button r-button flat text="Odustani" (click)="removeGroupDialog.close()" [primaryColor]="primaryColor">Odustani</button>
+                <button r-button raised text="Obriši" (click)="removeGroup()" [primaryColor]="primaryColor">Obriši</button>
+            </div>
         </div>
     </r-dialog>
 

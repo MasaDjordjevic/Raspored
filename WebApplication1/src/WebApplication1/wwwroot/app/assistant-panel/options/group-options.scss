@@ -1,0 +1,15 @@
+.remove-group-dialog {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+
+  .dialog-text {
+    padding: 1em;
+  }
+
+  .dialog-controls {
+    display: flex;
+    justify-content: space-between;
+  }
+}

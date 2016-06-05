@@ -16,6 +16,7 @@ import {CancelClassComponent} from "../dialogs/Cancel-class.component";
     templateUrl: 'app/assistant-panel/options/group-options.html',
     styleUrls: [
         'app/assistant-panel/options/assistant-panel-options.css',
+        'app/assistant-panel/options/group-options.css',
     ],
     providers: [GroupsService],
     directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, GroupEditComponent, AddActivityComponent, CancelClassComponent],
@@ -29,8 +30,6 @@ export class GroupOptionsComponent {
 
     group: Group;
     errorMessage: string;
-
-    
 
     private _groupId: number = 0;
 
