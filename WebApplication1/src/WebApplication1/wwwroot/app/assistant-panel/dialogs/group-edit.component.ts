@@ -187,7 +187,8 @@ export class GroupEditComponent implements AfterContentInit {
             timespan = null;
         }
         console.log(timespan);
-        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.assistant, value.groupName, value.classroom, timespan,  pom);
+        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.assistant, value.groupName, value.classroom, timespan,  pom)
+            .then(status => console.log(status));
     }
 
     ngAfterContentInit() {

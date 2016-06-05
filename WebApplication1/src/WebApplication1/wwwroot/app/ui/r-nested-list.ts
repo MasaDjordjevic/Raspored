@@ -47,7 +47,7 @@ export class NestedListInnerComponent {
 
     @Input() title: string;
 
-    public visible: boolean = false;
+    public visible: boolean = true;
 
 
     public toggle() {
