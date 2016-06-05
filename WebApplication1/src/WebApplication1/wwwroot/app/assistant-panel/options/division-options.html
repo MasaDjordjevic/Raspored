@@ -4,16 +4,25 @@
     <h2>({{division.divisionType.type}})</h2>
 
     <dl r-dl>
-        <dt>ID</dt>
-        <dd>{{division.divisionID}}</dd>
-        <dt>Ime</dt>
-        <dd>{{division.name}}</dd>
-        <dt>Početak</dt>
-        <dd>{{division.beginning}}</dd>
-        <dt>Kraj</dt>
-        <dd>{{division.ending}}</dd>
+        <!--<dt>ID</dt>
+        <dd>{{division.divisionID}}</dd>-->
+        <dt>Predmet</dt>
+        <dd>{{division.course.name}} (<code>{{division.course.code}}</code>)</dd>
+
+        <dt>Trajanje</dt>
+        <dd>{{division.beginning.slice(0, 10)}} — {{division.ending.slice(0, 10)}}</dd>
+
         <dt>Broj grupa</dt>
         <dd>{{division.Groups.length}}</dd>
+
+        <dt>Broj studenata</dt>
+        <dd>{{totalNumberOfStudents()}}</dd>
+
+        <dt>Osnivač grupe</dt>
+        <dd>
+            {{division.creator.name}} {{division.creator.surname}}
+            <a [href]="'mailto:' + division.creator.email"><i class="fa fa-envelope"></i></a>
+        </dd>
     </dl>
 
     <p>{{errorMessage}}</p>

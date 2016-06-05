@@ -29,7 +29,7 @@ export class DivisionOptionsComponent {
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
-    division: Division;
+    division: any;
     errorMessage: string;
     emptyGroup: any; //sluzi za dodavanje nove grupe preko edit-group komponente
 
@@ -59,6 +59,15 @@ export class DivisionOptionsComponent {
         this.division = div;
         this.emptyGroup = {name: "", classroomID: "-1", GroupsStudents: [], division: this.division };
 
+    }
+
+    // Nesto nije htelo u arrow
+    public totalNumberOfStudents() {
+        var sum = 0;
+        for (let i = 0; i < this.division.Groups.length; i++) {
+            sum += this.division.Groups[i].GroupsStudents.length;
+        }
+        return sum;
     }
 
 }
