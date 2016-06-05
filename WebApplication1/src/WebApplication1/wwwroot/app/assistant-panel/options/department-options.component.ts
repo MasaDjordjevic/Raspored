@@ -10,6 +10,7 @@ import {TrimPipe} from "../../pipes/trim.pipe";
 import {Student} from "../../models/Student";
 import {StudentsService} from "../../services/students.service";
 import {StudentSearchComponent} from "../dialogs/student-search.component";
+import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 
 
 
@@ -17,10 +18,11 @@ import {StudentSearchComponent} from "../dialogs/student-search.component";
     selector: 'r-department-options',
     templateUrl: 'app/assistant-panel/options/department-options.html',
     styleUrls: [
-        'app/assistant-panel/options/assistant-panel-options.css'
+        'app/assistant-panel/options/assistant-panel-options.css',
+        'app/assistant-panel/options/department-options.css',
     ],
     providers: [DepartmentService, StudentsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent, StudentSearchComponent],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, R_MULTIPLE_SELECTOR, DivisionCreatorComponent, StudentSearchComponent],
     pipes: [TrimPipe]
 })
 
@@ -32,7 +34,11 @@ export class DepartmentOptionsComponent {
     department: Department;
     errorMessage: string;
 
+    // Studenti koji se prikazuju klikom na "STUDENTI"
     students: Student[];
+
+    // Brojevi indeksa selektiranih studenata iz this.students
+    selectedStudents: any[] = [];
 
     private _departmentId: number = 0;
 
