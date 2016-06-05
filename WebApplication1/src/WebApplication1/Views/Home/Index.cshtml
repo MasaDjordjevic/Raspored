@@ -2,4 +2,96 @@
     ViewData["Title"] = "Angular 2";
 }
 
-<app class="container" style="display: block;">Loading...</app>
+<style>
+        .loader {
+            width: 100px;
+            height: 100px;
+        }
+
+        .loader .loader-outer {
+            animation: outer-spin ease 2s;
+            animation-iteration-count: infinite;
+            transform-origin: 50% 50%;
+        }
+
+        .loader .loader-inner {
+            animation: inner-spin linear 3s;
+            animation-iteration-count: infinite;
+            transform-origin: 50% 50%;
+        }
+
+        .loader i {
+            /*animation: color-change linear 8s;
+            animation-iteration-count: infinite;*/
+            color: black;
+            font-size: 100px;
+            line-height: 100px;
+            width: 100px;
+            height: 100px;
+        }
+
+        @@keyframes color-change {
+            0% { color: #FF1744 }
+            6.25% { color: #1DE9B6 }
+            12.5% { color: #F50057 }
+            18.75% { color: #00E676 }
+            25% { color: #D500F9 }
+            31.25% { color: #76FF03 }
+            37.5% { color: #651FFF }
+            43.75% { color: #C6FF00 }
+            50% { color: #3D5AFE }
+            56.25% { color: #FFEA00 }
+            62.5% { color: #2979FF }
+            68.75% { color: #FFC400 }
+            75% { color: #00B0FF }
+            81.25% { color: #FF9100 }
+            87.5% { color: #00E5FF }
+            93.75% { color: #FF3D00 }
+            100% { color: #FF1744 }
+        }
+
+        @@keyframes outer-spin {
+            0% {
+                transform:  rotate(0deg) ;
+            }
+            100% {
+                transform:  rotate(360deg) ;
+            }
+        }
+
+        @@keyframes inner-spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+
+
+<app class="container" style="display: block;">
+
+    <div class="loader-container">
+        <div class="loader">
+            <div class="loader-outer">
+                <div class="loader-inner">
+                    <i class="fa fa-circle-o-notch"></i>
+                </div>
+            </div>
+        </div>
+        <div style="height: 30px"></div>
+        <h1>Učitava se...</h1>
+    </div>
+
+</app>
