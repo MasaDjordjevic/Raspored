@@ -15,6 +15,7 @@
     align-items: flex-end; // dole
     cursor: pointer;
 
+    // {{label}}
     label {
       position: absolute;
       color: rgba(black, .45);
@@ -29,6 +30,7 @@
       }
     }
 
+    // {{currSelectedString}}
     span {
       display: inline-block;
       box-shadow: 0 -1px 0 0 rgba(black, .2) inset;
@@ -41,6 +43,36 @@
         position: absolute;
         right: 0;
       }*/
+    }
+
+    // Vreme koje treba onom čudu ispod inputa da se pojavi pri fokusiranju
+    $time-highlight: .5s;
+    // TODO ovo moze da se refaktorise, da se izvuce u neki globalni fajl posto se koristi i ovde i na input
+    // Mada realno i nije mnogo ponavljanja, samo na dva mesta (zasad).
+    %line-effect-hidden {
+      position: absolute;
+      width: 0;
+      left: 50%;
+      height: 3px;
+      bottom: -2px;
+      opacity: .5;
+      transition: all $time-highlight ease;
+    }
+
+    %line-effect-visible {
+      width: 100%;
+      left: 0;
+      opacity: 1;
+    }
+
+    // Efekat na dnu ako je expandovano
+    .line-effect {
+      @extend %line-effect-hidden;
+      background-color: palette($blue);
+
+      &.highlight {
+        @extend %line-effect-visible;
+      }
     }
   }
 
@@ -60,6 +92,7 @@
   border-radius: 2px;
   opacity: 1;
   transition: opacity .33s ease;
+  z-index: 5;
 
   left: -$padding-left-right-inner;
   // top se podesava u angularu
@@ -80,4 +113,16 @@
     transition: opacity .33s ease; //TODO zasto nece?
   }
 
+}
+
+.invisible-blackout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 3;
+  // background-color: rgba(black, .5);
 }

@@ -1,7 +1,7 @@
 import {
     Component, Directive, Input, Output,
     ContentChildren, EventEmitter, ElementRef,
-    AfterContentInit, OnInit
+    AfterContentInit, OnInit, AfterViewInit
 }
     from "angular2/core";
 import {QueryList} from "angular2/src/core/linker/query_list";
@@ -81,11 +81,11 @@ export class RDropdownItemComponent implements OnInit {
     @Input() public value: string;
 
     // Redni broj u listi, počinje od nule
-    public offset: number;
+    public offset: number = 0;
 
     // Tekst koji je prikazan kao opcija (u ng-content)
     // Read-only
-    get str() {
+    public get str() {
         return this.element.nativeElement.innerText.trim();
     }
 
@@ -94,10 +94,17 @@ export class RDropdownItemComponent implements OnInit {
         private _emitter: RDropdownEmitterService
     ) { }
 
+    get element() {
+        return this._element;
+    }
+
     ngOnInit() { }
 
     // on click
+    // Na klik samo saljemo event da se nesto kliknulo, nista ne menjamo.
+    // Roditeljska komponenta je odgovorna za to da prati ko je selektiran.
     select() {
+        console.log("emituje se", this);
         this._emitter.get("channel1").emit({
             value: this.value,
             str: this.str,
@@ -105,35 +112,10 @@ export class RDropdownItemComponent implements OnInit {
         });
     }
 
-    get element() {
-        return this._element;
-    }
 
 }
 
 
-
-
-@Directive({
-    selector:'r-dropdown-item[default]'
-})
-
-export class RDropdownDefaultItemDirective implements AfterContentInit {
-
-    constructor(
-        public _emitter: RDropdownEmitterService,
-        private _dropdownItem: RDropdownItemComponent
-    ) { }
-
-    ngAfterContentInit() {
-        this._emitter.get("channel1").emit({
-            value: this._dropdownItem.value,
-            str: this._dropdownItem.str,
-            offset: this._dropdownItem.offset
-        })
-    }
-
-}
 
 
 
@@ -143,6 +125,7 @@ export class RDropdownDefaultItemDirective implements AfterContentInit {
         <div class="r-dropdown" (click)="toggleExpanded()">
             <label>{{label}}</label>
             <span>{{currentSelectedStr}}</span>
+            <div class="line-effect" [ngClass]="{highlight: isExpanded}"></div>
             <div class="r-dropdown-items-wrapper"
                  [class.hidden]="!isExpanded"
                  [ngStyle]="_topOffsetStyle"
@@ -150,23 +133,17 @@ export class RDropdownDefaultItemDirective implements AfterContentInit {
                 <ng-content></ng-content>
             </div>
         </div>
+        <div class="invisible-blackout" *ngIf="isExpanded" (click)="toggleExpanded()"></div>
     `,
     styleUrls: ['app/ui/r-dropdown.css'],
     providers: [RDropdownEmitterService],
     host: {
-        "[value]": "val",
-        "(click)": "onClick($event)"
+        //"[value]": "val",
+        //"(click)": "onClick($event)"
     }
 })
 
-export class RDropdownComponent implements AfterContentInit {
-
-    public onClick($event) {
-        //console.log($event);
-        if (!$event.target.classList.contains("r-dropdown-item")) return; // nastavi samo ako je klik na r-dropdown-item
-        //console.log($event.target.parentElement.attributes.value.nodeValue);
-        this.valChange.next($event.target.parentElement.attributes.value.nodeValue); // pomozi bog
-    }
+export class RDropdownComponent implements AfterContentInit, AfterViewInit {
 
     @ContentChildren(RDropdownItemComponent) _items:
         QueryList<RDropdownItemComponent>;
@@ -175,48 +152,96 @@ export class RDropdownComponent implements AfterContentInit {
     @Input()  label: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
-    public currentSelectedValue: string;
+    @Input() dropdownType: "material" | "down" | "up" = "down";
+
+    private _currentSelectedValue: string;
+
+    public get currentSelectedValue() {
+        return this._currentSelectedValue;
+    }
+
+    public set currentSelectedValue(v) {
+        this._currentSelectedValue = v;
+        this.valChange.next(this.currentSelectedValue);
+    }
+
     public currentSelectedStr: string;
     private _currentSelectedOffset: number = 0; // redni broj, počinje od nule
 
-    private _topOffsetStyle = { "top": "calc(1.23ex - 0px - 8px)" };
+    private _topOffsetStyle: any;
 
     set currentSelectedOffset(newOffset: number) {
         if (!newOffset) newOffset = 0;
         this._currentSelectedOffset = newOffset;
 
-        // Prodji kroz sve elemente do i bez offseta i saberi im visine
-        // Ove visine uključuju padding, margine, itd. U pikselima.
-        var sum = 0;
-        //console.log(this._items.toArray());
-        for (let i = 0; i < this.currentSelectedOffset; i++) {
-            let el = this._items.toArray()[i].element.nativeElement;
-            el.parentNode.style.display = el.style.display = "block";
-            sum += el.getBoundingClientRect().height;
+        // Prilikom otvaranja dropdowna, selektirani item se uvek nalazi na istoj poziciji
+        // gde se on nalazi i kada dropdown nije otvoren. Znaci pomera se gore-dole.
+        // TODO Ne radi uvek iz nekog razloga, child komponenta nece lepo da postavi sebi offset ponekad.
+        if (this.dropdownType === "material") {
+            // Prodji kroz sve elemente do i bez offseta i saberi im visine
+            // Ove visine uključuju padding, margine, itd. U pikselima.
+            var sum = 0;
+            //console.log(this._items.toArray());
+            for (let i = 0; i < this.currentSelectedOffset; i++) {
+                let el = this._items.toArray()[i].element.nativeElement;
+                el.parentNode.style.display = el.style.display = "block";
+                sum += el.getBoundingClientRect().height;
+                el.style.display = el.parentNode.style.display = "";
+            }
+
+            // Na sumu dodajemo gornji padding trenutnog elementa
+            let el = this._items.toArray()[this.currentSelectedOffset].element.nativeElement;
+            el.style.dispaly = el.parentNode.style.display = "block";
+
+            // Mora children da ne uzme angular selector nego bas .r-dropdown-item
+            sum += parseFloat(window.getComputedStyle(el.children[0]).getPropertyValue("padding-top"));
             el.style.display = el.parentNode.style.display = "";
+
+            /**
+             * TODO
+             * Trenutno ignoriše 0.23ex, taman mu daje malo paddinga. Ako ima smisla raditi,
+             * može da se unapredi da se da prozivoljna margina koju mora da zadovolji.
+             */
+            var parentTop: number = this.element.nativeElement.children[0].getBoundingClientRect().top;
+            if (sum > parentTop) {
+                sum = parentTop;
+            }
+
+            this._topOffsetStyle = {
+                "top": `calc(1.23ex - ${sum}px - 1ex)`
+            }
         }
 
-        // Na sumu dodajemo gornji padding trenutnog elementa
-        let el = this._items.toArray()[this.currentSelectedOffset].element.nativeElement;
-        el.style.dispaly = el.parentNode.style.display = "block";
-        
-        // Mora children da ne uzme angular selector nego bas .r-dropdown-item
-        sum += parseFloat(window.getComputedStyle(el.children[0]).getPropertyValue("padding-top"));
-        el.style.display = el.parentNode.style.display = "";
+        // Dropdown se po otvaranju pojavljuje nadole. SHAME
+        if (this.dropdownType === "down") {
+            var height = this.element.nativeElement.getBoundingClientRect().height;
+            var margin = 10;
+            var topPx = (height + margin) + "px";
 
-        /**
-         * TODO
-         * Trenutno ignoriše 0.23ex, taman mu daje malo paddinga. Ako ima smisla raditi,
-         * može da se unapredi da se da prozivoljna margina koju mora da zadovolji.
-         */
-        var parentTop: number = this.element.nativeElement.children[0].getBoundingClientRect().top;
-        if (sum > parentTop) {
-            sum = parentTop;
+            // TODO shame
+            this._topOffsetStyle = {
+                "position": "absolute",
+                "top": topPx,
+                "max-height": "200px", // shame
+                "overflow": "auto", // shame
+            }
         }
 
-        this._topOffsetStyle = {
-            "top": `calc(1.23ex - ${sum}px - 1ex)`
+        // Dropdown se po otvaranju pojavljuje nagore. SHAME
+        if (this.dropdownType === "up") {
+            var height = this.element.nativeElement.getBoundingClientRect().height;
+            var margin = 10;
+            var topPx = (height + margin) + "px";
+
+            // TODO shame
+            this._topOffsetStyle = {
+                "position": "absolute",
+                "bottom": topPx,
+                "max-height": "200px", // shame
+                "overflow": "auto", // shame
+            }
         }
+
 
     }
 
@@ -232,7 +257,7 @@ export class RDropdownComponent implements AfterContentInit {
     ) {
 
         this.emitter.get("channel1").subscribe(msg => {
-            //console.log(msg);
+            console.log("uhvacen emitter", msg);
             this.currentSelectedValue = msg.value;
             this.currentSelectedStr = msg.str;
             this.currentSelectedOffset = msg.offset;
@@ -241,30 +266,42 @@ export class RDropdownComponent implements AfterContentInit {
     }
 
     ngAfterContentInit() {
+
         var itemsArray = this._items.toArray();
         var len = itemsArray.length;
-        for (let i = 0; i < len; i++) {
-            var currItem = itemsArray[i];
-            // Dodeli offset (redni broj) svima
-            currItem.offset = i;
+        setTimeout(() => {
+            //debugger;
+            if (len === 0) return;
+            for (let i = 0; i < len; i++) {
+                var currItem = itemsArray[i];
+                // Dodeli offset (redni broj) svima
+                currItem.offset = i;
+                (<any>currItem).isus = i;
 
-            // Pronadji dete koje ima isti value kao this.val i selektiraj ga
-            if (currItem.value === this.val) {
-                this.currentSelectedStr = currItem._element.nativeElement.innerText.trim();
+                // Pronadji dete koje ima isti value kao this.val i selektiraj ga
+                if (currItem.value === this.val) {
+                    this.currentSelectedStr = currItem.str;
+                    this.currentSelectedValue = currItem.value;
+                    this.currentSelectedOffset = currItem.offset;
+                }
+            }
+
+            // Ako nije nadjeno dete koje ime ima isti value kao this.val,
+            // selektiramo prvu ponudjenu opciju iz dropdowna.
+            console.log(this.currentSelectedValue);
+            console.log(itemsArray);
+            if (!this.currentSelectedValue) {
+                currItem = itemsArray[0];
+                this.currentSelectedStr = currItem.str;
                 this.currentSelectedValue = currItem.value;
                 this.currentSelectedOffset = currItem.offset;
             }
-        }
+        }, 1);
+    }
 
-        // Ako nije nadjeno dete koje ime ima isti value kao this.val,
-        // selektiramo prvu ponudjenu opciju iz dropdowna.
-        console.log(this.currentSelectedValue);
+    ngAfterViewInit() {
         //debugger;
-        if (!this.currentSelectedValue) {
-            this.currentSelectedStr = itemsArray[0]._element.nativeElement.innerText.trim();
-            this.currentSelectedValue = currItem.value;
-            this.currentSelectedOffset = currItem.offset;
-        }
+        //setTimeout(() => { this.currentSelectedOffset = 0; }, 1);
     }
 
     toggleExpanded() {
@@ -273,6 +310,8 @@ export class RDropdownComponent implements AfterContentInit {
          * ajtemi na koje se klikce, klik na njih ce i ugasiti
          * prikaz ajtema.
          */
+        console.log("trenutni je" + this.currentSelectedOffset);
+        this.currentSelectedOffset = 0; // TODO
         this.isExpanded = !this.isExpanded;
     }
 
@@ -281,5 +320,4 @@ export class RDropdownComponent implements AfterContentInit {
 export const R_DROPDOWN = [
     RDropdownComponent,
     RDropdownItemComponent,
-    RDropdownDefaultItemDirective
 ];
