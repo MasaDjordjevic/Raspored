@@ -19,8 +19,8 @@ import {Control, ControlGroup} from "angular2/common";
     `,
     styleUrls: ["app/ui/r-input-text.component.css"],
     host: {
-        "[value]": "val",
-        "(input)": "valChange.next($event.target.value)"
+        //"[value]": "val",
+        //"(input)": "valChange.next($event.target.value)"
     }
 })
 
@@ -28,11 +28,20 @@ export class RInputText implements AfterViewInit {
 
     @Input() required: boolean = true;
     @Input() label: string = "";
-    @Input() val: string;
+    @Input("val") _val: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
     ngAfterViewInit() {
 
+    }
+
+    set val(v) {
+        this.valChange.next(v);
+        this._val = v;
+    }
+
+    get val() {
+        return this._val;
     }
 
     // Internal stuff
