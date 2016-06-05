@@ -228,19 +228,76 @@ namespace MyFirstDnxUnitTests
                 endDate = new DateTime(2016, 6, 1, 8, 30, 0),
                 period = 0
             };
-            Assert.Equal(false, WebApplication1.Data.Classroom.CheckIfAveable(classroomID, ts));
+            Assert.Equal(false, WebApplication1.Data.Classroom.CheckIfAvailable(classroomID, ts));
 
             ts.startDate = new DateTime(2016,6,1,10,0,0);
             ts.endDate = new DateTime(2016, 6, 1, 10, 0, 0);
 
-            Assert.Equal(true, WebApplication1.Data.Classroom.CheckIfAveable(classroomID, ts));
+            Assert.Equal(true, WebApplication1.Data.Classroom.CheckIfAvailable(classroomID, ts));
 
             ts.startDate = new DateTime(2016, 6, 3, 9, 30, 0);
             ts.endDate = new DateTime(2016, 6, 3, 10, 0, 0);
 
-            Assert.Equal(true, WebApplication1.Data.Classroom.CheckIfAveable(classroomID, ts));
+            Assert.Equal(true, WebApplication1.Data.Classroom.CheckIfAvailable(classroomID, ts));
             
 
+        }
+
+        [Fact]
+        public void StudentAvailable()
+        {
+            int studentID = 2951;
+            TimeSpans ts = new TimeSpans
+            {
+                startDate = new DateTime(2016, 6, 1, 8, 30, 0),
+                endDate = new DateTime(2016, 6, 1, 8, 30, 0),
+                period = 0
+            };
+            Assert.Equal(false, WebApplication1.Data.Student.CheckIfAvailable(studentID, ts));
+
+            ts.startDate = new DateTime(2016, 6, 1, 10, 0, 0);
+            ts.endDate = new DateTime(2016, 6, 1, 10, 0, 0);
+
+            Assert.Equal(true, WebApplication1.Data.Student.CheckIfAvailable(studentID, ts));
+
+            ts.startDate = new DateTime(2016, 6, 3, 9, 30, 0);
+            ts.endDate = new DateTime(2016, 6, 3, 10, 0, 0);
+
+            Assert.Equal(true, WebApplication1.Data.Student.CheckIfAvailable(studentID, ts));
+
+            ts.startDate = new DateTime(2016, 6, 4, 11, 30, 0);
+            ts.endDate = new DateTime(2016, 6, 4, 11, 0, 0);
+
+            Assert.Equal(false, WebApplication1.Data.Student.CheckIfAvailable(studentID, ts));
+
+            ts.startDate = new DateTime(2016, 6, 11, 11, 30, 0);
+            ts.endDate = new DateTime(2016, 6, 11, 11, 0, 0);
+
+            Assert.Equal(true, WebApplication1.Data.Student.CheckIfAvailable(studentID, ts));
+        }
+
+        [Fact]
+        public void StartEndOfWeek()
+        {
+            DateTime now = new DateTime(2016, 5, 30, 8, 30, 0);
+            
+            TimeSpans solution = new TimeSpans
+            {
+                startDate = new DateTime(2016, 5, 30),
+                endDate = new DateTime(2016, 6, 5),
+            };
+
+            for (int i = 0; i < 6; i++)
+            {
+                now = now.AddDays(1);
+                TimeSpans tsNow = new TimeSpans
+                {
+                    startDate = now.StartOfWeek(),
+                    endDate = now.EndOfWeek()
+                };
+                Assert.Equal(tsNow.startDate, solution.startDate);
+                Assert.Equal(tsNow.endDate, solution.endDate);
+            }
         }
     }
 }

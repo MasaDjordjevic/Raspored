@@ -52,7 +52,7 @@ import {ClassroomsService} from "../services/classrooms.service";
                     <legend>Advanced</legend>
                     <label>
                         Weeks from now ({{weeksFromNow}})
-                        <input type="number" min="0" max="1440" step="1" [(ngModel)]="weeksFromNow" (change)="updateSchedule()"/>
+                        <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" (change)="updateSchedule()"/>
                     </label><br/>
                     <label>                    
                     <select name="mode" [(ngModel)]="mode" (change)="changeMode()">
@@ -138,7 +138,7 @@ export class TimetableComponent {
 
 
     weeksFromNow: number = 0;
-    mode: number = 3;
+    mode: number = 0;
     groupID: number = 1016;
     studentID: number = 2951;
     departmentID: number = 9;

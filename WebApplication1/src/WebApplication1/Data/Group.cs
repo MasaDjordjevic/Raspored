@@ -338,7 +338,9 @@ namespace WebApplication1.Data
                         }).ToList();
                 
                 List<ScheduleDTO> activitiesSchedule =
-                    _context.Activities.Where(a => !a.cancelling.Value && groups.Contains(a.groupID.Value)).Select(a => new ScheduleDTO
+                    _context.Activities.Where(a => !a.cancelling.Value && groups.Contains(a.groupID.Value) 
+                                                    && TimeSpan.Overlap(a.timeSpan, tsNow))
+                    .Select(a => new ScheduleDTO
                     {
                         day = a.timeSpan.startDate.DayOfWeek,
                         startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,

@@ -23,16 +23,25 @@ namespace WebApplication1.Extentions
 
         public static DateTime StartOfWeek(this DateTime date)
         {
-            int offset = date.DayOfWeek - DayOfWeek.Monday;
+            int offset = date.DayOfWeek.ToInt() - DayOfWeek.Monday.ToInt();
             var day = date.AddDays(-offset);
             return day.Add(-day.TimeOfDay);
         }
 
         public static DateTime EndOfWeek(this DateTime date)
         {
-            int offset = date.DayOfWeek - DayOfWeek.Sunday;
-            var day = date.AddDays(offset-1);
+            int offset = date.DayOfWeek.ToInt() - DayOfWeek.Sunday.ToInt();
+            var day = date.AddDays(-offset);
             return day.Add(-day.TimeOfDay);
+        }
+
+        //ne mogu da koristim obican cast to int jer im nedelja pocinje nedeljom odnosno Sunday = 0, Monday = 1.. 
+        public static int ToInt(this DayOfWeek day)
+        {
+            if (day == DayOfWeek.Sunday)
+                return 7;
+            else
+                return (int) day;
         }
 
         //public static DateTime DayOfReferencedWeek(this DateTime date, DateTime refernce, int period)
