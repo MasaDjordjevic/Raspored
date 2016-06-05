@@ -22,6 +22,7 @@ $time-highlight: .5s;
       top: 1.23ex; // Trial and error, ne dirati. Isprobano na font-size 12px, 16px, 24px i 36px.
       transition: all $time-label;
       font-weight: normal;
+      z-index: 1;
 
       &::after {
         content: ":";
@@ -48,6 +49,7 @@ $time-highlight: .5s;
         box-shadow: 0 -1px 0 0 rgba(white, .2) inset;
         width: 100%;
         color: rgba(white, 9);
+        z-index: 2; // da bi input mogao da udje u focus i kada se klikne preko labele dok je spustena preko inputa
     }
 
     .validation-icon {
@@ -60,6 +62,8 @@ $time-highlight: .5s;
       right: 0;
     }
 
+  // TODO ovo moze da se refaktorise, da se izvuce u neki globalni fajl posto se koristi i ovde i an dropdown
+  // Mada realno i nije mnogo ponavljanja, samo na dva mesta (zasad).
   %line-effect-hidden {
     position: absolute;
     width: 0;
