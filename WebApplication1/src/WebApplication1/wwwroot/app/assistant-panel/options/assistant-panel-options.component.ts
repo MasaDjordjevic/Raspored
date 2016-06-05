@@ -14,30 +14,58 @@ import {multicast} from "rxjs/operator/multicast";
     selector: 'r-assistant-panel-options',
     template: `
     <div style="font-size: 1em; display: flex; justify-content: space-between; flex-wrap: wrap">
+    
+        <!-- radi -->
+        <!--<r-input class="light-theme" label="Labela" [(val)]="inputText" style="width:50%;"></r-input>
         <r-input class="light-theme" label="Labela" [(val)]="inputText" style="width:50%;"></r-input>
-        <span>{{inputText}}</span>
+        <input [(ngModel)]="inputText" type="text"/>
+        <span>{{inputText}}</span>-->
+        
+        
+        <!-- radi -->
+        <!--<r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;">
+            <r-dropdown-item *ngFor="let b of ['b1', 'b2', 'b3', 'b4', 'b5']" [value]="b">{{b + "ooo"}}</r-dropdown-item>
+        </r-dropdown>
+        
         <div style="width:100%; min-height: 20px;"></div>
+        
         <r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;">
             <r-dropdown-item *ngFor="let b of ['b1', 'b2', 'b3', 'b4', 'b5']" [value]="b">{{b + "ooo"}}</r-dropdown-item>
         </r-dropdown>
+        
+        <select [(ngModel)]="dropdown">
+            <option value="b1">boob1</option>
+            <option value="b2">boob2</option>
+            <option value="b3">boob3</option>
+            <option value="b4">boob4</option>
+            <option value="b5">boob5</option>
+        </select>
+        
         <span>{{dropdown}}</span>
-        <div style="width:100%; min-height: 20px;"></div>
-        <r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
+        
+        <div style="width:100%; min-height: 20px;"></div>-->
+        
+        <!--radi-->
+        <!--<r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
             <r-multiple-selector-item *ngFor="let n of stuff; let i = index" [val]="i">
                 <span>{{n.split('').reverse().join('')}}</span>
                 <span>{{n.substring(5)}}</span>
             </r-multiple-selector-item>
         </r-multiple-selector>
+        
         <r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialRed">
             <r-multiple-selector-item *ngFor="let n of stuff; let i = index" [val]="i">
                 <span>{{n.split('').reverse().join('')}}</span>
                 <span>{{n.substring(5)}}</span>
             </r-multiple-selector-item>
         </r-multiple-selector>
+        
         <div style="width:100%; min-height: 20px;"></div>
+        
         <span>{{multipleSelector | json}}</span>
         <button (click)="addNew()">toggle 2</button>
-        <div style="width:100%; min-height: 20px;"></div>
+        
+        <div style="width:100%; min-height: 20px;"></div>-->
     </div>
     `,
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],

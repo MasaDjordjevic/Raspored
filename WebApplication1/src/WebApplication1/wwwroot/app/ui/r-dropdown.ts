@@ -123,7 +123,7 @@ export class RDropdownItemComponent implements OnInit {
     selector: 'r-dropdown',
     template: `
         <div class="r-dropdown" (click)="toggleExpanded()">
-            <label>{{label}}</label>
+            <label>{{label}} <b>offset</b> {{_currentSelectedOffset}} <b>currVal</b> {{_currentSelectedValue}} <b>inputVal</b> {{val}}</label>
             <span>{{currentSelectedStr}}</span>
             <div class="line-effect" [ngClass]="{highlight: isExpanded}"></div>
             <div class="r-dropdown-items-wrapper"
@@ -148,7 +148,17 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
     @ContentChildren(RDropdownItemComponent) _items:
         QueryList<RDropdownItemComponent>;
 
-    @Input()  val: string;
+    _val: string;
+
+    @Input() set val(v) {
+        this._val = v;
+        this.select(v);
+    }
+
+    get val() {
+        return this._val;
+    }
+
     @Input()  label: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
@@ -162,7 +172,8 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
 
     public set currentSelectedValue(v) {
         this._currentSelectedValue = v;
-        this.valChange.next(this.currentSelectedValue);
+        //this.select();
+        this.valChange.emit(this.currentSelectedValue);
     }
 
     public currentSelectedStr: string;
@@ -266,11 +277,18 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
     }
 
     ngAfterContentInit() {
+        this.select();
+    }
 
+    // Pronadji dete koje ima isti value kao val [ = currentSelectedValue] i selektiraj ga
+    // Ako nije nadjeno dete koje ime ima isti value kao val,
+    // selektiramo prvu ponudjenu opciju iz dropdowna.
+    // TODO ovo je malo retardirano, ne treba nista da bude selektirano i da se vidi spustena
+    select(val = this.currentSelectedValue) {
+        if (!this._items) return;
         var itemsArray = this._items.toArray();
         var len = itemsArray.length;
         setTimeout(() => {
-            //debugger;
             if (len === 0) return;
             for (let i = 0; i < len; i++) {
                 var currItem = itemsArray[i];
@@ -279,18 +297,14 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
                 (<any>currItem).isus = i;
 
                 // Pronadji dete koje ima isti value kao this.val i selektiraj ga
-                if (currItem.value === this.val) {
+                if (currItem.value === val) {
                     this.currentSelectedStr = currItem.str;
                     this.currentSelectedValue = currItem.value;
                     this.currentSelectedOffset = currItem.offset;
                 }
             }
 
-            // Ako nije nadjeno dete koje ime ima isti value kao this.val,
-            // selektiramo prvu ponudjenu opciju iz dropdowna.
-            console.log(this.currentSelectedValue);
-            console.log(itemsArray);
-            if (!this.currentSelectedValue) {
+            if (!val) {
                 currItem = itemsArray[0];
                 this.currentSelectedStr = currItem.str;
                 this.currentSelectedValue = currItem.value;
