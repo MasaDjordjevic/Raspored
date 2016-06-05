@@ -1,0 +1,129 @@
+@import "../../ljubenovic-toolkit";
+@import "../../palette";
+
+.clearfix {
+  width: 100%;
+}
+
+.osnovni-podaci {
+  display: flex;
+  flex-wrap: wrap;
+
+  .top, .right, .left {
+    box-sizing: border-box;
+  }
+
+  .top {
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .left, .right {
+    @include force-width(50%);
+  }
+
+  .left {
+    padding-right: 1em;
+  }
+
+  r-input, r-dropdown {
+    margin-bottom: 1.5ex;
+  }
+}
+
+.nacin-kreiranja {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  .top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .input-wrap {
+      width: 100%;
+      padding: .5em;
+      box-sizing: border-box;
+    }
+  }
+
+  .info {
+    width: 100%;
+  }
+
+
+  .preview-list-of-students {
+
+    width: 100%;
+
+    table {
+      width: 100%;
+
+      td {
+        padding: .2em;
+      }
+    }
+
+  }
+
+}
+
+.potvrda {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  .top {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    margin-bottom: 3ex;
+  }
+
+  .bottom {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow: auto;
+
+    .group-list {
+      width: 25%;
+      overflow-y: auto;
+      display: flex;
+      flex-flow: column;
+      box-sizing: border-box;
+      padding: 1em;
+
+      .group-name {
+        font-weight: bold;
+        font-size: 1.2em;
+        padding-bottom: 1ex;
+      }
+
+      .student {
+        padding: .2em .1em;
+        //display: flex;
+        //justify-content: space-between;
+
+        // broj indeksa
+        span:first-child {
+          font-weight: bold;
+        }
+
+        // ime i prezime
+        span:last-child {
+          color: rgba(black, .8);
+        }
+      }
+    }
+  }
+}
+
+

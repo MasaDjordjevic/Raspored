@@ -11,6 +11,7 @@ import {Group} from "../../models/Group";
 import {Student} from "../../models/Student";
 import {TypeDivisions} from "../../models/TypeDivisions";
 import {DivisionType} from "../../models/DivisionType";
+import {R_DL} from "../../ui/r-dl";
 
 /**
  * Za pravljenje nove raspodele (division), neophodno je znati sledeće:
@@ -47,19 +48,146 @@ import {DivisionType} from "../../models/DivisionType";
 
 @Component({
     selector: 'r-division-creator',
-    styles: [`
-        form { padding: 3em; }
-        fieldset { padding: 1em; margin: 1em; }
-    `],
-    template: `
-    <form #form="ngForm" (ngSubmit)="createInitialDivision(form.value)">
+    template: `    
+    <r-stepper (onSubmit)="createInitialDivision()">
+    
+        <r-step stepTitle="Osnovni podaci" [valid]="isValid(1)">
+            <div class="osnovni-podaci">
+        
+                <div class="top">
+                    <r-input class="light-theme" [(val)]="newDivisionName" label="Ime raspodele"></r-input>
+                </div>
+                
+                <div class="left">
+                    <r-dropdown *ngIf="courses" label="Predmet" [(val)]="newDivisionClassId">
+                        <r-dropdown-item *ngFor="let course of courses" [value]="course.courseID">{{course.name}}</r-dropdown-item>
+                    </r-dropdown>
+                    
+                    <r-dropdown *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="newDivisionTypeId">
+                        <r-dropdown-item *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</r-dropdown-item>
+                    </r-dropdown>
+                </div>
+                
+                <div class="right">
+                    <r-input class="light-theme" [(val)]="newDivisionBeginningDate" label="Početak važenja (YYYY-MM-DD)"></r-input>
+                    
+                    <r-input class="light-theme" [(val)]="newDivisionEndingDate" label="Kraj važenja (YYYY-MM-DD)"></r-input>
+                </div>
+                
+            </div>
+        </r-step>
+        
+        <r-step stepTitle="Način kreiranja" [valid]="isValid(2)"><div class="nacin-kreiranja">
+        
+            <div class="top">
+                <div class="input-wrap">
+                    <r-dropdown [(val)]="newDivisionCreationWay" label="Način kreiranja">
+                        <r-dropdown-item value="on_x">Po broju grupa</r-dropdown-item>
+                        <r-dropdown-item value="with_x">Po broju studenata</r-dropdown-item>
+                        <r-dropdown-item value="manual">Ručno</r-dropdown-item>
+                    </r-dropdown>
+                </div>
+                
+                <div class="input-wrap">
+                    <r-input
+                        *ngIf="newDivisionCreationWay !== 'manual'"
+                        class="light-theme"
+                        [(val)]="newDivisionCreationNumberX"
+                        [label]="newDivisionCreationWay === 'on_x' ? 'Broj grupa' : 'Broj studenata'"
+                    >    
+                    </r-input>
+                </div>
+                
+                <div class="input-wrap">
+                    <r-dropdown *ngIf="newDivisionCreationWay !== 'manual'" [(val)]="newDivisionCreationOrderIsRandom" label="Način sortiranja">
+                        <r-dropdown-item value="0" selected>Po broju indeksa</r-dropdown-item>
+                        <r-dropdown-item value="1">Nasumično</r-dropdown-item>
+                    </r-dropdown>
+                </div>
+                
+                <button r-button raised [disabled]="false" (click)="getList(newDivisionClassId, newDivisionCreationWay, newDivisionCreationNumberX, newDivisionCreationOrderIsRandom, '')" text="Prikaz"></button>
+            </div>                
+            
+            <div class="clearfix"></div>            
+            
+            <div class="info" *ngIf="createdGroups">
+                Ukupno {{numberOfStudents()}} studenata može se podeliti u {{createdGroups.length}} grupa (prosečno {{averageNumberOfStudents().toFixed()}} studenata po grupi).
+            </div>
+            
+            <div class="clearfix"></div>
+     
+            <div class="preview-list-of-students" *ngIf="createdGroups">
+                <table>
+                    <thead><tr><th>Ime</th><th>#</th><th>Studenti</th></tr></thead>
+                    <tbody>
+                        <tr *ngFor="let group of createdGroups; let i = index">
+                            <td>Grupa&nbsp;{{i + 1}}</td>
+                            <td>{{group.length}}</td>
+                            <td>{{groupPreview(i, 4)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="clearfix"></div>
+            
+        </div></r-step>
+        
+        <r-step stepTitle="Potvrda">
+            <div class="potvrda" *ngIf="createdGroups">
+            
+                <div class="top">
+                    <dl r-dl>
+                        <dt>Ime</dt>
+                        <dd>{{newDivisionName}}</dd>
+                        <dt>Vrsta raspodele</dt>
+                        <dd>{{newDivisionTypeName()}}</dd>
+                        <dt>Za predmet</dt>
+                        <dd>{{newDivisionClassName()}}</dd>
+                        <dt>Važenje</dt>
+                        <dd>{{newDivisionBeginningDateToDate().toISOString().slice(0, 10)}} — {{newDivisionEndingDateToDate().toISOString().slice(0, 10)}}</dd>
+                    </dl>
+                    
+                    <dl r-dl>
+                        <dt>Ukupno studenata</dt>
+                        <dd>{{numberOfStudents()}}</dd>
+                        <dt>Ukupno grupa</dt>
+                        <dd>{{createdGroups.length}}</dd>
+                        <dt>Prosečno studenata po grupi</dt>
+                        <dd>{{averageNumberOfStudents().toFixed(2)}}</dd>
+                        <dt>Način sortiranja</dt>
+                        <dd>{{newDivisionCreationOrderName()}}</dd>
+                    </dl>
+                </div>
+                
+                <div class="bottom">
+                    <div class="group-list" *ngFor="let group of createdGroups; let i = index">
+                        <div class="group-name">Grupa {{i}}</div>
+                        <div class="students">
+                            <div class="student" *ngFor="let student of group">
+                                <span>{{student.indexNumber}}</span>
+                                <span>{{student.name}} {{student.surname}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>      
+                
+            </div>
+        </r-step>
+        
+    </r-stepper>
+    
+    <!-- Stara verzija za referencu za svaki slucaj-->
+    <!--<form #form="ngForm" (ngSubmit)="createInitialDivision(form.value)">
         
         <fieldset ngControlGroup="firstPart">
+        
+            URADJENO
             <label for="divisionName">Ime raspodele</label>
             <input type="text" ngControl="divisionName" id="divisionName">
             <br/>
             
-
+            URADJENO
             <lablel>Courses</lablel>
             <select name="course" ngControl="course" *ngIf="courses != null">
                 <option *ngFor="let course of courses" [value]="course.courseID">
@@ -68,13 +196,16 @@ import {DivisionType} from "../../models/DivisionType";
             </select>
             <br/>
             
+            URADJENO
             <label>Početak važenja</label>
             <input type="text" ngControl="divisionBeginning" value="21.03.1995">
             <br/>
             
+            URADJENO
             <label>Kraj važenja</label>
             <input type="text" ngControl="divisionEnding" value="21.03.1996">
             
+            URADJENO
             <label>Divison type</label>
             <select name="divisionType" ngControl="divisionType">
                 <option *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</option>
@@ -115,13 +246,98 @@ import {DivisionType} from "../../models/DivisionType";
         {{departmentID}}
         <br/><br/>
         {{ createdGroups | json }}
-    </form>
+    </form>-->
     `,
-    directives: [R_STEPPER, R_INPUT, R_DROPDOWN],
+    styleUrls: ['app/assistant-panel/dialogs/division-creator.css'],
+    directives: [R_STEPPER, R_INPUT, R_DROPDOWN, R_BUTTON, R_DL],
     providers: [CoursesService, DivisionsService]
 })
 
 export class DivisionCreatorComponent implements AfterViewInit {
+
+    // Podaci o novoj raspodeli koja se kreira
+    public newDivisionName: string = "default name";
+    public newDivisionClassId: string;
+    public newDivisionClassName = (id = this.newDivisionClassId) => this.courses.filter(i => i.courseID === +id)[0].name;
+    public newDivisionBeginningDate: string = "2016-05-04";
+    public newDivisionBeginningDateToDate = () => new Date(this.newDivisionBeginningDate);
+    public newDivisionEndingDate: string = "2020-04-20";
+    public newDivisionEndingDateToDate = () => new Date(this.newDivisionEndingDate);
+    public newDivisionTypeId: string;
+    public newDivisionTypeName = (id = this.newDivisionTypeId) => (<any>this.divisionTypes).filter(i => i.divisionTypeID == id)[0].type;
+
+    public newDivisionCreationWay: 'on_x' | 'with_x' | 'manual';
+    public newDivisionCreationNumberX: string = "12";
+    public newDivisionCreationOrderIsRandom: '0' | '1';
+    public newDivisionCreationOrderName = (i = this.newDivisionCreationOrderIsRandom) => i === '0' ? 'po indeksu' : 'nasumično';
+
+    // Validacije, read-only
+    public get $$newDivisionName(): boolean {
+        var ret: boolean = !!this.newDivisionName; // da ne bude null
+        ret = ret && !!this.newDivisionName.trim().match(/.+/); // da ima bar jedno... nesto
+        // stavio bih ja \w da bude alfanumericki znak ali onda ne gadja šđčćž, sto i nije problem jer sumnjam
+        // da bi se raspodela (division) zvala iskljucivo od slova sa kvacicama, ali ajde neka ga ovako. ovako
+        // moze da se zove sa tackom. moze i da bude srculence. mora probamo.
+        return ret;
+    }
+    public get $$newDivisionClassId(): boolean {
+        return true; // smatramo da niko nece da udje u inspect element i promeni nesto
+    }
+    public get $$newDivisionTypeId(): boolean {
+        return true;
+    }
+    public get $$newDivisionBeginningDate(): boolean {
+        var ret: boolean = !!this.newDivisionBeginningDate;
+        // godina mora 4, ostalo 1 ili 2. dozvoljava -, . ili / kao odvajanje izmedju brojki
+        ret = ret && !!this.newDivisionBeginningDate.match(/\d{4}[-/\.]\d{1,2}[-/\.]\d{1,2}/);
+        // mora da bude validan datum, da ne bude trinesti mesc ili 30. febuar
+        ret = ret && new Date(this.newDivisionBeginningDate).toString() !== "Invalid Date";
+        return !!ret;
+    }
+    public get $$newDivisionEndingDate(): boolean {
+        var ret: boolean = !!this.newDivisionEndingDate;
+        // godina mora 4, ostalo 1 ili 2. dozvoljava -, . ili / kao odvajanje izmedju brojki
+        ret = ret && !!this.newDivisionEndingDate.match(/\d{4}[-/\.]\d{1,2}[-/\.]\d{1,2}/);
+        // mora da bude validan datum, da ne bude trinesti mesc ili 30. febuar
+        ret = ret && new Date(this.newDivisionEndingDate).toString() !== "Invalid Date";
+        return !!ret;
+    }
+
+    public get $$newDivisionCreationWay(): boolean {
+        return true;
+    }
+    public get $$newDivisionCreationNumberX(): boolean {
+        var ret: boolean = !!this.newDivisionCreationNumberX;
+        ret = ret && !!this.newDivisionCreationNumberX.match(/^\d+$/); // integer
+        return ret;
+    }
+    public get $$newDivisionCreationOrderIsRandom(): boolean {
+        return true;
+    }
+
+    // 0 se misli da je sve validno, zajedno
+    // 1 - n su koraci od 1 do n
+    // sve ostalo vraca false
+    public isValid(i: number = 0) {
+
+        switch(i) {
+            case 1:
+                return !!(this.$$newDivisionName && this.$$newDivisionClassId && this.$$newDivisionTypeId && this.$$newDivisionBeginningDate && this.$$newDivisionEndingDate);
+
+            case 2:
+                return !!(this.$$newDivisionCreationWay && this.$$newDivisionCreationNumberX && this.$$newDivisionCreationOrderIsRandom && !!this.createdGroups);
+
+            case 3:
+                return true; // nista se ne menja, samo pregled
+
+            default:
+                return false;
+
+        }
+
+    }
+
+
 
     courses: Course[];
     errorMessage: string;
@@ -158,17 +374,26 @@ export class DivisionCreatorComponent implements AfterViewInit {
                 error => this.errorMessage = <any>error);
     }
 
-    // Vraca listu studenata po grupama za prikaz kako ce se grupe napraviti kad se klikne na Submit
-    getList(value) {
-        console.log(value);
-        console.log(+value.firstPart.course, +value.secondPart.x, +value.secondPart.studentsOrder);
-        if (value.secondPart.creationWay == "with_x") {
-            this._divisionsService.getGroupsWithX(+value.firstPart.course, +value.secondPart.x, +value.secondPart.studentsOrder)
+    /**
+     * Vrati listu studenata po grupama za prikaz kako ce se grupe napraviti kada se klikne na Submit.
+     * Dakle, ovo je za preview. Samo se čitaju studenti iz baze.
+     *
+     * @param courseId - ID kursa na osnovu kog treba uzeti studente.
+     * @param creationWay - Način kreiranja raspodele.
+     * @param numberX - Koliko grupa ili koliko studenata, u zavisnosti od creationWay.
+     *                  Vrednost se ignorise ukoliko je creationWay postavljen na manual.
+     * @param studentsOrder - 0 za redom i 1 za nasumice
+     */
+    getList(courseId: string, creationWay: 'on_x' | 'with_x' | 'manual', numberX: string, studentsOrder: '0' | '1'): any {
+        console.log("Parametri:", courseId, creationWay, numberX, studentsOrder);
+        if (creationWay === "with_x") {
+            this._divisionsService.getGroupsWithX(+courseId, +numberX, +studentsOrder)
                 .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
-        } else if (value.secondPart.creationWay == "on_x") {
-            this._divisionsService.getGroupsOnX(+value.firstPart.course, +value.secondPart.x, +value.secondPart.studentsOrder)
+        } else if (creationWay === "on_x") {
+            this._divisionsService.getGroupsOnX(+courseId, +numberX, +studentsOrder)
                 .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
         } else {
+            alert("Selektirano je manuelno. Nema liste za prikaz.");
             // manual
         }
     }
@@ -180,29 +405,33 @@ export class DivisionCreatorComponent implements AfterViewInit {
     }
 
     private getNamedGroups() {
-        var ret: Array<any> = new Array<any>();
-        debugger;
+        var ret: Array<any> = [];
         for (let i = 0; i < this.createdGroups.length; i++) {
             ret[i] = {
-                name: "Grupa " + i,
+                name: "Grupa " + (i + 1),
                 students: this.createdGroups[i]
             };
         }
-        console.log("Ret iz getNamedGroups");
-        console.log(ret);
         return ret;
     }
 
-    createInitialDivision(value) {
+    createInitialDivision() {
+        debugger;
+        console.log("Creating division...")
         this._divisionsService.createInitialDivision(
-            value.firstPart.divisionName,
+            this.newDivisionName,
             this.departmentID,
-            value.firstPart.course,
-            value.firstPart.divisionType,
-            value.firstPart.divisionBeginning,
-            value.firstPart.divisionEnding,
+            +this.newDivisionClassId,
+            +this.newDivisionTypeId,
+            this.newDivisionBeginningDateToDate(),
+            this.newDivisionEndingDateToDate(),
             this.getNamedGroups()
         ).then(status => this.errorMessage = <any>status, error => this.errorMessage = <any>error);
     }
+
+    public numberOfStudents = () => this.createdGroups.map(s => s.length).reduce((p, c) => p + c);
+    public averageNumberOfStudents = () => this.numberOfStudents() / this.createdGroups.length;
+
+    public groupPreview = (i, n) => (this.createdGroups[i].slice(0, n).map(e => e.name + ' ' + e.surname + ' (' + e.indexNumber + ')').join(', ').concat('...'));
 
 }
