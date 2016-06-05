@@ -12,10 +12,10 @@
   cursor: pointer;
 
   // Material
-  height: 36px;
-  padding: 8px 16px;
-  margin: 8px;
-  border-radius: 2px;
+  height: 2.5em;
+  padding: .5em 1em;
+  margin: .5em;
+  border-radius: .12em;
   font-weight: bold;
   font-family: Roboto, Arial, sans-serif;
   text-transform: uppercase;
@@ -89,12 +89,12 @@
 }
 
 :host.r-button-raised {
-  background-color: palette($blue, 500);
+  background-color: palette($blue, 500); // default, pregazeno dole konkretnim
   color: rgba(white, .9);
   @include z-depth(1);
 
   &:hover:not([disabled]) {
-    background-color: palette($blue, 400);
+    background-color: palette($blue, 400); // default, pregazeno dole konkretnim
   }
 
   &:active {
@@ -102,8 +102,8 @@
   }
 
   &[disabled] {
-    background-color: rgba(palette($blue, 500), .7);
-    color: rgba(white, .6);
+    background-color: desaturate(rgba(palette($blue, 500), .7), 50%);
+    color: rgba(white, .5);
   }
 
   // Boje
@@ -114,6 +114,10 @@
     &:hover:not([disabled]) {
       background-color: palette($red, 400);
     }
+
+    &[disabled] {
+      background-color: desaturate(rgba(palette($red, 500), .7), 50%);
+    }
   }
 
   &.yellow {
@@ -121,6 +125,10 @@
 
     &:hover:not([disabled]) {
       background-color: palette($yellow, 400);
+    }
+
+    &[disabled] {
+      background-color: desaturate(rgba(palette($yellow, 500), .7), 50%);
     }
   }
 
@@ -130,6 +138,10 @@
     &:hover:not([disabled]) {
       background-color: palette($blue, 400);
     }
+
+    &[disabled] {
+      background-color: desaturate(rgba(palette($blue, 500), .7), 50%);
+    }
   }
 
   &.orange {
@@ -137,6 +149,10 @@
 
     &:hover:not([disabled]) {
       background-color: palette($orange, 400);
+    }
+
+    &[disabled] {
+      background-color: desaturate(rgba(palette($orange, 500), .7), 50%);
     }
   }
 
@@ -146,6 +162,10 @@
     &:hover:not([disabled]) {
       background-color: palette($green, 400);
     }
+
+    &[disabled] {
+      background-color: desaturate(rgba(palette($green, 500), .7), 50%);
+    }
   }
 
   &.purple {
@@ -153,6 +173,10 @@
 
     &:hover:not([disabled]) {
       background-color: palette($purple, 400);
+    }
+
+    &[disabled] {
+      background-color: desaturate(rgba(palette($purple, 500), .7), 50%);
     }
   }
 }
