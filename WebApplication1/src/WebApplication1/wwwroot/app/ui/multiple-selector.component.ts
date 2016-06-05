@@ -26,16 +26,17 @@ export class RMultipleSelectorEmitterService {
 
 @Component({
     selector: 'r-multiple-selector-item',
+    // Treba nam prazan span zbog rekurzivnog algoritma koji ce da obrise ceo <i> ako nista ne nadje u njemu
     template: `
-    <div class="checkbox"><i class="fa fa-check"></i></div>
-    <ng-content></ng-content>
+    <div class="checkbox"><i class="fa fa-check"></i><span></span></div> 
+    <div class="ng-content"><ng-content></ng-content></div>
     `,
     host: {
         "(click)": "select()",
         "[class.selected]": "selected",
-        "[style.display]": "display ? 'block' : 'none'",
+        "[style.display]": "display ? 'flex' : 'none'",
     },
-    changeDetection: ChangeDetectionStrategy.CheckOnce
+    changeDetection: ChangeDetectionStrategy.CheckOnce,
 })
 
 export class MultipleSelectorItemComponent implements AfterViewInit {
@@ -129,8 +130,11 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 @Component({
     selector: 'r-multiple-selector',
     template: `
-    Selected: {{_values | json}}<br/>
-    <ng-content></ng-content>
+    <!--Selected: {{_values | json}}<br/>-->
+    <div class="r-multiple-selector-content">
+        <ng-content></ng-content>
+    </div>
+    <!--<div style="flex: 1 0 auto"></div>-->
     <div class="search">
         <r-input class="light-theme" type="text" [(val)]="query" label="Pretraga"></r-input>
     </div>
@@ -164,15 +168,20 @@ export class MultipleSelectorComponent implements AfterViewInit {
 
     public set query(q) {
         this._query = q;
-        var regex = new RegExp(this.query, 'gi');
-        for (let i = 0; i < this.itemsValueText.length; i++) {
-            this._items.toArray()[i].query = this.query;
-            if (!this.query || (<any>this._items.toArray()[i]).selected || (this.itemsValueText[i].text.match(regex))) {
-                (<any>this._items.toArray()[i]).display = true;
-            } else {
-                (<any>this._items.toArray()[i]).display = false;
+        try {
+            var regex = new RegExp(this.query, 'gi');
+            for (let i = 0; i < this.itemsValueText.length; i++) {
+                this._items.toArray()[i].query = this.query;
+                if (!this.query || (<any>this._items.toArray()[i]).selected || (this.itemsValueText[i].text.match(regex))) {
+                    (<any>this._items.toArray()[i]).display = true;
+                } else {
+                    (<any>this._items.toArray()[i]).display = false;
+                }
             }
+        } catch (e) {
+            console.warn("Proslednjen nevalidan regex za pretragu");
         }
+
     }
 
     _values: string[];
@@ -182,6 +191,7 @@ export class MultipleSelectorComponent implements AfterViewInit {
     }
 
     @Input("val") set values(v) {
+        if (!v) return;
         var ret = [];
         for (let i = 0; i < v.length; i++) {
             ret.push(v[i]);
@@ -221,6 +231,7 @@ export class MultipleSelectorComponent implements AfterViewInit {
     }
 
     ngAfterViewInit() {
+        if (!this._items) return;
         var itemsArray = this._items.toArray();
         var len = itemsArray.length;
         for (let i = 0; i < len; i++) {
@@ -238,17 +249,16 @@ export class MultipleSelectorComponent implements AfterViewInit {
     checkItems() {
         // TODO HACK
         setTimeout(() => {
-            if (this._items) {
-                var itemsArray = this._items.toArray();
-                var len = itemsArray.length;
-                for (let i = 0; i < len; i++) {
-                    var currItem: any = itemsArray[i];
-                    // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
-                    if (~this._values.indexOf(currItem.value)) {
-                        currItem.selected = true;
-                    } else {
-                        currItem.selected = false;
-                    }
+            if (!this._items || !this._values) return;
+            var itemsArray = this._items.toArray();
+            var len = itemsArray.length;
+            for (let i = 0; i < len; i++) {
+                var currItem: any = itemsArray[i];
+                // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
+                if (~this._values.indexOf(currItem.value)) {
+                    currItem.selected = true;
+                } else {
+                    currItem.selected = false;
                 }
             }
         }, 1);

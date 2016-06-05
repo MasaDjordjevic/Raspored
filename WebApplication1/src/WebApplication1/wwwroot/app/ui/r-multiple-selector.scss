@@ -5,17 +5,50 @@
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   @include z-depth(1);
   background-color: white;
   padding: .5em;
+  box-sizing: border-box;
+
+  .r-multiple-selector-content {
+    padding: .5em;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
 
   .search {
     padding: .5em;
+    //box-sizing: border-box;
+    width: calc(100% - #{1em}); // dupli padding
+    //@include force-height(15ex);
   }
 
   r-multiple-selector-item {
 
+    &.narrow {
+      width: 33.33333%;
+    }
+
+    &.normal {
+      width: 50%;
+    }
+
+    &.wide {
+      width: 100%;
+    }
+
+    width: 100%;
     padding: .4em .6em;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: flex-start;
+    align-items: center;
 
     .checkbox {
       width: 1.2em;
@@ -41,7 +74,7 @@
       }
     }
 
-    span {
+    .ng-content {
       z-index: 3;
 
       mark {
