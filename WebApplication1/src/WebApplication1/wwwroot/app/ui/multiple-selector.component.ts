@@ -1,6 +1,6 @@
 import {
     Component, Input, ElementRef, EventEmitter, ContentChildren, QueryList, Output,
-    AfterViewInit, AfterContentInit
+    AfterViewInit, AfterContentInit, ChangeDetectionStrategy, ChangeDetectorRef
 } from "angular2/core";
 import {HighlightPipe} from "../pipes/highlight.pipe";
 import {R_INPUT} from "./r-input-text.component";
@@ -35,7 +35,7 @@ export class RMultipleSelectorEmitterService {
         "[class.selected]": "selected",
         "[style.display]": "display ? 'block' : 'none'",
     },
-    pipes: [HighlightPipe],
+    changeDetection: ChangeDetectionStrategy.CheckOnce
 })
 
 export class MultipleSelectorItemComponent implements AfterViewInit {
@@ -80,7 +80,16 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     get value() { return this._value }
 
     // da li je ova opcija selektirana ili ne?
-    public selected: boolean;
+    public _selected: boolean;
+
+    set selected(s) {
+        if (s === this._selected) return;
+        this._selected = s;
+    }
+
+    get selected() {
+        return this._selected;
+    }
 
     // da li da se ova opcija prikaze ili ne?
     // sluzi za filtriranje prilikom pretrage
@@ -98,21 +107,29 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     }
 
     // on click
+    // Na klik samo saljemo event da se nesto kliknulo, nista ne menjamo.
+    // Roditeljska komponenta je odgovorna za to da value doda u svoju listu vrednosti koje su selektirani i da
+    // prodje kroz svu svoju decu i onda selektira ono sto treba. Dakle, ova komponenta sluzi samo za stil i kao
+    // "nosilac" eventa da moze da se klikne.
     select() {
         this._emitter.get("channel1").emit({
             value: this.value + "",
         });
-        this.selected = !this.selected;
     }
 
 }
 
 
 
+
+
+
+
+
 @Component({
     selector: 'r-multiple-selector',
     template: `
-    {{values | json}}<br/>
+    Selected: {{_values | json}}<br/>
     <ng-content></ng-content>
     <div class="search">
         <r-input class="light-theme" type="text" [(val)]="query" label="Pretraga"></r-input>
@@ -122,21 +139,23 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     `,
     host: {
         //"[value]": "val",
+        //"(input)": "valChange.next($event.target.value)"
     },
     providers: [RMultipleSelectorEmitterService],
     directives: [R_INPUT],
     styleUrls: ['app/ui/r-multiple-selector.css'],
 })
 
-export class MultipleSelectorComponent implements AfterContentInit {
+export class MultipleSelectorComponent implements AfterViewInit {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
-    _values: string[];
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
     public itemsValueText: any[] = []; // {value: ___, text: ___}
+
+    //public lock: boolean = false;
 
     // za pretargu
     private _query: string;
@@ -156,16 +175,18 @@ export class MultipleSelectorComponent implements AfterContentInit {
         }
     }
 
+    _values: string[];
+
     get values() {
-        console.log("get");
-        // this.checkItems(); // poludi TODO
         return this._values;
     }
 
     @Input("val") set values(v) {
-        console.log("set");
-        this._values = v;
-        this.valChange.next(this._values);
+        var ret = [];
+        for (let i = 0; i < v.length; i++) {
+            ret.push(v[i]);
+        }
+        this._values = ret;
         this.checkItems();
     }
 
@@ -178,9 +199,9 @@ export class MultipleSelectorComponent implements AfterContentInit {
             this.values.splice(index, 1);
         }
 
-        this.values.sort((a, b) => ( +a - +b )); // da ne bude leksikografsko
-
-        this.valChange.emit(this.values); // TODO test
+        this.values.sort(); // leksikografsko (jer ne moraju da budu brojke)
+        this.checkItems();
+        this.valChange.next(this.values);
     }
 
     @ContentChildren(MultipleSelectorItemComponent) _items:
@@ -188,51 +209,49 @@ export class MultipleSelectorComponent implements AfterContentInit {
 
     constructor(
         public emitter: RMultipleSelectorEmitterService,
-        public element: ElementRef
+        public element: ElementRef,
+        private cdr: ChangeDetectorRef
     ) {
 
+        // Kad se dobije poruka, toggluj opciju. Poruka treba da sadrzi samo value.
         this.emitter.get("channel1").subscribe(msg => {
-            console.log(msg);
             this.toggleOption(msg.value);
         });
 
     }
 
-    ngAfterContentInit() {
-        // TODO HACK
-        setTimeout(() => {
-            var itemsArray = this._items.toArray();
-            var len = itemsArray.length;
-            for (let i = 0; i < len; i++) {
-                var currItem: any = itemsArray[i];
-                // Napravi niz parova (value, string) koji ce sluziti za pretragu
-                //console.log(currItem);
-                this.itemsValueText.push({
-                    value: currItem.value,
-                    text: currItem._element.nativeElement.innerText.trim(),
-                });
-            }
-
-            this.checkItems();
-        }, 0);
+    ngAfterViewInit() {
+        var itemsArray = this._items.toArray();
+        var len = itemsArray.length;
+        for (let i = 0; i < len; i++) {
+            var currItem: any = itemsArray[i];
+            // Napravi niz parova (value, string) koji ce sluziti za pretragu
+            this.itemsValueText.push({
+                value: currItem.value,
+                text: currItem._element.nativeElement.innerText.trim(),
+            });
+        }
+        this.checkItems();
     }
 
     // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
     checkItems() {
         // TODO HACK
         setTimeout(() => {
-            var itemsArray = this._items.toArray();
-            var len = itemsArray.length;
-            for (let i = 0; i < len; i++) {
-                var currItem: any = itemsArray[i];
-                // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
-                if (~this._values.indexOf(currItem.value)) {
-                    currItem.selected = true;
-                } else {
-                    currItem.selected = false;
+            if (this._items) {
+                var itemsArray = this._items.toArray();
+                var len = itemsArray.length;
+                for (let i = 0; i < len; i++) {
+                    var currItem: any = itemsArray[i];
+                    // Pronadji decu ciji se VAL nalazi u VALUES i selektiraj ih
+                    if (~this._values.indexOf(currItem.value)) {
+                        currItem.selected = true;
+                    } else {
+                        currItem.selected = false;
+                    }
                 }
             }
-        }, 0);
+        }, 1);
     }
 
 }
