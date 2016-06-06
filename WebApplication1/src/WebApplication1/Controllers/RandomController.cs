@@ -11,7 +11,7 @@ namespace WebApplication1.Controllers
     [Route("api/[controller]")]
     public class RandomController : Controller
     {
-        private RasporedContext _context;
+        //private RasporedContext _context;
 
         [HttpGet]
         public async Task<JsonResult> Get()

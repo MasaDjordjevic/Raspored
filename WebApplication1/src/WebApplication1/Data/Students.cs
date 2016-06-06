@@ -152,7 +152,7 @@ namespace WebApplication1.Data
             {
                 //proveri da li dolazi do nekonzistentnosti raspodele
                 //provera da li student vec postoji u toj grupi
-                if (groupID != null)
+                if (groupID > 0) // bezveze je provera != null
                 {
                     var otherStuds =
                         _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();

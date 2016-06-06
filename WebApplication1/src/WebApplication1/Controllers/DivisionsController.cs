@@ -222,25 +222,48 @@ namespace WebApplication1.Controllers
         //nicemu ne sluzi, inace se ne konvertuju lepo podaci, nzm zasto
         public class DivisionUpdateBinding
         {
-            public Divisions division;
-            
+            public int? divisionID;
+            public string name;
+            public DateTime beginning;
+            public DateTime ending;
+            public int? divisionTypeID;
+            public int? courseID;
         }
 
         // POST: api/Divisions
         [HttpPost]
-        public IActionResult UpdateDivision([FromBody] DivisionsController.DivisionUpdateBinding divisions)
+        public IActionResult UpdateDivision([FromBody] DivisionsController.DivisionUpdateBinding obj)
         {
-            Divisions div = divisions.division;
+            if (obj?.divisionID != null)
+            {
+                Data.Division.UpdateDivision(obj.divisionID.Value, obj.name, obj.beginning, obj.ending, obj.divisionTypeID, obj.courseID);
+                return Ok(new { status = "uspelo" });
+            }
+            return Ok(new { status = "parameter error"});
+        }
 
-            //update
-            if (div.divisionID != -1)
+        [HttpGet]
+        public IActionResult CopyDivision(int divisionID)
+        {
+            if (!ModelState.IsValid)
             {
-                Data.Division.UpdateDivision(div);
+                return HttpBadRequest(ModelState);
             }
-            else //create
+
+            Divisions newDivision = Data.Division.CopyDivision(divisionID);
+
+            return Ok(new { status = "uspelo", division = newDivision });
+        }
+
+        [HttpGet]
+        public IActionResult DeleteDivision(int divisionID)
+        {
+            if (!ModelState.IsValid)
             {
-                Data.Division.AddDivision(div);
+                return HttpBadRequest(ModelState);
             }
+
+            Data.Division.DeleteDivision(divisionID);
 
             return Ok(new { status = "uspelo" });
         }

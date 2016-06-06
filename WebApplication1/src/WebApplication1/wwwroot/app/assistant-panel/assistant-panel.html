@@ -47,6 +47,7 @@
     <r-division-options
             *ngIf="isAtDivision"
             [divisionId]="_selectedDivisionId"
+            (update)="refresh($event)"
             [primaryColor]="divisionPrimaryColor"
     >
     </r-division-options>
@@ -67,8 +68,13 @@
 </main>
 
 <footer>
-    dep: {{_selectedDepartmentId}}
-    div: {{_selectedDivisionId}}
-    gr: {{_selectedGroupId}}
+    dep:  {{_selectedDepartmentId}}
+    div:  {{_selectedDivisionId}}
+    gr:   {{_selectedGroupId}}
     stud: {{_selectedStudentId}}
+
+    <input type="text" [(ngModel)]="_selectedDepartmentId">
+    <input type="text" [(ngModel)]="_selectedDivisionId">
+    <input type="text" [(ngModel)]="_selectedGroupId">
+    <input type="text" [(ngModel)]="_selectedStudentId">
 </footer>

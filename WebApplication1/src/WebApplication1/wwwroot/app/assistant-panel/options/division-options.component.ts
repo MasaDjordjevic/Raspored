@@ -1,4 +1,4 @@
-﻿import {Component, Input} from "angular2/core";
+﻿import {Component, Input, EventEmitter, Output} from "angular2/core";
 import {Division} from "../../models/Division";
 import {DivisionsService} from "../../services/divisions.service";
 import {R_DIALOG} from "../../ui/r-dialog";
@@ -28,6 +28,7 @@ export class DivisionOptionsComponent {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
+    @Output() update: EventEmitter = new EventEmitter();
 
     division: any;
     errorMessage: string;
@@ -68,6 +69,24 @@ export class DivisionOptionsComponent {
             sum += this.division.Groups[i].GroupsStudents.length;
         }
         return sum;
+    }
+
+    copyDivision() {
+        var newDiv;
+        console.log("haf");
+        this._service.copyDivision(this.divisionId).then(obj => newDiv = obj.division).then(() => console.log(newDiv));
+    }
+
+    deleteDivision() {
+        this._service.deleteDivision(this.division.divisionID)
+            .then(any => console.log(any))
+            .then(() => this.refreshAssistantPanel({
+                shiftMinusOne: true,
+            }));
+    }
+
+    public refreshAssistantPanel($options) {
+        this.update.emit($options);
     }
 
 }

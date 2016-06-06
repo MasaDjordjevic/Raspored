@@ -23,14 +23,33 @@ export class DivisionsService {
             .catch(this.handleError);
     }
 
-    public updateDivision(division) {
+    public updateDivision(divisionId, name, beginning, ending, divisionTypeID, courseID) {
         let body = JSON.stringify({
-            division: division
+            "divisionID": divisionId,
+            "name": name,
+            "beginning": new Date(beginning),
+            "ending": new Date(ending),
+            "divisionTypeID": divisionTypeID,
+            "courseID": courseID,
         });
         console.log(body);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/UpdateDivision', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public copyDivision(divisionId) {
+        return this.http.get(this._url + '/CopyDivision/?divisionID=' + divisionId)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    public deleteDivision(divisionId) {
+        return this.http.get(this._url + '/DeleteDivision/?divisionID=' + divisionId)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

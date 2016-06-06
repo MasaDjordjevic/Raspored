@@ -80,9 +80,10 @@
                 [primaryColor]="primaryColor">
         </button>
 
+        <!-- TODO -->
         <button r-button raised #copyDivisionButton
                 text="Kopiraj raspodelu"
-                (click)="copyDivisionDialog.open()"
+                (click)="copyDivision()"
                 [primaryColor]="primaryColor">
         </button>
 
@@ -95,6 +96,12 @@
         <button r-button raised #exportDivisionButton
                 text="Izvezi raspodelu"
                 (click)="exportDivisionDialog.open()"
+                [primaryColor]="primaryColor">
+        </button>
+
+        <button r-button raised #deleteDivisionButton
+                text="Obriši raspodelu"
+                (click)="deleteDivision()"
                 [primaryColor]="primaryColor">
         </button>
     </div>

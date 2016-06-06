@@ -86,4 +86,25 @@ export class AssistantPanelComponent {
     get isAtGroup() { return this.currentLevel == 3; }
     get isAtStudent() { return this.currentLevel == 4; }
 
+    // Osvezava referencu da bi se prosledili ID-jevi kroz inpute (i da se opet pozove AJAX)
+    public refresh($options) {
+
+        console.log("primljen event");
+        console.log($options);
+
+        if ($options && $options.shiftMinusOne) {
+            this._selectedDepartmentId = this._selectedDivisionId === -1 ? -1 : new Number(this._selectedDepartmentId);
+            this._selectedDivisionId = this._selectedGroupId === -1 ? -1 : new Number(this._selectedDivisionId);
+            this._selectedGroupId = this._selectedStudentId === -1 ? -1 : new Number(this._selectedGroupId);
+            this._selectedStudentId = -1;
+        } else {
+            this._selectedStudentId = new Number(this._selectedStudentId);
+            this._selectedGroupId = new Number(this._selectedGroupId);
+            this._selectedDivisionId = new Number(this._selectedDivisionId);
+            this._selectedDepartmentId = new Number(this._selectedDepartmentId);
+        }
+
+    }
+
+
 }

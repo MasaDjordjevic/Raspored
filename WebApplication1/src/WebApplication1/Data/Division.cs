@@ -82,7 +82,8 @@ namespace WebApplication1.Data
                             ending = div.ending,
                             departmentID = div.departmentID,
                             departmentName = div.department.departmentName,
-                            course = div.course?.name
+                            course = div.course?.name,
+                            name = div.name
                         }).ToList();
 
             return (from div in divisions
@@ -202,48 +203,124 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void UpdateDivision(Divisions division)
+        public static void UpdateDivision(int divisionID, string name, DateTime beginning, DateTime ending, int? divisionTypeID, int? courseID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                division.course = null;
-                _context.Divisions.Update(division);
+                Divisions div = _context.Divisions.First(a => a.divisionID == divisionID);
+                if (beginning != null)
+                {
+                    div.beginning = beginning;
+                }
+                if (name != null )
+                {
+                    div.name = name;
+                }
+                if (ending != null)
+                {
+                    div.ending = ending;
+                }
+                if (divisionTypeID != null)
+                {
+                    div.divisionTypeID = divisionTypeID.Value;
+                }
+                if (courseID != null)
+                {
+                    div.courseID = courseID.Value;
+                }
+                //Console.Out("isus");
                 _context.SaveChanges();
             }
         }
 
-        public static void AddDivision(Divisions division)
+        public static Divisions CopyDivision(int divisionID)
         {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                //ovo radim jer nece da ignorise setovane IDjeve pa ih ovako unsetujem
-                Divisions newDiv = new Divisions
-                {
-
+             using (RasporedContext _context = new RasporedContext())
+             {
+                 Divisions division = _context.Divisions.First(a => a.divisionID == divisionID);
+                 // ovo radim jer nece da ignorise setovane IDjeve pa ih ovako unsetujem
+                 Divisions newDiv = new Divisions
+                 {
                     courseID = division.courseID,
-                    Groups = division.Groups.Select(g => new Groups
-                    {
-                        classroomID = g.classroomID,
-                        divisionID = g.divisionID,
-                        timeSpan = g.timeSpan,
-                        name = g.name,
-                        GroupsStudents = g.GroupsStudents.Select(a => new GroupsStudents
-                        {
-                            groupID = a.groupID,
-                            studentID = a.studentID
-                        }).ToList()
-                    }).ToList(),
                     beginning = division.beginning,
                     ending = division.ending,
                     creatorID = division.creatorID,
                     divisionTypeID = division.divisionTypeID,
                     departmentID = division.departmentID,
-                    name = division.name,
+                    name = division.name + " (kopija)",
+                };
+
+                _context.Divisions.Add(newDiv);
+
+                _context.SaveChanges();
+                
+                foreach (Groups g in division.Groups)
+                {
+                    Groups newG = new Groups
+                    {
+                        classroomID = g.classroomID,
+                        divisionID = newDiv.divisionID,
+                        timeSpan = g.timeSpan,
+                        name = g.name,
+                    };
+
+                    _context.Groups.Add(newG);
+                    _context.SaveChanges();
+
+                    foreach (GroupsStudents a in g.GroupsStudents)
+                    {
+                        GroupsStudents newGS = new GroupsStudents
+                        {
+                            groupID = newG.groupID,
+                            studentID = a.studentID
+                        };
+                        _context.GroupsStudents.Add(newGS);
+                    }
+
+                };
+
+                _context.SaveChanges();
+
+                return newDiv;
+             }
+        }
+
+        public static void DeleteDivision(int divisionID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                Divisions division = _context.Divisions.Include(a => a.Groups).Where(a => a.divisionID == divisionID).First();
+
+                foreach (Groups g in division.Groups)
+                {
+                    _context.Groups.Remove(g);
+                }
+                _context.SaveChanges();
+
+                _context.Divisions.Remove(division); 
+
+                _context.SaveChanges();
+            }
+        }
+
+        /*public static void AddDivision(string name, DateTime beginning, DateTime ending, int? divisionTypeID, int? courseID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                Divisions newDiv = new Divisions
+                {
+                    courseID = courseID,
+                    beginning = beginning,
+                    ending = ending,
+                    creatorID = 1, // TODO: Vadi iz sesije
+                    divisionTypeID = divisionTypeID,
+                    departmentID = departmentID,
+                    name = name,
                 };
                 _context.Divisions.Add(newDiv);
                 _context.SaveChanges();
             }
-        }
+        }*/
 
     }
 }
