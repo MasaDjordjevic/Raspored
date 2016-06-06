@@ -7,19 +7,47 @@ import {CoursesService} from "../../services/courses.service";
 import {DivisionType} from "../../models/DivisionType";
 import {Course} from "../../models/Course";
 import {StudentsService} from "../../services/students.service";
+import {R_DROPDOWN} from "../../ui/r-dropdown";
+import {R_BUTTON} from "../../ui/r-button.component";
 
 
 @Component({
     selector: 'division-edit', 
     templateUrl: 'app/assistant-panel/dialogs/division-edit.component.html',
+    styleUrls: ['app/assistant-panel/dialogs/division-edit.css'],
     providers: [DivisionsService, CoursesService, StudentsService],
-    directives: [CORE_DIRECTIVES, R_INPUT],
+    directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
 })
+
 //komponenta se koristi i u slucaju kada se kopira raspodela, u tom slucaju se samo ne salje ID, tj. division.divisionID je null (unknown ili tako nesto)
-export class DivisionEditComponent implements AfterViewInit{
-    @Input() division: any;
+export class DivisionEditComponent implements AfterViewInit {
+
+    _division: any;
     @Input() new: boolean;
     oldDivision: any;
+
+    public get division() { return this._division }
+
+    @Input() public set division(d) {
+        this._division = d;
+        if (!d) {
+            this.editedDivision = null;
+        } else {
+            this.cloneToEdit(d);
+        }
+    }
+
+    private cloneToEdit(division) {
+        this.editedDivision.name = division.name;
+        this.editedDivision.beginning = division.beginning;
+        this.editedDivision.ending = division.ending;
+        this.editedDivision.divisionTypeID = division.divisionTypeID;
+        this.editedDivision.courseID = division.courseID;
+    }
+
+    private reset = (division) => this.cloneToEdit(division);
+
+    private editedDivision: any = {};
 
     courses: Course[];
     divisionTypes: DivisionType;
@@ -34,7 +62,6 @@ export class DivisionEditComponent implements AfterViewInit{
     successMessage: string = "";
     _hasUnsavedChanges: boolean = false;
 
-
     constructor(
         private _coursesService: CoursesService,
         private _divisionsService: DivisionsService,
@@ -42,8 +69,7 @@ export class DivisionEditComponent implements AfterViewInit{
     ) {
         //this.control = new Control();
         //this.controlValue$ = this.control.valueChanges;
-    }    
-  
+    }
 
     onChangeAnything() {
         this._hasUnsavedChanges = true;
@@ -56,7 +82,7 @@ export class DivisionEditComponent implements AfterViewInit{
         this.oldDivision = this.division;
         this.getCoursesOfDepartment();
         this.getAllDivisionTypes();
-        console.log(this.divisionTypes);
+        //console.log(this.divisionTypes);
     }
 
     getCoursesOfDepartment() {
@@ -73,7 +99,7 @@ export class DivisionEditComponent implements AfterViewInit{
     }
 
     getStudents(){        
-        if(this.division.courseID == null)
+        if (this.division.courseID == null)
             return;
 
         this._studentsService.getStudentsOfCourse(this.division.courseID)
@@ -83,14 +109,27 @@ export class DivisionEditComponent implements AfterViewInit{
     }
 
     update() {
-        console.log(this.division.courseID);
+        //console.log(this.division.courseID);
         //debugger;
-        if(this.new) {
-            this.division.divisionID = -1;
+        if (this.new) {
+            //this.division.divisionID = -1;
         }
 
+        // TODO ovo je krajnje retardirano
+        // vracamo edited stvari nazad u pocetni objekat da bismo mogli da posaljemo
+
+        var sendId = this.division.divisionID;
+        var sendName = this.editedDivision.name;
+        var sendBeginning = this.editedDivision.beginning;
+        var sendEnding = this.editedDivision.ending;
+        var sendDivisionTypeID = this.editedDivision.divisionTypeID;
+        var sendCourseID = this.editedDivision.courseID;
+
+        console.log(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID);
+        debugger;
+
         //TODO nesto pametnije sa odgovorom
-        this._divisionsService.updateDivision(this.division).then(any => console.log(any));
+        this._divisionsService.updateDivision(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID).then(any => console.log(any));
     }
 
 }

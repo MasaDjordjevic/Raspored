@@ -1,102 +1,113 @@
 
-<!-- morala sam da stavim visinu jer mi se nije prikazivalo sve -->
-<div class="division-edit" *ngIf="division" style="height: 500px;">
+
+<template [ngIf]="division">
+
     <div *ngIf="new">
         <h3>Raspodela je kopirana</h3>
     </div>
-    <form ngForm>
-        <div style="display: flex; flex-direction: column; justify-content: flex-start; align-content: center;
-         width: 1000px; height: 1000px; margin-bottom: 30px;">
 
+    <div class="content" *ngIf="editedDivision">
 
-            <div style="display: flex; flex-direction: row; justify-content: space-around; align-content: center; ">
-
-                <div class="basic-info">
-
-                    <label>Ime</label>
-                    <input type="text" [(ngModel)]="division.name" />
-                    <br>
-
-                    <label>Tip</label>
-                    <select name="divisionType" [(ngModel)]="division.divisionType.divisionTypeID">
-                        <option *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</option>
-                    </select>
-                    <br>
-
-                    <label>Pocetak</label>
-                    <input type="text" [(ngModel)]="division.beginning" />
-                    <br>
-                    <label>Kraj</label>
-                    <input type="text" [(ngModel)]="division.ending" />
-                    <br>
-
-                    <label>Kreator</label>
-                    <label>{{division.creator.name}} {{division.creator.surname}}</label>
-                    <br>
-
-                    <lablel>Courses</lablel>
-                    <select name="course" *ngIf="courses != null"  [(ngModel)]="division.courseID" (ngModelChange)="getStudents()">
-                        <option *ngFor="let course of courses" [value]="course.courseID">
-                            {{course.name}}
-                        </option>
-                    </select>
-                    {{division.courseID}}
-                    <br/>
-
-                </div>
-
-                <div class="otherStudents" *ngIf="studentsOfCourse" style="width: 100px; height: 100px; overflow: scroll;">
-                    <h2>Ostali sa kursa</h2>
-                    <div class="student" *ngFor="let student of studentsOfCourse" style="background-color: #cccccc">
-                        <label><strong>{{student.indexNumber}}</strong> {{student.UniMembers.name}} {{student.UniMembers.surname}}</label>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="groups" >
-
-                <div class="group" *ngFor="let group of division.Groups" style="width: 100px; height: 100px; overflow: scroll;">
-                    <label>classroomID {{group.classroomID}}</label>
-
-                    <div class="student" *ngFor="let stud of group.GroupsStudents"
-                         id="{{stud.studentID}}"
-                         style="background-color: #cccccc"
-                    >
-                        <label><strong>{{stud.student.indexNumber}}</strong> {{stud.student.UniMembers.name}} {{stud.student.UniMembers.surname}}</label>
-                    </div>
-                </div>
-            </div>
-
-            <button type="button" (click)="update()"> Save </button>
-
-
-            <style>
-                .groups{
-                    display: flex;
-                    flex-direction: row;
-                    align-content: flex-start;
-                    justify-content: space-around;
-                }
-                .group {
-                    display: flex;
-                    flex-direction: column;
-                    align-content: flex-start;
-                    justify-content: flex-start;
-                }
-                .student {
-                    margin-bottom: 1px;
-                }
-
-            </style>
-
+        <div class="top">
+            <r-input class="light-theme" [(val)]="editedDivision.name" label="Ime raspodele"></r-input>
         </div>
 
+        <div class="left">
+            <!-- TODO Ovo ngModelChange ne znam sta si htela ali ne treba tu, nego u getteru ovoga sto mu je bindovano kao value -->
+            <!-- trentno ionako nemamo studente tako da w/e -->
+            <r-dropdown *ngIf="courses" label="Predmet" [(val)]="editedDivision.courseID" (ngModelChange)="getStudents()">
+                <r-dropdown-item *ngFor="let course of courses" [value]="course.courseID">{{course.name}}</r-dropdown-item>
+            </r-dropdown>
 
-    </form>
+            <r-dropdown *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="editedDivision.divisionTypeID">
+                <r-dropdown-item *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</r-dropdown-item>
+            </r-dropdown>
+        </div>
+
+        <div class="right">
+            <r-input class="light-theme" [(val)]="editedDivision.beginning" label="Početak važenja (YYYY-MM-DD)"></r-input>
+            <r-input class="light-theme" [(val)]="editedDivision.ending" label="Kraj važenja (YYYY-MM-DD)"></r-input>
+        </div>
+    </div>
+
+    <div class="dialog-controls">
+        <button r-button flat text="Resetuj" (click)="reset()">Resetuj</button>
+        <button r-button raised text="Sačuvaj izmene" (click)="update()">Sačuvaj izmene</button>
+    </div>
+
+
+    <!--<label>Ime</label>
+    <input type="text" [(ngModel)]="division.name" />
+    <br>
+
+    <label>Tip</label>
+    <select name="divisionType" [(ngModel)]="division.divisionType.divisionTypeID">
+        <option *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</option>
+    </select>
+    <br>
+
+    <label>Pocetak</label>
+    <input type="text" [(ngModel)]="division.beginning" />
+    <br>
+    <label>Kraj</label>
+    <input type="text" [(ngModel)]="division.ending" />
+    <br>
+
+    <label>Kreator</label>
+    <label>{{division.creator.name}} {{division.creator.surname}}</label>
+    <br>
+
+    <lablel>Courses</lablel>
+    <select name="course" *ngIf="courses != null"  [(ngModel)]="division.courseID" (ngModelChange)="getStudents()">
+        <option *ngFor="let course of courses" [value]="course.courseID">
+            {{course.name}}
+        </option>
+    </select>
+    {{division.courseID}}
+    <br/>-->
+
+    <!--<div class="otherStudents" *ngIf="studentsOfCourse" style="width: 100px; height: 100px; overflow: scroll;">
+        <h2>Ostali sa kursa</h2>
+        <div class="student" *ngFor="let student of studentsOfCourse" style="background-color: #cccccc">
+            <label><strong>{{student.indexNumber}}</strong> {{student.UniMembers.name}} {{student.UniMembers.surname}}</label>
+        </div>
+
+    </div>-->
+
+
+    <!--<div class="groups" >
+
+        <div class="group" *ngFor="let group of division.Groups" style="width: 100px; height: 100px; overflow: scroll;">
+            <label>classroomID {{group.classroomID}}</label>
+
+            <div class="student" *ngFor="let stud of group.GroupsStudents"
+                 id="{{stud.studentID}}"
+                 style="background-color: #cccccc"
+            >
+                <strong>{{stud.student.indexNumber}}</strong> {{stud.student.UniMembers.name}} {{stud.student.UniMembers.surname}}
+            </div>
+        </div>
+    </div>-->
 
 
 
-</div>
+    <!--<style>
+        .groups{
+            display: flex;
+            flex-direction: row;
+            align-content: flex-start;
+            justify-content: space-around;
+        }
+        .group {
+            display: flex;
+            flex-direction: column;
+            align-content: flex-start;
+            justify-content: flex-start;
+        }
+        .student {
+            margin-bottom: 1px;
+        }
+
+    </style>-->
+
+</template>

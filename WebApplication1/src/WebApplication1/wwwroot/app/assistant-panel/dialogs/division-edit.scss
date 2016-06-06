@@ -1,0 +1,42 @@
+@import "../../ljubenovic-toolkit";
+
+:host {
+  height: 100%;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+
+  .top, .right, .left {
+    box-sizing: border-box;
+  }
+
+  .top {
+    width: 100%;
+    margin-bottom: 1em;
+  }
+
+  .left, .right {
+    @include force-width(50%);
+  }
+
+  .left {
+    padding-right: 1em;
+  }
+
+  r-input, r-dropdown {
+    margin-bottom: 1.5ex;
+  }
+}
+
+.dialog-controls {
+  margin-top: 3em;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
