@@ -46,7 +46,7 @@ import {multicast} from "rxjs/operator/multicast";
         <div style="width:100%; min-height: 20px;"></div>-->
         
         <!--radi-->
-        <!--<r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
+        <r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
             <r-multiple-selector-item *ngFor="let n of stuff; let i = index" [val]="i">
                 <span>{{n.split('').reverse().join('')}}</span>
                 <span>{{n.substring(5)}}</span>
@@ -63,9 +63,10 @@ import {multicast} from "rxjs/operator/multicast";
         <div style="width:100%; min-height: 20px;"></div>
         
         <span>{{multipleSelector | json}}</span>
-        <button (click)="addNew()">toggle 2</button>
+        <button (click)="toggle2()">toggle 2</button>
+        <button (click)="addNew()">add new</button>
         
-        <div style="width:100%; min-height: 20px;"></div>-->
+        <div style="width:100%; min-height: 20px;"></div>
     </div>
     `,
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
@@ -77,7 +78,7 @@ export class AssistantPanelOptionsComponent {
     public inputText: string = "boobs";
     public dropdown: string = "b2";
 
-    public _multipleSelector: string[] = ["1", "3"];
+    public _multipleSelector: string[] = [];
 
     public get multipleSelector(): string[] {
         return this._multipleSelector;
@@ -95,11 +96,16 @@ export class AssistantPanelOptionsComponent {
         for (let i = 0; i < 4; this.stuff[i++] = this.randomString(i * 10 % 7 + 10));
     }
 
-    public addNew() {
+    public toggle2() {
         this.multipleSelector = this.multipleSelector.concat();
         var ind = this._multipleSelector.indexOf("2");
         if (!~ind) this._multipleSelector.push("2");
         else this._multipleSelector.splice(ind, 1);
+    }
+
+    public addNew() {
+        this.stuff = this.stuff.concat();
+        this.stuff.push(this.randomString(10));
     }
 
     assistant: Assistant;

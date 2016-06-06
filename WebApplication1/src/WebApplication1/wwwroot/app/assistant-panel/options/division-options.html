@@ -1,7 +1,7 @@
 <div class="division-options" *ngIf="division">
 
     <h1>{{division.name}}</h1>
-    <h2>({{division.divisionType.type}})</h2>
+    <h2>({{division.divisionType.type}} za {{division.course.alias}})</h2>
 
     <dl r-dl>
         <!--<dt>ID</dt>
@@ -30,7 +30,7 @@
     <div class="flex-spacer"></div>
 
     <r-dialog #editDivisionDialog [source]="editDivisionButton">
-        <div style="height: 500px;width: 500px; overflow: scroll;">
+        <div>
             <division-edit [division]="division" [new]="false"></division-edit>
         </div>
     </r-dialog>

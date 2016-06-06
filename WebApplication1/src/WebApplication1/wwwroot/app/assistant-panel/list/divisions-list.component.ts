@@ -32,7 +32,7 @@ import {INestedList, NestedList} from "../../INestedList";
                 (click)="onSelect(division.divisionID)"
                 [class.selected]="division.divisionID === selectedDivisionId"
             >
-                <pre>{{division.course}}</pre>
+                {{division.name}}
             </r-list-inner-item>
         </r-nested-list-inner>
     </r-nested-list>
