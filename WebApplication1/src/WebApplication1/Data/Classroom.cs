@@ -45,7 +45,7 @@ namespace WebApplication1.Data
                         }).ToList();
 
                 List<ScheduleDTO> activitiesSchedule =
-                    _context.Activities.Where(a => a.classroomID == classroomID).Select(a => new ScheduleDTO
+                    _context.Activities.Where(a => a.classroomID == classroomID && TimeSpan.Overlap(a.timeSpan, tsNow)).Select(a => new ScheduleDTO
                     {
                         day = a.timeSpan.startDate.DayOfWeek,
                         startMinutes = (int) a.timeSpan.startDate.TimeOfDay.TotalMinutes,
@@ -63,7 +63,7 @@ namespace WebApplication1.Data
             }
         }
 
-        public static bool CheckIfAveable(int classroomID, TimeSpans ts)
+        public static bool CheckIfAvailable(int classroomID, TimeSpans ts)
         {
             using (RasporedContext _context = new RasporedContext())
             {

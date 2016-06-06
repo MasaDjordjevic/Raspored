@@ -114,9 +114,10 @@ namespace WebApplication1.Data
         public static IEnumerable DevadeOnX(int courseID, int x, int sortOrder)
         {
             List<Models.DTOs.StudentDTO> studs = GetStudentsOfCourse(courseID, sortOrder);
+            int studsInGroup = (int) Math.Round(((double)studs.Count)/x); //kastovanje je neophodno zbog zaokruzivanja
             return studs
                    .Select((a, i) => new { Index = i, Value = a })
-                   .GroupBy(a => a.Index % x)
+                   .GroupBy(a => a.Index / studsInGroup) // ne moze %x jer ih ne redja redom
                    .Select(a => a.Select(v => v.Value).ToList())
                    .ToList();
         }
