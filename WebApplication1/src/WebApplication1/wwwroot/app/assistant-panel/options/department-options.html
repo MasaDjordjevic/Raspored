@@ -23,18 +23,8 @@
 
     <r-dialog #allStudentsDialog [source]="allStudentsButton">
         <div style="height: 680px; width: 1100px;" *ngIf="students">
-            <!--<pre>{{students | json}}</pre>-->
-            <r-multiple-selector [(val)]="selectedStudents" primaryColor="MaterialRed" style="height: 100%; width: 100%; box-sizing: border-box">
-                <r-multiple-selector-item *ngFor="let student of students; let i = index" [val]="student.indexNumber" class="narrow">
-                    <div class="multiple-selector-item">
-                        <span class="primary">{{student.UniMembers.name}} {{student.UniMembers.surname}}</span>
-                        <span class="secondary">
-                            <span class="index-number"><i class="fa fa-book"></i><span>{{student.indexNumber}}</span></span>
-                            <span class="e-mail"><i class="fa fa-envelope"></i><span>{{student.UniMembers.email}}</span></span>
-                        </span>
-                    </div>
-                </r-multiple-selector-item>
-            </r-multiple-selector>
+            <r-students-selector [(selected)]="selectedStudents" [students]="students" primaryColor="MaterialRed">
+            </r-students-selector>
         </div>
     </r-dialog>
 
