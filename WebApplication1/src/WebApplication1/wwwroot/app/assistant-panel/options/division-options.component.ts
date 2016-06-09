@@ -74,7 +74,6 @@ export class DivisionOptionsComponent {
 
     copyDivision() {
         var newDiv;
-        console.log("haf");
         this._service.copyDivision(this.divisionId).then(obj => newDiv = obj.division).then(() => console.log(newDiv));
     }
 

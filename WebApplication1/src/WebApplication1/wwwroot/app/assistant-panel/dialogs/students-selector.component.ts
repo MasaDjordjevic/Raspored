@@ -6,7 +6,7 @@ import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
     template: 
     `
     <r-multiple-selector [(val)]="selected" primaryColor="MaterialRed" style="height: 100%; width: 100%; box-sizing: border-box">
-        <r-multiple-selector-item *ngFor="let student of students; let i = index" [val]="student.indexNumber" class="narrow">
+        <r-multiple-selector-item *ngFor="let student of students; let i = index" [val]="student.studentID" class="narrow">
             <div class="multiple-selector-item">
                 <span class="primary">{{student.UniMembers.name}} {{student.UniMembers.surname}}</span>
                 <span class="secondary">
