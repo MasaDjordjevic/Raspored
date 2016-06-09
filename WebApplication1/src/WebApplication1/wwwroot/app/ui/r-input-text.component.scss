@@ -15,31 +15,31 @@ $time-highlight: .5s;
   justify-content: flex-end;
 
     label {
-      position: absolute;
-      color: rgba(white, .6);
-      padding: 0;
-      margin: 0;
-      top: 1.23ex; // Trial and error, ne dirati. Isprobano na font-size 12px, 16px, 24px i 36px.
-      transition: all $time-label;
-      font-weight: normal;
-      z-index: 1;
+       position: absolute;
+       color: rgba(white, .6);
+       padding: 0;
+       margin: 0;
+       top: 1.23ex; // Trial and error, ne dirati. Isprobano na font-size 12px, 16px, 24px i 36px.
+       transition: all $time-label;
+       font-weight: normal;
+       z-index: 1;
 
-      &::after {
-        content: ":";
-        opacity: 0;
-        transition: opacity $time-label;
-      }
+       &::after {
+         content: ":";
+         opacity: 0;
+         transition: opacity $time-label;
+       }
 
-      &.collapsed {
-        top: 0;
-        font-size: 0.6em;
-        color: rgba(white, .45);
+       &.collapsed {
+         top: 0;
+         font-size: 0.6em;
+         color: rgba(white, .45);
 
-        &::after {
-          opacity: 1;
-        }
-      }
-    }
+         &::after {
+           opacity: 1;
+         }
+       }
+     }
 
     input[type="text"] {
         background-color: transparent;
