@@ -6,6 +6,9 @@ import {StudentsService} from "../../services/students.service";
 import {GroupsService} from "../../services/groups.service";
 import {AssistantService} from "../../services/assistant.service";
 import {TimeSpan} from "../../models/TimeSpan";
+import {R_DROPDOWN} from "../../ui/r-dropdown";
+import {R_BUTTON} from "../../ui/r-button.component";
+import {R_INPUT} from "../../ui/r-input-text.component";
 
 
 @Pipe({
@@ -36,6 +39,7 @@ class WithoutStudentsPipe implements PipeTransform {
 
 @Component({
     selector: 'group-edit',
+    directives: [R_INPUT, R_DROPDOWN, R_BUTTON]
     template: `
 <form #form="ngForm" (ngSubmit)="save(form.value)">
     <label>Ime</label>
@@ -95,8 +99,9 @@ class WithoutStudentsPipe implements PipeTransform {
     `,
     providers: [ClassroomsService, StudentsService, AssistantService],
     pipes: [WithoutStudentsPipe],
-    //changeDetection: ChangeDetectionStrategy.OnPush
 })
+
+// Koristi se i za Editovanje postojece grupe i za kreiranje nove grupe.
 export class GroupEditComponent implements AfterContentInit {
 
     @Input() group: any;
@@ -179,11 +184,11 @@ export class GroupEditComponent implements AfterContentInit {
         console.log(pom);
         var timespan:TimeSpan = new TimeSpan;
         debugger;
-        if(value.timeStart && value.timeEnd && value.period) {
+        if (value.timeStart && value.timeEnd && value.period) {
             timespan.startDate = value.timeStart;
             timespan.endDate = value.timeEnd;
             timespan.period = value.period;
-        }else {
+        } else {
             timespan = null;
         }
         console.log(timespan);

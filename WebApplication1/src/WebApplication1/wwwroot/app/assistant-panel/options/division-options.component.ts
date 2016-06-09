@@ -17,7 +17,8 @@ import {DivisionEditComponent} from "../dialogs/division-edit.component";
     selector: 'r-division-options',
     templateUrl: 'app/assistant-panel/options/division-options.html',
     styleUrls: [
-        'app/assistant-panel/options/assistant-panel-options.css'
+        'app/assistant-panel/options/assistant-panel-options.css',
+        'app/assistant-panel/options/division-options.css',
     ],
     providers: [DivisionsService, GroupsService],
     directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent, GroupEditComponent, DivisionEditComponent],
@@ -77,7 +78,7 @@ export class DivisionOptionsComponent {
         this._service.copyDivision(this.divisionId).then(obj => newDiv = obj.division).then(() => console.log(newDiv));
     }
 
-    deleteDivision() {
+    removeDivision() {
         this._service.deleteDivision(this.division.divisionID)
             .then(any => console.log(any))
             .then(() => this.refreshAssistantPanel({

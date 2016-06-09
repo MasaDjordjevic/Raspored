@@ -34,7 +34,7 @@
 
     <r-dialog #removeGroupDialog [source]="removeGroupButton">
         <div class="remove-group-dialog">
-            <div class="dialog-text">Obriši grupu <strong>{{group.name}}</strong>?</div>
+            <div class="dialog-text">Obriši grupu <b>{{group.name}}</b>?</div>
             <div class="dialog-controls">
                 <button r-button flat text="Odustani" (click)="removeGroupDialog.close()" [primaryColor]="primaryColor">Odustani</button>
                 <button r-button raised text="Obriši" (click)="removeGroup()" [primaryColor]="primaryColor">Obriši</button>
@@ -66,7 +66,9 @@
                 (click)="cancelClassDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
+
         {{group.timeSpan | json}}
+
         <button r-button raised #combinedScheduleButton
                 text="Kombinovani raspored"
                 (click)="combinedScheduleDialog.open()"
