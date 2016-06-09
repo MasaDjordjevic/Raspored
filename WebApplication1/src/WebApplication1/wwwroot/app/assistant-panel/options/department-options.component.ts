@@ -11,6 +11,7 @@ import {Student} from "../../models/Student";
 import {StudentsService} from "../../services/students.service";
 import {StudentSearchComponent} from "../dialogs/student-search.component";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
+import {RomanNumeralsPipe} from "../../pipes/roman-numerals.pipe";
 
 
 
@@ -23,7 +24,7 @@ import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
     ],
     providers: [DepartmentService, StudentsService],
     directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, R_MULTIPLE_SELECTOR, DivisionCreatorComponent, StudentSearchComponent],
-    pipes: [TrimPipe]
+    pipes: [TrimPipe, RomanNumeralsPipe]
 })
 
 export class DepartmentOptionsComponent {
