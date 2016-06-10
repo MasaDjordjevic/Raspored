@@ -71,7 +71,7 @@ export class DivisionsService {
      * Vraca grupe studenata kada se svi studenti koji slusaju kurs podele na X grupa.
      */
     public getGroupsOnX(courseID: number, x: number, sortOrder: number) {
-        return this.http.get(this._url + `/DevideOnX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
+        return this.http.get(this._url + `/DivideOnX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
             .toPromise().then(this.extractData).catch(this.handleError);
     }
 
@@ -79,7 +79,7 @@ export class DivisionsService {
      * Vraca grupe studenata kada se svi studenti koji slusaju kurs podele tako da svaka grupa ima X studenata.
      */
     public getGroupsWithX(courseID: number, x: number, sortOrder: number) {
-        return this.http.get(this._url + `/DevideWithX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
+        return this.http.get(this._url + `/DivideWithX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
             .toPromise().then(this.extractData).catch(this.handleError);
     }
     

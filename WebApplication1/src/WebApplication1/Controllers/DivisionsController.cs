@@ -34,9 +34,9 @@ namespace WebApplication1.Controllers
 
 
         [HttpGet]
-        public IActionResult DevideWithX(int courseID, int x, int sortOrder)
+        public IActionResult DivideWithX(int courseID, int x, int sortOrder)
         {
-            var groups =  Data.Division.DevideWithX(courseID, x, sortOrder);
+            var groups =  Data.Division.DivideWithX(courseID, x, sortOrder);
 
             if (groups == null)
             {
@@ -47,9 +47,9 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult DevideOnX(int courseID, int x, int sortOrder)
+        public IActionResult DivideOnX(int courseID, int x, int sortOrder)
         {
-            var groups = Data.Division.DevadeOnX(courseID, x, sortOrder);
+            var groups = Data.Division.DivideOnX(courseID, x, sortOrder);
 
             if (groups == null)
             {

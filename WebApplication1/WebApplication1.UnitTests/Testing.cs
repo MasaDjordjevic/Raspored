@@ -180,7 +180,7 @@ namespace MyFirstDnxUnitTests
         [Fact]
         public void DevideOnX()
         {
-            var groups = WebApplication1.Data.Division.DevadeOnX(10, 2, 0);
+            var groups = WebApplication1.Data.Division.DivideOnX(10, 2, 0);
 
         }
 
