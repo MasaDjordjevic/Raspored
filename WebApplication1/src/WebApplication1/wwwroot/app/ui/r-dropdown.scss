@@ -1,6 +1,12 @@
 @import "../ljubenovic-toolkit";
 @import "../palette";
 
+// Vreme koje treba labeli da se pomeri nagore/nadole
+$time-label: .2s;
+
+// Vreme koje treba onom čudu ispod inputa da se pojavi pri fokusiranju
+$time-highlight: .5s;
+
 :host {
   position: relative;
   font-size: 1em;
@@ -18,15 +24,28 @@
     // {{label}}
     label {
       position: absolute;
-      color: rgba(black, .45);
+      color: rgba(black, .6);
       padding: 0;
       margin: 0;
-      top: 0;
-      font-size: .6em;
+      top: 1.23ex; // Trial and error, ne dirati. Isprobano na font-size 12px, 16px, 24px i 36px.
+      // transition: all $time-label;
       font-weight: normal;
+      z-index: 1;
 
       &::after {
-        content: ':';
+        content: ":";
+        opacity: 0;
+        //transition: opacity $time-label;
+      }
+
+      &.collapsed {
+        top: 0;
+        font-size: 0.6em;
+        color: rgba(black, .45);
+
+        &::after {
+          opacity: 1;
+        }
       }
     }
 
@@ -37,6 +56,7 @@
       position: relative;
       width: 100%;
       box-sizing: border-box;
+      min-height: 2.4ex;
 
       /*&::after {
         content: "v";

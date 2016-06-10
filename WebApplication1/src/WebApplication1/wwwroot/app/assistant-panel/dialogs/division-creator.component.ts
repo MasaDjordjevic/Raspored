@@ -256,18 +256,18 @@ import {R_DL} from "../../ui/r-dl";
 export class DivisionCreatorComponent implements AfterViewInit {
 
     // Podaci o novoj raspodeli koja se kreira
-    public newDivisionName: string = "default name";
+    public newDivisionName: string;
     public newDivisionClassId: string;
     public newDivisionClassName = (id = this.newDivisionClassId) => this.courses.filter(i => i.courseID === +id)[0].name;
-    public newDivisionBeginningDate: string = "2016-05-04";
+    public newDivisionBeginningDate: string;
     public newDivisionBeginningDateToDate = () => new Date(this.newDivisionBeginningDate);
-    public newDivisionEndingDate: string = "2020-04-20";
+    public newDivisionEndingDate: string;
     public newDivisionEndingDateToDate = () => new Date(this.newDivisionEndingDate);
     public newDivisionTypeId: string;
     public newDivisionTypeName = (id = this.newDivisionTypeId) => (<any>this.divisionTypes).filter(i => i.divisionTypeID == id)[0].type;
 
     public newDivisionCreationWay: 'on_x' | 'with_x' | 'manual';
-    public newDivisionCreationNumberX: string = "12";
+    public newDivisionCreationNumberX: string;
     public newDivisionCreationOrderIsRandom: '0' | '1';
     public newDivisionCreationOrderName = (i = this.newDivisionCreationOrderIsRandom) => i === '0' ? 'po indeksu' : 'nasumično';
 
@@ -337,8 +337,6 @@ export class DivisionCreatorComponent implements AfterViewInit {
 
     }
 
-
-
     courses: Course[];
     errorMessage: string;
 
@@ -348,6 +346,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
     private _departmentID: number;
 
     @Input() set departmentID(departmentID: number) {
+        this.resetAll();
         this._departmentID = departmentID;
         this.getCoursesOfDepartment();
     }
@@ -359,7 +358,23 @@ export class DivisionCreatorComponent implements AfterViewInit {
     constructor(
         private _coursesService: CoursesService,
         private _divisionsService: DivisionsService
-    ) { }
+    ) {
+        this.resetAll();
+    }
+
+    private resetAll() {
+        this.courses = null;
+        this.createdGroups = null;
+        this.errorMessage = null;
+        this.newDivisionName = "default name";
+        this.newDivisionClassId = null;
+        this.newDivisionBeginningDate = "2016-05-04";
+        this.newDivisionEndingDate = "2020-04-20";
+        this.newDivisionTypeId = null;
+        this.newDivisionCreationWay = null;
+        this.newDivisionCreationNumberX = "12";
+        this.newDivisionCreationOrderIsRandom = null;
+    }
 
     ngAfterViewInit() {
         this.getCoursesOfDepartment();

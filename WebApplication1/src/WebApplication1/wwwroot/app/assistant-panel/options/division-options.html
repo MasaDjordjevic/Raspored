@@ -59,6 +59,17 @@
         <pre>{{division | json | trim}}</pre>
     </r-dialog>
 
+
+    <r-dialog #removeDivisionDialog [source]="removeDivisionButton">
+        <div class="remove-division-dialog">
+            <div class="dialog-text">Obriši raspodelu <b>{{division.name}}</b>?</div>
+            <div class="dialog-controls">
+                <button r-button flat text="Odustani" (click)="removeDivisionDialog.close()" [primaryColor]="primaryColor">Odustani</button>
+                <button r-button raised text="Obriši" (click)="removeDivision()" [primaryColor]="primaryColor">Obriši</button>
+            </div>
+        </div>
+    </r-dialog>
+
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
@@ -99,9 +110,9 @@
                 [primaryColor]="primaryColor">
         </button>
 
-        <button r-button raised #deleteDivisionButton
+        <button r-button raised #removeDivisionButton
                 text="Obriši raspodelu"
-                (click)="deleteDivision()"
+                (click)="removeDivisionDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
     </div>

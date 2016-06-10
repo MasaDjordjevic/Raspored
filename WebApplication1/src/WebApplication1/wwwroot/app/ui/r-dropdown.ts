@@ -75,7 +75,7 @@ export class RDropdownEmitterService {
     `
 })
 
-export class RDropdownItemComponent implements OnInit {
+export class RDropdownItemComponent implements OnInit, AfterViewInit {
 
     // Jednoznačno definise opciju
     @Input() public value: string;
@@ -100,11 +100,17 @@ export class RDropdownItemComponent implements OnInit {
 
     ngOnInit() { }
 
+    ngAfterViewInit() {
+        //debugger;
+        this._emitter.get("channel_item_initialized").emit({
+            hello: "hello"
+        });
+    }
+
     // on click
     // Na klik samo saljemo event da se nesto kliknulo, nista ne menjamo.
     // Roditeljska komponenta je odgovorna za to da prati ko je selektiran.
     select() {
-        console.log("emituje se", this);
         this._emitter.get("channel1").emit({
             value: this.value,
             str: this.str,
@@ -123,7 +129,7 @@ export class RDropdownItemComponent implements OnInit {
     selector: 'r-dropdown',
     template: `
         <div class="r-dropdown" (click)="toggleExpanded()">
-            <label>{{label}} <b>offset</b> {{_currentSelectedOffset}} <b>currVal</b> {{_currentSelectedValue}} <b>inputVal</b> {{val}}</label>
+            <label [ngClass]="{collapsed: !!val}">{{label}}<!--<b>collapsed bool</b> {{!!val}} <b>offset</b> {{_currentSelectedOffset}} <b>currVal</b> {{_currentSelectedValue}} <b>inputVal</b> {{val}}--></label>
             <span>{{currentSelectedStr}}</span>
             <div class="line-effect" [ngClass]="{highlight: isExpanded}"></div>
             <div class="r-dropdown-items-wrapper"
@@ -137,10 +143,6 @@ export class RDropdownItemComponent implements OnInit {
     `,
     styleUrls: ['app/ui/r-dropdown.css'],
     providers: [RDropdownEmitterService],
-    host: {
-        //"[value]": "val",
-        //"(click)": "onClick($event)"
-    }
 })
 
 export class RDropdownComponent implements AfterContentInit, AfterViewInit {
@@ -268,10 +270,15 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
     ) {
 
         this.emitter.get("channel1").subscribe(msg => {
-            console.log("uhvacen emitter", msg);
             this.currentSelectedValue = msg.value;
             this.currentSelectedStr = msg.str;
             this.currentSelectedOffset = msg.offset;
+        });
+
+        this.emitter.get("channel_item_initialized").subscribe(msg => {
+            console.log("primjlen initialized emitter");
+            //debugger;
+            this.select();
         });
 
     }
@@ -280,11 +287,8 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
         this.select();
     }
 
-    // Pronadji dete koje ima isti value kao val [ = currentSelectedValue] i selektiraj ga
-    // Ako nije nadjeno dete koje ime ima isti value kao val,
-    // selektiramo prvu ponudjenu opciju iz dropdowna.
-    // TODO ovo je malo retardirano, ne treba nista da bude selektirano i da se vidi spustena
-    select(val = this.currentSelectedValue) {
+    // Pronadji dete koje ima isti value kao val [ = this.val] i selektiraj ga
+    select(val = this.val) {
         if (!this._items) return;
         var itemsArray = this._items.toArray();
         var len = itemsArray.length;
@@ -303,19 +307,11 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
                     this.currentSelectedOffset = currItem.offset;
                 }
             }
-
-            if (!val) {
-                currItem = itemsArray[0];
-                this.currentSelectedStr = currItem.str;
-                this.currentSelectedValue = currItem.value;
-                this.currentSelectedOffset = currItem.offset;
-            }
         }, 1);
     }
 
     ngAfterViewInit() {
-        //debugger;
-        //setTimeout(() => { this.currentSelectedOffset = 0; }, 1);
+        this.select();
     }
 
     toggleExpanded() {
@@ -325,7 +321,7 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
          * prikaz ajtema.
          */
         console.log("trenutni je" + this.currentSelectedOffset);
-        this.currentSelectedOffset = 0; // TODO
+        this.currentSelectedOffset = 0; // TODO, zbog ovoga ne radi Material stil
         this.isExpanded = !this.isExpanded;
     }
 

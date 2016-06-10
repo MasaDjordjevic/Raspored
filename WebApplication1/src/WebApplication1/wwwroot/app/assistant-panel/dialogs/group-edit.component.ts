@@ -6,6 +6,11 @@ import {StudentsService} from "../../services/students.service";
 import {GroupsService} from "../../services/groups.service";
 import {AssistantService} from "../../services/assistant.service";
 import {TimeSpan} from "../../models/TimeSpan";
+import {R_DROPDOWN} from "../../ui/r-dropdown";
+import {R_BUTTON} from "../../ui/r-button.component";
+import {R_INPUT} from "../../ui/r-input-text.component";
+import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
+import {R_STUDENT_SELECTOR} from "./students-selector.component";
 
 
 @Pipe({
@@ -36,21 +41,24 @@ class WithoutStudentsPipe implements PipeTransform {
 
 @Component({
     selector: 'group-edit',
+    directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
     template: `
-<form #form="ngForm" (ngSubmit)="save(form.value)">
-    <label>Ime</label>
+<!--<form #form="ngForm" (ngSubmit)="save(form.value)">-->
+    <!--<label>Ime</label>
     <input type="text" [(ngModel)]="group.name" ngControl="groupName"/>
     <br/>
     <label>Učionica</label>
     <select *ngIf="classrooms" name="classroom" ngControl="classroom"  [(ngModel)]="group.classroomID">
         <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
     </select>
+    
     <label>Asistent</label>
-    <!-- [(ngModel)]="assistants[0].uniMemberID" -->
+    
     <select *ngIf="assistants" name="assistant" ngControl="assistant" >
         <option *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</option>
         {{assistant | json}}
     </select>
+    
     <button type="button" (click)="getAllAssistants()">Svi asistenti </button>
     <br/><br/>
     
@@ -64,42 +72,86 @@ class WithoutStudentsPipe implements PipeTransform {
        
        <label>Perioda</label>
         <input type="text"  ngControl="period" [value]="group.timeSpan && group.timeSpan.period"/>
-       <br/>
+       <br/>-->
+       
+       
+    <r-input class="light-theme" [label]="'Ime grupe'" [(val)]="editedGroupName"></r-input>
     
-    <div class="students">
-        <div>
-            <h2>Studenti u grupi</h2>
-            <select #chosenStuds name="chosen-students" multiple size="10" >
-                <option *ngFor="let student of chosenStudents" [value]="student.studentID">
-                    {{student.indexNumber}}
-                    {{student.UniMembers.name}}
-                    {{student.UniMembers.surname}}
-                </option>
-            </select> 
-            <button type="button" (click)="moveToOthers(chosenStuds.selectedOptions)"> >> </button>
-        </div>
-        <div>
-            <h2>Ostali sa smera</h2>
-            <select name="other-students" multiple size="10" #otherStuds>
-                <option *ngFor="let student of otherStudents | withoutStudents : chosenStudents" [value]="student.studentID">
-                    {{student.indexNumber}}
-                    {{student.UniMembers.name}}
-                    {{student.UniMembers.surname}}
-                </option>
-            </select>
-            <button type="button" (click)="moveToChosen(otherStuds.selectedOptions)"> << </button>
-        </div>
+    
+    
+    <r-dropdown [label]="'Učionica'" [(val)]="editedClassroom">
+        <r-dropdown-item *ngFor="let classroom of classrooms" [value]="classroom.classroomID">
+            {{classroom.number}}
+        </r-dropdown-item>
+    </r-dropdown>
+    
+    
+    
+    <r-dropdown *ngIf="assistants" [label]="'Asistent'" name="assistant" [val]="editedAssistant">
+        <r-dropdown-item *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</r-dropdown-item>
+    </r-dropdown>
+
+    <button r-button flat type="button" (click)="getAllAssistants()" [text]="'Svi asistenti'"></button>
+    
+    
+    
+    <r-input class="light-theme" [label]="'Početak'" [(val)]="editedTimeStart"></r-input>
+    <r-input class="light-theme" [label]="'Kraj'" [(value)]="editedTimeEnd"></r-input>
+    <r-input class="light-theme" [label]="'Perioda'" [(value)]="editedPeriod"></r-input>   
+       
+    
+    
+    <div style="height: 340px; width: 550px;">
+        <r-students-selector #chosenStuds [students]="chosenStudents" primaryColor="MaterialRed">
+        </r-students-selector>
     </div>
-     <button type="submit">SAVE</button>
-</form>
+    
+    <button r-button raised [text]="'Izbaci iz grupe'" primaryColor="MaterialRed"
+            (click)="moveToOthers(chosenStuds.selected); chosenStuds.selected = null">
+    </button>
+    
+    <div style="height: 340px; width: 550px;">
+        <r-students-selector #otherStuds [(selected)]="selectedOtherStudents" [students]="otherStudents | withoutStudents : chosenStudents" primaryColor="MaterialRed">
+        </r-students-selector>
+    </div>
+    
+    <button r-button raised [text]="'Ubaci u grupu'" primaryColor="MaterialGreen"
+            (click)="moveToChosen(otherStuds.selected)"
+            >        
+    </button>
+        
+     <button r-button raised [text]="'Sačuvaj izmene'" type="submit" (click)="save()"></button>
+     
+<!--</form>-->
     `,
     providers: [ClassroomsService, StudentsService, AssistantService],
     pipes: [WithoutStudentsPipe],
-    //changeDetection: ChangeDetectionStrategy.OnPush
+    directives: [R_INPUT, R_DROPDOWN, R_BUTTON, R_MULTIPLE_SELECTOR, R_STUDENT_SELECTOR]
 })
+
+// Koristi se i za Editovanje postojece grupe i za kreiranje nove grupe.
 export class GroupEditComponent implements AfterContentInit {
 
+    _group;
+
+    get group() {
+        return this._group;
+    }
+
+    set group(g) {
+        this._group = g;
+        console.log(g);
+        this.editedGroupName = g.name;
+        this.editedClassroom = g.classroomID;
+        this.editedAssistant = g.assistant && g.assistant.uniMemberID;
+        this.editedTimeStart = g.timespan && g.timespan.startDate;
+        this.editedTimeEnd = g.timespan && g.timespan.endDate;
+        this.editedPeriod = g.timespan && g.timespan.period;
+    }
+
     @Input() group: any;
+
+
 
     private classrooms;
     private assistants;
@@ -107,6 +159,10 @@ export class GroupEditComponent implements AfterContentInit {
 
     otherStudents;
     chosenStudents;
+
+    // Todo probaj kroz bez ovoga
+    selectedChosenStudents;
+    selectedOtherStudents;
 
     constructor(
         private _service: ClassroomsService,
@@ -116,6 +172,13 @@ export class GroupEditComponent implements AfterContentInit {
     ) {
         this.getClassrooms();
     }
+
+    editedAssistant: any;
+    editedClassroom: any;
+    editedGroupName: string;
+    editedTimeStart: any;
+    editedTimeEnd: any;
+    editedPeriod: any;
 
     getAssisatnts() {
         this._assistantsService.getAssistantsByGroupID(this.group.groupID).then(
@@ -156,7 +219,7 @@ export class GroupEditComponent implements AfterContentInit {
     moveToOthers(arr) {
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < this.chosenStudents.length; j++) {
-                if (this.chosenStudents[j].studentID == arr[i].value) {
+                if (this.chosenStudents[j].studentID == arr[i]) {
                     this.chosenStudents.splice(j--, 1); // pomozi bog
                 }
             }
@@ -166,28 +229,27 @@ export class GroupEditComponent implements AfterContentInit {
     moveToChosen(arr) {
         for (let i = 0; i < arr.length; i++) {
             for (let j = 0; j < this.otherStudents.length; j++) {
-                if (this.otherStudents[j].studentID == arr[i].value) {
+                if (this.otherStudents[j].studentID == arr[i]) {
                     this.chosenStudents.push(this.otherStudents[j]);
                 }
             }
         }
     }
     
-    save(value) {
-        console.log(value);
-        var pom: Array<number> = this.chosenStudents.map(i=>i.studentID);
+    save() {
+        var pom: Array<number> = this.chosenStudents.map(i => i.studentID);
         console.log(pom);
         var timespan:TimeSpan = new TimeSpan;
-        debugger;
-        if(value.timeStart && value.timeEnd && value.period) {
-            timespan.startDate = value.timeStart;
-            timespan.endDate = value.timeEnd;
-            timespan.period = value.period;
-        }else {
+        if (this.editedTimeStart && this.editedTimeEnd && this.editedPeriod) {
+            timespan.startDate = this.editedTimeStart;
+            timespan.endDate = this.editedTimeEnd;
+            timespan.period = this.editedPeriod;
+        } else {
             timespan = null;
         }
         console.log(timespan);
-        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, value.assistant, value.groupName, value.classroom, timespan,  pom)
+        debugger;
+        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, this.editedAssistant, this.editedGroupName, this.editedClassroom, timespan,  pom)
             .then(status => console.log(status));
     }
 

@@ -130,7 +130,7 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 @Component({
     selector: 'r-multiple-selector',
     template: `
-    <!--Selected: {{_values | json}}<br/>-->
+    Selected: {{values | json}}<br/>
     <div class="r-multiple-selector-content">
         <ng-content></ng-content>
     </div>
@@ -201,6 +201,7 @@ export class MultipleSelectorComponent implements AfterViewInit {
     }
 
     public toggleOption(val) {
+        if (!this.values) this.values = [];
         var index = this.values.indexOf(val);
 
         if (!~index) {

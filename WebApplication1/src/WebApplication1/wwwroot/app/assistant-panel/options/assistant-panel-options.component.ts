@@ -23,7 +23,7 @@ import {multicast} from "rxjs/operator/multicast";
         
         
         <!-- radi -->
-        <!--<r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;">
+        <r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;">
             <r-dropdown-item *ngFor="let b of ['b1', 'b2', 'b3', 'b4', 'b5']" [value]="b">{{b + "ooo"}}</r-dropdown-item>
         </r-dropdown>
         
@@ -43,10 +43,10 @@ import {multicast} from "rxjs/operator/multicast";
         
         <span>{{dropdown}}</span>
         
-        <div style="width:100%; min-height: 20px;"></div>-->
+        <div style="width:100%; min-height: 20px;"></div>
         
         <!--radi-->
-        <r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
+        <!--<r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
             <r-multiple-selector-item *ngFor="let n of stuff; let i = index" [val]="i">
                 <span>{{n.split('').reverse().join('')}}</span>
                 <span>{{n.substring(5)}}</span>
@@ -66,7 +66,7 @@ import {multicast} from "rxjs/operator/multicast";
         <button (click)="toggle2()">toggle 2</button>
         <button (click)="addNew()">add new</button>
         
-        <div style="width:100%; min-height: 20px;"></div>
+        <div style="width:100%; min-height: 20px;"></div>-->
     </div>
     `,
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
@@ -76,7 +76,7 @@ import {multicast} from "rxjs/operator/multicast";
 export class AssistantPanelOptionsComponent {
 
     public inputText: string = "boobs";
-    public dropdown: string = "b2";
+    public dropdown: string;
 
     public _multipleSelector: string[] = [];
 
