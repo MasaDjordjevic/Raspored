@@ -142,7 +142,7 @@ namespace WebApplication1.Controllers
                 {
                     if (obj.assistantID != null)
                     {
-                        Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
+                        Data.Group.SetAsstant(obj.groupID.Value, obj.assistantID.Value);
                     }
 
 
@@ -168,7 +168,7 @@ namespace WebApplication1.Controllers
 
                         if (obj.assistantID != null)
                         {
-                            Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
+                            Data.Group.SetAsstant(obj.groupID.Value, obj.assistantID.Value);
                         }
 
                         Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
@@ -181,10 +181,10 @@ namespace WebApplication1.Controllers
                     transaction.Rollback();
                     return Ok(new { status = "inconsistent division", message = ex.Message });
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     transaction.Rollback();
-                    throw;
+                    return Ok(new { status = "neuspelo", message = ex.Message });
                 }
 
                 return Ok(new { status = "uspelo" });

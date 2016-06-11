@@ -33,7 +33,7 @@ namespace WebApplication1.Data
                     .Include(a => a.classroom)
                     .Include(a => a.timeSpan)
                     .Include(a => a.GroupsStudents).ThenInclude(aa => aa.student).ThenInclude(aa => aa.UniMembers)
-                    .Include(a => a.GroupsAssistants).ThenInclude(aa => aa.assistant)
+                    .Include(a => a.assistant)
                     .First(a => a.groupID == groupID);
 
                 pom.division = _context.Divisions.First(a => a.divisionID == pom.divisionID);
@@ -239,7 +239,7 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 //provera da li je ucionica slobodna u to vreme, bacice exeption ako nije
-                if (classroomID != null)
+                if (classroomID != null && timespan != null)
                 {
                     Classroom.CheckIfAvailable(classroomID.Value, timespan);
                 }
@@ -312,17 +312,12 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void AddAsstant(int groupID, int assistantID)
+        public static void SetAsstant(int groupID, int assistantID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                GroupsAssistants gs = new GroupsAssistants
-                {
-                    assistantID = assistantID,
-                    groupID = groupID
-                };
-                _context.GroupsAssistants.Add(gs);
-
+                var group = _context.Groups.First(a => a.groupID == groupID);
+                group.assistantID = assistantID;
 
                 // ako asistent nije bio zaduzen za kurs dodati ga
 
@@ -345,16 +340,9 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                var q = _context.GroupsAssistants.Where(a => a.groupID == groupID);
-                if (q.Any())
-                {
-                    var asst = q.Select(a => a.assistant).First();
-                    return asst.name + " " + asst.surname;
-                }
-                else
-                {
-                    return "";
-                }
+                return
+                    _context.Groups.Where(a => a.groupID == groupID)
+                        .Select(a => a.assistant.name + " " + a.assistant.surname).First();
             }
         }
 

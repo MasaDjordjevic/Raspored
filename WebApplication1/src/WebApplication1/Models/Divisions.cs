@@ -10,7 +10,7 @@ namespace WebApplication1.Models
             Ads = new HashSet<Ads>();
             Groups = new HashSet<Groups>();
         }
-     
+
         public int divisionID { get; set; }
         public DateTime beginning { get; set; }
         public int? courseID { get; set; }
