@@ -64,12 +64,14 @@ namespace WebApplication1.Data
             }
         }
 
-        public static bool CheckIfAvailable(int classroomID, TimeSpans ts)
+        //groupID je grupa ciji cas treba zanemariti (grupa koja menja ucionicu
+        public static bool CheckIfAvailable(int classroomID, TimeSpans ts, int? groupID = null)
         {
             using (RasporedContext _context = new RasporedContext())
             {
                 List<TimeSpans> groupsSchedule = _context.Groups
                     .Where(a => a.classroomID == classroomID &&
+                                (groupID == null || a.groupID != groupID) && // da ne uzme u obzir trenutni ts grupe, posto se ionako menja
                                 TimeSpan.DatesOverlap(a.division.beginning, a.division.ending, ts.startDate,ts.endDate)
                                      && Group.GetActive(a.groupID, ts)) //provera da li raspodela kojoj grupa pripada i dalje vazi_
                         .Select(a => a.timeSpan).ToList();
