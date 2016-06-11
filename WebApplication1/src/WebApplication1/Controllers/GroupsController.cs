@@ -79,6 +79,28 @@ namespace WebApplication1.Controllers
                                     }));
         }
 
+        // vraca vreme kada grupa ima cas u naredne 4 nedelje
+        [HttpGet("{id}", Name = "GetActivityTimes")]
+        public IActionResult GetActivityTimes([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            try
+            {
+                var activityTimes = Data.Group.GetActivityTimes(id);
+                return Ok(activityTimes);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "greska", message = ex.Message });
+            }
+            
+
+        }
+
         // PUT: api/Groups/5
         [HttpPut("{id}")]
         public IActionResult PutGroups(int id, [FromBody] Groups groups)

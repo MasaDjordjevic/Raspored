@@ -312,6 +312,29 @@ namespace WebApplication1.Data
             }
         }
 
+        public static IEnumerable GetActivityTimes(int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                TimeSpans groupTs = _context.Groups.Where(a => a.groupID == groupID).Select(a=> a.timeSpan).First();
+                if (groupTs == null)
+                    return null;
+                int period = groupTs.period ?? 1;
+                List<TimeSpans> returnValue = new List<TimeSpans>();
+                for (int i = 0; i < 4; i++)
+                {
+                    TimeSpans ts = new TimeSpans
+                    {
+                        startDate = groupTs.startDate.DayOfReferencedWeek(DateTime.Now.AddDays(7*i), period),
+                        endDate = groupTs.endDate.DayOfReferencedWeek(DateTime.Now.AddDays(7 * i), period)
+                    };
+                    returnValue.Add(ts);
+                }
+
+                return returnValue;
+            }
+        }
+
         public static void SetAsstant(int groupID, int assistantID)
         {
             using (RasporedContext _context = new RasporedContext())
