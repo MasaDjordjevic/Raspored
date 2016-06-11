@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
@@ -17,6 +18,12 @@ namespace WebApplication1.Controllers
         public ActivitySchedulesController(RasporedContext context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        public IActionResult GetCurrentSemesterTimeSpan()
+        {
+            return Ok(Data.Schedule.GetCurrentSemesterTimeSpan());
         }
 
         // GET: api/ActivitySchedules

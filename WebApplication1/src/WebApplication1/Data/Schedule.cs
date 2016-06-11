@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication1.Models;
 
 namespace WebApplication1.Data
 {
@@ -60,6 +61,21 @@ namespace WebApplication1.Data
             }
 
             return ret;
+        }
+
+        public static Object GetCurrentSemesterTimeSpan()
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return
+                    _context.ActivitySchedules.Where(a => a.beginning <= DateTime.Now && DateTime.Now <= a.ending)
+                        .Select(a => new 
+                        {
+                            beginning = a.beginning,
+                            ending = a.ending,
+                        }).First();
+
+            }
         }
     }
 }
