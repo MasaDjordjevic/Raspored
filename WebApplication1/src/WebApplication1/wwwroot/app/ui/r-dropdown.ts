@@ -5,6 +5,7 @@ import {
 }
     from "angular2/core";
 import {QueryList} from "angular2/src/core/linker/query_list";
+import {GlobalService} from "../services/global.service";
 
 
 /**
@@ -129,7 +130,7 @@ export class RDropdownItemComponent implements OnInit, AfterViewInit {
     selector: 'r-dropdown',
     template: `
         <div class="r-dropdown" (click)="toggleExpanded()">
-            <label [ngClass]="{collapsed: !!val}">{{label}}<!--<b>collapsed bool</b> {{!!val}} <b>offset</b> {{_currentSelectedOffset}} <b>currVal</b> {{_currentSelectedValue}} <b>inputVal</b> {{val}}--></label>
+            <label [ngClass]="{collapsed: !!val, highlight: isExpanded}">{{label}}<!--<b>collapsed bool</b> {{!!val}} <b>offset</b> {{_currentSelectedOffset}} <b>currVal</b> {{_currentSelectedValue}} <b>inputVal</b> {{val}}--></label>
             <span>{{currentSelectedStr}}</span>
             <div class="line-effect" [ngClass]="{highlight: isExpanded}"></div>
             <div class="r-dropdown-items-wrapper"
@@ -143,9 +144,20 @@ export class RDropdownItemComponent implements OnInit, AfterViewInit {
     `,
     styleUrls: ['app/ui/r-dropdown.css'],
     providers: [RDropdownEmitterService],
+    host: {
+        "[class]": "primaryColorClassName",
+    }
 })
 
 export class RDropdownComponent implements AfterContentInit, AfterViewInit {
+    
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
+
+    get primaryColorClassName(): string {
+        return GlobalService.colorClassName(this.primaryColor);
+    }
 
     @ContentChildren(RDropdownItemComponent) _items:
         QueryList<RDropdownItemComponent>;

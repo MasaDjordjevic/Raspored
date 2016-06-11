@@ -14,12 +14,13 @@ import {GroupsService} from '../../services/groups.service';
 // UI
 import {RList} from '../../ui/r-list';
 import {R_NESTED_LIST} from "../../ui/r-nested-list";
+import {GlobalService} from "../../services/global.service";
 
 
 @Component({
     selector: 'r-groups-list',
     template: `
-    <r-nested-list title="Grupe" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
+    <r-nested-list [title]="_globalService.translate('groups')" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
         <r-list-inner-item
             *ngFor="let group of groups"
             [value]="group.groupID"
@@ -63,7 +64,8 @@ export class GroupsListComponent implements OnInit {
     _listData = null;
 
     constructor(
-        private _service: GroupsService
+        private _service: GroupsService,
+        private _globalService: GlobalService
     ) { }
 
     ngOnInit() {

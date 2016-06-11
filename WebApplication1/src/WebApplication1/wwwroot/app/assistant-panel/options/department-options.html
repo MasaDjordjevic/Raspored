@@ -16,14 +16,14 @@
     <div class="flex-spacer"></div>
 
     <r-dialog #newDivisionDialog [source]="newDivisionButton">
-        <r-division-creator departmentID ="{{department.departmentID}}">
+        <r-division-creator [departmentID]="department.departmentID" [primaryColor]="primaryColor">
 
         </r-division-creator>
     </r-dialog>
 
     <r-dialog #allStudentsDialog [source]="allStudentsButton">
         <div style="height: 680px; width: 1100px;" *ngIf="students">
-            <r-students-selector [(selected)]="selectedStudents" [students]="students" primaryColor="MaterialRed">
+            <r-students-selector [(selected)]="selectedStudents" [students]="students" [primaryColor]="primaryColor" [columns]="3">
             </r-students-selector>
         </div>
     </r-dialog>

@@ -15,24 +15,24 @@
         <div class="left">
             <!-- TODO Ovo ngModelChange ne znam sta si htela ali ne treba tu, nego u getteru ovoga sto mu je bindovano kao value -->
             <!-- trentno ionako nemamo studente tako da w/e -->
-            <r-dropdown *ngIf="courses" label="Predmet" [(val)]="editedDivision.courseID" (ngModelChange)="getStudents()">
+            <r-dropdown [primaryColor]="primaryColor" *ngIf="courses" label="Predmet" [(val)]="editedDivision.courseID" (ngModelChange)="getStudents()">
                 <r-dropdown-item *ngFor="let course of courses" [value]="course.courseID">{{course.name}}</r-dropdown-item>
             </r-dropdown>
 
-            <r-dropdown *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="editedDivision.divisionTypeID">
+            <r-dropdown [primaryColor]="primaryColor" *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="editedDivision.divisionTypeID">
                 <r-dropdown-item *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</r-dropdown-item>
             </r-dropdown>
         </div>
 
         <div class="right">
-            <r-input class="light-theme" [(val)]="editedDivision.beginning" label="Početak važenja (YYYY-MM-DD)"></r-input>
-            <r-input class="light-theme" [(val)]="editedDivision.ending" label="Kraj važenja (YYYY-MM-DD)"></r-input>
+            <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="editedDivision.beginning" label="Početak važenja (YYYY-MM-DD)"></r-input>
+            <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="editedDivision.ending" label="Kraj važenja (YYYY-MM-DD)"></r-input>
         </div>
     </div>
 
     <div class="dialog-controls">
-        <button r-button flat text="Resetuj" (click)="reset()">Resetuj</button>
-        <button r-button raised text="Sačuvaj izmene" (click)="update()">Sačuvaj izmene</button>
+        <button [primaryColor]="primaryColor" r-button flat text="Resetuj" (click)="reset()">Resetuj</button>
+        <button [primaryColor]="primaryColor" r-button raised text="Sačuvaj izmene" (click)="update()">Sačuvaj izmene</button>
     </div>
 
 

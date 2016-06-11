@@ -34,7 +34,7 @@ export class AssistantService {
     }
 
     alter(newAssistant: Assistant) {
-        alert("Sent to DB!"); //TODO
+        alert("TODO"); //TODO
     }
 
     //getUnimembers(): Promise<Department[]> {

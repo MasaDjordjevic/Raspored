@@ -7,13 +7,15 @@ import {Department} from "../../models/Department";
 import {NestedList} from "../../INestedList";
 import {R_NESTED_LIST} from "../../ui/r-nested-list";
 import {RomanNumeralsPipe} from "../../pipes/roman-numerals.pipe";
+import {StudentsSelectorComponent} from "../dialogs/students-selector.component";
+import {GlobalService} from "../../services/global.service";
 
 
 @Component({
     selector: 'r-departments-list',
     template: `
-    <r-nested-list title="Smerovi" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
-        <r-nested-list-inner *ngFor="let yearDepartment of yearDepartments" [title]="'Godina '.concat(yearDepartment.year | roman)">
+    <r-nested-list [title]="_globalService.translate('departments')" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
+        <r-nested-list-inner *ngFor="let yearDepartment of yearDepartments" [title]="_globalService.translate('year').concat(' ').concat(yearDepartment.year | roman)">
             <r-list-inner-item
                 *ngFor="let department of yearDepartment.departments"
                 [value]="department.departmentID"
@@ -47,7 +49,8 @@ export class DepartmentsListComponent implements OnInit {
     private _nestedListData = null;
 
     constructor(
-        private _service: DepartmentService
+        private _service: DepartmentService,
+        private _globalService: GlobalService
     ) { }
 
     ngOnInit() {

@@ -1,4 +1,5 @@
 @import "../palette";
+@import "../themes";
 @import "../ljubenovic-toolkit";
 
 :host {
@@ -44,7 +45,7 @@
   }
 
   .r-stepper-step-circle {
-    background-color: desaturate(palette($blue), 100%);
+    background-color: desaturate(palette($blue), 100%); // default
     width: 12px;
     height: 12px;
     line-height: 12px;
@@ -56,6 +57,8 @@
     font-size: .85em;
     z-index: 10;
     position: relative;
+    display: flex;
+    justify-content: center;
 
     // Da sakrije malo linije ispod koraka
     &::before {
@@ -81,7 +84,7 @@
       left: 5%;
       z-index: 3;
       border-radius: 50%;
-      box-shadow: 0 0 0 0px rgba(desaturate(palette($blue), 100%), 0.5);
+      box-shadow: 0 0 0 0px rgba(desaturate(palette($blue), 100%), 0.5); // default
     }
   }
 
@@ -97,11 +100,11 @@
   .current {
 
     .r-stepper-step-circle {
-      background-color: palette($blue);
+      background-color: palette($blue); // default
 
       // Ripple effect
       &::after {
-        box-shadow: 0 0 0 64px rgba(palette($blue), 0);
+        box-shadow: 0 0 0 64px rgba(palette($blue), 0); // default
         transition: box-shadow .33s ease-out;
       }
     }
@@ -114,7 +117,8 @@
   .finished  {
 
     .r-stepper-step-circle {
-      background-color: palette($green);
+      background-color: palette($blue); // default
+
     }
   }
 }
@@ -147,3 +151,420 @@
   display: flex;
   justify-content: flex-end;
 }
+
+// Themes
+
+:host.red r-stepper-header {
+  $color: $theme-material-red;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.yellow r-stepper-header {
+  $color: $theme-material-yellow;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.blue r-stepper-header {
+  $color: $theme-material-blue;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.green r-stepper-header {
+  $color: $theme-material-green;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.orange r-stepper-header {
+  $color: $theme-material-orange;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.purple r-stepper-header {
+  $color: $theme-material-purple;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.sunset-purple r-stepper-header {
+  $color: $theme-sunset-purple;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.sunset-red r-stepper-header {
+  $color: $theme-sunset-red;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.sunset-orange r-stepper-header {
+  $color: $theme-sunset-orange;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.sunset-yellow r-stepper-header {
+  $color: $theme-sunset-yellow;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.ice-darkest r-stepper-header {
+  $color: $theme-ice-darkest;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.ice-darker r-stepper-header {
+  $color: $theme-ice-darker;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.ice-melted r-stepper-header {
+  $color: $theme-ice-melted;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.ice-green r-stepper-header {
+  $color: $theme-ice-green;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.neon-empty r-stepper-header {
+  $color: $theme-neon-empty;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.neon-diamond r-stepper-header {
+  $color: $theme-neon-diamond;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.neon-gemstone r-stepper-header {
+  $color: $theme-neon-gemstone;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+
+:host.neon-poison r-stepper-header {
+  $color: $theme-neon-poison;
+  .r-stepper-step-circle {
+    background-color: desaturate($color, 100%);
+    &::after {
+      box-shadow: 0 0 0 0 rgba(desaturate($color, 100%), 0.5);
+    }
+  }
+  .current {
+    .r-stepper-step-circle {
+      background-color: $color;
+      &::after {
+        box-shadow: 0 0 0 64px rgba($color, 0);
+      }
+    }
+  }
+  .finished  {
+    .r-stepper-step-circle {
+      background-color: $color;
+    }
+  }
+}
+

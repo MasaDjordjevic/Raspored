@@ -1,4 +1,4 @@
-﻿import {Component, OnInit} from "angular2/core";
+﻿import {Component, OnInit, Input} from "angular2/core";
 import {CORE_DIRECTIVES} from "angular2/src/common/directives/core_directives";
 
 // Services
@@ -8,17 +8,22 @@ import {AssistantService} from "../../services/assistant.service";
 import {Assistant} from "../../models/Assistant";
 
 // UI
-import {RInputText} from "../../ui/r-input-text.component";
+import {R_INPUT} from "../../ui/r-input-text.component";
+import {R_BUTTON} from "../../ui/r-button.component";
 
 @Component({
     selector: "r-assistant-edit",
-    templateUrl: "app/assistant-panel/dialogs/assistant-edit.component.html",
+    templateUrl: "app/assistant-panel/dialogs/assistant-edit.html",
     styleUrls:  ["app/assistant-panel/dialogs/assistant-edit.css"],
     providers: [AssistantService],
-    directives: [CORE_DIRECTIVES, RInputText],
+    directives: [R_INPUT, R_BUTTON],
 })
 export class AssistantEditComponent implements OnInit {
-    oldAssistant: Assistant;
+
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
+    @Input("assistant") oldAssistant: Assistant;
     newAssistant: Assistant;
     warningMessage: string = "";
     errorMessage: string = "";
@@ -30,8 +35,12 @@ export class AssistantEditComponent implements OnInit {
         this.getAssistant();
     }
 
+    public reset() {
+        this.newAssistant = this.oldAssistant;
+    }
+
     ngOnInit() {
-        
+        this.reset();
     }
 
     getAssistant() {
@@ -61,36 +70,23 @@ export class AssistantEditComponent implements OnInit {
             return;
         } else {
             this.save();
-            this.showSuccess("Uspešno sačuvano"); //TODO ne bas
+            this.showSuccess("Uspešno sačuvano (nidje veze)"); //TODO ne bas
             this.oldAssistant = this.newAssistant;
             this._hasUnsavedChanges = false;
         }
     }
 
-    onCancel() {
-        if (this._hasUnsavedChanges) {
-            var confirmClose = confirm("Imate nesačuvane promene. Da li ste sigurni da želite da izadjete?");
-            if (confirmClose) {
-                this.closeDialog();
-                return;
-            } else {
-                return;
-            }
-        }
-    }
-
     onSave() {
         this.onApply();
-        this.onCancel();
     }
 
     normalize() {
         // Sklanjamo sve okolne spejsove
-        this.newAssistant.address = this.newAssistant.address.trim();
-        this.newAssistant.email = this.newAssistant.email.trim();
-        this.newAssistant.name = this.newAssistant.name.trim();
-        this.newAssistant.surname = this.newAssistant.surname.trim();
-        this.newAssistant.title = this.newAssistant.title.trim();
+        this.newAssistant.address = this.newAssistant.address && this.newAssistant.address.trim();
+        this.newAssistant.email = this.newAssistant.email && this.newAssistant.email.trim();
+        this.newAssistant.name = this.newAssistant.name && this.newAssistant.name.trim();
+        this.newAssistant.surname = this.newAssistant.surname && this.newAssistant.surname.trim();
+        this.newAssistant.title = this.newAssistant.title && this.newAssistant.title.trim();
     }
 
     hasValidName() {

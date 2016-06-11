@@ -21,6 +21,9 @@ import {R_BUTTON} from "../../ui/r-button.component";
 
 //komponenta se koristi i u slucaju kada se kopira raspodela, u tom slucaju se samo ne salje ID, tj. division.divisionID je null (unknown ili tako nesto)
 export class DivisionEditComponent implements AfterViewInit {
+    
+    @Input() primaryColor: string = "MaterialRed";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     _division: any;
     @Input() new: boolean;

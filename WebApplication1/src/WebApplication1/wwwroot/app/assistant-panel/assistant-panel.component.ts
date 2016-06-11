@@ -17,6 +17,9 @@ import {GroupsListComponent} from "./list/groups-list.component";
 import {GroupOptionsComponent} from "./options/group-options.component";
 import {StudentsListComponent} from "./list/students-list.component";
 import {StudentOptionsComponent} from "./options/student-options.component";
+import {R_BUTTON} from "../ui/r-button.component";
+import {R_DIALOG} from "../ui/r-dialog";
+import {GlobalService} from "../services/global.service";
 
 @Component({
     selector: "r-assistant-panel",
@@ -25,7 +28,8 @@ import {StudentOptionsComponent} from "./options/student-options.component";
         DepartmentsListComponent, DepartmentOptionsComponent,
         DivisionsListComponent, DivisionOptionsComponent,
         GroupsListComponent, GroupOptionsComponent,
-        StudentsListComponent, StudentOptionsComponent
+        StudentsListComponent, StudentOptionsComponent,
+        R_BUTTON, R_DIALOG, AssistantEditComponent,
     ],
     templateUrl: 'app/assistant-panel/assistant-panel.html',
     styleUrls: ['app/assistant-panel/assistant-panel.css']
@@ -33,20 +37,107 @@ import {StudentOptionsComponent} from "./options/student-options.component";
 
 export class AssistantPanelComponent {
 
-    public departmentPrimaryColor: string = "MaterialOrange";
-    public divisionPrimaryColor: string = "MaterialBlue";
-    public groupPrimaryColor: string = "MaterialRed";
-    public studentPrimaryColor: string = "MaterialGreen";
+    public get departmentPrimaryColor(): string {
+        return this.currentTheme.departmentPrimaryColor;
+    }
 
-    private _assistant: Assistant;
-    private _selectedDepartmentId: number = -1;
-    private _selectedDivisionId: number = -1;
-    private _selectedGroupId: number = -1;
-    private _selectedStudentId: number = -1;
+    public get divisionPrimaryColor(): string {
+        return this.currentTheme.divisionPrimaryColor;
+    }
+
+    public get groupPrimaryColor(): string {
+        return this.currentTheme.groupPrimaryColor;
+    }
+
+    public get studentPrimaryColor(): string {
+        return this.currentTheme.studentPrimaryColor;
+    }
+
+    private assistant = {
+        "uniMemberID": 1,
+        "address": "331",
+        "avatar": null,
+        "email": "wlada@elfak.ni.ac.rs",
+        "name": "Vlada",
+        "password": "wlada",
+        "studentID": null,
+        "surname": "Mihajlović",
+        "username": "wlada",
+        "Activities": [],
+        "AssistantsCourses": [],
+        "Divisions": [],
+        "GroupsAssistants": [],
+        "UniMembersRoles": [],
+        "student": null,
+    };
+
+    private _selectedDepartmentId = -1;
+    private _selectedDivisionId = -1;
+    private _selectedGroupId = -1;
+    private _selectedStudentId = -1;
 
     errorMessage: string;
 
-    constructor( ) { }
+    constructor(
+        private _globalService: GlobalService
+    ) {
+        this._themes = [];
+        this._themes["material"] = {
+            departmentPrimaryColor: "MaterialOrange", // #FFC107
+            divisionPrimaryColor: "MaterialBlue", // #03A9F4
+            groupPrimaryColor: "MaterialRed", // #f44336
+            studentPrimaryColor: "MaterialGreen", // #4CAF50
+        };
+        this._themes["sunset"] = {
+            departmentPrimaryColor: "_Sunset-Purple", // #811d5e
+            divisionPrimaryColor: "_Sunset-Red", // #fd2f24
+            groupPrimaryColor: "_Sunset-Orange", // #ff6f01
+            studentPrimaryColor: "_Sunset-Yellow", // #fed800
+        };
+        this._themes["ice"] = {
+            departmentPrimaryColor: "_Ice-Darkest", // #012e40
+            divisionPrimaryColor: "_Ice-Darker", // #025e73
+            groupPrimaryColor: "_Ice-Melted", // #037f8c
+            studentPrimaryColor: "_Ice-Green", // #038c8c
+        };
+        this._themes["neon"] = {
+            departmentPrimaryColor: "_Neon-Empty", // #0E0B16
+            divisionPrimaryColor: "_Neon-Diamond", // #A239CA
+            groupPrimaryColor: "_Neon-Gemstone", // #4717F6
+            studentPrimaryColor: "_Neon-Poison", // #18DD00
+        };
+        this.theme = "sunset";
+
+        this.language = "sr";
+    }
+
+    private lang = this._globalService.currentLanguage;
+
+    private _language: string = "sr";
+
+    public get language() {
+        return this._language;
+    }
+
+    public set language(lan) {
+        this._language = lan;
+        this._globalService.currentLanguage = lan;
+    }
+
+    public theme: string = "material";
+
+    private _themes;
+
+    public get currentTheme() {
+        if (this._themes[this.theme]) {
+            return this._themes[this.theme];
+        } else {
+            return this._themes["material"];
+        }
+    }
+    
+    private themePickerOpened = false;
+    private languagePickerOpened = false;
 
     onDepartmentSelect($event) {
         this._selectedDepartmentId = $event;
@@ -92,17 +183,28 @@ export class AssistantPanelComponent {
         console.log("primljen event");
         console.log($options);
 
-        if ($options && $options.shiftMinusOne) {
-            this._selectedDepartmentId = this._selectedDivisionId === -1 ? -1 : new Number(this._selectedDepartmentId);
-            this._selectedDivisionId = this._selectedGroupId === -1 ? -1 : new Number(this._selectedDivisionId);
-            this._selectedGroupId = this._selectedStudentId === -1 ? -1 : new Number(this._selectedGroupId);
-            this._selectedStudentId = -1;
-        } else {
+        // Ako uopste nisu prosledjene opcije, samo uradi refresh
+        if (!$options) {
             this._selectedStudentId = new Number(this._selectedStudentId);
             this._selectedGroupId = new Number(this._selectedGroupId);
             this._selectedDivisionId = new Number(this._selectedDivisionId);
             this._selectedDepartmentId = new Number(this._selectedDepartmentId);
+            // this._selectedStudentId = +(this._selectedStudentId + ""); // TODO ovako
+        } else {
+            // Inace, u zavisnosti od prosledjene opcije uradi odgovarajuce manipulacije
+            if ( $options.shiftMinusOne) {
+                this._selectedDepartmentId = this._selectedDivisionId === -1 ? -1 : new Number(this._selectedDepartmentId);
+                this._selectedDivisionId = this._selectedGroupId === -1 ? -1 : new Number(this._selectedDivisionId);
+                this._selectedGroupId = this._selectedStudentId === -1 ? -1 : new Number(this._selectedGroupId);
+                this._selectedStudentId = -1;
+            } else if ($options.allMinusOne) {
+                this._selectedStudentId = -1;
+                this._selectedGroupId = -1;
+                this._selectedDivisionId = -1;
+                this._selectedDepartmentId = -1;
+            }
         }
+
 
     }
 

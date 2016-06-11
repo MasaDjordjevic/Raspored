@@ -1,6 +1,7 @@
 ﻿import {Component, Directive, Input, Output, EventEmitter, AfterViewInit, ChangeDetectorRef} from "angular2/core";
 
 import {INestedList, NestedList} from "../INestedList";
+import {GlobalService} from "../services/global.service";
 
 
 @Component({
@@ -78,14 +79,16 @@ export class NestedListComponent {
     @Input() secondaryColor: string = "MaterialOrange";
 
     get classColor(): string {
-        if (this.primaryColor.indexOf("Material") === 0) {
-            return this.primaryColor.substring("Material".length).toLowerCase();
-        }
-        return "blue";
+        return GlobalService.colorClassName(this.primaryColor);
     }
 
     public visible: boolean = false;
 
+    constructor(
+        private _globalService: GlobalService
+    ) {
+
+    }
 
     public toggle() {
         this.visible = !this.visible;

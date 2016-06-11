@@ -49,29 +49,29 @@ import {R_DL} from "../../ui/r-dl";
 @Component({
     selector: 'r-division-creator',
     template: `    
-    <r-stepper (onSubmit)="createInitialDivision()">
+    <r-stepper (onSubmit)="createInitialDivision()" [primaryColor]="primaryColor">
     
         <r-step stepTitle="Osnovni podaci" [valid]="isValid(1)">
             <div class="osnovni-podaci">
         
                 <div class="top">
-                    <r-input class="light-theme" [(val)]="newDivisionName" label="Ime raspodele"></r-input>
+                    <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="newDivisionName" label="Ime raspodele"></r-input>
                 </div>
                 
                 <div class="left">
-                    <r-dropdown *ngIf="courses" label="Predmet" [(val)]="newDivisionClassId">
+                    <r-dropdown [primaryColor]="primaryColor" *ngIf="courses" label="Predmet" [(val)]="newDivisionClassId">
                         <r-dropdown-item *ngFor="let course of courses" [value]="course.courseID">{{course.name}}</r-dropdown-item>
                     </r-dropdown>
                     
-                    <r-dropdown *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="newDivisionTypeId">
+                    <r-dropdown [primaryColor]="primaryColor" *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="newDivisionTypeId">
                         <r-dropdown-item *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</r-dropdown-item>
                     </r-dropdown>
                 </div>
                 
                 <div class="right">
-                    <r-input class="light-theme" [(val)]="newDivisionBeginningDate" label="Početak važenja (YYYY-MM-DD)"></r-input>
+                    <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="newDivisionBeginningDate" label="Početak važenja (YYYY-MM-DD)"></r-input>
                     
-                    <r-input class="light-theme" [(val)]="newDivisionEndingDate" label="Kraj važenja (YYYY-MM-DD)"></r-input>
+                    <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="newDivisionEndingDate" label="Kraj važenja (YYYY-MM-DD)"></r-input>
                 </div>
                 
             </div>
@@ -81,7 +81,7 @@ import {R_DL} from "../../ui/r-dl";
         
             <div class="top">
                 <div class="input-wrap">
-                    <r-dropdown [(val)]="newDivisionCreationWay" label="Način kreiranja">
+                    <r-dropdown [primaryColor]="primaryColor" [(val)]="newDivisionCreationWay" label="Način kreiranja">
                         <r-dropdown-item value="on_x">Po broju grupa</r-dropdown-item>
                         <r-dropdown-item value="with_x">Po broju studenata</r-dropdown-item>
                         <r-dropdown-item value="manual">Ručno</r-dropdown-item>
@@ -94,18 +94,19 @@ import {R_DL} from "../../ui/r-dl";
                         class="light-theme"
                         [(val)]="newDivisionCreationNumberX"
                         [label]="newDivisionCreationWay === 'on_x' ? 'Broj grupa' : 'Broj studenata'"
+                        [primaryColor]="primaryColor"
                     >    
                     </r-input>
                 </div>
                 
                 <div class="input-wrap">
-                    <r-dropdown *ngIf="newDivisionCreationWay !== 'manual'" [(val)]="newDivisionCreationOrderIsRandom" label="Način sortiranja">
+                    <r-dropdown [primaryColor]="primaryColor" *ngIf="newDivisionCreationWay !== 'manual'" [(val)]="newDivisionCreationOrderIsRandom" label="Način sortiranja">
                         <r-dropdown-item value="0" selected>Po broju indeksa</r-dropdown-item>
                         <r-dropdown-item value="1">Nasumično</r-dropdown-item>
                     </r-dropdown>
                 </div>
                 
-                <button r-button raised [disabled]="false" (click)="getList(newDivisionClassId, newDivisionCreationWay, newDivisionCreationNumberX, newDivisionCreationOrderIsRandom, '')" text="Prikaz"></button>
+                <button [primaryColor]="primaryColor" r-button raised [disabled]="false" (click)="getList(newDivisionClassId, newDivisionCreationWay, newDivisionCreationNumberX, newDivisionCreationOrderIsRandom, '')" text="Prikaz"></button>
             </div>                
             
             <div class="clearfix"></div>            
@@ -176,77 +177,6 @@ import {R_DL} from "../../ui/r-dl";
         </r-step>
         
     </r-stepper>
-    
-    <!-- Stara verzija za referencu za svaki slucaj-->
-    <!--<form #form="ngForm" (ngSubmit)="createInitialDivision(form.value)">
-        
-        <fieldset ngControlGroup="firstPart">
-        
-            URADJENO
-            <label for="divisionName">Ime raspodele</label>
-            <input type="text" ngControl="divisionName" id="divisionName">
-            <br/>
-            
-            URADJENO
-            <lablel>Courses</lablel>
-            <select name="course" ngControl="course" *ngIf="courses != null">
-                <option *ngFor="let course of courses" [value]="course.courseID">
-                    {{course.name}}
-                </option> 
-            </select>
-            <br/>
-            
-            URADJENO
-            <label>Početak važenja</label>
-            <input type="text" ngControl="divisionBeginning" value="21.03.1995">
-            <br/>
-            
-            URADJENO
-            <label>Kraj važenja</label>
-            <input type="text" ngControl="divisionEnding" value="21.03.1996">
-            
-            URADJENO
-            <label>Divison type</label>
-            <select name="divisionType" ngControl="divisionType">
-                <option *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</option>
-            </select>
-        </fieldset>
-        
-        
-        <fieldset ngControlGroup="secondPart">
-            <select name="creationWay" ngControl="creationWay">
-                <option value="on_x" selected>Podeli na X</option>
-                <option value="with_x">Podeli da ima X</option>
-                <option value="manual">Manuelno</option>
-            </select>
-            
-            <input type="text" ngControl="x">
-            
-            <select name="studentsOrder" ngControl="studentsOrder">
-                <option value="0" selected>po indeksu</option>
-                <option value="1">nasumice</option>
-            </select>
-            
-            <br/>
-            
-            <button type="button" (click)="getList(form.value)">Get list</button>
-        </fieldset>
-        
-        <fieldset style="height: 300px;">
-            <ul>
-                <li *ngFor="let group of createdGroups; let i = index">{{i}}
-                    <ul>
-                        <li *ngFor="let student of group">{{student.name}}</li>
-                    </ul>
-                </li>
-            </ul>            
-        </fieldset>
-        
-        <button type="submit">Submit</button>
-        {{departmentID}}
-        <br/><br/>
-        {{ createdGroups | json }}
-    </form>-->
     `,
     styleUrls: ['app/assistant-panel/dialogs/division-creator.css'],
     directives: [R_STEPPER, R_INPUT, R_DROPDOWN, R_BUTTON, R_DL],
@@ -254,6 +184,9 @@ import {R_DL} from "../../ui/r-dl";
 })
 
 export class DivisionCreatorComponent implements AfterViewInit {
+
+    @Input() primaryColor: string = "MaterialRed";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     // Podaci o novoj raspodeli koja se kreira
     public newDivisionName: string;

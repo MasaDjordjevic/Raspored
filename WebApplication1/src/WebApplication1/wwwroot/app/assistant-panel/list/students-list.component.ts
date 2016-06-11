@@ -14,12 +14,13 @@ import {StudentsService} from '../../services/students.service'
 // UI
 import {RList} from '../../ui/r-list';
 import {R_NESTED_LIST} from "../../ui/r-nested-list";
+import {GlobalService} from "../../services/global.service";
 
 
 @Component({
     selector: 'r-students-list',
     template: `
-    <r-nested-list [title]="'Studenti'" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
+    <r-nested-list [title]="_globalService.translate('students')" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
         <r-list-inner-item
             *ngFor="let student of students"
             [value]="student.studentID"
@@ -63,7 +64,8 @@ export class StudentsListComponent implements OnInit {
     @Output() selectStudent: EventEmitter<any> = new EventEmitter();
 
     constructor(
-        private _studentsService: StudentsService
+        private _studentsService: StudentsService,
+        private _globalService: GlobalService
     ) { }
 
     ngOnInit() {

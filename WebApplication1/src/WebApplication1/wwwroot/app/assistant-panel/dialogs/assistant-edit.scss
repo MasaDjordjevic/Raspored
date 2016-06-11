@@ -33,6 +33,9 @@
             @include force-width(220px - 48px);
             margin-right: 24px;
             background-color: white;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
         }
 
         .names {
@@ -71,44 +74,6 @@
         .buttons {
             display: flex;
             align-items: center;
-
-            button {
-                display: inline-block;
-                box-sizing: content-box;
-                border-radius: 2px;
-                $s: 1em;
-                font-size: $s;
-                line-height: $s;
-                height: $s;
-                font-weight: bold;
-                margin: 6px;
-                padding: 8px 12px;
-                outline: none;
-                border: none;
-                background-color: palette($blue);
-                @include z-depth(1);
-                text-transform: uppercase;
-                color: rgba(white, .9);
-            }
-
-            button.flat {
-                display: inline-block;
-                box-sizing: content-box;
-                border-radius: 2px;
-                $s: 1em;
-                font-size: $s;
-                line-height: $s;
-                height: $s;
-                font-weight: bold;
-                margin: 6px;
-                padding: 8px 12px;
-                outline: none;
-                border: none;
-                background-color: transparent;
-                @include z-depth(0);
-                color: palette($blue);
-                text-transform: uppercase;
-            }
         }
     }
 
