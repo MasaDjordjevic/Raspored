@@ -48,7 +48,7 @@ export class DivisionEditComponent implements AfterViewInit {
         this.editedDivision.courseID = division.courseID;
     }
 
-    private reset = (division) => this.cloneToEdit(division);
+    private reset = () => this.cloneToEdit(this.division);
 
     private editedDivision: any = {};
 

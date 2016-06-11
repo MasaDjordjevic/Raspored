@@ -106,9 +106,9 @@ export class AssistantPanelComponent {
             groupPrimaryColor: "_Neon-Gemstone", // #4717F6
             studentPrimaryColor: "_Neon-Poison", // #18DD00
         };
-        this.theme = "sunset";
+        this.theme = "material";
 
-        this.language = "sr";
+        this.language = "en";
     }
 
     private lang = this._globalService.currentLanguage;
