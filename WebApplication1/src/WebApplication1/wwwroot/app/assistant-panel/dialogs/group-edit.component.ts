@@ -64,9 +64,9 @@ export class GroupEditComponent implements AfterContentInit {
         this.editedGroupName = g.name;
         this.editedClassroom = g.classroomID;
         this.editedAssistant = g.assistant && g.assistant.uniMemberID;
-        this.editedTimeStart = g.timespan && g.timespan.startDate;
-        this.editedTimeEnd = g.timespan && g.timespan.endDate;
-        this.editedPeriod = g.timespan && g.timespan.period;
+        this.editedTimeStart = g.timeSpan && g.timeSpan.startDate;
+        this.editedTimeEnd = g.timeSpan && g.timeSpan.endDate;
+        this.editedPeriod = g.timeSpan && g.timeSpan.period;
     }
 
 
@@ -161,7 +161,7 @@ export class GroupEditComponent implements AfterContentInit {
         debugger;
         var pom: Array<number> = this.chosenStudents.map(i => i.studentID);
         console.log(pom);
-        var timespan:TimeSpan = new TimeSpan;
+        var timespan: TimeSpan = new TimeSpan;
         if (this.editedTimeStart && this.editedTimeEnd && this.editedPeriod) {
             timespan.startDate = new Date(this.editedTimeStart);
             timespan.endDate = new Date(this.editedTimeEnd);
