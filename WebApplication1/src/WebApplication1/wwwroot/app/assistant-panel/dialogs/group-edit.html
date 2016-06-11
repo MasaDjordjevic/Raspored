@@ -12,7 +12,7 @@
                     </r-dropdown-item>
                 </r-dropdown>
 
-                <r-dropdown *ngIf="assistants" [label]="'Asistent'" name="assistant" [val]="editedAssistant">
+                <r-dropdown *ngIf="assistants" [label]="'Asistent'" name="assistant" [(val)]="editedAssistant">
                     <r-dropdown-item *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</r-dropdown-item>
                 </r-dropdown>
 
@@ -40,8 +40,8 @@
 
     <div class="chosen-selector">
         <div>
-            <!--<r-students-selector [columns]="2" [title]="'Iz grupe'" #chosenStuds [students]="chosenStudents" primaryColor="MaterialRed">
-            </r-students-selector>-->
+            <<r-students-selector [columns]="2" [title]="'Iz grupe'" #chosenStuds [students]="chosenStudents" primaryColor="MaterialRed">
+            </r-students-selector>
         </div>
     </div>
 

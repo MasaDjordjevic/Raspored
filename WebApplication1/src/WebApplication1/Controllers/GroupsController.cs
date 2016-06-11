@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
@@ -136,59 +137,52 @@ namespace WebApplication1.Controllers
                 return Ok(new {status="parameter error"});
             }
 
-            using (var transaction = _context.Database.BeginTransaction())
+            
+            try
             {
-                try
+                if (obj.assistantID != null)
                 {
-                    if (obj.assistantID != null)
-                    {
-                        Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
-                    }
-
-
-                    //dodavanje groupe
-                    if (obj.groupID == null)
-                    {
-                        if (obj.divisionID == null)
-                        {
-                            return Ok(new {status = "parameter error"});
-                        }
-                        //provera konzistentnosti raspodele
-                        //Data.Group.CheckConsistencyWithOtherGroups(null, obj.students.ToList());
-
-                        Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID,
-                            obj.timespan);
-                        Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
-                    }
-                    else //update grupe
-                    {
-
-                        //provera konzistentnosti raspodele
-                        //Data.Group.CheckConsistencyWithOtherGroups(obj.groupID.Value, obj.students.ToList());
-
-                        if (obj.assistantID != null)
-                        {
-                            Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
-                        }
-
-                        Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
-                        Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
-
-                    }
-                }
-                catch (InconsistentDivisionException ex)
-                {
-                    transaction.Rollback();
-                    return Ok(new { status = "inconsistent division", message = ex.Message });
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
+                    Data.Group.SetAsstant(obj.groupID.Value, obj.assistantID.Value);
                 }
 
-                return Ok(new { status = "uspelo" });
+
+                //dodavanje groupe
+                if (obj.groupID == null)
+                {
+                    if (obj.divisionID == null)
+                    {
+                        return Ok(new {status = "parameter error"});
+                    }
+                    //provera konzistentnosti raspodele
+                    //Data.Group.CheckConsistencyWithOtherGroups(null, obj.students.ToList());
+
+                    Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID,
+                        obj.timespan);
+                    Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
+                }
+                else //update grupe
+                {
+
+                    //provera konzistentnosti raspodele
+                    //Data.Group.CheckConsistencyWithOtherGroups(obj.groupID.Value, obj.students.ToList());
+                       
+
+                    Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
+                    Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
+
+                }
             }
+            catch (InconsistentDivisionException ex)
+            {
+                return Ok(new { status = "inconsistent division", message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "neuspelo", message = ex.Message });
+            }
+
+            return Ok(new { status = "uspelo" });
+            
         }
 
         public class AddActivityBinding
