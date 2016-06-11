@@ -241,7 +241,7 @@ namespace WebApplication1.Data
                 //provera da li je ucionica slobodna u to vreme, bacice exeption ako nije
                 if (classroomID != null && timespan != null)
                 {
-                    Classroom.CheckIfAvailable(classroomID.Value, timespan);
+                    Classroom.CheckIfAvailable(classroomID.Value, timespan, groupID);
                 }
 
                 //provera da li su svi studenti slobodni u to vreme, bacice exeption ako nisu
