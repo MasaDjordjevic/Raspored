@@ -9,6 +9,7 @@ using Microsoft.AspNet.Razor.Chunks;
 using Microsoft.Data.Entity;
 using WebApplication1.Extentions;
 using WebApplication1.Models;
+using WebApplication1.Models.DTOs;
 
 namespace WebApplication1.Data
 {
@@ -111,28 +112,97 @@ namespace WebApplication1.Data
                          }).ToList();
         } 
 
-        public static IEnumerable DevadeOnX(int courseID, int x, int sortOrder)
+        public static IEnumerable DivideOnX(int courseID, int x, int sortOrder)
         {
             List<Models.DTOs.StudentDTO> studs = GetStudentsOfCourse(courseID, sortOrder);
-            int studsInGroup = (int) Math.Round(((double)studs.Count)/x); //kastovanje je neophodno zbog zaokruzivanja
-            return studs
-                   .Select((a, i) => new { Index = i, Value = a })
-                   .GroupBy(a => a.Index / studsInGroup) // ne moze %x jer ih ne redja redom
-                   .Select(a => a.Select(v => v.Value).ToList())
-                   .ToList();
+            int studsInGroupLower = studs.Count/x;
+            int numGroupsHeigher = studs.Count % x;
+
+            List<List<StudentDTO>> groups =  new List<List<StudentDTO>>();
+            int num;
+            int total = 0;
+            for (int i = 0; i < x; i++)
+            {
+                num = studsInGroupLower;
+                if (numGroupsHeigher-- > 0)
+                    num++;
+
+                groups.Add(studs.Skip(total).Take(num).ToList());
+                total += num;
+            }
+
+            return groups;
         }
 
         //radi isto kao i DevideOnX samo sto on radi po modulu pa ih ima x ova radi deljenje pa ih ima po x
-        public static IEnumerable DevideWithX(int courseID, int x, int sortOrder)
+        public static IEnumerable DivideWithX(int courseID, int x, int sortOrder)
         {
             List<Models.DTOs.StudentDTO> studs = GetStudentsOfCourse(courseID, sortOrder);
+            int ceil = (int)Math.Ceiling((double)studs.Count/x);
+            int diff = Int32.MaxValue;
+            int mod = studs.Count%x;
 
-            return studs
-                   .Select((a, i) => new { Index = i, Value = a })
-                   .GroupBy(a => a.Index / x)
-                   .Select(a => a.Select(v => v.Value).ToList())
-                   .ToList();
+            while ((int)Math.Ceiling((double)studs.Count / x) == ceil)
+            {
+                diff = x - studs.Count % x;
+                x--;
+            }
+            
+            int studsInGroupLower = x;
+            int numGroupsHeigher = studs.Count % x;
+
+            List<List<StudentDTO>> groups = new List<List<StudentDTO>>();
+            int num;
+            int total = 0;
+            for (int i = 0; total < studs.Count; i++)
+            {
+                num = studsInGroupLower;
+                if (numGroupsHeigher-- > 0)
+                    num++;
+
+                groups.Add(studs.Skip(total).Take(num).ToList());
+                total += num;
+            }
+
+            return groups;
         }
+
+        /*Lazino resenje 
+        
+        var s = +readLine();
+            var x = +readLine();
+            var res = [];
+    
+            console.log("Masa kaze: " + Math.ceil(s / x));
+    
+            //console.log(s, x);
+            for (; x > 0; x--) {
+                for (let y = x - 1; y > 0; y--) {
+                    //console.log("petlja: " + y);
+                    var b = 0;
+                    var overflow = 100;
+                    while (true) {
+                        //console.log("proba b = " + b);
+                        if ((y * b - (s % x)) % x === 0) {
+                            break;
+                        }
+                        b++;
+                        overflow--;
+                        if (overflow === 0) break;
+                    }
+                    var a = (s - y * b) / x;
+                    if (a > 0) {
+                        res.push([a, x, b, y]);
+                        //console.log("Raspodela od " + s + " studenata moze da se podeli na " + a + " x " + x + " + " + b + " x " + y + "." );
+                    }
+                }
+            }
+    
+            res.sort((l, r) => (+l[0] + +l[2]) - (+r[0] + +r[2]));
+    
+    
+            console.log(res);//.filter(i => i[0] + i[2] === Math.ceil(s / x)));
+        */
 
         public class GroupOfStudents
         {
@@ -141,7 +211,7 @@ namespace WebApplication1.Data
         }
 
         public static void CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning, DateTime ending,
-            List<GroupOfStudents>  groups)
+            List<Division.GroupOfStudents>  groups)
         {
             using (RasporedContext _context = new RasporedContext())
             {

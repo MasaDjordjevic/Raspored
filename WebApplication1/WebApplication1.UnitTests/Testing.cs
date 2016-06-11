@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using WebApplication1.Controllers;
+using WebApplication1.Exceptions;
 using Xunit;
 using WebApplication1.Extentions;
 using WebApplication1.Models;
@@ -180,7 +182,7 @@ namespace MyFirstDnxUnitTests
         [Fact]
         public void DevideOnX()
         {
-            var groups = WebApplication1.Data.Division.DevadeOnX(10, 2, 0);
+            var groups = WebApplication1.Data.Division.DivideOnX(10, 2, 0);
 
         }
 
@@ -297,6 +299,24 @@ namespace MyFirstDnxUnitTests
                 };
                 Assert.Equal(tsNow.startDate, solution.startDate);
                 Assert.Equal(tsNow.endDate, solution.endDate);
+            }
+        }
+
+        [Fact]
+        public void AddStudentToGroup()
+        {
+            int studentID = 2951;
+            //int groupID = 1031; // vec je u grupi
+            //int groupID = 1032; // druga grupa te raspodele
+            int groupID = 1021; // grupa neke druge raspodele
+            try
+            {
+                WebApplication1.Data.Student.AddToGroup(studentID, groupID);
+
+            }
+            catch (InconsistentDivisionException ex)
+            {
+                string s = ex.Message;
             }
         }
     }

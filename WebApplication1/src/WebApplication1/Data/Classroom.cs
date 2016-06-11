@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Remotion.Linq.Utilities;
+using WebApplication1.Exceptions;
 using WebApplication1.Extentions;
 using WebApplication1.Models;
 
@@ -78,7 +79,12 @@ namespace WebApplication1.Data
 
                 List<TimeSpans> schedule = groupsSchedule.Concat(activitiesSchedule).ToList();
 
-                return schedule.All(timespan => !TimeSpan.Overlap(timespan, ts));
+                if (schedule.Any(timespan => TimeSpan.Overlap(timespan, ts)))
+                {
+                    throw new InconsistentDivisionException("Ucionica nije slobodna u to vreme.");
+                };
+
+                return true;
             }
         }
         

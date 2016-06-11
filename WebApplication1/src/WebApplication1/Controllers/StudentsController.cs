@@ -5,6 +5,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Newtonsoft.Json;
+using WebApplication1.Exceptions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -148,20 +149,23 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            //proveri da li dolazi do nekonzistentnosti raspodele
-            if (!Data.Group.CheckConsistencyOfGroup(groupID, new List<int>() { studentID }))
-            {
-                return Ok(new { status = "inconsistent division" });
-            }
+
+
 
             try
             {
+                //proveri da li dolazi do nekonzistentnosti raspodele
+                Data.Group.CheckConsistencyWithOtherGroups(groupID, new List<int>() {studentID});
+
                 Data.Student.AddToGroup(studentID, groupID);
+            }
+            catch (InconsistentDivisionException ex)
+            {
+                return Ok(new {status = "inconsistent division", message = ex.Message});
             }
             catch (DbUpdateConcurrencyException)
             {
                throw;
-                
             }
 
             return Ok(new { status = "uspelo" });
