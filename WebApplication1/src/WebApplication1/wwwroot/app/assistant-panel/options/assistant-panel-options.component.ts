@@ -9,6 +9,7 @@ import {R_DL} from "../../ui/r-dl";
 import {Control} from "angular2/common";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {multicast} from "rxjs/operator/multicast";
+import {GlobalService} from "../../services/global.service";
 
 @Component({
     selector: 'r-assistant-panel-options',
@@ -23,7 +24,7 @@ import {multicast} from "rxjs/operator/multicast";
         
         
         <!-- radi -->
-        <r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;">
+        <r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;" [primaryColor]="'MaterialRed'" >
             <r-dropdown-item *ngFor="let b of ['b1', 'b2', 'b3', 'b4', 'b5']" [value]="b">{{b + "ooo"}}</r-dropdown-item>
         </r-dropdown>
         
@@ -43,7 +44,9 @@ import {multicast} from "rxjs/operator/multicast";
         
         <span>{{dropdown}}</span>
         
-        <div style="width:100%; min-height: 20px;"></div>
+        <div style="width:100%; min-height: 100px;"></div>
+        
+        <h1>{{_globalService.translate("TEST_STRING")}}</h1>
         
         <!--radi-->
         <!--<r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
@@ -92,7 +95,9 @@ export class AssistantPanelOptionsComponent {
 
     public randomString = (n) => (Math.random() + 1).toString(36).substring(2, n + 2);
 
-    constructor() {
+    constructor(
+        private _globalService: GlobalService
+    ) {
         for (let i = 0; i < 4; this.stuff[i++] = this.randomString(i * 10 % 7 + 10));
     }
 

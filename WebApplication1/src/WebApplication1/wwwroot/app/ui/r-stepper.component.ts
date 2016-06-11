@@ -1,6 +1,7 @@
 import {Component, AfterContentInit, ContentChildren, Input, ViewEncapsulation, Output, EventEmitter} from "angular2/core";
 import {R_BUTTON} from "./r-button.component";
 import {QueryList} from "angular2/src/core/linker/query_list";
+import {GlobalService} from "../services/global.service";
 
 @Component({
     selector: 'r-step',
@@ -31,7 +32,10 @@ export class RStepComponent {
         [class.finished] = "isPast(i)"
         [class.current] = "isCurrent(i)"
     >
-        <div class="r-stepper-step-circle">{{i + 1}}</div>
+        <div class="r-stepper-step-circle">
+            <template [ngIf]="!isPast(i)">{{i + 1}}</template>
+            <template [ngIf]="isPast(i) && markAsDone(i)"><i class="fa fa-check"></i></template>
+        </div>
         <div class="r-stepper-step-title">{{step}}</div>
     </div>
     `
@@ -70,23 +74,30 @@ export class RStepperHeaderComponent {
     <!-- Prev/Next buttons -->
     <div class="r-stepper-footer">
         {{allAreValid()}}
-        <button r-button flat text="Nazad" (click)="goToPrev()" [disabled]="currentIsFirst()">Nazad</button>
+        <button r-button flat [text]="'Nazad'" (click)="goToPrev()" [disabled]="currentIsFirst()" [primaryColor]="primaryColor">Nazad</button>
         <template [ngIf]="!currentIsLast()">
-            <button r-button raised text="Sledeći korak" (click)="goToNext()" [disabled]="currentIsLast() || !currentIsValid()">Dalje</button>
+            <button r-button raised [text]="'Sledeći korak'" (click)="goToNext()" [disabled]="currentIsLast() || !currentIsValid()" [primaryColor]="primaryColor" >Dalje</button>
         </template>
         <template [ngIf]="currentIsLast()">
-            <button r-button raised text="Kreiraj raspodelu" (click)="submit()" [disabled]="!currentIsLast() || !allAreValid()">Kreiraj raspodelu</button>
+            <button r-button raised [text]="'Kreiraj raspodelu'" (click)="submit()" [disabled]="!currentIsLast() || !allAreValid()" [primaryColor]="primaryColor">Kreiraj raspodelu</button>
         </template>
     </div>
     `,
     styleUrls: ['app/ui/r-stepper.css'],
-    directives: [R_BUTTON, RStepComponent, RStepperHeaderComponent]
+    directives: [R_BUTTON, RStepComponent, RStepperHeaderComponent],
+    host: {
+        "[class]": "primaryColorClassName",
+    }
 })
 
 export class RStepperComponent implements AfterContentInit {
 
-    @Input() primaryColor: string = "MaterialBlue";
+    @Input() primaryColor: string = "MaterialRed";
     @Input() secondaryColor: string = "MaterialOrange";
+
+    get primaryColorClassName(): string {
+        return GlobalService.colorClassName(this.primaryColor);
+    }
 
     @Output() onSubmit = new EventEmitter();
     public submit = () => {this.onSubmit.emit("submit")};

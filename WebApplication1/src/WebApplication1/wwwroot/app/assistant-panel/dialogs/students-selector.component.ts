@@ -5,8 +5,8 @@ import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
     selector: 'r-students-selector',
     template: 
     `
-    <r-multiple-selector [(val)]="selected" primaryColor="MaterialRed" style="height: 100%; width: 100%; box-sizing: border-box">
-        <r-multiple-selector-item *ngFor="let student of students; let i = index" [val]="student.studentID" class="narrow">
+    <r-multiple-selector [title]="title" [(val)]="selected" [primaryColor]="primaryColor" style="height: 100%; width: 100%; box-sizing: border-box">
+        <r-multiple-selector-item *ngFor="let student of students; let i = index" [val]="student.studentID" [class]="columnClassName">
             <div class="multiple-selector-item">
                 <span class="primary">{{student.UniMembers.name}} {{student.UniMembers.surname}}</span>
                 <span class="secondary">
@@ -26,6 +26,17 @@ export class StudentsSelectorComponent {
     private _selected: any;
     private _students: any;
 
+    @Input() columns: number = 1;
+
+    get columnClassName() {
+        switch (this.columns) {
+            case 1: return "wide";
+            case 2: return "normal";
+            case 3: return "narrow";
+        }
+        return "wide";
+    }
+
     @Input() public set selected(s) {
         this._selected = s;
         this.selectedChange.emit(this.selected);
@@ -44,6 +55,8 @@ export class StudentsSelectorComponent {
     public get students() {
         return this._students;
     }
+
+    @Input() title: string = "";
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";

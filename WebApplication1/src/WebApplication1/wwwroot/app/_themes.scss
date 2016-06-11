@@ -1,0 +1,28 @@
+@import "palette";
+
+// Material
+$theme-material-red: palette($red);
+$theme-material-yellow: palette($yellow);
+$theme-material-blue: palette($blue);
+$theme-material-orange: palette($orange);
+$theme-material-green: palette($green);
+$theme-material-purple: palette($purple);
+
+// Sunset
+$theme-sunset-purple: #811d5e;
+$theme-sunset-red: #fd2f24;
+$theme-sunset-orange: #ff6f01;
+$theme-sunset-yellow: #fed800;
+
+// Ice
+$theme-ice-darkest: #012e40;
+$theme-ice-darker: #025e73;
+$theme-ice-melted: #037f8c;
+$theme-ice-green: #038c8c;
+
+// Neon
+$theme-neon-empty: #0E0B16;
+$theme-neon-diamond: #A239CA;
+$theme-neon-gemstone: #4717F6;
+$theme-neon-poison: #18DD00;
+

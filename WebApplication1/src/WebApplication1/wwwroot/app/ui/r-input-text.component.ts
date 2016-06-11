@@ -1,6 +1,7 @@
 ﻿import {Component, Input, Output, EventEmitter, AfterViewInit} from "angular2/core";
 import {NgForm} from "angular2/common";
 import {Control, ControlGroup} from "angular2/common";
+import {GlobalService} from "../services/global.service";
 
 // TODO Required ne radi :/
 // Moguce resenje:
@@ -9,7 +10,7 @@ import {Control, ControlGroup} from "angular2/common";
 @Component({
     selector: "r-input",
     template: `
-    <label [ngClass]="{collapsed: val && val != '' || _isFocused}">{{label}}</label>
+    <label [ngClass]="{collapsed: val && val != '' || _isFocused, highlight: _isFocused}">{{label}}</label>
     <input type="text" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" [required]="required ? 'true' : null" #spy/>
     <!--<div class="validation-icon">
         <span *ngIf="control._touched && !control.valid">X</span>
@@ -19,8 +20,7 @@ import {Control, ControlGroup} from "angular2/common";
     `,
     styleUrls: ["app/ui/r-input-text.component.css"],
     host: {
-        //"[value]": "val",
-        //"(input)": "valChange.next($event.target.value)"
+        "[class]": "primaryColorClassName",
     }
 })
 
@@ -31,7 +31,20 @@ export class RInputText implements AfterViewInit {
     @Input("val") _val: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
+    get primaryColorClassName(): string {
+        return GlobalService.colorClassName(this.primaryColor);
+    }
+
     ngAfterViewInit() {
+
+    }
+
+    constructor(
+        private _globalService: GlobalService
+    ) {
 
     }
 

@@ -18,13 +18,14 @@ import {R_NESTED_LIST} from "../../ui/r-nested-list";
 
 // Interfaces
 import {INestedList, NestedList} from "../../INestedList";
+import {GlobalService} from "../../services/global.service";
 
 
 
 @Component({
     selector: 'r-divisions-list',
     template: `    
-    <r-nested-list title="Raspodele" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
+    <r-nested-list [title]="_globalService.translate('divisions')" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor">
         <r-nested-list-inner *ngFor="let typeDivision of typeDivisions" [title]="typeDivision.type">
             <r-list-inner-item
                 *ngFor="let division of typeDivision.divisions"
@@ -116,7 +117,8 @@ export class DivisionsListComponent implements OnInit {
 
 
     constructor (
-        private _divisionsService: DivisionsService
+        private _divisionsService: DivisionsService,
+        private _globalService: GlobalService
     ) { }
 
     ngOnInit() {

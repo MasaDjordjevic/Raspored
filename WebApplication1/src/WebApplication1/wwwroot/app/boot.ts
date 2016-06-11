@@ -6,6 +6,7 @@ import {ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES} from "angular2/router"
 import {HTTP_PROVIDERS} from "angular2/http";
 
 import {AppComponent} from "./app.component";
+import {GlobalService} from "./services/global.service";
 
-bootstrap(AppComponent, [ROUTER_PROVIDERS, HTTP_PROVIDERS]);
+bootstrap(AppComponent, [ROUTER_PROVIDERS, HTTP_PROVIDERS, GlobalService]);
 //bootstrap(AppComponent, [ROUTER_PROVIDERS, HTTP_PROVIDERS, provide(LocationStrategy, { useClass: HashLocationStrategy })]);

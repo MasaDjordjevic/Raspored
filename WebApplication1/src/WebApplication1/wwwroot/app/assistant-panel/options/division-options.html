@@ -31,19 +31,13 @@
 
     <r-dialog #editDivisionDialog [source]="editDivisionButton">
         <div>
-            <division-edit [division]="division" [new]="false"></division-edit>
+            <division-edit [primaryColor]="primaryColor" [division]="division" [new]="false"></division-edit>
         </div>
     </r-dialog>
 
     <r-dialog #newGroupDialog [source]="newGroupButton">
         <div style="height: 500px;width: 500px; overflow: scroll;">
-            <group-edit [group]="emptyGroup"></group-edit>
-        </div>
-    </r-dialog>
-
-    <r-dialog #copyDivisionDialog [source]="copyDivisionButton">
-        <div style="height: 1000px;width: 1000px; overflow: scroll;">
-            <division-edit [division]="division" [new]="true"></division-edit>
+            <group-edit [primaryColor]="primaryColor" [group]="emptyGroup"></group-edit>
         </div>
     </r-dialog>
 
@@ -92,7 +86,7 @@
         </button>
 
         <!-- TODO -->
-        <button r-button raised #copyDivisionButton
+        <button r-button raised
                 text="Kopiraj raspodelu"
                 (click)="copyDivision()"
                 [primaryColor]="primaryColor">

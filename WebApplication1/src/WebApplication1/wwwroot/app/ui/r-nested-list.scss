@@ -1,4 +1,5 @@
 @import "../palette";
+@import "../themes";
 @import "../ljubenovic-toolkit";
 
 :host {
@@ -19,10 +20,121 @@
     font-weight: bold;
   }
 
-  &.red { h2 { background-color: palette($red); } .selected { color: palette($red) } }
-  &.yellow { h2 { background-color: palette($yellow); } .selected { color: palette($yellow) } }
-  &.blue { h2 { background-color: palette($blue); } .selected { color: palette($blue) } }
-  &.orange { h2 { background-color: palette($orange); } .selected { color: palette($orange) } }
-  &.green { h2 { background-color: palette($green); } .selected { color: palette($green) } }
-  &.purple { h2 { background-color: palette($purple); } .selected { color: palette($purple) } }
+  // Color themes:
+
+  &.red       { h2 { background-color: palette($red); } .selected { color: palette($red) } }
+  &.yellow    { h2 { background-color: palette($yellow); } .selected { color: palette($yellow) } }
+  &.blue      { h2 { background-color: palette($blue); } .selected { color: palette($blue) } }
+  &.orange    { h2 { background-color: palette($orange); } .selected { color: palette($orange) } }
+  &.green     { h2 { background-color: palette($green); } .selected { color: palette($green) } }
+  &.purple    { h2 { background-color: palette($purple); } .selected { color: palette($purple) } }
+
+  &.sunset-purple {
+    h2 {
+      background-color: $theme-sunset-purple;
+    }
+    .selected {
+      color: $theme-sunset-purple;
+    }
+  }
+
+  &.sunset-red {
+    h2 {
+      background-color: $theme-sunset-red;
+    }
+    .selected {
+      color: $theme-sunset-red;
+    }
+  }
+
+  &.sunset-orange {
+    h2 {
+      background-color: $theme-sunset-orange;
+    }
+    .selected {
+      color: $theme-sunset-orange;
+    }
+  }
+
+  &.sunset-yellow {
+    h2 {
+      background-color: $theme-sunset-yellow;
+    }
+    .selected {
+      color: $theme-sunset-yellow;
+    }
+  }
+
+  &.ice-darkest {
+    h2 {
+      background-color: $theme-ice-darkest;
+    }
+    .selected {
+      color: $theme-ice-darkest;
+    }
+  }
+
+  &.ice-darker {
+    h2 {
+      background-color: $theme-ice-darker;
+    }
+    .selected {
+      color: $theme-ice-darker;
+    }
+  }
+
+  &.ice-melted {
+    h2 {
+      background-color: $theme-ice-melted;
+    }
+    .selected {
+      color: $theme-ice-melted;
+    }
+  }
+
+  &.ice-green {
+    h2 {
+      background-color: $theme-ice-green;
+    }
+    .selected {
+      color: $theme-ice-green;
+    }
+  }
+
+  &.neon-empty {
+    h2 {
+      background-color: $theme-neon-empty;
+    }
+    .selected {
+      color: $theme-neon-empty;
+    }
+  }
+
+  &.neon-diamond {
+    h2 {
+      background-color: $theme-neon-diamond;
+    }
+    .selected {
+      color: $theme-neon-diamond;
+    }
+  }
+
+  &.neon-gemstone {
+    h2 {
+      background-color: $theme-neon-gemstone;
+    }
+    .selected {
+      color: $theme-neon-gemstone;
+    }
+  }
+
+  &.neon-poison {
+    h2 {
+      background-color: $theme-neon-poison;
+    }
+    .selected {
+      color: $theme-neon-poison;
+    }
+  }
+
 }

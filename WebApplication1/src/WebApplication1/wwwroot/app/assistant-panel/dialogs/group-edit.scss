@@ -1,0 +1,70 @@
+@import "../../ljubenovic-toolkit";
+@import "../../palette";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5em;
+  width: 1200px;
+  height: 700px;
+  justify-content: space-between;
+
+  .top {
+    @include force-height(300px);
+    display: flex;
+  }
+
+  .inputs {
+    margin-right: 1%;
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .inputs-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      .inputs-left, .inputs-right {
+        width: 49%;
+
+        & > * {
+          margin-top: .5em;
+        }
+      }
+    }
+
+    .in-out-buttons {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .chosen-selector {
+    margin-left: 1%;
+    width: 49%;
+    height: 100%;
+
+    & > div {
+      height: 100%;
+    }
+  }
+
+  .others-selector {
+    margin-top: .2em;
+    width: 100%;
+    @include force-height(340px);
+
+    & > div {
+      height: 100%;
+    }
+  }
+
+  .controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+}

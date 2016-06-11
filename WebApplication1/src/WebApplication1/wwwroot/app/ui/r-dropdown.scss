@@ -1,5 +1,6 @@
 @import "../ljubenovic-toolkit";
 @import "../palette";
+@import "../themes";
 
 // Vreme koje treba labeli da se pomeri nagore/nadole
 $time-label: .2s;
@@ -47,6 +48,10 @@ $time-highlight: .5s;
           opacity: 1;
         }
       }
+
+      &.highlight {
+        color: palette($blue); // default
+      }
     }
 
     // {{currSelectedString}}
@@ -88,7 +93,7 @@ $time-highlight: .5s;
     // Efekat na dnu ako je expandovano
     .line-effect {
       @extend %line-effect-hidden;
-      background-color: palette($blue);
+      background-color: palette($blue); // default
 
       &.highlight {
         @extend %line-effect-visible;
@@ -123,7 +128,7 @@ $time-highlight: .5s;
     padding: .66ex $padding-left-right-inner;
 
     &:hover {
-      background-color: palette($blue-grey, 50);
+      background-color: rgba(black, .08);
     }
   }
 
@@ -146,3 +151,170 @@ $time-highlight: .5s;
   z-index: 3;
   // background-color: rgba(black, .5);
 }
+
+
+// Themes
+
+:host.red {
+  .line-effect {
+    background-color: $theme-material-red;
+  }
+  label.highlight {
+    color: $theme-material-red;
+  }
+}
+
+:host.orange {
+  .line-effect {
+    background-color: $theme-material-orange;
+  }
+  label.highlight {
+    color: $theme-material-orange;
+  }
+}
+
+:host.green {
+  .line-effect {
+    background-color: $theme-material-green;
+  }
+  label.highlight {
+    color: $theme-material-green;
+  }
+}
+
+:host.blue {
+  .line-effect {
+    background-color: $theme-material-blue;
+  }
+  label.highlight {
+    color: $theme-material-blue;
+  }
+}
+
+:host.purple {
+  .line-effect {
+    background-color: $theme-material-purple;
+  }
+  label.highlight {
+    color: $theme-material-purple;
+  }
+}
+
+:host.yellow {
+  .line-effect {
+    background-color: $theme-material-yellow;
+  }
+  label.highlight {
+    color: $theme-material-yellow;
+  }
+}
+
+:host.sunset-purple {
+  .line-effect {
+    background-color: $theme-sunset-purple;
+  }
+  label.highlight {
+    color: $theme-sunset-purple;
+  }
+}
+
+:host.sunset-red {
+  .line-effect {
+    background-color: $theme-sunset-red;
+  }
+  label.highlight {
+    color: $theme-sunset-red;
+  }
+}
+
+:host.sunset-orange {
+  .line-effect {
+    background-color: $theme-sunset-orange;
+  }
+  label.highlight {
+    color: $theme-sunset-orange;
+  }
+}
+
+:host.sunset-yellow {
+  .line-effect {
+    background-color: $theme-sunset-yellow;
+  }
+  label.highlight {
+    color: $theme-sunset-yellow;
+  }
+}
+
+:host.ice-darkest {
+  .line-effect {
+    background-color: $theme-ice-darkest;
+  }
+  label.highlight {
+    color: $theme-ice-darkest;
+  }
+}
+
+:host.ice-darker {
+  .line-effect {
+    background-color: $theme-ice-darker
+  }
+  label.highlight {
+    color: $theme-ice-darker;
+  }
+}
+
+:host.ice-melted {
+  .line-effect {
+    background-color: $theme-ice-melted;
+  }
+  label.highlight {
+    color: $theme-ice-melted;
+  }
+}
+
+:host.ice-green {
+  .line-effect {
+    background-color: $theme-ice-green;
+  }
+  label.highlight {
+    color: $theme-ice-green;
+  }
+}
+
+:host.neon-empty {
+  .line-effect {
+    background-color: $theme-neon-empty;
+  }
+  label.highlight {
+    color: $theme-neon-empty;
+  }
+}
+
+:host.neon-diamond {
+  .line-effect {
+    background-color: $theme-neon-diamond;
+  }
+  label.highlight {
+    color: $theme-neon-diamond;
+  }
+}
+
+:host.neon-gemstone {
+  .line-effect {
+    background-color: $theme-neon-gemstone;
+  }
+  label.highlight {
+    color: $theme-neon-gemstone;
+  }
+}
+
+:host.neon-poison {
+  .line-effect {
+    background-color: $theme-neon-poison;
+  }
+  label.highlight {
+    color: $theme-neon-poison;
+  }
+}
+
+

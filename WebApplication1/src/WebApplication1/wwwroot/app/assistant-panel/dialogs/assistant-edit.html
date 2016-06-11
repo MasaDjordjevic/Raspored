@@ -1,0 +1,24 @@
+﻿<div class="dialog">
+    <div class="basic-info">
+        <div class="picture" style="background-image: url('avatar.png')"></div>
+        <div class="names">
+            <r-input [(val)]="newAssistant.title" [label]="'Zvanje'"></r-input>
+            <r-input [(val)]="newAssistant.name" [label]="'Ime'"></r-input>
+            <r-input [(val)]="newAssistant.surname" [label]="'Prezime'"></r-input>
+        </div>
+    </div>
+    <div class="additional-info">
+        <r-input [(val)]="newAssistant.email" [label]="'Elektronska pošta'" class="light-theme"></r-input>
+        <r-input [(val)]="newAssistant.address" [label]="'Kancelarija'" class="light-theme"></r-input>
+    </div>
+    <div class="footer">
+        <div class="messages">
+            <span class="error-message">{{errorMessage}}</span>
+            <span class="warning-message">{{warningMessage}}</span>
+            <span class="success-message">{{successMessage}}</span>
+        </div>
+        <div class="buttons">
+            <button r-button raised (click)="onSave()" [text]="'Sačuvaj izmene'">Sačuvaj izmene</button>
+        </div>
+    </div>
+</div>

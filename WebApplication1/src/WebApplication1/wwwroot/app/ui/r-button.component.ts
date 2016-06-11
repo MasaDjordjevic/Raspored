@@ -3,6 +3,7 @@ import {Component, Directive, ElementRef, Input,
     from "angular2/core";
 
 import {NgClass} from "angular2/common";
+import {GlobalService} from "../services/global.service";
 
 
 @Directive({
@@ -78,25 +79,35 @@ export class RFabButtonDirective {
         "[class.blue]": "primaryColorClassName === 'blue'",
         "[class.orange]": "primaryColorClassName === 'orange'",
         "[class.green]": "primaryColorClassName === 'green'",
-        "[class.purple]": "primaryColorClassName === 'purple'",
+        "[class.sunset-purple]": "primaryColorClassName === 'sunset-purple'",
+        "[class.sunset-red]": "primaryColorClassName === 'sunset-red'",
+        "[class.sunset-orange]": "primaryColorClassName === 'sunset-orange'",
+        "[class.sunset-yellow]": "primaryColorClassName === 'sunset-yellow'",
+        "[class.ice-darkest]": "primaryColorClassName === 'ice-darkest'",
+        "[class.ice-darker]": "primaryColorClassName === 'ice-darker'",
+        "[class.ice-melted]": "primaryColorClassName === 'ice-melted'",
+        "[class.ice-green]": "primaryColorClassName === 'ice-green'",
+        "[class.neon-empty]": "primaryColorClassName === 'neon-empty'",
+        "[class.neon-diamond]": "primaryColorClassName === 'neon-diamond'",
+        "[class.neon-gemstone]": "primaryColorClassName === 'neon-gemstone'",
+        "[class.neon-poison]": "primaryColorClassName === 'neon-poison'",
     }
 })
 
 export class RButtonComponent {
 
     @Input() primaryColor: string = "MaterialBlue";
-
-    // TODO ovo se ponavlja svuda
+    
     get primaryColorClassName(): string {
-        if (this.primaryColor.indexOf("Material") === 0) {
-            return this.primaryColor.substring("Material".length).toLowerCase();
-        }
-        return "blue";
+        return GlobalService.colorClassName(this.primaryColor);
     }
 
     public nativeElement: HTMLButtonElement;
 
-    constructor(element: ElementRef) {
+    constructor(
+        private element: ElementRef,
+        private _globalService: GlobalService
+    ) {
         this.nativeElement = element.nativeElement;
     }
 

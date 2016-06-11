@@ -1,0 +1,60 @@
+<div class="top">
+
+    <div class="inputs">
+
+        <div class="inputs-top">
+            <div class="inputs-left">
+                <r-input class="light-theme" [label]="'Ime grupe'" [(val)]="editedGroupName"></r-input>
+
+                <r-dropdown [label]="'Učionica'" [(val)]="editedClassroom">
+                    <r-dropdown-item *ngFor="let classroom of classrooms" [value]="classroom.classroomID">
+                        {{classroom.number}}
+                    </r-dropdown-item>
+                </r-dropdown>
+
+                <r-dropdown *ngIf="assistants" [label]="'Asistent'" name="assistant" [val]="editedAssistant">
+                    <r-dropdown-item *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</r-dropdown-item>
+                </r-dropdown>
+
+                <button r-button flat type="button" (click)="getAllAssistants()" [text]="'Svi asistenti'"></button>
+            </div>
+
+            <div class="inputs-right">
+                <r-input class="light-theme" [label]="'Početak'" [(val)]="editedTimeStart"></r-input>
+                <r-input class="light-theme" [label]="'Kraj'" [(val)]="editedTimeEnd"></r-input>
+                <r-input class="light-theme" [label]="'Perioda'" [(val)]="editedPeriod"></r-input>
+            </div>
+        </div>
+
+        <div class="in-out-buttons">
+            <button r-button raised [text]="'Ubaci u grupu'" primaryColor="MaterialGreen"
+                    (click)="moveToChosen(otherStuds.selected)"
+            >
+            </button>
+            <button r-button raised [text]="'Izbaci iz grupe'" primaryColor="MaterialRed"
+                    (click)="moveToOthers(chosenStuds.selected); chosenStuds.selected = null">
+            </button>
+        </div>
+
+    </div>
+
+    <div class="chosen-selector">
+        <div>
+            <!--<r-students-selector [columns]="2" [title]="'Iz grupe'" #chosenStuds [students]="chosenStudents" primaryColor="MaterialRed">
+            </r-students-selector>-->
+        </div>
+    </div>
+
+</div>
+
+<div class="others-selector">
+    <div>
+        <r-students-selector [columns]="3" [title]="'Ostali'" #otherStuds [students]="otherStudents | withoutStudents : chosenStudents" primaryColor="MaterialRed">
+        </r-students-selector>
+    </div>
+</div>
+
+<div class="controls">
+    <button r-button raised [text]="'Sačuvaj izmene'" type="submit" (click)="save()"></button>
+</div>
+

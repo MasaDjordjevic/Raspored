@@ -4,6 +4,7 @@ import {
 } from "angular2/core";
 import {HighlightPipe} from "../pipes/highlight.pipe";
 import {R_INPUT} from "./r-input-text.component";
+import {GlobalService} from "../services/global.service";
 
 
 
@@ -51,6 +52,9 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 
     set query(q) {
         this._query = q;
+        console.log(q);
+        console.log("init");
+        console.log(this.initElement);
         if (!!q) {
             this._element.nativeElement.innerHTML = this.initElement.innerHTML; // prvo reset
             this.markMatches(this._element.nativeElement); // pa matchujemo string
@@ -102,9 +106,10 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     ) { }
 
     ngAfterViewInit() {
-        setTimeout(() =>
-            this.initElement = this._element.nativeElement.cloneNode(true), // true - klonira u dubinu
-        0);
+        setTimeout(() => {
+            //debugger;
+            this.initElement = this._element.nativeElement.cloneNode(true); // true - klonira u dubinu
+        }, 0);
     }
 
     // on click
@@ -130,13 +135,14 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 @Component({
     selector: 'r-multiple-selector',
     template: `
-    Selected: {{values | json}}<br/>
+    <div class="title" *ngIf="title && title !== ''">{{title}}</div>
+    <!--Selected: {{values | json}}<br/>-->
     <div class="r-multiple-selector-content">
         <ng-content></ng-content>
     </div>
     <!--<div style="flex: 1 0 auto"></div>-->
     <div class="search">
-        <r-input class="light-theme" type="text" [(val)]="query" label="Pretraga"></r-input>
+        <r-input [primaryColor]="primaryColor" class="light-theme" type="text" [(val)]="query" label="Pretraga"></r-input>
     </div>
     <!--{{query}}<br/>--> 
     <!--{{itemsValueText | json}}-->
@@ -148,12 +154,21 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     providers: [RMultipleSelectorEmitterService],
     directives: [R_INPUT],
     styleUrls: ['app/ui/r-multiple-selector.css'],
+    host: {
+        "[class]": "primaryColorClassName",
+    }
 })
 
 export class MultipleSelectorComponent implements AfterViewInit {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
+
+    get primaryColorClassName(): string {
+        return GlobalService.colorClassName(this.primaryColor);
+    }
+
+    @Input() title: string = "";
 
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
 
@@ -179,7 +194,7 @@ export class MultipleSelectorComponent implements AfterViewInit {
                 }
             }
         } catch (e) {
-            console.warn("Proslednjen nevalidan regex za pretragu");
+            console.warn("Proslednjen nevalidan regex za pretragu.");
         }
 
     }
@@ -221,7 +236,8 @@ export class MultipleSelectorComponent implements AfterViewInit {
     constructor(
         public emitter: RMultipleSelectorEmitterService,
         public element: ElementRef,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private _globalService: GlobalService
     ) {
 
         // Kad se dobije poruka, toggluj opciju. Poruka treba da sadrzi samo value.

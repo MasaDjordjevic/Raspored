@@ -1,4 +1,5 @@
 @import "../palette";
+@import "../themes";
 @import "../ljubenovic-toolkit";
 
 :host {
@@ -6,10 +7,17 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @include z-depth(1);
+  //@include z-depth(1);
   background-color: white;
-  padding: .5em;
+  //padding: .5em;
   box-sizing: border-box;
+
+  .title {
+    padding: .5em;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #03A9F4;
+  }
 
   .r-multiple-selector-content {
     padding: .5em;
@@ -56,7 +64,7 @@
       text-align: center;
       height: 1.2em;
       border-radius: .2em;
-      box-shadow: 0 0 0 3px palette($blue, 400) inset;
+      box-shadow: 0 0 0 3px palette($blue) inset; // default
       transition: all .2s ease;
       margin-right: .25em;
 
@@ -78,9 +86,9 @@
       z-index: 3;
 
       mark {
-        background-color: rgba(palette($blue), .2);
+        background-color: rgba(palette($blue), .2); // default
         border-radius: 0.25em;
-        box-shadow: 0 0 0 1px rgba(palette($blue), .6);
+        box-shadow: 0 0 0 1px rgba(palette($blue), .6); // default
         z-index: 1;
       }
     }
@@ -101,5 +109,349 @@
         }
       }
     }
+  }
+}
+
+// Themes
+
+:host.red {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-material-red inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-material-red, .2);
+    box-shadow: 0 0 0 1px rgba($theme-material-red, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-material-red, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-material-red inset;
+  }
+}
+
+:host.green {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-material-green inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-material-green, .2);
+    box-shadow: 0 0 0 1px rgba($theme-material-green, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-material-green, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-material-green inset;
+  }
+}
+
+:host.blue {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-material-blue inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-material-blue, .2);
+    box-shadow: 0 0 0 1px rgba($theme-material-blue, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-material-blue, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-material-blue inset;
+  }
+}
+
+:host.yellow {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-material-yellow inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-material-yellow, .2);
+    box-shadow: 0 0 0 1px rgba($theme-material-yellow, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-material-yellow, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-material-yellow inset;
+  }
+}
+
+:host.purple {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-material-purple inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-material-purple, .2);
+    box-shadow: 0 0 0 1px rgba($theme-material-purple, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-material-purple, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-material-purple inset;
+  }
+}
+
+:host.orange {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-material-orange inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-material-orange, .2);
+    box-shadow: 0 0 0 1px rgba($theme-material-orange, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-material-orange, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-material-orange inset;
+  }
+}
+
+:host.sunset-purple {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-sunset-purple inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-sunset-purple, .2);
+    box-shadow: 0 0 0 1px rgba($theme-sunset-purple, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-sunset-purple, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-sunset-purple inset;
+  }
+}
+
+:host.sunset-red {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-sunset-red inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-sunset-red, .2);
+    box-shadow: 0 0 0 1px rgba($theme-sunset-red, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-sunset-red, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-sunset-red inset;
+  }
+}
+
+:host.sunset-orange {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-sunset-orange inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-sunset-orange, .2);
+    box-shadow: 0 0 0 1px rgba($theme-sunset-orange, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-sunset-orange, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-sunset-orange inset;
+  }
+}
+
+:host.sunset-yellow {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-sunset-yellow inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-sunset-yellow, .2);
+    box-shadow: 0 0 0 1px rgba($theme-sunset-yellow, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-sunset-yellow, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-sunset-yellow inset;
+  }
+}
+
+:host.ice-darkest {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-ice-darkest inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-ice-darkest, .2);
+    box-shadow: 0 0 0 1px rgba($theme-ice-darkest, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-ice-darkest, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-ice-darkest inset;
+  }
+}
+
+:host.ice-darker {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-ice-darker inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-ice-darker, .2);
+    box-shadow: 0 0 0 1px rgba($theme-ice-darker, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-ice-darker, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-ice-darker inset;
+  }
+}
+
+:host.ice-melted {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-ice-melted inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-ice-melted, .2);
+    box-shadow: 0 0 0 1px rgba($theme-ice-melted, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-ice-melted, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-ice-melted inset;
+  }
+}
+
+:host.ice-green {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-ice-green inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-ice-green, .2);
+    box-shadow: 0 0 0 1px rgba($theme-ice-green, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-ice-green, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-ice-green inset;
+  }
+}
+
+:host.neon-empty {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-neon-empty inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-neon-empty, .2);
+    box-shadow: 0 0 0 1px rgba($theme-neon-empty, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-neon-empty, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-neon-empty inset;
+  }
+}
+
+:host.neon-diamond {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-neon-diamond inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-neon-diamond, .2);
+    box-shadow: 0 0 0 1px rgba($theme-neon-diamond, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-neon-diamond, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-neon-diamond inset;
+  }
+}
+
+:host.neon-gemstone {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-neon-gemstone inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-neon-gemstone, .2);
+    box-shadow: 0 0 0 1px rgba($theme-neon-gemstone, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-neon-gemstone, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-neon-gemstone inset;
+  }
+}
+
+:host.neon-poison {
+  .checkbox {
+    box-shadow: 0 0 0 3px $theme-neon-poison inset;
+  }
+
+  .ng-content mark {
+    background-color: rgba($theme-neon-poison, .2);
+    box-shadow: 0 0 0 1px rgba($theme-neon-poison, .6);
+  }
+
+  r-multiple-selector-item:hover {
+    background-color: rgba($theme-neon-poison, .1);
+  }
+
+  r-multiple-selector-item.selected .checkbox {
+    box-shadow: 0 0 0 .7em $theme-neon-poison inset;
   }
 }

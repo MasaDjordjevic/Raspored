@@ -1,4 +1,5 @@
 ﻿@import "../palette";
+@import "../themes";
 
 // Vreme koje treba labeli da se pomeri nagore/nadole
 $time-label: .2s;
@@ -14,41 +15,45 @@ $time-highlight: .5s;
   flex-direction: column;
   justify-content: flex-end;
 
-    label {
-       position: absolute;
-       color: rgba(white, .6);
-       padding: 0;
-       margin: 0;
-       top: 1.23ex; // Trial and error, ne dirati. Isprobano na font-size 12px, 16px, 24px i 36px.
-       transition: all $time-label;
-       font-weight: normal;
-       z-index: 1;
+  label {
+    position: absolute;
+    color: rgba(black, .6);
+    padding: 0;
+    margin: 0;
+    top: 1.23ex; // Trial and error, ne dirati. Isprobano na font-size 12px, 16px, 24px i 36px.
+    transition: all $time-label;
+    font-weight: normal;
+    z-index: 1;
 
-       &::after {
-         content: ":";
-         opacity: 0;
-         transition: opacity $time-label;
-       }
+    &::after {
+      content: ":";
+      opacity: 0;
+      transition: opacity $time-label;
+    }
 
-       &.collapsed {
-         top: 0;
-         font-size: 0.6em;
-         color: rgba(white, .45);
+    &.collapsed {
+      top: 0;
+      font-size: 0.6em;
+      color: rgba(black, .45);
 
-         &::after {
-           opacity: 1;
-         }
-       }
-     }
+      &::after {
+        opacity: 1;
+      }
+    }
+
+    &.highlight {
+      color: palette($blue); // default
+    }
+  }
 
     input[type="text"] {
         background-color: transparent;
         font-size: 1em;
         outline: none;
         border: none;
-        box-shadow: 0 -1px 0 0 rgba(white, .2) inset;
+        box-shadow: 0 -1px 0 0 rgba(black, .2) inset;
         width: 100%;
-        color: rgba(white, 9);
+        color: rgba(black, 9);
         z-index: 2; // da bi input mogao da udje u focus i kada se klikne preko labele dok je spustena preko inputa
     }
 
@@ -92,7 +97,7 @@ $time-highlight: .5s;
     // Ono čudo ispod što se pojavljuje na fokus
   .line-effect {
     @extend %line-effect-hidden;
-    background-color: palette($blue);
+    background-color: palette($blue); // default
 
     &.highlight {
       @extend %line-effect-visible;
@@ -100,21 +105,186 @@ $time-highlight: .5s;
   }
 }
 
-:host.light-theme {
+:host.dark-theme {
     label {
-        color: rgba(black, .6);
+        color: rgba(white, .6);
 
         &.collapsed {
-            color: rgba(black, .45);
+            color: rgba(white, .45);
         }
     }
 
     input[type="text"] {
         color: rgba(black, 9);
-        box-shadow: 0 -1px 0 0 rgba(black, .2) inset;
+        box-shadow: 0 -1px 0 0 rgba(white, .2) inset;
     }
 
     // Čudo što se pojavljuje na dnu pri fokusu
     .line-effect {
     }
 }
+
+// Themes
+
+:host.red {
+  .line-effect {
+    background-color: $theme-material-red;
+  }
+  label.highlight {
+    color: $theme-material-red;
+  }
+}
+
+:host.orange {
+  .line-effect {
+    background-color: $theme-material-orange;
+  }
+  label.highlight {
+    color: $theme-material-orange;
+  }
+}
+
+:host.green {
+  .line-effect {
+    background-color: $theme-material-green;
+  }
+  label.highlight {
+    color: $theme-material-green;
+  }
+}
+
+:host.blue {
+  .line-effect {
+    background-color: $theme-material-blue;
+  }
+  label.highlight {
+    color: $theme-material-blue;
+  }
+}
+
+:host.purple {
+  .line-effect {
+    background-color: $theme-material-purple;
+  }
+  label.highlight {
+    color: $theme-material-purple;
+  }
+}
+
+:host.yellow {
+  .line-effect {
+    background-color: $theme-material-yellow;
+  }
+  label.highlight {
+    color: $theme-material-yellow;
+  }
+}
+
+:host.sunset-purple {
+  .line-effect {
+    background-color: $theme-sunset-purple;
+  }
+  label.highlight {
+    color: $theme-sunset-purple;
+  }
+}
+
+:host.sunset-red {
+  .line-effect {
+    background-color: $theme-sunset-red;
+  }
+  label.highlight {
+    color: $theme-sunset-red;
+  }
+}
+
+:host.sunset-orange {
+  .line-effect {
+    background-color: $theme-sunset-orange;
+  }
+  label.highlight {
+    color: $theme-sunset-orange;
+  }
+}
+
+:host.sunset-yellow {
+  .line-effect {
+    background-color: $theme-sunset-yellow;
+  }
+  label.highlight {
+    color: $theme-sunset-yellow;
+  }
+}
+
+:host.ice-darkest {
+  .line-effect {
+    background-color: $theme-ice-darkest;
+  }
+  label.highlight {
+    color: $theme-ice-darkest;
+  }
+}
+
+:host.ice-darker {
+  .line-effect {
+    background-color: $theme-ice-darker
+  }
+  label.highlight {
+    color: $theme-ice-darker;
+  }
+}
+
+:host.ice-melted {
+  .line-effect {
+    background-color: $theme-ice-melted;
+  }
+  label.highlight {
+    color: $theme-ice-melted;
+  }
+}
+
+:host.ice-green {
+  .line-effect {
+    background-color: $theme-ice-green;
+  }
+  label.highlight {
+    color: $theme-ice-green;
+  }
+}
+
+:host.neon-empty {
+  .line-effect {
+    background-color: $theme-neon-empty;
+  }
+  label.highlight {
+    color: $theme-neon-empty;
+  }
+}
+
+:host.neon-diamond {
+  .line-effect {
+    background-color: $theme-neon-diamond;
+  }
+  label.highlight {
+    color: $theme-neon-diamond;
+  }
+}
+
+:host.neon-gemstone {
+  .line-effect {
+    background-color: $theme-neon-gemstone;
+  }
+  label.highlight {
+    color: $theme-neon-gemstone;
+  }
+}
+
+:host.neon-poison {
+  .line-effect {
+    background-color: $theme-neon-poison;
+  }
+  label.highlight {
+    color: $theme-neon-poison;
+  }
+}
+
