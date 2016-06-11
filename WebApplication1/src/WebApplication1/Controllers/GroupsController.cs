@@ -7,6 +7,7 @@ using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Query.Expressions;
 using WebApplication1.Models;
 using Newtonsoft.Json;
+using WebApplication1.Exceptions;
 
 namespace WebApplication1.Controllers
 {
@@ -135,48 +136,59 @@ namespace WebApplication1.Controllers
                 return Ok(new {status="parameter error"});
             }
 
-            if (obj.assistantID != null)
+            using (var transaction = _context.Database.BeginTransaction())
             {
-                Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
-            }
-
-            //dodavanje groupe
-            if (obj.groupID == null)
-            {
-                if (obj.divisionID == null)
+                try
                 {
-                    return Ok(new { status = "parameter error" });
+                    if (obj.assistantID != null)
+                    {
+                        Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
+                    }
+
+
+                    //dodavanje groupe
+                    if (obj.groupID == null)
+                    {
+                        if (obj.divisionID == null)
+                        {
+                            return Ok(new {status = "parameter error"});
+                        }
+                        //provera konzistentnosti raspodele
+                        //Data.Group.CheckConsistencyWithOtherGroups(null, obj.students.ToList());
+
+                        Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID,
+                            obj.timespan);
+                        Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
+                    }
+                    else //update grupe
+                    {
+
+                        //provera konzistentnosti raspodele
+                        //Data.Group.CheckConsistencyWithOtherGroups(obj.groupID.Value, obj.students.ToList());
+
+                        if (obj.assistantID != null)
+                        {
+                            Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
+                        }
+
+                        Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
+                        Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
+
+                    }
+                }
+                catch (InconsistentDivisionException ex)
+                {
+                    transaction.Rollback();
+                    return Ok(new { status = "inconsistent division", message = ex.Message });
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
                 }
 
-                //provera konzistentnosti raspodele
-                if (!Data.Group.CheckConsistencyOfGroup(null, obj.students.ToList()))
-                {
-                    return Ok(new {status = "inconsistent division"});
-                }
-
-                Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID, obj.timespan);
-                Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
                 return Ok(new { status = "uspelo" });
             }
-            else //update grupe
-            {
-                //provera konzistentnosti raspodele
-                if (!Data.Group.CheckConsistencyOfGroup(obj.groupID.Value, obj.students.ToList()))
-                {
-                    return Ok(new { status = "inconsistent division" });
-                }
-
-                if (obj.assistantID != null)
-                {
-                    Data.Group.AddAsstant(obj.groupID.Value, obj.assistantID.Value);
-                }
-
-                Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
-                Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
-                return Ok(new { status = "uspelo" });
-            }
-
-         
         }
 
         public class AddActivityBinding
@@ -198,7 +210,14 @@ namespace WebApplication1.Controllers
                 return Ok(new { status = "parameter error" });
             }
 
-            Data.Group.AddActivity(obj.groupID.Value, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
+            try
+            {
+                Data.Group.AddActivity(obj.groupID.Value, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "neuspelo", message = ex.Message });
+            }
 
             return Ok(new { status = "uspelo" });
         }
@@ -219,9 +238,16 @@ namespace WebApplication1.Controllers
                 return Ok(new { status = "parameter error" });
             }
 
-            Data.Group.CancelClass(obj.groupID, obj.title, obj.content, obj.weekNumber);
+            try
+            {
+                Data.Group.CancelClass(obj.groupID, obj.title, obj.content, obj.weekNumber);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "neuspelo", message = ex.Message });
+            }
 
-            return Ok(new { status = "uspelo" });
+            return Ok(new {status = "uspelo"});
         }
 
         [HttpGet]
@@ -232,14 +258,22 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var schedule = Data.Group.GetCombinedSchedule(groupID, weeksFromNow);
-
-            if (schedule == null)
+            try
             {
-                return HttpNotFound();
+                var schedule = Data.Group.GetCombinedSchedule(groupID, weeksFromNow);
+
+                if (schedule == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return Ok(schedule);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "neuspelo", message = ex.Message });
             }
 
-            return Ok(schedule);
         }
 
         // POST: api/Groups

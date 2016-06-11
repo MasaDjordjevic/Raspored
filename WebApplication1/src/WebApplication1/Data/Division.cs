@@ -211,7 +211,7 @@ namespace WebApplication1.Data
         }
 
         public static void CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning, DateTime ending,
-            List<GroupOfStudents>  groups)
+            List<Division.GroupOfStudents>  groups)
         {
             using (RasporedContext _context = new RasporedContext())
             {

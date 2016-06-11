@@ -9,6 +9,7 @@ using Microsoft.Data.Entity;
 using Remotion.Linq.Clauses;
 using WebApplication1.Models;
 using Newtonsoft.Json;
+using WebApplication1.Exceptions;
 using WebApplication1.Extentions;
 
 namespace WebApplication1.Data
@@ -153,6 +154,31 @@ namespace WebApplication1.Data
         }
 
 
+        public static bool CheckIfAvailable(TimeSpans ts, List<int> students)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                if (ts == null)
+                    return true;
+
+                var unaveliable = _context.Students
+                    .Where(a => students.Contains(a.studentID) && !Student.CheckIfAvailable(a.studentID, ts))
+                     .Select(a => a.UniMembers.name + " " + a.UniMembers.surname).ToList();
+
+                if (unaveliable.Any())
+                {
+                    string exp = unaveliable.Count > 1
+                        ? "Studenti nisu slobodni u vreme kada grupa ima cas.\n"
+                        : "Student nije slobodan u vreme kada grupa ima cas.\n";
+                    exp += unaveliable.Concat("\n");
+                    throw new InconsistentDivisionException(exp);
+                }
+
+                return true;
+
+            }
+        }
+
 
 
 
@@ -168,20 +194,23 @@ namespace WebApplication1.Data
             {
                 //proveri da li dolazi do nekonzistentnosti raspodele
                 //provera da li student vec postoji u toj grupi
-                if (groupID > 0) // bezveze je provera != null
+                var otherStuds =
+                    _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
+                if (otherStuds.Contains(studentID))
                 {
-                    var otherStuds =
-                        _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
-                    if (otherStuds.Contains(studentID))
-                    {
-                        return;
-                    }
+                    throw new InconsistentDivisionException("Student već pripada toj grupi.");
                 }
-                //proverva konzistentnost sa ostalim grupama
-                if (Data.Group.CheckConsistencyOfGroup(groupID, new List<int>() { studentID }))
+
+                //proverva konzistentnost sa ostalim grupama, bacice exeption ako nije
+                Data.Group.CheckConsistencyWithOtherGroups(groupID, new List<int>() {studentID});
+
+                //provera da li je student slobodan u vreme kada ta grupa ima cas
+                TimeSpans groupTs = _context.Groups.First(a => a.groupID == groupID).timeSpan;
+                if (groupTs != null && Student.CheckIfAvailable(studentID, groupTs))
                 {
-                    return;
+                    throw new InconsistentDivisionException("Student nije slobodan u vreme kada grupa ima cas.");
                 }
+
 
                 GroupsStudents gs = new GroupsStudents
                 {

@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using WebApplication1.Exceptions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -25,12 +27,22 @@ namespace WebApplication1.Controllers
             var classrooms = (from a in _context.Classrooms select a).OrderBy(a => a.number).ToList();
             return Ok(classrooms);
         }
-
-        //TODO
+        
+        //mislim da se ovo ne koristi
         [HttpGet]
         public IActionResult CheckIfAveable(int classroomID, TimeSpans time)
         {
-            return null;
+            try
+            {
+                Data.Classroom.CheckIfAvailable(classroomID, time);
+
+            }
+            catch (InconsistentDivisionException ex)
+            {
+                return Ok(new {status = "inconsistent division", message = ex.Message});
+            }
+
+            return Ok(new {status = "Uspelo", aveable = true});
         }
 
         // [GET] api/Classrooms/GetClassrooms/{id-classroom}

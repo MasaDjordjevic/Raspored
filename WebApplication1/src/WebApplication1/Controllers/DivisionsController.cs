@@ -146,9 +146,9 @@ namespace WebApplication1.Controllers
             {
                 Data.Division.CreateInitialDivision(obj.name, obj.departmentID, obj.courseID, obj.divisionTypeID, obj.beginning, obj.ending, obj.groups.ToList());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                return Ok(new { status = "neuspelo", message = ex.Message });
             }
 
 
@@ -234,12 +234,19 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult UpdateDivision([FromBody] DivisionsController.DivisionUpdateBinding obj)
         {
-            if (obj?.divisionID != null)
+            if (obj?.divisionID == null)
+                return Ok(new {status = "parameter error"});
+
+            try
             {
                 Data.Division.UpdateDivision(obj.divisionID.Value, obj.name, obj.beginning, obj.ending, obj.divisionTypeID, obj.courseID);
                 return Ok(new { status = "uspelo" });
             }
-            return Ok(new { status = "parameter error"});
+            catch (Exception ex)
+            {
+                return Ok(new { status = "inconsistent division", message = ex.Message });
+            }
+            
         }
 
         [HttpGet]
@@ -250,9 +257,16 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            Divisions newDivision = Data.Division.CopyDivision(divisionID);
-
-            return Ok(new { status = "uspelo", division = newDivision });
+            try
+            {
+                Divisions newDivision = Data.Division.CopyDivision(divisionID);
+                return Ok(new { status = "uspelo", division = newDivision });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "inconsistent division", message = ex.Message });
+            }
+           
         }
 
         [HttpGet]
@@ -263,10 +277,18 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            Data.Division.DeleteDivision(divisionID);
-
-            return Ok(new { status = "uspelo" });
+            try
+            {
+                Data.Division.DeleteDivision(divisionID);
+                return Ok(new {status = "uspelo"});
+            }
+            catch (Exception ex)
+            {
+                return Ok(new {status = "inconsistent division", message = ex.Message});
+            }
         }
+
+
 
         // DELETE: api/Divisions/5
         [HttpDelete("{id}")]

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.Entity;
+using WebApplication1.Exceptions;
 using WebApplication1.Extentions;
 using WebApplication1.Models;
 using WebApplication1.Models.DTOs;
@@ -99,25 +100,20 @@ namespace WebApplication1.Data
             }
         }
 
-        // TODO mozda neka poruka ukoliko se ne dodaju studenti
         public static bool AddStudnets(int groupID, List<int> students)
         {
             using (RasporedContext _context = new RasporedContext())
             {
 
-                //provera konzistentnosti raspodele
-                var groups =
-                    _context.Groups.Where(
-                        a => a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID).Select(a => a.groupID).ToList();
-                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList();
+                //proverava da li su neki vec clanovi te grupe
+                CheckIfMembers(groupID, students);
 
-                foreach (int stud in students)
-                {
-                    if (studs.Contains(stud))
-                    {
-                        return false;
-                    }
-                }
+                //provera konzistentnost sa ostalim grupama
+                CheckConsistencyWithOtherGroups(groupID, students);
+
+                //proverava da li su studenti slobodni u vreme kada grupa ima cas
+                CheckIfStudentsAreAveilable(groupID, students);
+
 
                 foreach (int studID in students)
                 {
@@ -133,9 +129,43 @@ namespace WebApplication1.Data
             }
         }
 
+        //proverava da li su studenti slobodni u vreme kada grupa ima cas
+        public static bool CheckIfStudentsAreAveilable(int groupID, List<int> students)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var groupTs = _context.Groups.First(a => a.groupID == groupID).timeSpan;
+                if (groupTs == null)
+                    return true;
+
+                return Student.CheckIfAvailable(groupTs, students);
+            }
+        }
+
+        //proverava da li je neko od studenata iz students vec clan grupe groupID
+        public static bool CheckIfMembers(int groupID, List<int> students)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var alreadyInGroup = _context.GroupsStudents
+                    .Where(a => a.groupID == groupID && students.Contains(a.studentID))
+                    .Select(a => a.student.UniMembers.name + " " + a.student.UniMembers.surname).ToList();
+                if (alreadyInGroup.Any())
+                {
+                    string exp = alreadyInGroup.Count > 1
+                        ? "Studenti su vec clanovi grupe.\n"
+                        : "Student je vec clan grupe.\n";
+                    exp += alreadyInGroup.Concat("\n");
+                    throw new InconsistentDivisionException(exp);
+                }
+
+                return true;
+            }
+        }
+
         //proverava da li svi studenti te grupe nisu clanovi neke druge grupe te raspodele
         //groupID moze da bude null u slucaju provere prilikom kreiranja nove grupe
-        public static bool CheckConsistencyOfGroup(int? groupID, List<int> students)
+        public static bool CheckConsistencyWithOtherGroups(int? groupID, List<int> students)
         {
             using (RasporedContext _context = new RasporedContext())
             {
@@ -146,10 +176,25 @@ namespace WebApplication1.Data
                         a => (groupID == null || a.groupID != groupID) && //bez te konkrentne grupe
                         a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID) //sve grupe raspodele kojo ta grupa pripada
                         .Select(a => a.groupID).ToList();
-                var studs = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => a.studentID).ToList(); //studenti koji pripadaju tim grupama
 
+                //studenti koji pripadaju tim grupama, kao i grupe
+                var studentsGroups = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => new {student = a.studentID, grupa = a.group.name}).ToList(); 
+                var studs = studentsGroups.Select(a => a.student);
                 //proverava da li za svakog studenta vazi da nije u studs odnosno ne pripada ni jednoj drugoj grupi
-                return students.All(stud => !studs.Contains(stud));
+                if (students.Any(stud => studs.Contains(stud)))
+                {
+                    var inconsistants = _context.Students
+                        .Where(stud => students.Contains(stud.studentID) && studs.Contains(stud.studentID))
+                        .Select(a=> a.UniMembers.name + " " + a.UniMembers.surname + " pripada grupi " + studentsGroups.First(sg=> sg.student == a.studentID).grupa)
+                        .ToList();
+                    string exp = inconsistants.Count > 1 ? "Studenti pripadaju drugim grupama raspodele. " : "Student pripada drugoj grupi raspodele. ";
+                    exp += inconsistants.Concat("\n");
+                    throw new InconsistentDivisionException(exp);
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
        
@@ -193,6 +238,16 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
+                //provera da li je ucionica slobodna u to vreme, bacice exeption ako nije
+                if (classroomID != null)
+                {
+                    Classroom.CheckIfAvailable(classroomID.Value, timespan);
+                }
+
+                //provera da li su svi studenti slobodni u to vreme, bacice exeption ako nisu
+                var studs = _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
+                Student.CheckIfAvailable(timespan, studs);
+
                 Groups g = _context.Groups.First(a => a.groupID == groupID);
                 if (name != null)
                     g.name = name;
@@ -212,6 +267,13 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
+
+                //provera da li je ucionica slobodna u to vreme
+                if (classroomID != null)
+                {
+                    Classroom.CheckIfAvailable(classroomID.Value, timespan);
+                }
+
                 _context.TimeSpans.Add(timespan);
                 _context.SaveChanges();
                 Groups g = new Groups
