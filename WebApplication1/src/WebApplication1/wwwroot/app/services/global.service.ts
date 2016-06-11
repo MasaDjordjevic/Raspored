@@ -98,7 +98,7 @@ export class GlobalService {
             "eo":  "Jaro",
             "es":  "NOT_TRANSLATED_YET",
             "de":  "Jahre",
-            "fr":  "NOT_TRANSLATED_YET",
+            "fr":  "Année",
             "ja":  "年",
         },
 

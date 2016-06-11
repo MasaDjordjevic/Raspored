@@ -5,6 +5,10 @@
     <dl r-dl>
         <dt>ID</dt>
         <dd>{{group.groupID}}</dd>
+        <dt>Trajanje</dt>
+        <dd>{{group.timeSpan && group.timeSpan.startDate}} — {{group.timeSpan && group.timeSpan.endDate}}</dd>
+        <dt>Perioda</dt>
+        <dd>{{group.timeSpan && group.timeSpan.period}}</dd>
     </dl>
 
     <p>{{errorMessage}}</p>
@@ -66,8 +70,6 @@
                 (click)="cancelClassDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
-
-        {{group.timeSpan | json}}
 
         <button r-button raised #combinedScheduleButton
                 text="Kombinovani raspored"
