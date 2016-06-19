@@ -41,6 +41,7 @@ namespace WebApplication1.Data
                     .Include(p => p.Groups)
                     //.ThenInclude(a=>a.GroupsStudents)//.ThenInclude(a=>a.student).ThenInclude(a=>a.UniMembers)
                     .Include(p => p.Groups).ThenInclude(a => a.classroom)
+                    .Include(p => p.Groups).ThenInclude(a => a.timeSpan)
                     where a.divisionID == divisionID
                     select a).First();
 

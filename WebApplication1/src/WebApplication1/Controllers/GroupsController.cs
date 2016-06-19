@@ -180,7 +180,7 @@ namespace WebApplication1.Controllers
 
                     Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID,
                         obj.timespan);
-                    Data.Group.ChangeSudents(newGroup.groupID, obj.students.ToList());
+                    Data.Group.ChangeStudents(newGroup.groupID, obj.students.ToList());
                 }
                 else //update grupe
                 {
@@ -190,7 +190,7 @@ namespace WebApplication1.Controllers
                        
 
                     Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
-                    Data.Group.ChangeSudents(obj.groupID.Value, obj.students.ToList());
+                    Data.Group.ChangeStudents(obj.groupID.Value, obj.students.ToList());
 
                 }
             }

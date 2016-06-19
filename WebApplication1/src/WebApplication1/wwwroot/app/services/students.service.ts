@@ -54,8 +54,8 @@ export class StudentsService {
             .catch(this.handleError);
     }
 
-    addToGroup(studentID: number, groupID: number): Promise<any[]> {
-            return this.http.get(this._url + `/AddToGroup?studentID=${studentID}&groupID=${groupID}`)
+    moveToGroup(studentID: number, groupID: number): Promise<any[]> {
+            return this.http.get(this._url + `/MoveToGroup?studentID=${studentID}&groupID=${groupID}`)
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
