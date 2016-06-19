@@ -308,7 +308,7 @@ namespace WebApplication1.Data
         {
              using (RasporedContext _context = new RasporedContext())
              {
-                 Divisions division = _context.Divisions.First(a => a.divisionID == divisionID);
+                 Divisions division = _context.Divisions.Include(a=>a.Groups).ThenInclude(a=> a.GroupsStudents).First(a => a.divisionID == divisionID);
                  // ovo radim jer nece da ignorise setovane IDjeve pa ih ovako unsetujem
                  Divisions newDiv = new Divisions
                  {
