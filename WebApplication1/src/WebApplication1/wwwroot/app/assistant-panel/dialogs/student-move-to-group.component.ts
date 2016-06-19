@@ -7,7 +7,7 @@ import {StudentsService} from "../../services/students.service";
 
 
 @Component({
-    selector: 'add-student-to-group',
+    selector: 'move-student-to-group',
     template: `        
         <select *ngIf="typeDivisions" [(ngModel)]="selectedDivisionId" (ngModelChange)="selectDivision()">
             <option>Izaberi podelu</option>
@@ -25,7 +25,7 @@ import {StudentsService} from "../../services/students.service";
     providers: [DivisionsService, GroupsService],
 })
 
-export class AddStudentToGroupComponent {
+export class MoveStudentToGroupComponent {
     student: any;
     typeDivisions: TypeDivisions[];
     groups: any[];
