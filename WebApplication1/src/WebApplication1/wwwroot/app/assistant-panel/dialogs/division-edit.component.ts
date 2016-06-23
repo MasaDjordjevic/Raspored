@@ -10,7 +10,7 @@ import {StudentsService} from "../../services/students.service";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_BUTTON} from "../../ui/r-button.component";
 
-import * as moment_ from "../../../js/moment.js";
+import * as moment_ from "moment";
 const moment = moment_["default"];
 
 @Component({
