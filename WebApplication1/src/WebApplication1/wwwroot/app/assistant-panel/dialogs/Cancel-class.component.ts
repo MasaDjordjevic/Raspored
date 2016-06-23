@@ -1,6 +1,9 @@
 import {Component, Input, Pipe, PipeTransform, AfterContentInit} from "angular2/core";
 import {TimeSpan} from "../../models/TimeSpan";
 import {GroupsService} from "../../services/groups.service";
+import {R_DROPDOWN} from "../../ui/r-dropdown";
+import {R_INPUT} from "../../ui/r-input-text.component";
+import {R_BUTTON} from "../../ui/r-button.component";
 
 
 
@@ -23,40 +26,48 @@ class AddWeeksPipe implements PipeTransform {
 @Component({
     selector: 'cancel-class',
     template: `
-    <form #form="ngForm" (ngSubmit)="cancelClass(form.value)">
-        <label>Za koiko nedelja?</label>
-                <input type="text" value="0" #week [(ngModel)]="weekNumber">
-                <br>
-                <label *ngIf="timespan">To je datum: {{ timespan.startDate | addWeeks : weekNumber}}</label>
-                <br>
-                ova labela mozda treba da bude input
-                <br>
-                 
-                <input type="text" placeholder="Naslov" ngControl="title">
-                <input type="text" placeholder="Sadrzaj" ngControl="content">
-               
-                <button type="submit">Otkazi</button>
-                <!-- TODO na ne da se minimizira dialog -->
-                <button r-button flat text="odustani"></button>
-    </form>
+    {{timespan | json}}  
+    <r-dropdown [label]="'Otkazujem čas koji treba da bude održan...'" [(val)]="weekNumber" [primaryColor]="primaryColor">
+        <template ngFor let-i [ngForOf]="[0, 1, 2, 3]">
+            <r-dropdown-item [val]="i">{{timespan.startDate | addWeeks : i}}</r-dropdown-item>  
+        </template>  
+    </r-dropdown>
+
+    <r-input [label]="'Naslov'" [(val)]="title" [primaryColor]="primaryColor"></r-input>
+    <textarea [value]="content"></textarea>
+   
+    <div class="controls">
+        <button r-button flat [text]="'Odustani'" [primaryColor]="primaryColor">Odustani</button>
+        <button r-button raised [text]="'Otkaži čas'" [primaryColor]="primaryColor">Otkaži čas</button>    
+    </div>
     `,
     pipes: [AddWeeksPipe],
     providers: [GroupsService],
+    directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
+    styleUrls: ['app/assistant-panel/dialogs/cancel-class.css'],
 })
 export class CancelClassComponent implements AfterContentInit{
+
+    @Input() primaryColor: string = "MaterialGreen";
+    @Input() secondaryColor: string = "MaterialOrange";
+
     @Input() timespan: any;
     @Input() groupID: number;
-    //zato sto pipe ne okida ako inputu setjem id pa pozivam value od input
-    //input kod otkazivanja casa
+
+    trollArray = [0, 1, 2, 3];
+
     weekNumber:number = 0;
 
     constructor( private _service: GroupsService ) {}
 
+    title: string = "";
+    content: string = "";
+
     ngAfterContentInit() {
-        //debugger;
+
     }
 
     cancelClass(value) {
-        this._service.cancelClass(this.groupID, value.title, value.content, this.weekNumber);
+        this._service.cancelClass(this.groupID, this.title, this.content, this.weekNumber);
     }
 }

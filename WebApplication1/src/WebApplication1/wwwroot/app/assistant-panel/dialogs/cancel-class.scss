@@ -1,0 +1,22 @@
+:host {
+  padding: 2em;
+  display: flex;
+  flex-flow: column;
+  width: 300px;
+
+  > * {
+    margin: .5em;
+  }
+
+  textarea:focus {
+    outline: none;
+    height: 80px;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+  }
+}

@@ -21,8 +21,8 @@
     </r-dialog>
 
     <r-dialog #cancelClassDialog [source]="cancelClassButton">
-        <div style="width: 500px; height:600px;">
-            <cancel-class [timespan]="group.timeSpan" [groupID]="group.groupID"></cancel-class>
+        <div *ngIf="group.timeSpanID">
+            <cancel-class [timespan]="group.timeSpan" [groupID]="group.groupID" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor"></cancel-class>
         </div>
     </r-dialog>
 
@@ -65,7 +65,8 @@
                 [primaryColor]="primaryColor">
         </button>
 
-        <button r-button raised #cancelClassButton
+        <button *ngIf="group.timeSpanID"
+                r-button raised #cancelClassButton
                 text="Otkazi cas"
                 (click)="cancelClassDialog.open()"
                 [primaryColor]="primaryColor">

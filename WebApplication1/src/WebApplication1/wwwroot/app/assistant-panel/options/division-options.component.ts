@@ -111,6 +111,10 @@ export class DivisionOptionsComponent implements AfterViewInit {
         }
     }
 
+    ngAfterViewInit() {
+        
+    }
+
     public copyToClipboard(el: HTMLTextAreaElement) {
         // Selektiramo sve
         el.selectionStart = 0;
