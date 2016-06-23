@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using WebApplication1.Controllers;
 using WebApplication1.Extentions;
 using WebApplication1.Models;
 
@@ -56,6 +58,40 @@ namespace WebApplication1.Data
         public static bool Equal(TimeSpans a, TimeSpans b)
         {
             return a.startDate == b.startDate && a.endDate == b.endDate;
+        }
+
+        public static TimeSpans getTimeSpan(GroupsController.TimeSpanBinding bind)
+        {
+            TimeSpans ts = new TimeSpans();
+            if (bind.period == 0)
+            {
+                ts.period = bind.period;
+                ts.startDate = bind.startDate;
+                ts.endDate = bind.endDate;
+                return ts;
+            }
+            else
+            {
+                DateTime mon = bind.startDate.StartOfWeek();
+                ts.startDate = mon.AddDays(bind.dayOfWeek.Value - 1);
+                ts.endDate = ts.startDate;
+                ts.startDate = ts.startDate.Add(convertHM(bind.timeStart));
+                ts.endDate = ts.endDate.Add(convertHM(bind.timeEnd));
+                ts.period = bind.period;
+            }
+            return ts;
+        }
+
+        // konvertuje HH:MM u TimeSpan
+        public static System.TimeSpan convertHM(string s)
+        { 
+            // za svaki slucaj, iako je format fixan
+            int parsePoint = s.IndexOf(":");
+            int hour = Int32.Parse(s.Substring(0, parsePoint));
+            int min = Int32.Parse(s.Substring(parsePoint+1));
+
+            System.TimeSpan ts = new System.TimeSpan(hour, min, 0);
+            return ts;
         }
     }
 }
