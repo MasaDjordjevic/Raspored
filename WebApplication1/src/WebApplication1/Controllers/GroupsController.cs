@@ -9,6 +9,7 @@ using Microsoft.Data.Entity.Query.Expressions;
 using WebApplication1.Models;
 using Newtonsoft.Json;
 using WebApplication1.Exceptions;
+using TimeSpan = WebApplication1.Data.TimeSpan;
 
 namespace WebApplication1.Controllers
 {
@@ -136,6 +137,16 @@ namespace WebApplication1.Controllers
             return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
         }
 
+        public class TimeSpanBinding
+        {
+            public DateTime startDate;
+            public DateTime endDate;
+            public int? period;
+            public int? dayOfWeek;
+            public string timeStart;
+            public string timeEnd;
+        }
+
 
         //svi parametri moraju da budu nullable da ceo objekat ne bi bio null ukoliko se jedan od paremetara ne posalje
         public class UpdateGroupBinding
@@ -146,7 +157,7 @@ namespace WebApplication1.Controllers
             public IEnumerable<int> students;
             public int? divisionID;
             public int? assistantID;
-            public TimeSpans timespan;
+            public TimeSpanBinding timespan;
         }
 
         // POST: api/Groups/Update
@@ -159,7 +170,6 @@ namespace WebApplication1.Controllers
                 return Ok(new {status="parameter error"});
             }
 
-            
             try
             {
                 if (obj.assistantID != null)
@@ -167,6 +177,8 @@ namespace WebApplication1.Controllers
                     Data.Group.SetAsstant(obj.groupID.Value, obj.assistantID.Value);
                 }
 
+                //konvertovanje u timeSpan
+                TimeSpans ts = TimeSpan.getTimeSpan(obj.timespan);
 
                 //dodavanje groupe
                 if (obj.groupID == null)
@@ -179,7 +191,7 @@ namespace WebApplication1.Controllers
                     //Data.Group.CheckConsistencyWithOtherGroups(null, obj.students.ToList());
 
                     Groups newGroup = Data.Group.Create(obj.divisionID.Value, obj.name, obj.classroomID,
-                        obj.timespan);
+                        ts);
                     Data.Group.ChangeStudents(newGroup.groupID, obj.students.ToList());
                 }
                 else //update grupe
@@ -189,7 +201,7 @@ namespace WebApplication1.Controllers
                     //Data.Group.CheckConsistencyWithOtherGroups(obj.groupID.Value, obj.students.ToList());
                        
 
-                    Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, obj.timespan);
+                    Data.Group.Update(obj.groupID.Value, obj.name, obj.classroomID, ts);
                     Data.Group.ChangeStudents(obj.groupID.Value, obj.students.ToList());
 
                 }

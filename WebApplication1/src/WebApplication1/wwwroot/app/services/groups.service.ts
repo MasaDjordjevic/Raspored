@@ -27,7 +27,7 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
-    updateGroup(groupID: number, divisionID: number, assistantID:number, name: string, classroomID: number, timespan: TimeSpan, students: Array<number>) {
+    updateGroup(groupID: number, divisionID: number, assistantID:number, name: string, classroomID: number, timespan: any, students: Array<number>) {
         let body = JSON.stringify({
             groupID: groupID,
             name: name,
@@ -46,6 +46,7 @@ export class GroupsService {
             .then(this.extractData)
             .catch(this.handleError);
     }
+    
 
     removeGroup(groupId:number) {
         return this.http.delete(this._url + '/DeleteGroups/' + groupId)

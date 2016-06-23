@@ -319,5 +319,38 @@ namespace MyFirstDnxUnitTests
                 string s = ex.Message;
             }
         }
+
+        [Fact]
+        public void GetHM()
+        {
+            string test = "09:15";
+            TimeSpan ts = WebApplication1.Data.TimeSpan.getHM(test);
+            TimeSpan res = new TimeSpan(09,15,0);
+            Assert.Equal(ts, res);
+        }
+
+        [Fact]
+        public void ConvertToTimeSpan()
+        {
+            GroupsController.TimeSpanBinding bind = new GroupsController.TimeSpanBinding
+            {
+                startDate = new DateTime(2016, 2, 17, 08, 15, 00),
+                endDate = new DateTime(2016, 2, 17, 09, 15, 00),
+                period = 1,
+                dayOfWeek = 2,
+                timeStart = "08:45",
+                timeEnd = "09:20"
+            };
+            TimeSpans ts = WebApplication1.Data.TimeSpan.getTimeSpan(bind);
+            TimeSpans res = new TimeSpans
+            {
+                startDate = new DateTime(2016, 2, 16, 8, 45, 0),
+                endDate = new DateTime(2016, 2, 16, 9, 20, 0),
+                period = 1
+            };
+            Assert.Equal(ts.startDate,res.startDate);
+            Assert.Equal(ts.endDate, res.endDate);
+            Assert.Equal(ts.period, res.period);
+        }
     }
 }

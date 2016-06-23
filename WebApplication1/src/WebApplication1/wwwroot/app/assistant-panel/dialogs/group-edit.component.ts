@@ -64,9 +64,16 @@ export class GroupEditComponent implements AfterContentInit {
         this.editedGroupName = g.name;
         this.editedClassroom = g.classroomID;
         this.editedAssistant = g.assistant && g.assistant.uniMemberID;
-        this.editedTimeStart = g.timeSpan && g.timeSpan.startDate;
-        this.editedTimeEnd = g.timeSpan && g.timeSpan.endDate;
+        this.editedDateTimeStart = g.timeSpan && g.timeSpan.startDate;
+        this.editedDateTimeEnd = g.timeSpan && g.timeSpan.endDate;
         this.editedPeriod = g.timeSpan && g.timeSpan.period;
+
+        if(g.timeSpan != null) {
+            var details = TimeSpan.getDetailed(g.timeSpan);
+            this.editedDayOfWeek = details.dayOfWeek;
+            this.editedTimeStart = details.timeStart;
+            this.editedTimeEnd = details.timeEnd;
+        }
     }
 
 
@@ -164,14 +171,14 @@ export class GroupEditComponent implements AfterContentInit {
         debugger;
         var pom: Array<number> = this.chosenStudents.map(i => i.studentID);
         console.log(pom);
-        var timespan: TimeSpan = new TimeSpan;
-        if (this.editedTimeStart && this.editedTimeEnd && this.editedPeriod) {
-            timespan.startDate = new Date(this.editedTimeStart);
-            timespan.endDate = new Date(this.editedTimeEnd);
-            timespan.period = +this.editedPeriod;
-        } else {
-            timespan = null;
-        }
+        var timespan = {};
+        timespan.startDate = new Date(this.editedDateTimeStart);
+        timespan.endDate = new Date(this.editedDateTimeEnd);
+        timespan.period = +this.editedPeriod;
+        timespan.dayOfWeek = this.editedDayOfWeek;
+        timespan.timeStart = this.editedTimeStart;
+        timespan.timeEnd = this.editedTimeEnd;
+
         console.log(timespan);
         debugger;
         this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, this.editedAssistant, this.editedGroupName, this.editedClassroom, timespan,  pom)
