@@ -22,7 +22,12 @@
 
     <r-dialog #cancelClassDialog [source]="cancelClassButton">
         <div *ngIf="group.timeSpanID">
-            <cancel-class [timespan]="group.timeSpan" [groupID]="group.groupID" [primaryColor]="primaryColor" [secondaryColor]="secondaryColor"></cancel-class>
+            <cancel-class [timespan]="group.timeSpan"
+                          [groupID]="group.groupID"
+                          [primaryColor]="primaryColor"
+                          [secondaryColor]="secondaryColor"
+                          (close)="cancelClassDialog.close()">
+            </cancel-class>
         </div>
     </r-dialog>
 
