@@ -214,7 +214,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
         return ret;
     }
     public get $$newDivisionClassId(): boolean {
-        return true; // smatramo da niko nece da udje u inspect element i promeni nesto
+        return true;
     }
     public get $$newDivisionTypeId(): boolean {
         return true;
@@ -237,7 +237,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
     }
 
     public get $$newDivisionCreationWay(): boolean {
-        return true;
+        return this.newDivisionCreationWay != "";
     }
     public get $$newDivisionCreationNumberX(): boolean {
         var ret: boolean = !!this.newDivisionCreationNumberX;
@@ -245,7 +245,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
         return ret;
     }
     public get $$newDivisionCreationOrderIsRandom(): boolean {
-        return true;
+        return this.newDivisionCreationOrderIsRandom != "";
     }
 
     // 0 se misli da je sve validno, zajedno

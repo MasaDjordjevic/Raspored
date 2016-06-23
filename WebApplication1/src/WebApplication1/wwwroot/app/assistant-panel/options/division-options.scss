@@ -14,3 +14,11 @@
     justify-content: space-between;
   }
 }
+
+.export {
+  padding: 1em;
+
+  #csvExport {
+    font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  }
+}

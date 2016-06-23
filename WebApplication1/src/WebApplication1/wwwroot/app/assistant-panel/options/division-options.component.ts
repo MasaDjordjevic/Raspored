@@ -1,4 +1,4 @@
-﻿import {Component, Input, EventEmitter, Output} from "angular2/core";
+﻿import {Component, Input, EventEmitter, Output, ViewEncapsulation, AfterViewInit} from "angular2/core";
 import {Division} from "../../models/Division";
 import {DivisionsService} from "../../services/divisions.service";
 import {R_DIALOG} from "../../ui/r-dialog";
@@ -10,6 +10,7 @@ import {TrimPipe} from "../../pipes/trim.pipe";
 import {GroupEditComponent} from "../dialogs/group-edit.component";
 import {GroupsService} from "../../services/groups.service";
 import {DivisionEditComponent} from "../dialogs/division-edit.component";
+import {MassGroupEditComponent} from "../dialogs/mass-group-edit.component";
 
 
 
@@ -21,11 +22,12 @@ import {DivisionEditComponent} from "../dialogs/division-edit.component";
         'app/assistant-panel/options/division-options.css',
     ],
     providers: [DivisionsService, GroupsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, DivisionCreatorComponent, GroupEditComponent, DivisionEditComponent],
-    pipes: [TrimPipe]
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL,
+        DivisionCreatorComponent, GroupEditComponent, DivisionEditComponent, MassGroupEditComponent],
+    pipes: [TrimPipe],
 })
 
-export class DivisionOptionsComponent {
+export class DivisionOptionsComponent implements AfterViewInit {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
@@ -87,6 +89,40 @@ export class DivisionOptionsComponent {
 
     public refreshAssistantPanel($options) {
         this.update.emit($options);
+    }
+        
+    public generateCSV() {
+        var el: any = document.getElementById("csvExport");
+        if (el) {
+            var s = "";
+            for (let i = 0; i < this.division.Groups.length; i++) {
+                s += `${this.division.Groups[i].name}\n`;
+                s += `Vreme\t${this.division.Groups[i].timeSpanID}\n`;
+                s += `Mesto\t${this.division.Groups[i].classroom && this.division.Groups[i].classroom.number}\n\n`;
+                s += 'Indeks\tIme\tPrezime\n';
+                for (let j = 0; j < this.division.Groups[i].GroupsStudents.length; j++) {
+                    s += `${this.division.Groups[i].GroupsStudents[j].student.indexNumber}\t`;
+                    s += `${this.division.Groups[i].GroupsStudents[j].student.UniMembers.name}\t`
+                    s += `${this.division.Groups[i].GroupsStudents[j].student.UniMembers.surname}\n`;
+                }
+                s += '\n\n\n'
+            }
+            el.value = s;
+        }
+    }
+
+    public copyToClipboard(el: HTMLTextAreaElement) {
+        // Selektiramo sve
+        el.selectionStart = 0;
+        el.selectionEnd = el.value.length;
+        // Probamo da kopiramo selektirano (nece na svakom browseru)
+        try {
+            document.execCommand("copy");
+        } catch (err) {
+            console.error("Neuspelo kopiranje :/");
+        }
+        // Deselektiramo
+        el.selectionEnd = 0;
     }
 
 }

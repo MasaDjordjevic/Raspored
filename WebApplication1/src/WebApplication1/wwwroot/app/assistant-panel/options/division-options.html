@@ -46,7 +46,12 @@
     </r-dialog>
 
     <r-dialog #exportDivisionDialog [source]="exportDivisionButton">
-        PDF
+        <div class="export">
+            <textarea id="csvExport" #csvExport readonly cols="100" rows="20"></textarea>
+            <div class="controls">
+                <button r-button flat [text]="'Kopiraj'" (click)="copyToClipboard(csvExport)">Kopiraj</button>
+            </div>
+        </div>
     </r-dialog>
 
     <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
@@ -100,7 +105,7 @@
 
         <button r-button raised #exportDivisionButton
                 text="Izvezi raspodelu"
-                (click)="exportDivisionDialog.open()"
+                (click)="generateCSV(); exportDivisionDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
