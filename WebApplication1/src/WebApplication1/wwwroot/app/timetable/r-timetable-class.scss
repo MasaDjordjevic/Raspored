@@ -42,8 +42,9 @@
 :host.expanded {
   $h: 90vh;
   $w: 90vw;
-  height: $h!important;
-  width: $w!important;
+  transform: scale(0.9);
+  //height: $h!important;
+  //width: $w!important;
   z-index: 20!important;
   @include z-depth(2);
   padding: 1.5em;
