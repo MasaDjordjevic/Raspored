@@ -3,11 +3,13 @@
   "version": "0.0.1",
   "dependencies": {
     "angular2": "2.0.0-beta.17",
-    "systemjs": "0.19.6",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.35.0",
+    "moment": "^2.13.0",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",
+    "systemjs": "0.19.6",
+    "typings": "^0.8.1",
     "zone.js": "0.6.12"
   },
   "devDependencies": {
@@ -18,18 +20,19 @@
     "gulp-rename": "1.2.2",
     "rimraf": "2.2.8",
     "lodash": "3.10.1",
-	"concurrently": "^2.0.0",
-	"typings": "^0.8.1",
-	"typescript": "^1.8.10"
+    "concurrently": "^2.0.0",
+    "typings": "^0.8.1",
+    "typescript": "^1.8.10"
   },
   "scripts": {
-    "start" : "npm run prestart && concurrently \"npm run pokemon\" \"npm run watch\"",
-	"prestart": "gulp && npm run sass",
-	"pokemon": "nodemon --ext cs --exec \"dnx web ASPNET_ENV=Development\"",
-	"watch": "concurrently \"npm run tsc:w\" \"npm run sass:w\"",
-	"npm-tsc": "tsc",
+    "start": "npm run prestart && concurrently \"npm run pokemon\" \"npm run watch\"",
+    "prestart": "gulp && npm run sass",
+    "pokemon": "nodemon --ext cs --exec \"dnx web ASPNET_ENV=Development\"",
+    "watch": "concurrently \"npm run tsc:w\" \"npm run sass:w\"",
+    "npm-tsc": "tsc",
     "tsc:w": "tsc -w",
-	"sass": "sass --update wwwroot:wwwroot",
-	"sass:w": "sass --watch wwwroot:wwwroot"
+    "sass": "sass --update wwwroot:wwwroot",
+    "sass:w": "sass --watch wwwroot:wwwroot",
+    "typings": "typings"
   }
 }
