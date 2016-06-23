@@ -23,11 +23,12 @@
     </r-dialog>
 
     <r-dialog #removeFromGroupDialog [source]="removeFromGroupButton">
-        <div style="width: 500px; height:600px;">
-            <label>Da li ste sigurni?</label>
-            <button r-button raised text="izbaci" (click)="removeFromGroup()"></button>
-            <!-- TODO na ne da se minimizira dialog -->
-            <button r-button flat text="otkazi"></button>
+        <div class="remove-from-group-dialog">
+            <div class="dialog-text">Ukloni studenta <b>{{student.UniMembers.name}} {{student.UniMembers.surname}}</b> sa brojem indeksa <b>{{student.indexNumber}}</b> iz grupe <b>TODO, NEMAM GRUPU</b>?</div>
+            <div class="dialog-controls">
+                <button r-button flat text="Odustani" (click)="removeFromGroupDialog.close()" [primaryColor]="primaryColor">Odustani</button>
+                <button r-button raised text="Ukloni" (click)="removeFromGroup(); removeFromGroupDialog.close()" [primaryColor]="primaryColor">Ukloni</button>
+            </div>
         </div>
     </r-dialog>
 

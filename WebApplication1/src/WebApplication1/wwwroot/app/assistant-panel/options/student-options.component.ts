@@ -12,7 +12,8 @@ import {AddStudentToGroupComponent} from "../dialogs/student-add-to-group.compon
 @Component({
     selector: 'r-student-options',
     templateUrl: 'app/assistant-panel/options/student-options.html',
-    styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
+    styleUrls: ['app/assistant-panel/options/assistant-panel-options.css',
+                'app/assistant-panel/options/student-options.css'],
     providers: [StudentsService],
     directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, AddStudentToGroupComponent],
     pipes: [TrimPipe]
