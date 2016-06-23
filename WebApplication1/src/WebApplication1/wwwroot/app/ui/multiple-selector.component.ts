@@ -147,10 +147,6 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     <!--{{query}}<br/>--> 
     <!--{{itemsValueText | json}}-->
     `,
-    host: {
-        //"[value]": "val",
-        //"(input)": "valChange.next($event.target.value)"
-    },
     providers: [RMultipleSelectorEmitterService],
     directives: [R_INPUT],
     styleUrls: ['app/ui/r-multiple-selector.css'],
