@@ -10,6 +10,7 @@ import {StudentsService} from "../../services/students.service";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_BUTTON} from "../../ui/r-button.component";
 
+import * as moment from "../../../js/moment.js";
 
 @Component({
     selector: 'division-edit', 
