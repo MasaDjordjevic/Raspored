@@ -185,17 +185,17 @@ export class AssistantPanelComponent {
 
         // Ako uopste nisu prosledjene opcije, samo uradi refresh
         if (!$options) {
-            this._selectedStudentId = new Number(this._selectedStudentId);
-            this._selectedGroupId = new Number(this._selectedGroupId);
-            this._selectedDivisionId = new Number(this._selectedDivisionId);
-            this._selectedDepartmentId = new Number(this._selectedDepartmentId);
+            this._selectedStudentId = <any>(new Number(this._selectedStudentId));
+            this._selectedGroupId = <any>(new Number(this._selectedGroupId));
+            this._selectedDivisionId = <any>(new Number(this._selectedDivisionId));
+            this._selectedDepartmentId = <any>(new Number(this._selectedDepartmentId));
             // this._selectedStudentId = +(this._selectedStudentId + ""); // TODO ovako
         } else {
             // Inace, u zavisnosti od prosledjene opcije uradi odgovarajuce manipulacije
             if ( $options.shiftMinusOne) {
-                this._selectedDepartmentId = this._selectedDivisionId === -1 ? -1 : new Number(this._selectedDepartmentId);
-                this._selectedDivisionId = this._selectedGroupId === -1 ? -1 : new Number(this._selectedDivisionId);
-                this._selectedGroupId = this._selectedStudentId === -1 ? -1 : new Number(this._selectedGroupId);
+                this._selectedDepartmentId = this._selectedDivisionId === -1 ? -1 : <any>(new Number(this._selectedDepartmentId));
+                this._selectedDivisionId = this._selectedGroupId === -1 ? -1 : <any>(new Number(this._selectedDivisionId));
+                this._selectedGroupId = this._selectedStudentId === -1 ? -1 : <any>(new Number(this._selectedGroupId));
                 this._selectedStudentId = -1;
             } else if ($options.allMinusOne) {
                 this._selectedStudentId = -1;

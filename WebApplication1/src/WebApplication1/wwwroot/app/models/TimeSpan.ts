@@ -4,7 +4,7 @@
     period: number;
 
     public static getDetailed(ts) {
-        var returnValue = {};
+        var returnValue: any = {}; 
         if (ts.period == 0) return returnValue;
 
         var start = new Date(ts.startDate);

@@ -31,7 +31,7 @@ export class DivisionOptionsComponent implements AfterViewInit {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
-    @Output() update: EventEmitter = new EventEmitter();
+    @Output() update: EventEmitter<any> = new EventEmitter<any>();
 
     division: any;
     errorMessage: string;

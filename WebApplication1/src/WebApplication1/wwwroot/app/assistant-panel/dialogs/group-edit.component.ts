@@ -70,9 +70,9 @@ export class GroupEditComponent implements AfterContentInit {
 
         if(g.timeSpan != null) {
             var details = TimeSpan.getDetailed(g.timeSpan);
-            this.editedDayOfWeek = details.dayOfWeek;
-            this.editedTimeStart = details.timeStart;
-            this.editedTimeEnd = details.timeEnd;
+            this.editedDayOfWeek = (<any>details).dayOfWeek;
+            this.editedTimeStart = (<any>details).timeStart;
+            this.editedTimeEnd = (<any>details).timeEnd;
         }
     }
 
@@ -171,7 +171,7 @@ export class GroupEditComponent implements AfterContentInit {
         debugger;
         var pom: Array<number> = this.chosenStudents.map(i => i.studentID);
         console.log(pom);
-        var timespan = {};
+        var timespan: any = {};
         timespan.startDate = new Date(this.editedDateTimeStart);
         timespan.endDate = new Date(this.editedDateTimeEnd);
         timespan.period = +this.editedPeriod;

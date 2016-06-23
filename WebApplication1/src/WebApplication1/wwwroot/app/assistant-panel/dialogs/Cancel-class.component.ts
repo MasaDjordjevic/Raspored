@@ -9,8 +9,8 @@ import {R_BUTTON} from "../../ui/r-button.component";
 
 
 @Pipe({
-    name:'addWeeks',
-    purse:false
+    name: 'addWeeks',
+    pure: false
 })
 class AddWeeksPipe implements PipeTransform {
     transform(date, weekNumber, today) {
