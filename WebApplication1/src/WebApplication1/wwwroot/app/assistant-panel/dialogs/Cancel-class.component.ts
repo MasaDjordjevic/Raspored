@@ -13,12 +13,12 @@ import {R_BUTTON} from "../../ui/r-button.component";
     purse:false
 })
 class AddWeeksPipe implements PipeTransform {
-    transform(date, weekNumber) {
+    transform(date, weekNumber, today) {
         //nije htelo normalno pa sam morala ovako da ga ukomplikujem
         //TODO ovo dodaje na taj datum, treba da nadje refentni tom datumu u tekucoj nedelji pa da doda na to
         // ne treba da se doda na date, nego na datum koji odgovara dateu u tekucoj nedelji
         // pazi na periodu, dodaj 7*periodu dok ne predjes danasnji datum
-        var ret = new Date((new Date).setDate((new Date(date)).getDate() + 7*weekNumber));
+        var ret = new Date(today.setDate((new Date(date)).getDate() + 7*weekNumber));
         return ret;
     }
 }
@@ -29,7 +29,7 @@ class AddWeeksPipe implements PipeTransform {
     {{timespan | json}}  
     <r-dropdown [label]="'Otkazujem čas koji treba da bude održan...'" [(val)]="weekNumber" [primaryColor]="primaryColor">
         <template ngFor let-i [ngForOf]="[0, 1, 2, 3]">
-            <r-dropdown-item [val]="i">{{timespan.startDate | addWeeks : i}}</r-dropdown-item>  
+            <r-dropdown-item [val]="i">i (ne moze ovo s pajpom)</r-dropdown-item>  
         </template>  
     </r-dropdown>
 
@@ -54,7 +54,8 @@ export class CancelClassComponent implements AfterContentInit{
     @Input() timespan: any;
     @Input() groupID: number;
 
-    trollArray = [0, 1, 2, 3];
+    // Mora da se pozove samo jednom da se Angular ne bi šlogirao
+    today = new Date();
 
     weekNumber:number = 0;
 

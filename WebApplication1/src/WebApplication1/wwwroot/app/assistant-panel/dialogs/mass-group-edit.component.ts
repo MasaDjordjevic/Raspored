@@ -13,7 +13,7 @@ import {R_BUTTON} from "../../ui/r-button.component";
         <div *ngFor="let group of division.Groups, let i = index">
             <div class="name">{{group.name}}</div>
             <div class="classroom">
-                <r-dropdown [label]="'Učionica'" [(val)]="editedDivision[i].classroomId">
+                <r-dropdown [label]="'Učionica'" [(val)]="editedDivision[i] && editedDivision[i].classroomId">
                     <r-dropdown-item *ngFor="let classroom of classrooms" [value]="classroom.classroomID">
                         {{classroom.number}}
                     </r-dropdown-item>
