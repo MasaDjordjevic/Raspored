@@ -130,7 +130,7 @@ export class RDropdownItemComponent implements OnInit, AfterViewInit {
     selector: 'r-dropdown',
     template: `
         <div class="r-dropdown" (click)="toggleExpanded()">
-            <label [ngClass]="{collapsed: !!val, highlight: isExpanded}">{{label}}<!--<b>collapsed bool</b> {{!!val}} <b>offset</b> {{_currentSelectedOffset}} <b>currVal</b> {{_currentSelectedValue}} <b>inputVal</b> {{val}}--></label>
+            <label [ngClass]="{collapsed: !!val || val == 0, highlight: isExpanded}">{{label}}<!--<b>collapsed bool</b> {{!!val}} <b>offset</b> {{_currentSelectedOffset}} <b>currVal</b> {{_currentSelectedValue}} <b>inputVal</b> {{val}}--></label>
             <span>{{currentSelectedStr}}</span>
             <div class="line-effect" [ngClass]="{highlight: isExpanded}"></div>
             <div class="r-dropdown-items-wrapper"
