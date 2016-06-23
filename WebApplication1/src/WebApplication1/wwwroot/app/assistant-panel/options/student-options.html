@@ -13,12 +13,14 @@
 
     <div class="flex-spacer"></div>
 
-    <r-dialog #addToGroupDialog [source]="addToGroupButton">
+    <r-dialog #moveToGroupDialog [source]="moveToGroupButton">
         <div style="width: 500px; height:600px;">
-            <add-student-to-group
+            <move-student-to-group
                     *ngIf="_studentId > 0"
-                    [studentId]="_studentId">
-            </add-student-to-group>
+                    [studentId]="_studentId"
+                    [groupId]="groupId"
+                    [divisionId]="divisionId">
+            </move-student-to-group>
         </div>
     </r-dialog>
 
@@ -45,9 +47,9 @@
 
         <div class="flex-spacer"></div>
 
-        <button r-button raised #addToGroupButton
-                text="Dodaj u grupu"
-                (click)="addToGroupDialog.open()"
+        <button r-button raised #moveToGroupButton
+                text="Pomeri u grupu"
+                (click)="moveToGroupDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 

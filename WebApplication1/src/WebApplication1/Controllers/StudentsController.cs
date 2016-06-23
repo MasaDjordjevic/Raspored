@@ -149,14 +149,8 @@ namespace WebApplication1.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-
-
-
             try
             {
-                //proveri da li dolazi do nekonzistentnosti raspodele
-                Data.Group.CheckConsistencyWithOtherGroups(groupID, new List<int>() {studentID});
-
                 Data.Student.AddToGroup(studentID, groupID);
             }
             catch (InconsistentDivisionException ex)
@@ -166,6 +160,30 @@ namespace WebApplication1.Controllers
             catch (DbUpdateConcurrencyException)
             {
                throw;
+            }
+
+            return Ok(new { status = "uspelo" });
+        }
+
+        [HttpGet]
+        public IActionResult MoveToGroup(int studentID, int groupID)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            try
+            {
+                Data.Student.MoveToGroup(studentID, groupID);
+            }
+            catch (InconsistentDivisionException ex)
+            {
+                return Ok(new { status = "inconsistent division", message = ex.Message });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
             }
 
             return Ok(new { status = "uspelo" });

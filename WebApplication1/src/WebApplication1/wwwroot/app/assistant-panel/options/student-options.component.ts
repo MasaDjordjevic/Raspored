@@ -6,7 +6,7 @@ import {R_BUTTON} from "../../ui/r-button.component";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_DL} from "../../ui/r-dl";
 import {TrimPipe} from "../../pipes/trim.pipe";
-import {AddStudentToGroupComponent} from "../dialogs/student-add-to-group.component";
+import {MoveStudentToGroupComponent} from "../dialogs/student-move-to-group.component";
 
 
 @Component({
@@ -15,7 +15,7 @@ import {AddStudentToGroupComponent} from "../dialogs/student-add-to-group.compon
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css',
                 'app/assistant-panel/options/student-options.css'],
     providers: [StudentsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, AddStudentToGroupComponent],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, MoveStudentToGroupComponent],
     pipes: [TrimPipe]
 })
 
@@ -23,7 +23,7 @@ export class StudentOptionsComponent {
     
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
-
+    @Input() divisionId: number;
 
     student: any;
     errorMessage: string;

@@ -186,9 +186,8 @@ namespace WebApplication1.Data
         {
             return !cancelling ?? true;
         }
-      
 
-        public static void AddToGroup(int studentID, int groupID)
+        public static void TryAddToGroup(int studentID, int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
@@ -210,7 +209,15 @@ namespace WebApplication1.Data
                 {
                     throw new InconsistentDivisionException("Student nije slobodan u vreme kada grupa ima cas.");
                 }
+            }
+        }
 
+        public static void AddToGroup(int studentID, int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                // provera da li dolazi do nekonzistentnosti
+                TryAddToGroup(studentID, groupID);
 
                 GroupsStudents gs = new GroupsStudents
                 {
@@ -219,6 +226,48 @@ namespace WebApplication1.Data
                 };
                 _context.GroupsStudents.Add(gs);
                 _context.SaveChanges();
+            }
+        }
+
+        // brise studenta iz svih grupa raspodele divisionID
+        // vraca id grupe iz koje je izbrisan (trebalo bi da bude samo jedna ukoliko je raspodela bila konzistentna)
+        // vraca id da bih mogla da odglumim transakciju
+        public static int RemoveFromAllGroups(int studentID, int divisionID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                int groupID = -1;
+                var groupStudents =
+                    _context.GroupsStudents.Where(a => a.studentID == studentID && a.group.divisionID == divisionID)
+                        .ToList();
+
+                foreach (GroupsStudents gs in groupStudents)
+                {
+                    groupID = gs.groupID;
+                    _context.Remove(gs);
+                }
+                _context.SaveChanges();
+                return groupID;
+            }
+        }
+
+        public static void MoveToGroup(int studentID, int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                int removedId = RemoveFromAllGroups(studentID,
+                    _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First());
+                try
+                {
+                    AddToGroup(studentID, groupID);
+                }
+                catch (InconsistentDivisionException ex)
+                {
+                    //rollback
+                    AddToGroup(studentID, removedId);
+                    //prosledi exception
+                    throw ex;
+                }
             }
         }
 

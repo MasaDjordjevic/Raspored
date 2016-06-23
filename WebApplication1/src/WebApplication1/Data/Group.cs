@@ -19,7 +19,10 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
 
-                return _context.Groups.Include(a => a.classroom).Include(a => a.timeSpan).ToList();
+                return _context.Groups
+                    .Include(a => a.classroom)
+                    .Include(a => a.timeSpan)
+                    .ToList();
             }
         }
 
@@ -97,6 +100,14 @@ namespace WebApplication1.Data
                 };
                 _context.Activities.Add(act);
                 _context.SaveChanges();
+            }
+        }
+
+        public static void MoveStudents(int groupID, List<int> students)
+        {
+            foreach (int stud in students)
+            {
+                Student.MoveToGroup(stud, groupID);
             }
         }
 
@@ -228,10 +239,13 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void ChangeSudents(int groupID, List<int> newStudents)
+        // groupa groupID ima novu listu studenata newStudents
+        public static void ChangeStudents(int groupID, List<int> newStudents)
         {
+            // izbaci sve studente iz grupe
             RemoveAllStudents(groupID);
-            AddStudnets(groupID, newStudents);
+            // ubaci studente iz liste, njih prethodno izbaci iz svih ostalih grupa raspodele
+            MoveStudents(groupID, newStudents);
         }
 
         public static void Update(int groupID, string name, int? classroomID, TimeSpans timespan)
