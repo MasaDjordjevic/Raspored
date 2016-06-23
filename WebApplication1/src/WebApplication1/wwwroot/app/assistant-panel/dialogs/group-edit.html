@@ -12,7 +12,7 @@
                     </r-dropdown-item>
                 </r-dropdown>
 
-                <r-dropdown *ngIf="assistants" [label]="'Asistent'" name="assistant" [(val)]="editedAssistant">
+                <r-dropdown *ngIf="assistants" [label]="'Asistent'" [(val)]="editedAssistant">
                     <r-dropdown-item *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</r-dropdown-item>
                 </r-dropdown>
 
@@ -20,9 +20,29 @@
             </div>
 
             <div class="inputs-right">
-                <r-input class="light-theme" [label]="'Početak'" [(val)]="editedTimeStart"></r-input>
-                <r-input class="light-theme" [label]="'Kraj'" [(val)]="editedTimeEnd"></r-input>
-                <r-input class="light-theme" [label]="'Perioda'" [(val)]="editedPeriod"></r-input>
+                <r-dropdown [label]="'Perioda'" [(val)]="editedPeriod">
+                    <r-dropdown-item [value]="1">Svake nedelje</r-dropdown-item>
+                    <r-dropdown-item [value]="2">Na dve nedelje</r-dropdown-item>
+                    <r-dropdown-item [value]="4">Na četiri nedelje</r-dropdown-item>
+                    <r-dropdown-item [value]="0">Jednom</r-dropdown-item>
+                </r-dropdown>
+                <template [ngIf]="editedPeriod && editedPeriod !== 0">
+                    <r-dropdown [label]="'Dan u nedelji'" [(val)]="editedDayOfWeek">
+                        <r-dropdown-item [value]="0">Ponedeljak</r-dropdown-item>
+                        <r-dropdown-item [value]="1">Utorak</r-dropdown-item>
+                        <r-dropdown-item [value]="2">Sreda</r-dropdown-item>
+                        <r-dropdown-item [value]="3">Četvrtak</r-dropdown-item>
+                        <r-dropdown-item [value]="4">Petak</r-dropdown-item>
+                        <r-dropdown-item [value]="5">Subota</r-dropdown-item>
+                        <r-dropdown-item [value]="6">Nedelja</r-dropdown-item>
+                    </r-dropdown>
+                    <r-input class="light-theme" [label]="'Početak (HH:MM)'" [(val)]="editedTimeStart"></r-input>
+                    <r-input class="light-theme" [label]="'Kraj (HH:MM)'" [(val)]="editedTimeEnd"></r-input>
+                </template>
+                <template [ngIf]="editedPeriod == 0">
+                    <r-input class="light-theme" [label]="'Početak (YYYY-MM-DD HH:MM)'" [(val)]="editedDateTimeStart"></r-input>
+                    <r-input class="light-theme" [label]="'Kraj (YYYY-MM-DD HH:MM)'" [(val)]="editedDateTimeEnd"></r-input>
+                </template>
             </div>
         </div>
 
@@ -55,6 +75,17 @@
 </div>
 
 <div class="controls">
+    <div>
+        <b>as:</b> {{editedAssistant}}
+        <b>cl:</b> {{editedClassroom}}
+        <b>name:</b> {{editedGroupName}}
+        <b>period:</b> {{editedPeriod}}
+        <b>day:</b> {{editedDayOfWeek}}
+        <b>time start:</b> {{editedTimeStart}}
+        <b>time end:</b> {{editedTimeEnd}}
+        <b>datetime start:</b> {{editedDateTimeStart}}
+        <b>datetime end:</b> {{editedDateTimeEnd}}
+    </div>
     <button r-button raised [text]="'Sačuvaj izmene'" type="submit" (click)="save()"></button>
 </div>
 

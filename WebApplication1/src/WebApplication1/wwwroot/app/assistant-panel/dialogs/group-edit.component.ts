@@ -94,9 +94,12 @@ export class GroupEditComponent implements AfterContentInit {
     editedAssistant: any;
     editedClassroom: any;
     editedGroupName: string;
+    editedPeriod: any;
+    editedDayOfWeek: any;
     editedTimeStart: any;
     editedTimeEnd: any;
-    editedPeriod: any;
+    editedDateTimeStart: any;
+    editedDateTimeEnd: any;
 
     getAssisatnts() {
         this._assistantsService.getAssistantsByGroupID(this.group.groupID).then(
