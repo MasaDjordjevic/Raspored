@@ -43,10 +43,9 @@ export class DivisionEditComponent implements AfterViewInit {
     }
 
     private cloneToEdit(division) {
-        debugger;
         this.editedDivision.name = division.name;
-        this.editedDivision.beginning = moment(division.beginning);
-        this.editedDivision.ending = division.ending.toString().slice(0, 10);
+        this.editedDivision.beginning = moment(division.beginning).format("YYYY-MM-DD");
+        this.editedDivision.ending = moment(division.ending).format("YYYY-MM-DD");
         this.editedDivision.divisionTypeID = division.divisionTypeID;
         this.editedDivision.courseID = division.courseID;
     }
