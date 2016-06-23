@@ -1,0 +1,22 @@
+:host {
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+
+  > * {
+    margin-bottom: .5em;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 1em;
+  }
+}

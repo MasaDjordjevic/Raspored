@@ -1,36 +1,54 @@
-import {Component, Input, OnInit} from "angular2/core";
+import {Component, Input, OnInit, Output, EventEmitter} from "angular2/core";
 import {DivisionsService} from "../../services/divisions.service";
 import {GroupsService} from "../../services/groups.service";
 import {Student} from "../../models/Student";
 import {StudentsService} from "../../services/students.service";
+import {R_BUTTON} from "../../ui/r-button.component";
+import {R_DROPDOWN} from "../../ui/r-dropdown";
 
 
 @Component({
     selector: 'move-student-to-group',
     template: ` 
-        <span *ngIf="groups">Student se treutno nalazi u grupi {{getGroupName()}}</span> <br/>
-        <select *ngIf="groups" [(ngModel)]="selectedGroupId" >
-            <option>Izaberi grupu</option>
-            <option *ngFor="let group of groups" [value]="group.groupID">{{group.classroomName}} {{group.name}}</option>
-        </select>
+        <span *ngIf="groups && groups.length > 1 && groupId">Student se treutno nalazi u grupi <b>{{groupName}}</b>.</span>
+        <div>
+            <r-dropdown *ngIf="groups && groups.length > 1" [(val)]="selectedGroupId" [label]="'Odredišna grupa'" [primaryColor]="primaryColor">
+                <r-dropdown-item *ngFor="let group of groupsWithoutCurrent" [value]="group && group.groupID">{{group && group.name}}</r-dropdown-item>
+            </r-dropdown>
+        </div>
         
-        <button class="save" (click)="onSave()">Save</button>
+        <div class="controls">
+            <button r-button flat [text]="'Odustani'" (click)="closeMe()" [primaryColor]="primaryColor">Odustani</button>
+            <button r-button raised [text]="'Prebaci'" (click)="onSave()" [primaryColor]="primaryColor">Prebaci</button>  
+        </div>
     `,
     providers: [DivisionsService, GroupsService],
+    directives: [R_BUTTON, R_DROPDOWN],
+    styleUrls: ['app/assistant-panel/dialogs/student-move-to-group.css'],
 })
 
 export class MoveStudentToGroupComponent {
+
+    @Input() primaryColor: string = "MaterialOrange";
+    @Input() secondaryColor: string = "MaterialBlue";
+
     student: any;
     groups: any[];
     selectedGroupId: number;
     errorMessage: string;
 
+    get groupsWithoutCurrent() {
+        return this.groups && this.groups.filter(e => e.groupID !== this.groupId);
+    }
+
     // TODO lazo iskoristi ovaj ID
     // grupa kroz koju se doslo
     @Input() groupId: number;
 
-    getGroupName(){
-       return this.groups.filter(a => a.groupID == this.groupId)[0].name;
+    get groupName() {
+        return this.groups
+            && this.groups.filter(a => a.groupID == this.groupId)[0]
+            && this.groups.filter(a => a.groupID == this.groupId)[0].name;
     }
 
     constructor (   private _groupsService: GroupsService,
@@ -75,5 +93,9 @@ export class MoveStudentToGroupComponent {
         this._studentsService.moveToGroup(this.student.studentID, this.selectedGroupId);
     }
     
+    @Output() close: EventEmitter<any> = new EventEmitter<any>();
     
+    public closeMe() {
+        this.close.emit("Close!");
+    }
 }
