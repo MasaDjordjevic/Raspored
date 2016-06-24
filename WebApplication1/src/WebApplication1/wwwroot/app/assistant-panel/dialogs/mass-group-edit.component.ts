@@ -73,22 +73,33 @@ export class MassGroupEditComponent {
         this.editedDivision = [];
         for (let i = 0; i < this.division.Groups.length; i++) {
             // vrlo je bitno da idu istim redom zbog čuvanja kasnije
-            this.editedDivision.push({
-                groupId: this.division.Groups[i].groupID,
-                classroomId: this.division.Groups[i].classroomID,
-                //timeSpanId: this.division.Groups[i].timeSpanID
-                // TODO
-                period: this.division.Groups[i].timeSpan.period,
-                dayOfWeek: moment(this.division.Groups[i].timeSpan.startDate).clone().day(), // 0 nedelja, 1 ponedeljak, ... 6 subota
-                timeStart: this.division.Groups[i].timeSpan.period === 0 ? null :
-                    moment(this.division.Groups[i].timeSpan.startDate).clone().format("HH:mm"),
-                timeEnd: this.division.Groups[i].timeSpan.period === 0 ? null :
-                    moment(this.division.Groups[i].timeSpan.endDate).clone().format("HH:mm"),
-                dateTimeStart: this.division.Groups[i].timeSpan.period !== 0 ? null:
-                    moment(this.division.Groups[i].timeSpan.startDate).clone().format("YYYY-MM-DD HH:mm"),
-                dateTimeEnd: this.division.Groups[i].timeSpan.period !== 0 ? null :
-                    moment(this.division.Groups[i].timeSpan.endDate).clone().format("YYYY-MM-DD HH:mm"),
-            });
+            if (this.division.Groups[i].timeSpan) {
+                this.editedDivision.push({
+                    groupId: this.division.Groups[i].groupID,
+                    classroomId: this.division.Groups[i].classroomID,
+                    period: this.division.Groups[i].timeSpan.period,
+                    dayOfWeek: moment(this.division.Groups[i].timeSpan.startDate).clone().day(), // 0 nedelja, 1 ponedeljak, ... 6 subota
+                    timeStart: this.division.Groups[i].timeSpan.period === 0 ? null :
+                        moment(this.division.Groups[i].timeSpan.startDate).clone().format("HH:mm"),
+                    timeEnd: this.division.Groups[i].timeSpan.period === 0 ? null :
+                        moment(this.division.Groups[i].timeSpan.endDate).clone().format("HH:mm"),
+                    dateTimeStart: this.division.Groups[i].timeSpan.period !== 0 ? null:
+                        moment(this.division.Groups[i].timeSpan.startDate).clone().format("YYYY-MM-DD HH:mm"),
+                    dateTimeEnd: this.division.Groups[i].timeSpan.period !== 0 ? null :
+                        moment(this.division.Groups[i].timeSpan.endDate).clone().format("YYYY-MM-DD HH:mm"),
+                });
+            } else {
+                this.editedDivision.push({
+                    groupId: this.division.Groups[i].groupID,
+                    classroomId: this.division.Groups[i].classroomID,
+                    period: null,
+                    dayOfWeek: null,
+                    timeStart: null,
+                    timeEnd: null,
+                    dateTimeStart: null,
+                    dateTimeEnd: null,
+                })
+            }
         }
     };
 
