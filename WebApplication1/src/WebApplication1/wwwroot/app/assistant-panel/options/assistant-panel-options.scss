@@ -8,6 +8,26 @@
     background-color: palette($blue-grey, 50);
     color: rgba(black, .85);
     @include z-depth(1);
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+
+    #timetable {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    #options {
+        width: 100%;
+    }
 }
 
 %options {
@@ -36,6 +56,7 @@
         }
     }
 }
+
 
 .department-options,
 .division-options,
