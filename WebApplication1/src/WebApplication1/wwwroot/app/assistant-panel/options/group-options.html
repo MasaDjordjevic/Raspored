@@ -40,8 +40,11 @@
     </r-dialog>
 
     <r-dialog #addNotificationDialog [source]="addNotificationButton">
-        <div style="width: 400px; height: 500px;">
-            <add-activity [groupId]="group.groupID"></add-activity>
+        <div>
+            <add-activity [groupId]="group.groupID"
+                          [primaryColor]="primaryColor"
+                          (close)="addNotificationDialog.close()">
+            </add-activity>
         </div>
     </r-dialog>
 

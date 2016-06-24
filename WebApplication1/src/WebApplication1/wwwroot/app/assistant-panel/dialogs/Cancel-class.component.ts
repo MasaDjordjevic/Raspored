@@ -85,6 +85,7 @@ export class CancelClassComponent implements AfterContentInit{
 
     }
 
+    // iskopirano u grou-add-activity.component.ts
     public listDateChoices(date, period) {
         var ret: string[] = [];
         if (period === 0) {
@@ -105,7 +106,7 @@ export class CancelClassComponent implements AfterContentInit{
             // u niz guramo 4 datuma
             for (let i = 0; i < 4; i++) {
                 ret.push(choice.clone().format("YYYY-MM-DD"));
-                choice.add(1, "week");
+                choice.add(+period, "week");
             }
         }
         this.dateChoices = ret;

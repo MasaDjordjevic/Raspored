@@ -22,7 +22,7 @@ const moment = moment_["default"];
     ],
     providers: [GroupsService],
     directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, GroupEditComponent, AddActivityComponent, CancelClassComponent],
-    pipes: [TrimPipe]
+    pipes: [TrimPipe],
 })
 
 export class GroupOptionsComponent {
