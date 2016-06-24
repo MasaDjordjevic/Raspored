@@ -3,7 +3,10 @@ import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {ClassroomsService} from "../../services/classrooms.service";
 import {R_BUTTON} from "../../ui/r-button.component";
+import {GroupsService} from "../../services/groups.service";
 
+import * as moment_ from "../../../js/moment.js";
+const moment = moment_["default"];
 
 @Component({
     selector: 'r-mass-group-edit',
@@ -69,21 +72,30 @@ export class MassGroupEditComponent {
         this._division = d;
         this.editedDivision = [];
         for (let i = 0; i < this.division.Groups.length; i++) {
+            // vrlo je bitno da idu istim redom zbog čuvanja kasnije
             this.editedDivision.push({
+                groupId: this.division.Groups[i].groupID,
                 classroomId: this.division.Groups[i].classroomID,
                 //timeSpanId: this.division.Groups[i].timeSpanID
                 // TODO
-                period: null,
-                dayOfWeek: null,
-                timeStart: null,
-                timeEnd: null,
-                dateTimeStart: null,
-                dateTimeEnd: null,
+                period: this.division.Groups[i].timeSpan.period,
+                dayOfWeek: moment(this.division.Groups[i].timeSpan.startDate).clone().day(), // 0 nedelja, 1 ponedeljak, ... 6 subota
+                timeStart: this.division.Groups[i].timeSpan.period === 0 ? null :
+                    moment(this.division.Groups[i].timeSpan.startDate).clone().format("HH:mm"),
+                timeEnd: this.division.Groups[i].timeSpan.period === 0 ? null :
+                    moment(this.division.Groups[i].timeSpan.endDate).clone().format("HH:mm"),
+                dateTimeStart: this.division.Groups[i].timeSpan.period !== 0 ? null:
+                    moment(this.division.Groups[i].timeSpan.startDate).clone().format("YYYY-MM-DD HH:mm"),
+                dateTimeEnd: this.division.Groups[i].timeSpan.period !== 0 ? null :
+                    moment(this.division.Groups[i].timeSpan.endDate).clone().format("YYYY-MM-DD HH:mm"),
             });
         }
     };
 
-    constructor(private _classroomsService: ClassroomsService) {
+    constructor(
+        private _classroomsService: ClassroomsService,
+        private _groupsService: GroupsService
+    ) {
         this.getClassrooms();
     }
 
@@ -97,7 +109,32 @@ export class MassGroupEditComponent {
     private editedDivision = [];
 
     public save() {
-        alert("TODO"); // TODO
+        debugger;
+        // za svaku grupu, uradi čuvanje
+        for (let i = 0; i < this.editedDivision.length; i++) {
+            // pripremanje parametara za slanje
+            let groupId = this.editedDivision[i].groupId; // ne menja se
+            let divisionId = this.division.divisionID; // ne menja se
+            let assistantId = this.division.Groups[i].assistantID; // ne menja se
+            let name = this.division.Groups[i].name; // ne menja se
+            let classroomId = this.editedDivision[i].classroomId;
+            let timespan = {
+                startDate: new Date(this.editedDivision[i].dateTimeStart),
+                endDate: new Date(this.editedDivision[i].dateTimeEnd),
+                period: +this.editedDivision[i].period,
+                dayOfWeek: this.editedDivision[i].dayOfWeek,
+                timeStart: this.editedDivision[i].timeStart,
+                timeEnd: this.editedDivision[i].timeEnd
+            };
+            let students = this.division.Groups[i].GroupsStudents.map(el => el.studentID);
+
+            // cuvanje svake posebno
+            this._groupsService.updateGroup(
+                groupId, divisionId, assistantId, name,
+                classroomId, timespan, students
+            )
+                .then(status => console.log(status));
+        }
     }
 
 }

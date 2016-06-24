@@ -28,10 +28,10 @@ class AddWeeksPipe implements PipeTransform {
     selector: 'cancel-class',
     template: `
     <span *ngIf="dateChoices && dateChoices.length === 1">
-        Otkazivanje časa zakazanog za {{dateChoices[0].format("YYYY-MM-DD")}}.    
+        Otkazivanje časa zakazanog za {{dateChoices[0]}}.    
     </span>
     <r-dropdown *ngIf="dateChoices && dateChoices.length > 1" [label]="'Otkazujem čas koji treba da bude održan...'" [(val)]="weekNumber" [primaryColor]="primaryColor">
-        <r-dropdown-item *ngFor="let date of dateChoices; let i = index" [value]="i">{{date.format("YYYY-MM-DD")}}</r-dropdown-item>  
+        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="i">{{dateChoice}}</r-dropdown-item>  
     </r-dropdown>
 
     <r-input [label]="'Naslov'" [(val)]="title" [primaryColor]="primaryColor"></r-input>
@@ -104,7 +104,7 @@ export class CancelClassComponent implements AfterContentInit{
 
             // u niz guramo 4 datuma
             for (let i = 0; i < 4; i++) {
-                ret.push(choice.clone());
+                ret.push(choice.clone().format("YYYY-MM-DD"));
                 choice.add(1, "week");
             }
         }
