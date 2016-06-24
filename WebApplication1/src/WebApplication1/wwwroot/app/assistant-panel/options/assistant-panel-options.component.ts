@@ -18,6 +18,8 @@ import {Department} from "../../models/Department";
 import {YearDepartments} from "../../models/YearDepartments";
 import {DepartmentService} from "../../services/department.service";
 import {CoursesService} from "../../services/courses.service";
+import {StudentsService} from "../../services/students.service";
+import {AssistantService} from "../../services/assistant.service";
 
 @Component({
     selector: 'r-assistant-panel-options',
@@ -84,16 +86,17 @@ import {CoursesService} from "../../services/courses.service";
             <label>
                 Weeks from now 
                 <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" />
+            </label>
+            <label>
+                Assistant ID
+                <input type="number" min="1" max="100000" step="1" [(ngModel)]="assistantID" />
             </label><br/>
             <r-dropdown name="mode" [label]="'Režim'" [(val)]="mode">
                 <r-dropdown-item [value]="0">student</r-dropdown-item>
-                <r-dropdown-item [value]="1">grupa</r-dropdown-item>
-                <r-dropdown-item [value]="2">globalni</r-dropdown-item>
-                <r-dropdown-item [value]="3">učionica</r-dropdown-item>
+                <r-dropdown-item [value]="1">globalni</r-dropdown-item>
+                <r-dropdown-item [value]="2">učionica</r-dropdown-item>
             </r-dropdown>
-            <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" />
-            <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" />
-            <div *ngIf="mode == 2">
+            <div *ngIf="mode == 0 || mode  == 1">
                 <r-dropdown #selYears *ngIf="yearDepartments != null" [label]="'Godina studija'" [(val)]="selectedYear" >                 
                     <r-dropdown-item *ngFor="let yd of yearDepartments; let i = index"  [value]="i">
                         {{yd.year}}
@@ -105,21 +108,25 @@ import {CoursesService} from "../../services/courses.service";
                         {{dep.departmentName}}
                     </r-dropdown-item>
                 </r-dropdown>
+                
+                <r-dropdown *ngIf="mode == 0" [label]="'Student'"  [(val)]="studentID">
+                    <r-dropdown-item *ngFor="let stud of students" [value]="stud.studentID">{{stud.UniMembers.surname}} {{stud.UniMembers.name}} ({{stud.indexNumber}})</r-dropdown-item>
+                </r-dropdown>
             </div>
                             
-            <r-dropdown *ngIf="mode == 3"  [label]="'Učionica'" [(val)]="classroomID">
+            <r-dropdown *ngIf="mode == 2"  [label]="'Učionica'" [(val)]="classroomID">
                 <r-dropdown-item *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</r-dropdown-item>
             </r-dropdown>
             mode: {{mode}} s:{{studentID}} g:{{groupID}} dep:{{departmentID}} c:{{classroomID}}
         </div>
         
         <div id="timetable">
-                <r-timetable [studentID]="studentID" [classroomID]="classroomID" [departmentID]="departmentID" [groupID]="groupID" ></r-timetable>
+                <r-timetable [studentID]="studentID" [classroomID]="classroomID" [departmentID]="departmentID" [groupID]="groupID" [assistantID]="assistantID" ></r-timetable>
         </div>
         
     </div>
     `,
-    providers: [ClassroomsService, CoursesService, DepartmentService]
+    providers: [ClassroomsService, CoursesService, DepartmentService, StudentsService, AssistantService],
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
     directives: [R_BUTTON, R_STEPPER, R_DIALOG, R_INPUT, R_DROPDOWN, R_DL, R_MULTIPLE_SELECTOR, TimetableComponent],
 })
@@ -147,7 +154,8 @@ export class AssistantPanelOptionsComponent {
         private _globalService: GlobalService,
         private _clasroomsService: ClassroomsService,
         private _coursesService: CoursesService,
-        private _departmentsService: DepartmentService
+        private _departmentsService: DepartmentService,
+        private _studentsService: StudentsService,
     ) {
         this.getClassrooms();
         this.getDepartmentsByYear();
@@ -188,14 +196,22 @@ export class AssistantPanelOptionsComponent {
                 error => this.errorMessage = <any>error);
     }
 
-    _mode: number;
+    students: any[];
+
+    getStudentsOfDepartment() {
+        this._studentsService.getStudentsOfDepartment(this._departmentID)
+            .then(studs => this.students = studs,
+            error => this.errorMessage = error);
+    }
+
     _studentID: number;
     _groupID: number;
     _departmentID: number;
     _classroomID: number;
-    _assistantID: number;
-    _weeksFromNow:number;
-    
+    _assistantID: number = 1;
+    _weeksFromNow:number = 0;
+
+    _mode: number;
     get mode() {
         return this._mode;
     }
@@ -222,7 +238,9 @@ export class AssistantPanelOptionsComponent {
         return this._studentID;
     }
     set studentID(s) {
+        var depID = this._departmentID;
         this.clearAllIDs();
+        this._departmentID = depID;
         this._studentID = s;
     }
 
@@ -248,6 +266,7 @@ export class AssistantPanelOptionsComponent {
     set departmentID(d) {
         this.clearAllIDs();
         this._departmentID = d;
+        this.getStudentsOfDepartment();
     }
 
     get assistantID() {

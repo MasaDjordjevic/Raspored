@@ -9,6 +9,7 @@ import {GroupsService} from "../services/groups.service";
 import {DivisionsService} from "../services/divisions.service";
 import {DepartmentService} from "../services/department.service";
 import {ClassroomsService} from "../services/classrooms.service";
+import {AssistantService} from "../services/assistant.service";
 
 
 @Component({
@@ -200,6 +201,16 @@ export class TimetableComponent {
         this.getClassroomSchedule();
     }
 
+     get assistantID () {
+        return this._assistantID;
+    }
+    @Input() set assistantID(a) {
+        if (!a) return;
+
+        this._assistantID = a;
+        this.getAssistantSchedule();
+    }
+
 
     get timeStamps(): Array<string> {
         var ret = [];
@@ -215,7 +226,8 @@ export class TimetableComponent {
     constructor(private _studentsService: StudentsService,
                 private _groupsService: GroupsService,
                 private _departmentsService: DepartmentService,
-                private _clasroomsService: ClassroomsService)
+                private _clasroomsService: ClassroomsService,
+                private _assistantService: AssistantService)
     {
 
     }
@@ -250,6 +262,14 @@ export class TimetableComponent {
     getClassroomSchedule() {
         //TODO prosledi lepo ID
         this._clasroomsService.getSchedule(this.classroomID, this.weeksFromNow)
+            .then(
+                sch => this.classes = sch,
+                error => this.errorMessage = error
+            ).then(() => this.pom());
+    }
+
+    getAssistantSchedule() {
+        this._assistantService.getSchedule(this.assistantID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
                 error => this.errorMessage = error

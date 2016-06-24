@@ -67,7 +67,24 @@ namespace WebApplication1.Controllers
 
             return Ok(assistants);
         }
-        
+
+        [HttpGet]
+        public IActionResult GetSchedule(int assistantID, int weeksFromNow)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var schedule = Data.Assistant.GetSchedule(assistantID, weeksFromNow);
+
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(schedule);
+        }
 
 
     }

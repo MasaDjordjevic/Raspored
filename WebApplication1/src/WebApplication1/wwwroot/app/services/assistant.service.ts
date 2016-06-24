@@ -43,6 +43,13 @@ export class AssistantService {
     //        .catch(this.handleError);
     //}
 
+    getSchedule(assistantID: number, weeksFromNow:number): Promise<any[]> {
+        return this.http.get(this._url + `/GetSchedule/?assistantID=${assistantID}&weeksFromNow=${weeksFromNow}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);
