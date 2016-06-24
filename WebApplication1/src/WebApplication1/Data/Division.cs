@@ -316,7 +316,7 @@ namespace WebApplication1.Data
                     courseID = division.courseID,
                     beginning = division.beginning,
                     ending = division.ending,
-                    creatorID = division.creatorID,
+                    creatorID = division.creatorID, //TODO vadi iz sesije
                     divisionTypeID = division.divisionTypeID,
                     departmentID = division.departmentID,
                     name = division.name + " (kopija)",
@@ -365,7 +365,7 @@ namespace WebApplication1.Data
 
                 foreach (Groups g in division.Groups)
                 {
-                    _context.Groups.Remove(g);
+                    Group.RemoveGroup(g);
                 }
                 _context.SaveChanges();
 

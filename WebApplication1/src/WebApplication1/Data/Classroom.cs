@@ -41,7 +41,7 @@ namespace WebApplication1.Data
                             classroom = a.classroom.number,
                             assistant = Group.GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = Group.GetActive(a.groupID, tsNow),
+                            active = Group.IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
                         }).ToList();
 
@@ -73,7 +73,7 @@ namespace WebApplication1.Data
                     .Where(a => a.classroomID == classroomID &&
                                 (groupID == null || a.groupID != groupID) && // da ne uzme u obzir trenutni ts grupe, posto se ionako menja
                                 TimeSpan.DatesOverlap(a.division.beginning, a.division.ending, ts.startDate,ts.endDate)
-                                     && Group.GetActive(a.groupID, ts)) //provera da li raspodela kojoj grupa pripada i dalje vazi_
+                                     && Group.IsActive(a.groupID, ts)) //provera da li raspodela kojoj grupa pripada i dalje vazi_
                         .Select(a => a.timeSpan).ToList();
 
                 List<TimeSpans> activitiesSchedule =

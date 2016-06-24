@@ -49,7 +49,6 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 //brisanje oglasa (nekim cudom se ne obrise)
-
                 var ads = _context.Periods.Where(a => a.groupID == @group.groupID).Select(a => a.ad).ToList();
                 foreach (Ads ad in ads)
                 {
@@ -391,13 +390,23 @@ namespace WebApplication1.Data
             }
         }
 
-        public static bool GetActive(int groupID, TimeSpans tsNow)
+        // zbog linq izraza koji mi ne daje da pozvem funkciju koja ima optional paremeter
+        public static bool IsActive(int groupID, TimeSpans tsNow)
+        {
+            return IsActive(groupID, tsNow, null);
+        }
+
+        public static bool IsActive(int groupID, TimeSpans tsNow, int? studentID = null)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                return !_context.Activities.Any(ac =>
+                bool canceled =  !_context.Activities.Any(ac =>
                     ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
+                bool ignored = studentID == null ||
+                               !_context.StudentsActivities.Any(
+                                   sa => sa.activity.groupID == groupID && sa.ignore != true);
+                return canceled && ignored;
 
             }
         }
@@ -428,7 +437,7 @@ namespace WebApplication1.Data
                             classroom = a.classroom.number,
                             assistant = GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = GetActive(a.groupID, tsNow),
+                            active = IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
                         }).ToList();
                 

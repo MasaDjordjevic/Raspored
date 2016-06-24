@@ -104,13 +104,15 @@ namespace WebApplication1.Data
                             classroom = a.classroom.number, 
                             assistant = Group.GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = Group.GetActive(a.groupID, tsNow),
+                            active = Group.IsActive(a.groupID, tsNow, studentID),
                             color = Schedule.GetNextColor(),
                         }).ToList();
 
+                List<int> activities =
+                    _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
                 List<ScheduleDTO> activitiesSchedule =
-                    _context.Activities.Where(a => (a.studentID == studentID || (a.cancelling == false && groups.Contains(a.groupID.Value))
-                                                    && TimeSpan.Overlap(a.timeSpan, tsNow)))
+                    _context.Activities.Where(a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value))
+                                                    && TimeSpan.Overlap(a.timeSpan, tsNow))
                                                     .Select(a => new ScheduleDTO
                                                     {
                                                         day = a.timeSpan.startDate.DayOfWeek,
@@ -140,11 +142,14 @@ namespace WebApplication1.Data
                                 .Select(a => a.groupID).ToList();
 
                 List<TimeSpans> groupsSchedule =
-                    _context.Groups.Where(a => groups.Contains(a.groupID) && Group.GetActive(a.groupID, ts)).Select(a => a.timeSpan).ToList();
+                    _context.Groups.Where(a => groups.Contains(a.groupID) && Group.IsActive(a.groupID, ts)).Select(a => a.timeSpan).ToList();
 
+
+                List<int> activities =
+                    _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
                 List<TimeSpans> activitiesSchedule =
                     _context.Activities.Where(
-                        a => a.studentID == studentID || (a.cancelling == false && groups.Contains(a.groupID.Value)))
+                        a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value)))
                         .Select(a => a.timeSpan)
                         .ToList();
 

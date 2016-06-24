@@ -72,7 +72,7 @@ namespace WebApplication1.Data
                             classroom = a.classroom.number,
                             assistant = Group.GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
-                            active = Group.GetActive(a.groupID, tsNow),
+                            active = Group.IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
                         }).ToList();
 
