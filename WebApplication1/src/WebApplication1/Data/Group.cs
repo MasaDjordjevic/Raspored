@@ -105,9 +105,13 @@ namespace WebApplication1.Data
 
         public static void MoveStudents(int groupID, List<int> students)
         {
-            foreach (int stud in students)
+            using (RasporedContext _context = new RasporedContext())
             {
-                Student.MoveToGroup(stud, groupID);
+                foreach (int stud in students)
+                {
+                    Student.MoveToGroup(stud, groupID, _context);
+                }
+                _context.SaveChanges();
             }
         }
 
@@ -260,7 +264,7 @@ namespace WebApplication1.Data
 
                 //provera da li su svi studenti slobodni u to vreme, bacice exeption ako nisu
                 var studs = _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
-                Student.CheckIfAvailable(timespan, studs);
+                Student.CheckIfAvailable(timespan, studs, groupID);
 
                 Groups g = _context.Groups.First(a => a.groupID == groupID);
                 if (name != null)

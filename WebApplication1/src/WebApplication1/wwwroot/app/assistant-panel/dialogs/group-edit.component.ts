@@ -74,6 +74,22 @@ export class GroupEditComponent implements AfterContentInit {
             this.editedTimeStart = moment(g.timeSpan.startDate).clone().format("HH:mm");
             this.editedTimeEnd = moment(g.timeSpan.endDate).clone().format("HH:mm");
         }
+
+        this.afterGroupInit();
+    }
+
+    afterGroupInit() {
+        this.getAllStudents();
+
+        var ret = [];
+        for (let i = 0; i < this.group.GroupsStudents.length; i++) {
+            ret.push(this.group.GroupsStudents[i].student);
+        }
+        this.chosenStudents = ret;
+
+        if(this.group.groupID) {
+            this.getAssisatnts();
+        }
     }
 
 
@@ -191,21 +207,7 @@ export class GroupEditComponent implements AfterContentInit {
             .then(status => console.log(status));
     }
 
-    ngAfterContentInit() {
-        this.getAllStudents();
 
-        var ret = [];
-        for (let i = 0; i < this.group.GroupsStudents.length; i++) {
-            ret.push(this.group.GroupsStudents[i].student);
-        }
-        this.chosenStudents = ret;
-
-        if(this.group.groupID) {
-            this.getAssisatnts();
-        }
-
-        //debugger;
-    }
 
     getClassrooms() {
         this._service.getClassrooms()

@@ -129,12 +129,13 @@ namespace WebApplication1.Data
             }
         }
 
-        public static bool CheckIfAvailable(int studentID, TimeSpans ts)
+        public static bool CheckIfAvailable(int studentID, TimeSpans ts, int? groupID = null)
         {
             using (RasporedContext _context = new RasporedContext())
             {
                 List<int> groups = _context.GroupsStudents
                     .Where(a => a.studentID == studentID &&
+                                (groupID == null || a.groupID != groupID.Value) &&
                                 TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, ts.startDate, ts.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
                                 .Select(a => a.groupID).ToList();
 
@@ -154,7 +155,7 @@ namespace WebApplication1.Data
         }
 
 
-        public static bool CheckIfAvailable(TimeSpans ts, List<int> students)
+        public static bool CheckIfAvailable(TimeSpans ts, List<int> students, int? groupID = null)
         {
             using (RasporedContext _context = new RasporedContext())
             {
@@ -162,7 +163,7 @@ namespace WebApplication1.Data
                     return true;
 
                 var unaveliable = _context.Students
-                    .Where(a => students.Contains(a.studentID) && !Student.CheckIfAvailable(a.studentID, ts))
+                    .Where(a => students.Contains(a.studentID) && !Student.CheckIfAvailable(a.studentID, ts, groupID))
                      .Select(a => a.UniMembers.name + " " + a.UniMembers.surname).ToList();
 
                 if (unaveliable.Any())
@@ -215,21 +216,20 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void AddToGroup(int studentID, int groupID)
+        public static void AddToGroup(int studentID, int groupID, RasporedContext _context = null)
         {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                // provera da li dolazi do nekonzistentnosti
-                TryAddToGroup(studentID, groupID);
+            _context = _context ?? new RasporedContext();
+            
+            // provera da li dolazi do nekonzistentnosti
+            TryAddToGroup(studentID, groupID);
 
-                GroupsStudents gs = new GroupsStudents
-                {
-                    groupID = groupID,
-                    studentID = studentID
-                };
-                _context.GroupsStudents.Add(gs);
-                _context.SaveChanges();
-            }
+            GroupsStudents gs = new GroupsStudents
+            {
+                groupID = groupID,
+                studentID = studentID
+            };
+            _context.GroupsStudents.Add(gs);
+            
         }
 
         // brise studenta iz svih grupa raspodele divisionID
@@ -254,24 +254,15 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void MoveToGroup(int studentID, int groupID)
+        public static void MoveToGroup(int studentID, int groupID, RasporedContext _context = null)
         {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                int removedId = RemoveFromAllGroups(studentID,
-                    _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First());
-                try
-                {
-                    AddToGroup(studentID, groupID);
-                }
-                catch (InconsistentDivisionException ex)
-                {
-                    //rollback
-                    AddToGroup(studentID, removedId);
-                    //prosledi exception
-                    throw ex;
-                }
-            }
+            _context = _context ?? new RasporedContext();
+            
+            int removedId = RemoveFromAllGroups(studentID,
+                _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First());
+            
+            AddToGroup(studentID, groupID, _context);
+            
         }
 
         public static bool RemoveFromGroup(int studentID, int groupID)
