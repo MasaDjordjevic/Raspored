@@ -1,4 +1,3 @@
-using System.Transactions;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Metadata;
 
@@ -8,8 +7,8 @@ namespace WebApplication1.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            //options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
-            options.UseSqlServer(@"Server=DESKTOP-RFKNG80\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            //options.UseSqlServer(@"Server=DESKTOP-RFKNG80\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,8 +35,6 @@ namespace WebApplication1.Models
 
                 entity.HasOne(d => d.group).WithMany(p => p.Activities).HasForeignKey(d => d.groupID).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(d => d.student).WithMany(p => p.Activities).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Cascade);
-
                 entity.HasOne(d => d.timeSpan).WithMany(p => p.Activities).HasForeignKey(d => d.timeSpanID).OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -60,7 +57,7 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.adID);
 
-                entity.HasOne(d => d.division).WithMany(p => p.Ads).HasForeignKey(d => d.divisionID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.division).WithMany(p => p.Ads).HasForeignKey(d => d.divisionID);
 
                 entity.HasOne(d => d.student).WithMany(p => p.Ads).HasForeignKey(d => d.studentID);
             });
@@ -216,7 +213,7 @@ namespace WebApplication1.Models
 
                 entity.HasOne(d => d.activity).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.activityID);
 
-                entity.HasOne(d => d.student).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.studentID).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(d => d.student).WithMany(p => p.StudentsActivities).HasForeignKey(d => d.studentID);
             });
 
             modelBuilder.Entity<StudentsCourses>(entity =>

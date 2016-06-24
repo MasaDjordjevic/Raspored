@@ -19,7 +19,6 @@ namespace WebApplication1.Models
         public int? courseID { get; set; }
         public int? groupID { get; set; }
         public string place { get; set; }
-        public int? studentID { get; set; }
         public int timeSpanID { get; set; }
         public string title { get; set; }
 
@@ -29,7 +28,6 @@ namespace WebApplication1.Models
         public virtual Classrooms classroom { get; set; }
         public virtual Courses course { get; set; }
         public virtual Groups group { get; set; }
-        public virtual Students student { get; set; }
         public virtual TimeSpans timeSpan { get; set; }
     }
 }

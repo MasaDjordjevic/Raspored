@@ -65,5 +65,5 @@ Radi UNIQUE constraint ali tako da vrednost kolone moze da bude i NULL
 # Cascade koji nije implementiran u bazi
 
 - Group > Ads (kada se obrise grupa, obrisu se periods ali ne i ads)
-- Division > Ads (ne daje mi da stavim jer se stvara ciklus (multiple paths))
-- Students > StudentsActivites (ne daje mi da stavim jer se stvara ciklus)
+- Division > Groups (ne daje mi da stavim jer se stvara ciklus (multiple paths))
+
