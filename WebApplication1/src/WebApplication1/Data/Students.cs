@@ -31,7 +31,7 @@ namespace WebApplication1.Data
 
                 var r = (from stud in _context.Students.Include(a => a.UniMembers)
                     where stud.departmentID == departmentID
-                    select stud).ToList();
+                    select stud).OrderBy(a=> a.indexNumber).ToList();
 
                 return JsonConvert.SerializeObject(r, Formatting.Indented, new JsonSerializerSettings
                 {

@@ -11,6 +11,8 @@ import {AddActivityComponent} from "../dialogs/group-add-activity.component";
 import {CancelClassComponent} from "../dialogs/Cancel-class.component";
 
 import * as moment_ from "../../../js/moment.js";
+import {TimetableComponent} from "../../timetable/r-timetable.component";
+import {AssistantService} from "../../services/assistant.service";
 const moment = moment_["default"];
 
 @Component({
@@ -20,8 +22,8 @@ const moment = moment_["default"];
         'app/assistant-panel/options/assistant-panel-options.css',
         'app/assistant-panel/options/group-options.css',
     ],
-    providers: [GroupsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, GroupEditComponent, AddActivityComponent, CancelClassComponent],
+    providers: [GroupsService, AssistantService],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, GroupEditComponent, AddActivityComponent, CancelClassComponent, TimetableComponent],
     pipes: [TrimPipe],
 })
 
