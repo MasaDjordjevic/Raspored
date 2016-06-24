@@ -36,7 +36,9 @@
     </r-dialog>
 
     <r-dialog #combinedScheduleDialog [source]="combinedScheduleButton">
-        Kombinovani raspored
+        <div id="combineSchedule">
+            <r-timetable [groupID]="group.groupID" ></r-timetable>
+        </div>
     </r-dialog>
 
     <r-dialog #addNotificationDialog [source]="addNotificationButton">
