@@ -3,6 +3,7 @@ import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {ClassroomsService} from "../../services/classrooms.service";
 import {R_BUTTON} from "../../ui/r-button.component";
+import {TimeSpan} from "../../models/TimeSpan";
 
 
 @Component({
@@ -69,19 +70,22 @@ export class MassGroupEditComponent {
         this._division = d;
         this.editedDivision = [];
         for (let i = 0; i < this.division.Groups.length; i++) {
+            var ts = this.division.Groups[i].timeSpan;
+            if(ts === null) continue;
+            var details = TimeSpan.getDetailed(ts);
             this.editedDivision.push({
                 classroomId: this.division.Groups[i].classroomID,
-                //timeSpanId: this.division.Groups[i].timeSpanID
-                // TODO
-                period: null,
-                dayOfWeek: null,
-                timeStart: null,
-                timeEnd: null,
-                dateTimeStart: null,
-                dateTimeEnd: null,
+                period: ts.period,
+                dayOfWeek: details.dayOfWeek,
+                timeStart: details.timeStart,
+                timeEnd: details.timeEnd,
+                dateTimeStart: ts.startDate,
+                dateTimeEnd: ts.endDate,
             });
         }
     };
+
+  
 
     constructor(private _classroomsService: ClassroomsService) {
         this.getClassrooms();

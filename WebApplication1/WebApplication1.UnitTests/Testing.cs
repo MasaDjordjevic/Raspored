@@ -324,7 +324,7 @@ namespace MyFirstDnxUnitTests
         public void GetHM()
         {
             string test = "09:15";
-            TimeSpan ts = WebApplication1.Data.TimeSpan.getHM(test);
+            TimeSpan ts = WebApplication1.Data.TimeSpan.convertHM(test);
             TimeSpan res = new TimeSpan(09,15,0);
             Assert.Equal(ts, res);
         }

@@ -72,7 +72,11 @@ namespace WebApplication1.Data
             }
             else
             {
-                DateTime mon = bind.startDate.StartOfWeek();
+                //nedelja je 0
+                if (bind.period == 0)
+                    bind.period = 7;
+
+                DateTime mon =  DateTime.Now.StartOfWeek();
                 ts.startDate = mon.AddDays(bind.dayOfWeek.Value - 1);
                 ts.endDate = ts.startDate;
                 ts.startDate = ts.startDate.Add(convertHM(bind.timeStart));

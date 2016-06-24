@@ -170,6 +170,22 @@ namespace WebApplication1.Controllers
                 return Ok(new {status="parameter error"});
             }
 
+            if (obj.timespan != null)
+            {
+                if (obj.timespan.period == null)
+                    return Ok(new { status = "parameter error" });
+
+                // nzm zasto ovo nece
+                if (obj.timespan.startDate == null) 
+                    return Ok(new { status = "parameter error" });
+                if (obj.timespan.endDate == null)
+                    return Ok(new { status = "parameter error" });
+
+                if (obj.timespan.period.Value != 0 && (obj.timespan.timeStart == null || obj.timespan.timeEnd == null || obj.timespan.dayOfWeek == null))
+                    return Ok(new { status = "parameter error" });
+
+            }
+
             try
             {
                 if (obj.assistantID != null)
