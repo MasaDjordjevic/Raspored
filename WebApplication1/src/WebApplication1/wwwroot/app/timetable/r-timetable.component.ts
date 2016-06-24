@@ -1,4 +1,4 @@
-import {Component} from "angular2/core";
+import {Component, Input, AfterContentChecked, AfterContentInit} from "angular2/core";
 import {TimetableClassComponent} from "./r-timetable-class.component";
 import {TimetableColumnComponent} from "./r-timetable-column.component";
 import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
@@ -52,26 +52,27 @@ import {ClassroomsService} from "../services/classrooms.service";
                     <legend>Advanced</legend>
                     <label>
                         Weeks from now ({{weeksFromNow}})
-                        <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" (change)="updateSchedule()"/>
+                        <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" />
                     </label><br/>
-                    <label>                    
-                    <select name="mode" [(ngModel)]="mode" (change)="changeMode()">
+                    <!--                 
+                    <select name="mode" [(ngModel)]="mode">
                         <option [value]="0">student</option>
                         <option [value]="1">grupa</option>
                         <option [value]="2">globalni</option>
                         <option [value]="3">ucionica</option>
                     </select>
-                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" (change)="updateSchedule()"/>
-                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" (change)="updateSchedule()"/>
-                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="departmentID" (change)="updateSchedule()"/>                    
-                    <select *ngIf="classroomID" name="classroom"  [(ngModel)]="classroomID">
+                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" />
+                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" />
+                    <input type="number" min="0" max="15000" step="1" *ngIf="mode == 2" [(ngModel)]="departmentID" />                    
+                    <select *ngIf="mode == 3" name="classroom"  [(ngModel)]="classroomID">
                         <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
                     </select>
-                    {{mode}} {{studentID}} {{groupID}} {{departmentID}} {{classroomID}}nzm zasto nece kad je mode string
+                    mode: {{mode}} s:{{studentID}} g:{{groupID}} dep:{{departmentID}} c:{{classroomID}}
+                    -->
                     <br/>
                         Beginning minutes ({{beginningMinutes | toTimestamp}})
                         <input type="number" min="0" max="1440" step="5" [(ngModel)]="beginningMinutes"/>
-                    </label><br/>
+                    <br/>
                     <label>
                         Ending minutes ({{endingMinutes | toTimestamp}})
                         <input type="number" min="0" max="1440" step="5" [(ngModel)]="endingMinutes"/>
@@ -134,15 +135,71 @@ export class TimetableComponent {
     errorMessage: string;
     classes: any[];
 
-    classrooms: any;
+    _weeksFromNow: number = 0;
+    _groupID: number;
+    _studentID: number;
+    _departmentID: number;
+    _classroomID: number;
+    _assistantID: number;
 
+    get weeksFromNow() {
+        return this._weeksFromNow;
+    }
+    @Input() set weeksFromNow(w) {
+        this._weeksFromNow = w;
+        this.getSchedule();
+    }
 
-    weeksFromNow: number = 0;
-    mode: number = 0;
-    groupID: number = 1016;
-    studentID: number = 2951;
-    departmentID: number = 9;
-    classroomID: number = 12;
+    getSchedule() {
+        debugger;
+        if (this.studentID)
+            this.getStudentSchedule();
+        if (this.classroomID)
+            this.getClassroomSchedule();
+        if (this.groupID)
+            this.getGroupSchedule();
+        if (this.departmentID)
+            this.getDepartmentSchedule();
+    }
+
+    get groupID () {
+        return this._groupID;
+    }
+    @Input() set groupID(g) {
+        if (!g) return;
+        this._groupID = g;
+        this.getGroupSchedule();
+    }
+
+    get studentID () {
+        return this._studentID;
+    }
+    @Input() set studentID(s) {
+        if (!s) return;
+        this._studentID = s;
+        this.getStudentSchedule();
+    }
+
+    get departmentID () {
+        return this._departmentID;
+    }
+    @Input() set departmentID(g) {
+        if (!g) return;
+
+        this._departmentID = g;
+        this.getDepartmentSchedule();
+    }
+
+    get classroomID () {
+        return this._classroomID;
+    }
+    @Input() set classroomID(g) {
+        if (!g) return;
+
+        this._classroomID = g;
+        this.getClassroomSchedule();
+    }
+
 
     get timeStamps(): Array<string> {
         var ret = [];
@@ -160,19 +217,7 @@ export class TimetableComponent {
                 private _departmentsService: DepartmentService,
                 private _clasroomsService: ClassroomsService)
     {
-        this.getClassrooms();
-        this.changeMode();
-    }
 
-    getClassrooms() {
-        this._clasroomsService.getClassrooms()
-            .then(
-                cls => this.classrooms = cls,
-                error => this.errorMessage = <any>error);
-    }
-
-    updateSchedule() {
-        this.changeMode();
     }
 
     getStudentSchedule(){
@@ -237,17 +282,7 @@ export class TimetableComponent {
         var theDay = this.classes[+value.newActivityDay].push(newClass);
     }
 
-    changeMode(){
-        switch(+this.mode) {
-            case 0: this.getStudentSchedule();
-                break;
-            case 1: this.getGroupSchedule();
-                break;
-            case 2: this.getDepartmentSchedule();
-                break;
-            case 3: this.getClassroomSchedule();
-        }
-    }
+
 
      /*public classes = [
         [

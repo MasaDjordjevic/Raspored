@@ -170,7 +170,7 @@ namespace WebApplication1.Data
                     string exp = unaveliable.Count > 1
                         ? "Studenti nisu slobodni u vreme kada grupa ima cas"
                         : "Student nije slobodan u vreme kada grupa ima cas";
-                    exp += "(" + Data.TimeSpan.ToString(ts) + ").\n";
+                    exp += " (" + Data.TimeSpan.ToString(ts) + ").\n";
                     exp += unaveliable.Concat("\n");
                     throw new InconsistentDivisionException(exp);
                 }

@@ -10,21 +10,30 @@ import {Control} from "angular2/common";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {multicast} from "rxjs/operator/multicast";
 import {GlobalService} from "../../services/global.service";
+import {TimetableComponent} from "../../timetable/r-timetable.component";
+import {TimetableClassComponent} from "../../timetable/r-timetable-class.component";
+import {TimetableColumnComponent} from "../../timetable/r-timetable-column.component";
+import {ClassroomsService} from "../../services/classrooms.service";
+import {Department} from "../../models/Department";
+import {YearDepartments} from "../../models/YearDepartments";
+import {DepartmentService} from "../../services/department.service";
+import {CoursesService} from "../../services/courses.service";
 
 @Component({
     selector: 'r-assistant-panel-options',
     template: `
-    <div style="font-size: 1em; display: flex; justify-content: space-between; flex-wrap: wrap">
+    <div class="container">
     
         <!-- radi -->
         <!--<r-input class="light-theme" label="Labela" [(val)]="inputText" style="width:50%;"></r-input>
         <r-input class="light-theme" label="Labela" [(val)]="inputText" style="width:50%;"></r-input>
         <input [(ngModel)]="inputText" type="text"/>
-        <span>{{inputText}}</span>-->
+        <span>{{inputText}}</span>-->       
+        
         
         
         <!-- radi -->
-        <r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;" [primaryColor]="'MaterialRed'" >
+        <!--<r-dropdown [(val)]="dropdown" label="Labela bre" style="width:60%;" [primaryColor]="'MaterialRed'" >
             <r-dropdown-item *ngFor="let b of ['b1', 'b2', 'b3', 'b4', 'b5']" [value]="b">{{b + "ooo"}}</r-dropdown-item>
         </r-dropdown>
         
@@ -47,7 +56,7 @@ import {GlobalService} from "../../services/global.service";
         <div style="width:100%; min-height: 100px;"></div>
         
         <h1>{{_globalService.translate("TEST_STRING")}}</h1>
-        
+        -->
         <!--radi-->
         <!--<r-multiple-selector [(val)]="multipleSelector" style="width:45%" primaryColor="MaterialGreen">
             <r-multiple-selector-item *ngFor="let n of stuff; let i = index" [val]="i">
@@ -70,10 +79,49 @@ import {GlobalService} from "../../services/global.service";
         <button (click)="addNew()">add new</button>
         
         <div style="width:100%; min-height: 20px;"></div>-->
+        
+        <div id="options">
+            <label>
+                Weeks from now 
+                <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" />
+            </label><br/>
+            <r-dropdown name="mode" [label]="'Režim'" [(val)]="mode">
+                <r-dropdown-item [value]="0">student</r-dropdown-item>
+                <r-dropdown-item [value]="1">grupa</r-dropdown-item>
+                <r-dropdown-item [value]="2">globalni</r-dropdown-item>
+                <r-dropdown-item [value]="3">učionica</r-dropdown-item>
+            </r-dropdown>
+            <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" />
+            <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" />
+            <div *ngIf="mode == 2">
+                <r-dropdown #selYears *ngIf="yearDepartments != null" [label]="'Godina studija'" [(val)]="selectedYear" >                 
+                    <r-dropdown-item *ngFor="let yd of yearDepartments; let i = index"  [value]="i">
+                        {{yd.year}}
+                    </r-dropdown-item>
+                </r-dropdown>
+                
+                <r-dropdown *ngIf="depsOfSelected != null" [label]="'Departments'" [(val)]="departmentID">
+                    <r-dropdown-item *ngFor="let dep of depsOfSelected" [value]="dep.departmentID">
+                        {{dep.departmentName}}
+                    </r-dropdown-item>
+                </r-dropdown>
+            </div>
+                            
+            <r-dropdown *ngIf="mode == 3"  [label]="'Učionica'" [(val)]="classroomID">
+                <r-dropdown-item *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</r-dropdown-item>
+            </r-dropdown>
+            mode: {{mode}} s:{{studentID}} g:{{groupID}} dep:{{departmentID}} c:{{classroomID}}
+        </div>
+        
+        <div id="timetable">
+                <r-timetable [studentID]="studentID" [classroomID]="classroomID" [departmentID]="departmentID" [groupID]="groupID" ></r-timetable>
+        </div>
+        
     </div>
     `,
+    providers: [ClassroomsService, CoursesService, DepartmentService]
     styleUrls: ['app/assistant-panel/options/assistant-panel-options.css'],
-    directives: [R_BUTTON, R_STEPPER, R_DIALOG, R_INPUT, R_DROPDOWN, R_DL, R_MULTIPLE_SELECTOR],
+    directives: [R_BUTTON, R_STEPPER, R_DIALOG, R_INPUT, R_DROPDOWN, R_DL, R_MULTIPLE_SELECTOR, TimetableComponent],
 })
 
 export class AssistantPanelOptionsComponent {
@@ -96,8 +144,13 @@ export class AssistantPanelOptionsComponent {
     public randomString = (n) => (Math.random() + 1).toString(36).substring(2, n + 2);
 
     constructor(
-        private _globalService: GlobalService
+        private _globalService: GlobalService,
+        private _clasroomsService: ClassroomsService,
+        private _coursesService: CoursesService,
+        private _departmentsService: DepartmentService
     ) {
+        this.getClassrooms();
+        this.getDepartmentsByYear();
         for (let i = 0; i < 4; this.stuff[i++] = this.randomString(i * 10 % 7 + 10));
     }
 
@@ -114,5 +167,106 @@ export class AssistantPanelOptionsComponent {
     }
 
     assistant: Assistant;
+    yearDepartments:YearDepartments[];
+    depsOfSelected: Department[];
+
+    _selectedYear;
+    get selectedYear(){
+        return this._selectedYear;
+    }
+    set selectedYear(index:number) {
+        this._selectedYear = index;
+        this.depsOfSelected = this.yearDepartments[index].departments;
+        this.departmentID = this.depsOfSelected[0].departmentID;
+    }
+
+
+    getDepartmentsByYear() {
+        this._departmentsService.getDepartmentsByYear()
+            .then(
+                deps => this.yearDepartments = deps,
+                error => this.errorMessage = <any>error);
+    }
+
+    _mode: number;
+    _studentID: number;
+    _groupID: number;
+    _departmentID: number;
+    _classroomID: number;
+    _assistantID: number;
+    _weeksFromNow:number;
+    
+    get mode() {
+        return this._mode;
+    }
+    set mode(m) {
+        this._mode = m;
+    }
+
+    clearAllIDs() {
+        this._studentID = null;
+        this._groupID = null;
+        this._departmentID = null;
+        this._classroomID = null;
+        this._assistantID = null;
+    }
+
+    get weeksFromNow() {
+        return this._weeksFromNow;
+    }
+    set weeksFromNow(w) {
+        this._weeksFromNow = w;
+    }
+
+    get studentID() {
+        return this._studentID;
+    }
+    set studentID(s) {
+        this.clearAllIDs();
+        this._studentID = s;
+    }
+
+    get groupID() {
+        return this._groupID;
+    }
+    set groupID(g) {
+        this.clearAllIDs();
+        this._groupID = g;
+    }
+
+    get classroomID() {
+        return this._classroomID;
+    }
+    set classroomID(c) {
+        this.clearAllIDs();
+        this._classroomID = c;
+    }
+
+    get departmentID() {
+        return this._departmentID;
+    }
+    set departmentID(d) {
+        this.clearAllIDs();
+        this._departmentID = d;
+    }
+
+    get assistantID() {
+        return this._assistantID;
+    }
+    set assistantID(a) {
+        this.clearAllIDs();
+        this._assistantID = a;
+    }
+
+    classrooms: any[];
+    errorMessage: string;
+    getClassrooms() {
+        this._clasroomsService.getClassrooms()
+         .then(
+             cls => this.classrooms = cls,
+             error => this.errorMessage = <any>error);
+    }
+
+
 
 }

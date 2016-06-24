@@ -377,9 +377,13 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                return
-                    _context.Groups.Where(a => a.groupID == groupID)
-                        .Select(a => a.assistant.name + " " + a.assistant.surname).First();
+                var query = _context.Groups.Where(a => a.groupID == groupID)
+                        .Select(a => a.assistant.name + " " + a.assistant.surname);
+                if (query.Any())
+                    return query.First();
+                else
+                    return "";
+
             }
         }
 
