@@ -62,6 +62,9 @@ namespace WebApplication1.Data
 
         public static TimeSpans getTimeSpan(GroupsController.TimeSpanBinding bind)
         {
+            if (bind == null)
+                return null;
+
             TimeSpans ts = new TimeSpans();
             if (bind.period == 0)
             {

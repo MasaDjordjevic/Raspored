@@ -12,7 +12,8 @@ import {R_INPUT} from "../../ui/r-input-text.component";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {R_STUDENT_SELECTOR} from "./students-selector.component";
 import {GlobalService} from "../../services/global.service";
-
+import * as moment_ "../../../js/moment.js";
+const moment = moment_["default"];
 
 @Pipe({
     name: 'withoutStudents',
@@ -69,10 +70,9 @@ export class GroupEditComponent implements AfterContentInit {
         this.editedPeriod = g.timeSpan && g.timeSpan.period;
 
         if(g.timeSpan != null) {
-            var details = TimeSpan.getDetailed(g.timeSpan);
-            this.editedDayOfWeek = (<any>details).dayOfWeek;
-            this.editedTimeStart = (<any>details).timeStart;
-            this.editedTimeEnd = (<any>details).timeEnd;
+            this.editedDayOfWeek = moment(g.timeSpan.startDate).clone().day();
+            this.editedTimeStart = moment(g.timeSpan.startDate).clone().format("HH:mm");
+            this.editedTimeEnd = moment(g.timeSpan.endDate).clone().format("HH:mm");
         }
     }
 
@@ -172,12 +172,18 @@ export class GroupEditComponent implements AfterContentInit {
         var pom: Array<number> = this.chosenStudents.map(i => i.studentID);
         console.log(pom);
         var timespan: any = {};
-        timespan.startDate = new Date(this.editedDateTimeStart);
-        timespan.endDate = new Date(this.editedDateTimeEnd);
-        timespan.period = +this.editedPeriod;
-        timespan.dayOfWeek = this.editedDayOfWeek;
-        timespan.timeStart = this.editedTimeStart;
-        timespan.timeEnd = this.editedTimeEnd;
+
+        // ako nista nije odabrano
+        if (this.editedPeriod == null) {
+            timespan = null;
+        } else {
+            timespan.startDate = new Date(this.editedDateTimeStart);
+            timespan.endDate = new Date(this.editedDateTimeEnd);
+            timespan.period = +this.editedPeriod;
+            timespan.dayOfWeek = this.editedDayOfWeek;
+            timespan.timeStart = this.editedTimeStart;
+            timespan.timeEnd = this.editedTimeEnd;
+        }
 
         console.log(timespan);
         debugger;

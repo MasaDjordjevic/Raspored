@@ -33,13 +33,13 @@ const moment = moment_["default"];
                 </r-dropdown>
                 <template [ngIf]="editedDivision[i].period && editedDivision[i].period !== 0">
                     <r-dropdown [label]="'Dan u nedelji'" [(val)]="editedDivision[i].dayOfWeek" [dropdownType]="i > division.Groups.length / 2 ? 'up' : 'down'">
-                        <r-dropdown-item [value]="0">Ponedeljak</r-dropdown-item>
-                        <r-dropdown-item [value]="1">Utorak</r-dropdown-item>
-                        <r-dropdown-item [value]="2">Sreda</r-dropdown-item>
-                        <r-dropdown-item [value]="3">Četvrtak</r-dropdown-item>
-                        <r-dropdown-item [value]="4">Petak</r-dropdown-item>
-                        <r-dropdown-item [value]="5">Subota</r-dropdown-item>
-                        <r-dropdown-item [value]="6">Nedelja</r-dropdown-item>
+                        <r-dropdown-item [value]="1">Ponedeljak</r-dropdown-item>
+                        <r-dropdown-item [value]="2">Utorak</r-dropdown-item>
+                        <r-dropdown-item [value]="3">Sreda</r-dropdown-item>
+                        <r-dropdown-item [value]="4">Četvrtak</r-dropdown-item>
+                        <r-dropdown-item [value]="5">Petak</r-dropdown-item>
+                        <r-dropdown-item [value]="6">Subota</r-dropdown-item>
+                        <r-dropdown-item [value]="0">Nedelja</r-dropdown-item>
                     </r-dropdown>
                     <r-input class="light-theme" [label]="'Početak (HH:MM)'" [(val)]="editedDivision[i].timeStart"></r-input>
                     <r-input class="light-theme" [label]="'Kraj (HH:MM)'" [(val)]="editedDivision[i].timeEnd"></r-input>
@@ -122,32 +122,33 @@ export class MassGroupEditComponent {
     private editedDivision = [];
 
     public save() {
-        debugger;
-        // za svaku grupu, uradi čuvanje
+
+        var sendData = [];
+
         for (let i = 0; i < this.editedDivision.length; i++) {
             // pripremanje parametara za slanje
-            let groupId = this.editedDivision[i].groupId; // ne menja se
-            let divisionId = this.division.divisionID; // ne menja se
-            let assistantId = this.division.Groups[i].assistantID; // ne menja se
-            let name = this.division.Groups[i].name; // ne menja se
-            let classroomId = this.editedDivision[i].classroomId;
-            let timespan = {
-                startDate: new Date(this.editedDivision[i].dateTimeStart),
-                endDate: new Date(this.editedDivision[i].dateTimeEnd),
-                period: +this.editedDivision[i].period,
-                dayOfWeek: this.editedDivision[i].dayOfWeek,
-                timeStart: this.editedDivision[i].timeStart,
-                timeEnd: this.editedDivision[i].timeEnd
-            };
-            let students = this.division.Groups[i].GroupsStudents.map(el => el.studentID);
+            let sendObj = {};
+            sendObj.groupId = this.editedDivision[i].groupId;
+            sendObj.classroomId = this.editedDivision[i].classroomId;
+            sendObj.timespan = null;
+            // ostace null ukoliko nista nije izabrano
+            if (this.editedDivision[i].period) {
+                sendObj.timespan = {
+                    startDate: new Date(this.editedDivision[i].dateTimeStart),
+                    endDate: new Date(this.editedDivision[i].dateTimeEnd),
+                    period: +this.editedDivision[i].period,
+                    dayOfWeek: this.editedDivision[i].dayOfWeek,
+                    timeStart: this.editedDivision[i].timeStart,
+                    timeEnd: this.editedDivision[i].timeEnd
+                };
+            }
 
-            // cuvanje svake posebno
-            this._groupsService.updateGroup(
-                groupId, divisionId, assistantId, name,
-                classroomId, timespan, students
-            )
-                .then(status => console.log(status));
+            sendData.push(sendObj);
         }
+
+        console.log(sendData);
+        this._groupsService.massGroupEdit(sendData)
+            .then(status => console.log(status));
     }
 
 }

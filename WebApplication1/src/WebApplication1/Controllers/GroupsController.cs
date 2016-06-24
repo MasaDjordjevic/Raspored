@@ -147,6 +147,63 @@ namespace WebApplication1.Controllers
             public string timeEnd;
         }
 
+        public class GroupEditBinding
+        {
+            public int? groupID;
+            public int? classroomID;
+            public TimeSpanBinding timespan;
+        }
+
+        public class MassGroupEditBinding
+        {
+            public GroupEditBinding[] groups;
+        }
+
+        [HttpPost]
+        public IActionResult MassGroupEdit([FromBody] MassGroupEditBinding obj)
+        {
+            if (obj == null || obj.groups == null)
+            {
+                return Ok(new { status = "parameter error" });
+            }
+
+            try
+            {
+                foreach (GroupEditBinding group in obj.groups)
+                {
+                    if (group.timespan != null)
+                    {
+                        if (group.timespan.period == null)
+                            return Ok(new { status = "parameter error" });
+
+                        // nzm zasto ovo nece
+                        if (group.timespan.startDate == null)
+                            return Ok(new { status = "parameter error" });
+                        if (group.timespan.endDate == null)
+                            return Ok(new { status = "parameter error" });
+
+                        if (group.timespan.period.Value != 0 && (group.timespan.timeStart == null || group.timespan.timeEnd == null || group.timespan.dayOfWeek == null))
+                            return Ok(new { status = "parameter error" });
+
+                    }
+
+                    //konvertovanje u timeSpan
+                    TimeSpans ts = TimeSpan.getTimeSpan(group.timespan);
+
+                    Data.Group.Update(group.groupID.Value, null, group.classroomID, ts);
+                }
+                return Ok(new { status = "uspelo" });
+            }
+            catch (InconsistentDivisionException ex)
+            {
+                return Ok(new { status = "inconsistent division", message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "neuspelo", message = ex.Message });
+            }
+        }
+
 
         //svi parametri moraju da budu nullable da ceo objekat ne bi bio null ukoliko se jedan od paremetara ne posalje
         public class UpdateGroupBinding
@@ -221,6 +278,7 @@ namespace WebApplication1.Controllers
                     Data.Group.ChangeStudents(obj.groupID.Value, obj.students.ToList());
 
                 }
+                return Ok(new { status = "uspelo" });
             }
             catch (InconsistentDivisionException ex)
             {
@@ -231,8 +289,6 @@ namespace WebApplication1.Controllers
                 return Ok(new { status = "neuspelo", message = ex.Message });
             }
 
-            return Ok(new { status = "uspelo" });
-            
         }
 
         public class AddActivityBinding
