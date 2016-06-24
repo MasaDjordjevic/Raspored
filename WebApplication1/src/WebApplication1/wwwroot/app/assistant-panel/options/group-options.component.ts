@@ -10,6 +10,8 @@ import {GroupEditComponent} from "../dialogs/group-edit.component";
 import {AddActivityComponent} from "../dialogs/group-add-activity.component";
 import {CancelClassComponent} from "../dialogs/Cancel-class.component";
 
+import * as moment_ from "../../../js/moment.js";
+const moment = moment_["default"];
 
 @Component({
     selector: 'r-group-options',
@@ -43,6 +45,40 @@ export class GroupOptionsComponent {
     }
 
     constructor( private _service: GroupsService ) {}
+    
+    get descriptiveString() {
+        if (!this.group.timeSpan) {
+            return "Nije dodeljeno vreme trajanja.";
+        }
+
+        var period = +this.group.timeSpan.period;
+
+        // cas se desava samo jednom
+        if (period === 0) {
+            let start = moment(this.group.timeSpan.startDate);
+            let end = moment(this.group.timeSpan.endDate);
+
+            return `${start.format("YYYY-MM-DD, HH:mm")} — ${end.format("YYYY-MM-DD, HH:mm")}`;
+        } else {
+            // cas se desava periodicno
+            let start = moment(this.group.timeSpan.startDate);
+            let end = moment(this.group.timeSpan.endDate);
+
+            // tražimo dan
+            let day = start.day(); // 0 nedelja, 1 ponedeljak, ..., 6 subota
+            let modifier = period === 1 ? "" : period === 2 ? "druge" : "četvrte";
+            let dayName =
+                day === 0 ? "nedelju" :
+                    day === 1 ? "ponedeljak" :
+                        day === 2 ? "utorak" :
+                            day === 3 ? "sredu" :
+                                day === 4 ? "četvrtak" :
+                                    day === 5 ? "petak" : "subotu";
+
+            return `Svake ${modifier} nedelje u ${dayName} od ${start.format("HH:mm")} do ${end.format("HH:mm")}`;
+        }
+
+    }
 
     getGroup(): void {
         this._service.getGroup(this.groupId).then(

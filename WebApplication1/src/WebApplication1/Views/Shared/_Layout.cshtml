@@ -16,6 +16,7 @@
         <script src="~/js/angular2/angular2-polyfills.js"></script>
         <script src="~/js/angular2/http.dev.js"></script>
         <script src="~/js/angular2/router.dev.js"></script>
+        <script src="~/js/moment.js"></script>
     </environment>
 
     <environment names="Production">
@@ -29,6 +30,7 @@
         <script src="~/js/angular2/angular2-polyfills.min.js"></script>
         <script src="~/js/angular2/http.dev.min.js"></script>
         <script src="~/js/angular2/router.dev.min.js"></script>
+        <script src="~/js/moment.js"></script>
     </environment>
 
     <script src="https://use.fontawesome.com/efdc972dbc.js"></script>
@@ -78,6 +80,11 @@
                 packages: {
                     app: {
                         format: 'register',
+                        defaultExtension: 'js'
+                    },
+                    moment: {
+                        map: 'node_modules/moment/moment.js',
+                        type: 'cjs',
                         defaultExtension: 'js'
                     }
                 }

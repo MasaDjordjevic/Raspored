@@ -40,6 +40,8 @@ import {R_BUTTON} from "../ui/r-button.component";
         "[class.expanded]": "expanded",
         "[style.left]": "expanded ? expandedLeft : ''",
         "[style.top]": "expanded ? expandedTop : ''",
+        "[style.width]": "expanded ? expandedWidth : ''",
+        "[style.height]": "expanded ? expandedHeight : ''",
         "[style.boxShadow]": "expanded ? '0 0 0 0.7em ' + color + ' inset' : ''",
         "[style.color]": "expanded ? 'black' : textColor",
         "(click)": "expand($event)",
@@ -89,22 +91,29 @@ export class TimetableClassComponent {
     private expanded: boolean = false;
     private expandedLeft: string;
     private expandedTop: string;
+    private expandedWidth: string;
+    private expandedHeight: string;
 
     public expand($event = null) {
         // Da se ne pozove expandovanje odmah nakon collapse() klikom an dugme. Hakic.
         if ($event && $event.target.nodeName === "BUTTON") return;
         if (this.expanded) return;
         this.expanded = true;
-        this.expandedLeft = "-" + this.elementRef.nativeElement.getBoundingClientRect().left;
+        this.expandedLeft =
+            "-" + (this.elementRef.nativeElement.getBoundingClientRect().left -
+                    this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect().left);
         if (this.expandedLeft.charAt(1) === "-")
             this.expandedLeft = this.expandedLeft.substring(2);
         this.expandedLeft += "px";
-        this.expandedLeft = `calc(5vw + ${this.expandedLeft})`;
         this.expandedTop = "-" + this.elementRef.nativeElement.getBoundingClientRect().top;
         if (this.expandedTop.charAt(1) === "-")
             this.expandedTop = this.expandedTop.substring(2);
         this.expandedTop += "px";
-        this.expandedTop = `calc(5vh + ${this.expandedTop})`;
+
+        this.expandedWidth = (this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement
+                .getBoundingClientRect().width - 20) + 'px';
+        this.expandedHeight = (this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement
+                .getBoundingClientRect().height - 20) + 'px';
     }
 
     public collapse() {

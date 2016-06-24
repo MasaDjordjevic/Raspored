@@ -25,9 +25,7 @@
 
 :host.visible .r-dialog-wrapper-outer {
   display: flex;
-  position: absolute;
   background-color: white;
   @include z-depth(2);
   border-radius: 2px;
-  //flow: hidden;
 }

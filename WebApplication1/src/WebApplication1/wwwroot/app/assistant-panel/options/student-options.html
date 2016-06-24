@@ -14,12 +14,14 @@
     <div class="flex-spacer"></div>
 
     <r-dialog #moveToGroupDialog [source]="moveToGroupButton">
-        <div style="width: 500px; height:600px;">
+        <div>
             <move-student-to-group
                     *ngIf="_studentId > 0"
                     [studentId]="_studentId"
                     [groupId]="groupId"
-                    [divisionId]="divisionId">
+                    [divisionId]="divisionId"
+                    (close)="moveToGroupDialog.close()"
+                    [primaryColor]="primaryColor">
             </move-student-to-group>
         </div>
     </r-dialog>

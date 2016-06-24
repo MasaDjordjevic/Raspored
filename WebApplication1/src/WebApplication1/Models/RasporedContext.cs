@@ -8,7 +8,8 @@ namespace WebApplication1.Models
     {
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            //options.UseSqlServer(@"Server=MASA-PC\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
+            options.UseSqlServer(@"Server=DESKTOP-RFKNG80\SQLEXPRESS;Database=Raspored;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

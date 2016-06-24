@@ -10,6 +10,8 @@ import {StudentsService} from "../../services/students.service";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_BUTTON} from "../../ui/r-button.component";
 
+import * as moment_ from "../../../js/moment.js";
+const moment = moment_["default"];
 
 @Component({
     selector: 'division-edit', 
@@ -42,8 +44,8 @@ export class DivisionEditComponent implements AfterViewInit {
 
     private cloneToEdit(division) {
         this.editedDivision.name = division.name;
-        this.editedDivision.beginning = division.beginning;
-        this.editedDivision.ending = division.ending;
+        this.editedDivision.beginning = moment(division.beginning).format("YYYY-MM-DD");
+        this.editedDivision.ending = moment(division.ending).format("YYYY-MM-DD");
         this.editedDivision.divisionTypeID = division.divisionTypeID;
         this.editedDivision.courseID = division.courseID;
     }

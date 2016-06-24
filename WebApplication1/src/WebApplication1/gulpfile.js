@@ -19,7 +19,8 @@ var js = [
     './node_modules/systemjs/dist/system.js',
     './node_modules/rxjs/bundles/Rx.js',
     './node_modules/typescript/lib/typescript.js',
-    './node_modules/jquery/dist/jquery.js'
+    './node_modules/jquery/dist/jquery.js',
+    './node_modules/moment/moment.js'
 ];
 
 var css = [
