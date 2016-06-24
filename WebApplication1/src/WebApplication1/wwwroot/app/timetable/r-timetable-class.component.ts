@@ -105,7 +105,9 @@ export class TimetableClassComponent {
         if (this.expandedLeft.charAt(1) === "-")
             this.expandedLeft = this.expandedLeft.substring(2);
         this.expandedLeft += "px";
-        this.expandedTop = "-" + this.elementRef.nativeElement.getBoundingClientRect().top;
+        this.expandedTop =
+            "-" + (this.elementRef.nativeElement.getBoundingClientRect().top -
+                    this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect().top);
         if (this.expandedTop.charAt(1) === "-")
             this.expandedTop = this.expandedTop.substring(2);
         this.expandedTop += "px";
