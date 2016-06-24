@@ -83,7 +83,7 @@ namespace WebApplication1.Data
 
                 if (schedule.Any(timespan => TimeSpan.Overlap(timespan, ts)))
                 {
-                    throw new InconsistentDivisionException("Ucionica nije slobodna u to vreme.");
+                    throw new InconsistentDivisionException("Ucionica nije slobodna u to vreme (" + TimeSpan.ToString(ts) + ").");
                 };
 
                 return true;

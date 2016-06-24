@@ -352,5 +352,12 @@ namespace MyFirstDnxUnitTests
             Assert.Equal(ts.endDate, res.endDate);
             Assert.Equal(ts.period, res.period);
         }
+
+        [Fact]
+        public void DateToString()
+        {
+            DateTime date = new DateTime(2016, 2, 16, 16, 15, 0);
+            string ret = date.ToStr();
+        }
     }
 }

@@ -100,5 +100,19 @@ namespace WebApplication1.Data
             System.TimeSpan ts = new System.TimeSpan(hour, min, 0);
             return ts;
         }
+
+        public static string ToString(TimeSpans ts)
+        {
+            var ret = ts.startDate.ToStr();
+            if (ts.startDate.Date != ts.endDate.Date)
+            {
+                ret += " - " + ts.endDate.ToStr();
+            }
+            else
+            {
+                ret += " - " + ts.endDate.ToString("HH:mm");
+            }
+            return ret;
+        }
     }
 }

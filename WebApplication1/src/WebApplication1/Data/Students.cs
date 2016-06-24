@@ -168,8 +168,9 @@ namespace WebApplication1.Data
                 if (unaveliable.Any())
                 {
                     string exp = unaveliable.Count > 1
-                        ? "Studenti nisu slobodni u vreme kada grupa ima cas.\n"
-                        : "Student nije slobodan u vreme kada grupa ima cas.\n";
+                        ? "Studenti nisu slobodni u vreme kada grupa ima cas"
+                        : "Student nije slobodan u vreme kada grupa ima cas";
+                    exp += "(" + Data.TimeSpan.ToString(ts) + ").\n";
                     exp += unaveliable.Concat("\n");
                     throw new InconsistentDivisionException(exp);
                 }
@@ -207,7 +208,9 @@ namespace WebApplication1.Data
                 TimeSpans groupTs = _context.Groups.First(a => a.groupID == groupID).timeSpan;
                 if (groupTs != null && Student.CheckIfAvailable(studentID, groupTs))
                 {
-                    throw new InconsistentDivisionException("Student nije slobodan u vreme kada grupa ima cas.");
+                    string message = "Student nije slobodan u vreme kada grupa ima cas";
+                    message += " (" + TimeSpan.ToString(groupTs) + " )."; 
+                    throw new InconsistentDivisionException(message);
                 }
             }
         }

@@ -44,6 +44,37 @@ namespace WebApplication1.Extentions
                 return (int) day;
         }
 
+        public static string ToStr(this DateTime date)
+        {
+            string ret = date.ToString("dd-MMM");
+            ret += " (" + date.DayOfWeek.ToStr() + ") ";
+            ret += date.ToString("HH:mm");
+            return ret;
+        }
+
+        public static string ToStr(this DayOfWeek day)
+        {
+            switch (day)
+            {
+                case DayOfWeek.Monday:
+                    return "ponedeljak";
+                case DayOfWeek.Tuesday:
+                    return "utorak";
+                case DayOfWeek.Wednesday:
+                    return "sreda";
+                case DayOfWeek.Thursday:
+                    return "četvrtak";
+                case DayOfWeek.Friday:
+                    return "petak";
+                case DayOfWeek.Saturday:
+                    return "subota";
+                case DayOfWeek.Sunday:
+                    return "nedelja";
+                default:
+                    return "cudan neki dan";
+            }
+        }
+
         //public static DateTime DayOfReferencedWeek(this DateTime date, DateTime refernce, int period)
         //{
         //    int diff = refernce.DayOfWeek - date.DayOfWeek;
