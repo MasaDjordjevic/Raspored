@@ -77,21 +77,21 @@ export class StudentsService {
     }
 
     hideClass(groupID:number): Promise<any[]> {
-        return this.http.get(this._url + `/HideClass/groupID=${groupID}`)
+        return this.http.get(this._url + `/HideClass/?groupID=${groupID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
     unhideClass(groupID:number): Promise<any[]> {
-        return this.http.get(this._url + `/UnHideClass/groupID=${groupID}`)
+        return this.http.get(this._url + `/UnHideClass/?groupID=${groupID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
     alertClass(groupID:number): Promise<any[]> {
-    return this.http.get(this._url + `/AlertClass/groupID=${groupID}`)
+    return this.http.get(this._url + `/AlertClass/?groupID=${groupID}`)
         .toPromise()
         .then(this.extractData)
         .catch(this.handleError);
@@ -114,15 +114,15 @@ export class StudentsService {
             .catch(this.handleError);
     }
 
-    DeleteActivity(activityID:number): Promise<any[]> {
-        return this.http.get(this._url + `/DeleteActivity/activityID=${activityID}`)
+    deleteActivity(activityID:number): Promise<any[]> {
+        return this.http.get(this._url + `/DeleteActivity/?activityID=${activityID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
-    AlertActivity(activityID:number): Promise<any[]> {
-        return this.http.get(this._url + `/AlertActivity/activityID=${activityID}`)
+    alertActivity(activityID:number): Promise<any[]> {
+        return this.http.get(this._url + `/AlertActivity/?activityID=${activityID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
