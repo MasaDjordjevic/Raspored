@@ -392,7 +392,7 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 bool canceled =  !_context.Activities.Any(ac =>
-                    !_context.StudentsActivities.Any(sa=>sa.activityID == ac.activityID) &&
+                    IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
                     ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
                 bool ignored = studentID == null ||
@@ -400,6 +400,15 @@ namespace WebApplication1.Data
                                    sa => sa.activity.groupID == groupID && sa.ignore != true);
                 return canceled && ignored;
 
+            }
+        }
+
+        // nece ako se stavi u linq izraz
+        public static bool IsStudentActivity(int activityID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return !_context.StudentsActivities.Any(sa => sa.activityID == activityID);
             }
         }
 
