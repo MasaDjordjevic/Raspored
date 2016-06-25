@@ -43,10 +43,14 @@ namespace WebApplication1.Data
                             type = a.division.divisionType.type,
                             active = Group.IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
+                            isClass = true,
                         }).ToList();
 
                 List<ScheduleDTO> activitiesSchedule =
-                    _context.Activities.Where(a => a.classroomID == classroomID && TimeSpan.Overlap(a.timeSpan, tsNow)).Select(a => new ScheduleDTO
+                    _context.Activities.Where(a => a.classroomID == classroomID &&
+                        !_context.StudentsActivities.Any(sa => sa.activityID == a.activityID) && // ne uzima studentove aktivnosti
+                        TimeSpan.Overlap(a.timeSpan, tsNow))
+                        .Select(a => new ScheduleDTO
                     {
                         day = a.timeSpan.startDate.DayOfWeek,
                         startMinutes = (int) a.timeSpan.startDate.TimeOfDay.TotalMinutes,
@@ -54,7 +58,8 @@ namespace WebApplication1.Data
                         active = true,
                         color = Schedule.GetNextColor(),
                         activityTitle = a.title,
-                        activityContent = a.activityContent
+                        activityContent = a.activityContent,
+                        isClass = false,
                     }).ToList();
 
                 List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();
@@ -77,7 +82,9 @@ namespace WebApplication1.Data
                         .Select(a => a.timeSpan).ToList();
 
                 List<TimeSpans> activitiesSchedule =
-                    _context.Activities.Where(a => a.classroomID == classroomID).Select(a => a.timeSpan).ToList();
+                    _context.Activities.Where(a => a.classroomID == classroomID &&
+                        !_context.StudentsActivities.Any(sa => sa.activityID == a.activityID))
+                        .Select(a => a.timeSpan).ToList();
 
                 List<TimeSpans> schedule = groupsSchedule.Concat(activitiesSchedule).ToList();
 

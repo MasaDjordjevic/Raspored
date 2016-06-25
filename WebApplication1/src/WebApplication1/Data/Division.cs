@@ -300,7 +300,6 @@ namespace WebApplication1.Data
                 {
                     div.courseID = courseID.Value;
                 }
-                //Console.Out("isus");
                 _context.SaveChanges();
             }
         }

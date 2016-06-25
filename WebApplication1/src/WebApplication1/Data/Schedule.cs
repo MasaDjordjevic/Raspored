@@ -14,6 +14,7 @@ namespace WebApplication1.Data
         public int durationMinutes { get; set; }
         public bool active { get; set; }
         public string color { get; set; }
+        public bool isClass { get; set; }
 
         //class
         public string className { get; set; }
@@ -44,6 +45,7 @@ namespace WebApplication1.Data
 
         }
 
+        // prebacuje raspod kao skup casova u raspored po danima u nedelji
         public static IEnumerable Convert(List<ScheduleDTO> schedule)
         {
             var ret = new ArrayList();
