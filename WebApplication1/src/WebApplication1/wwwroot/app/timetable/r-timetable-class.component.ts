@@ -4,6 +4,8 @@ import {R_BUTTON} from "../ui/r-button.component";
 import {Mode} from "./r-timetable.component";
 import {StudentsService} from "../services/students.service";
 import {GlobalService} from "../services/global.service";
+import {R_DIALOG} from "../ui/r-dialog";
+import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activity.component";
 
 @Component({
     selector: 'r-timetable-class',
@@ -59,7 +61,8 @@ import {GlobalService} from "../services/global.service";
             
             <button *ngIf="mode === _Mode.AssistantOfficial"
                     r-button raised text="Dodaj obaveštenje"
-                    (click)="addAnnouncement()">Dodaj obaveštenje</button>
+                    #addAnnouncementButton
+                    (click)="addAnnouncementDialog.open()">Dodaj obaveštenje</button>
                     
             <button *ngIf="mode === _Mode.AssistantOfficial"
                     r-button raised text="Otkaži čas"
@@ -71,6 +74,15 @@ import {GlobalService} from "../services/global.service";
         </div>
         
         <b>Message</b> {{message}}
+        
+        <r-dialog class="add-announcement" #addAnnouncementDialog [source]="addAnnouncementButton">
+            <add-activity
+                [primaryColor]="color"
+                [secondaryColor]="color"
+                [groupId]="classId"
+            >
+            </add-activity>
+        </r-dialog>
         
     </template>
     `,
@@ -89,7 +101,7 @@ import {GlobalService} from "../services/global.service";
         "(click)": "expand($event)",
     },
     pipes: [ToTimestampPipe],
-    directives: [R_BUTTON]
+    directives: [R_BUTTON, R_DIALOG, AddActivityComponent]
 })
 export class TimetableClassComponent {
     
@@ -141,33 +153,43 @@ export class TimetableClassComponent {
     }
 
     private expanded: boolean = false;
-    private expandedLeft: string;
-    private expandedTop: string;
-    private expandedWidth: string;
-    private expandedHeight: string;
+    private expandedLeft: any;
+    private expandedTop: any;
+    private expandedWidth: any;
+    private expandedHeight: any;
 
     public expand($event = null) {
         // Da se ne pozove expandovanje odmah nakon collapse() klikom an dugme. Hakic.
         if ($event && $event.target.nodeName === "BUTTON") return;
         if (this.expanded) return;
         this.expanded = true;
-        this.expandedLeft =
-            "-" + (this.elementRef.nativeElement.getBoundingClientRect().left -
-                    this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect().left);
-        if (this.expandedLeft.charAt(1) === "-")
-            this.expandedLeft = this.expandedLeft.substring(2);
-        this.expandedLeft += "px";
-        this.expandedTop =
-            "-" + (this.elementRef.nativeElement.getBoundingClientRect().top -
-                    this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect().top);
-        if (this.expandedTop.charAt(1) === "-")
-            this.expandedTop = this.expandedTop.substring(2);
-        this.expandedTop += "px";
 
+        let ratio = .95;
+        let margin = (1 - ratio) / 2;
+
+        // Width i height
         this.expandedWidth = (this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement
-                .getBoundingClientRect().width - 20) + 'px';
+                .getBoundingClientRect().width - 20); // -20 jer ne smem da predjem u scrollbar
+        this.expandedWidth *= ratio;
         this.expandedHeight = (this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement
-                .getBoundingClientRect().height - 20) + 'px';
+                .getBoundingClientRect().height);
+        this.expandedHeight *= ratio;
+
+        // Left i top
+        this.expandedLeft =
+            - (+this.elementRef.nativeElement.getBoundingClientRect().left -
+            +this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect().left);
+        this.expandedLeft += this.expandedWidth * margin;
+        this.expandedTop =
+            - (this.elementRef.nativeElement.getBoundingClientRect().top -
+            this.elementRef.nativeElement.parentElement.parentElement.parentElement.parentElement.getBoundingClientRect().top);
+        this.expandedTop += this.expandedHeight * margin;
+
+        // dodavanje jedinica
+        this.expandedLeft += "px";
+        this.expandedTop += "px";
+        this.expandedHeight += 'px';
+        this.expandedWidth += 'px';
     }
 
     public collapse() {
