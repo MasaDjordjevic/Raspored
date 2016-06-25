@@ -50,6 +50,7 @@ namespace WebApplication1.Data
             return ((aStart <= bStart && bStart <= aEnd) || (bStart <= aStart && aStart <= bEnd));
         }
 
+        // proverava da li se SAMO datumi timespanova poklapaju
         public static bool TimeSpanOverlap(TimeSpans a, TimeSpans b)
         {
             return DatesOverlap(a.startDate, a.endDate, b.startDate, b.endDate);
@@ -60,6 +61,7 @@ namespace WebApplication1.Data
             return a.startDate == b.startDate && a.endDate == b.endDate;
         }
 
+        // pretvara iz timespana ili formata [dayOfWeek, period, timeStart, timeEnd] u timespan
         public static TimeSpans getTimeSpan(GroupsController.TimeSpanBinding bind)
         {
             if (bind == null)

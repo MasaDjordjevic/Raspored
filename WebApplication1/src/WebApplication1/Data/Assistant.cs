@@ -74,6 +74,7 @@ namespace WebApplication1.Data
                             type = a.division.divisionType.type,
                             active = Group.IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
+                            isClass = true,
                         }).ToList();
 
                 List<ScheduleDTO> activitiesSchedule =
@@ -87,7 +88,8 @@ namespace WebApplication1.Data
                                                         active = true,
                                                         color = Schedule.GetNextColor(),
                                                         activityTitle = a.title,
-                                                        activityContent = a.activityContent
+                                                        activityContent = a.activityContent,
+                                                        isClass = false
                                                     }).ToList();
 
                 List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();

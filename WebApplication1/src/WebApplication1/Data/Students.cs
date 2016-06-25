@@ -106,6 +106,7 @@ namespace WebApplication1.Data
                             type = a.division.divisionType.type,
                             active = Group.IsActive(a.groupID, tsNow, studentID),
                             color = Schedule.GetNextColor(),
+                            isClass = true,
                         }).ToList();
 
                 List<int> activities =
@@ -121,7 +122,8 @@ namespace WebApplication1.Data
                                                         active = true,
                                                         color = Schedule.GetNextColor(),
                                                         activityTitle = a.title,
-                                                        activityContent = a.activityContent
+                                                        activityContent = a.activityContent,
+                                                        isClass = false
                                                     }).ToList();
 
                 List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();
@@ -131,6 +133,13 @@ namespace WebApplication1.Data
             }
         }
 
+        /// <summary>
+        /// Proverava da li je student slobodan u to vreme.
+        /// </summary>
+        /// <param name="studentID"></param>
+        /// <param name="ts"></param>
+        /// <param name="groupID">Groupa ciji ce se cas izuzeti pri proveri</param>
+        /// <returns></returns>
         public static bool CheckIfAvailable(int studentID, TimeSpans ts, int? groupID = null)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -185,15 +194,8 @@ namespace WebApplication1.Data
 
             }
         }
-
-
-
-
-        public static bool CancellingToActive(bool? cancelling)
-        {
-            return !cancelling ?? true;
-        }
-
+        
+        // provera da li studend moze biti dodan u grupu
         public static void TryAddToGroup(int studentID, int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -259,6 +261,8 @@ namespace WebApplication1.Data
             }
         }
 
+        // prebacuje studenta u grupu
+        // birse ga iz svih ostalih grupa te raspodele i ubacuje u groupID
         public static void MoveToGroup(int studentID, int groupID, RasporedContext _context = null)
         {
             _context = _context ?? new RasporedContext();

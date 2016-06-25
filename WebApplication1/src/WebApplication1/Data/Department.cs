@@ -62,6 +62,7 @@ namespace WebApplication1.Data
                             type = a.division.divisionType.type,
                             active = Group.IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
+                            isClass = true,
                         }).ToList();
 
                 return Schedule.Convert(returnValue);

@@ -18,7 +18,6 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-
                 return _context.Groups
                     .Include(a => a.classroom)
                     .Include(a => a.timeSpan)
@@ -30,7 +29,6 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-
                 Groups pom = _context.Groups
                     //.Include(a => a.division).ThenInclude(aa => aa.department)
                     .Include(a => a.classroom)
@@ -54,7 +52,6 @@ namespace WebApplication1.Data
                 {
                     _context.Ads.Remove(ad);
                 }
-                
 
                 //brisanje same grupe
                 _context.Groups.Remove(@group);
@@ -102,6 +99,8 @@ namespace WebApplication1.Data
             }
         }
 
+        // prebacuje studente u grupu
+        // brise studente iz ostalih grupa raspodele i ubacuje u tu
         public static void MoveStudents(int groupID, List<int> students)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -152,7 +151,7 @@ namespace WebApplication1.Data
                 if (groupTs == null)
                     return true;
 
-                return Student.CheckIfAvailable(groupTs, students);
+                return Student.CheckIfAvailable(groupTs, students, groupID);
             }
         }
 
@@ -329,6 +328,7 @@ namespace WebApplication1.Data
             }
         }
 
+        // vraca vreme kada grupa ima cas u naredne 4 nedelje
         public static IEnumerable GetActivityTimes(int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -439,6 +439,7 @@ namespace WebApplication1.Data
                             type = a.division.divisionType.type,
                             active = IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
+                            isClass = true
                         }).ToList();
                 
                 List<ScheduleDTO> activitiesSchedule =
@@ -452,7 +453,8 @@ namespace WebApplication1.Data
                         active = true,
                         color = Schedule.GetNextColor(),
                         activityTitle = a.title,
-                        activityContent = a.activityContent
+                        activityContent = a.activityContent,
+                        isClass = false,
                     }).ToList();
 
                 List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();
