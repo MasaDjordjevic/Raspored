@@ -12,7 +12,7 @@ import {R_INPUT} from "../../ui/r-input-text.component";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {R_STUDENT_SELECTOR} from "./students-selector.component";
 import {GlobalService} from "../../services/global.service";
-import * as moment_ "../../../js/moment.js";
+import * as moment_ from "../../../js/moment.js";
 const moment = moment_["default"];
 
 @Pipe({
@@ -51,7 +51,7 @@ class WithoutStudentsPipe implements PipeTransform {
 })
 
 // Koristi se i za Editovanje postojece grupe i za kreiranje nove grupe.
-export class GroupEditComponent implements AfterContentInit {
+export class GroupEditComponent {
 
     private _group;
 

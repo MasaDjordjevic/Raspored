@@ -288,7 +288,6 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
         });
 
         this.emitter.get("channel_item_initialized").subscribe(msg => {
-            console.log("primjlen initialized emitter");
             //debugger;
             this.select();
         });

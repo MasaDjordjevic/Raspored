@@ -155,7 +155,7 @@ export class AssistantPanelOptionsComponent {
         private _clasroomsService: ClassroomsService,
         private _coursesService: CoursesService,
         private _departmentsService: DepartmentService,
-        private _studentsService: StudentsService,
+        private _studentsService: StudentsService
     ) {
         this.getClassrooms();
         this.getDepartmentsByYear();
