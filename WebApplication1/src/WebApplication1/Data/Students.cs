@@ -289,5 +289,89 @@ namespace WebApplication1.Data
                     return false;
             }
         }
+
+
+        public static void HideClass(int studentID, int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
+                gs.ignore = true;
+                _context.SaveChanges();
+            }
+        }
+
+        // dodaje u licni raspored
+        public static void UnHideClass(int studentID, int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
+                gs.ignore = false;
+                _context.SaveChanges();
+            }
+        }
+
+        public static void AlertClass(int studentID, int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
+                gs.alert = true;
+                _context.SaveChanges();
+            }
+        }
+
+        public static void AddActivity(int studentID, int? classroomID, TimeSpans timeSpan, string place,
+             string title, string content)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                _context.TimeSpans.Add(timeSpan);
+
+                Activities act = new Activities
+                {
+                    timeSpanID = timeSpan.timeSpanID,
+                    classroomID = classroomID,
+                    place = place,
+                    title = title,
+                    activityContent = content,
+                    cancelling = false,
+                };
+                _context.Activities.Add(act);
+
+                StudentsActivities sa = new StudentsActivities
+                {
+                    studentID = studentID,
+                    activityID = act.activityID,
+                    ignore = false,
+                    alert = false
+                };
+                _context.StudentsActivities.Add(sa);
+
+                _context.SaveChanges();
+            }
+        }
+
+        public static void DeleteActivity(int studentID, int activityID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                StudentsActivities sa = _context.StudentsActivities.First(a => a.studentID == studentID && a.activityID == activityID);
+                _context.Remove(sa);
+                _context.SaveChanges();
+            }
+        }
+        
+
+        public static void AlertActivity(int studentID, int activityID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                StudentsActivities sa = _context.StudentsActivities.First(a => a.studentID == studentID && a.activityID == activityID);
+                sa.alert = true;
+                _context.SaveChanges();
+            }
+        }
     }
 }

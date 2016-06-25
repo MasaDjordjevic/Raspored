@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -208,6 +209,103 @@ namespace WebApplication1.Controllers
             return Ok(new { status = "uspelo" });
         }
 
+        [HttpGet]
+        public IActionResult HideClass(int studentID, int groupID)
+        {
+            try
+            {
+                Data.Student.HideClass(studentID, groupID);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult UnHideClass(int studentID, int groupID)
+        {
+            try
+            {
+                Data.Student.UnHideClass(studentID, groupID);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult AlertClass(int studentID, int groupID)
+        {
+            try
+            {
+                Data.Student.AlertClass(studentID, groupID);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
+
+        public class AddActivityBinding
+        {
+            public int? studentID;
+            public int? classroomID;
+            public TimeSpans timeSpan;
+            public string place;
+            public string title;
+            public string content;
+        }
+
+        [HttpPost]
+        public IActionResult AddActivity([FromBody] AddActivityBinding obj)
+        {
+            if(obj.studentID == null || obj.timeSpan == null)
+                return Ok(new { status = "parameter error" });
+
+            try
+            {
+                Data.Student.AddActivity(obj.studentID.Value, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult DeleteActivity(int studentID, int activityID)
+        {
+            try
+            {
+                Data.Student.DeleteActivity(studentID, activityID);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult AlertActivity(int studentID, int activityID)
+        {
+            try
+            {
+                Data.Student.AlertActivity(studentID, activityID);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
 
 
         // PUT: api/Students/5

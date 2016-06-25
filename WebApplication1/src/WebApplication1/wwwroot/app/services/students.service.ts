@@ -5,6 +5,7 @@ import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 
 import {Student} from "../models/Student";
+import {TimeSpan} from "../models/TimeSpan";
 
 
 
@@ -73,7 +74,61 @@ export class StudentsService {
                 .toPromise()
                 .then(this.extractData)
                 .catch(this.handleError);
-        }
+    }
+
+    hideClass(studentID:number, groupID:number): Promise<any[]> {
+        return this.http.get(this._url + `/HideClass/?studentID=${studentID}&groupID=${groupID}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    unhideClass(studentID:number, groupID:number): Promise<any[]> {
+        return this.http.get(this._url + `/UnHideClass/?studentID=${studentID}&groupID=${groupID}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    alertClass(studentID:number, groupID:number): Promise<any[]> {
+    return this.http.get(this._url + `/AlertClass/?studentID=${studentID}&groupID=${groupID}`)
+        .toPromise()
+        .then(this.extractData)
+        .catch(this.handleError);
+    }
+
+    public addActivity(studentId: number, classroomId: number, timespan: TimeSpan, title: string, content: string, place: string) {
+        let body = JSON.stringify({
+           "studentID" : studentId,
+           "classroomID" : classroomId,
+           "timeSpan" : timespan,
+           "place" : place,
+           "title" : title,
+           "content" : content
+        });
+        console.log(body);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this._url + '/AddActivity', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    DeleteActivity(studentID:number, activityID:number): Promise<any[]> {
+        return this.http.get(this._url + `/DeleteActivity/?studentID=${studentID}&activityID=${activityID}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    AlertActivity(studentID:number, activityID:number): Promise<any[]> {
+        return this.http.get(this._url + `/AlertActivity/?studentID=${studentID}&activityID=${activityID}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 
 
