@@ -189,6 +189,8 @@ export class TimetableComponent {
             this.getGroupSchedule();
         if (this.departmentID)
             this.getDepartmentSchedule();
+        if (this.officialStudentID)
+            this.getOfficialStudentSchedule();
     }
 
     get groupID () {

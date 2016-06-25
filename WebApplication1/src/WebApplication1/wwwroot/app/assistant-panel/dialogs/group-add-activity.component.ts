@@ -45,6 +45,7 @@ export class AddActivityComponent {
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
+
     @Output() close: EventEmitter<any> = new EventEmitter<any>();
 
     weekNumber: number = 0;
@@ -139,6 +140,7 @@ export class AddActivityComponent {
             }
         }
         this.dateChoices = ret;
+        this.announcement.startDate = this.dateChoices[0];
         return ret;
     }
 }
