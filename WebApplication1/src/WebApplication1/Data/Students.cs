@@ -305,6 +305,8 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
+                if (gs.ignore == true)
+                    throw new Exception("vec je u sakriven");
                 gs.ignore = true;
                 _context.SaveChanges();
             }
@@ -316,6 +318,8 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
+                if(gs.ignore == false)
+                    throw new Exception("vec je u licnom");
                 gs.ignore = false;
                 _context.SaveChanges();
             }
@@ -326,6 +330,8 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
+                if(gs.alert == true)
+                    throw new Exception("vec je alertovan");
                 gs.alert = true;
                 _context.SaveChanges();
             }
@@ -378,6 +384,8 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 StudentsActivities sa = _context.StudentsActivities.First(a => a.studentID == studentID && a.activityID == activityID);
+                if(sa.alert == true)
+                    throw new Exception("vec je alertovan");
                 sa.alert = true;
                 _context.SaveChanges();
             }
