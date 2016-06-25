@@ -310,7 +310,8 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Data.Group.AddActivity(obj.groupID.Value, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
+                //TODO vadi iz sesije
+                Data.Group.AddActivity(1, obj.groupID.Value, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
             }
             catch (Exception ex)
             {
