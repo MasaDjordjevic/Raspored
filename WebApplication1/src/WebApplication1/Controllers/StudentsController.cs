@@ -289,6 +289,7 @@ namespace WebApplication1.Controllers
 
         public class AddActivityBinding
         {
+            public int? groupID;
             public int? classroomID;
             public TimeSpans timeSpan;
             public string place;
@@ -305,7 +306,7 @@ namespace WebApplication1.Controllers
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.AddActivity(3, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
+                Data.Student.AddActivity(3, obj.groupID, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

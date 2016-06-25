@@ -380,7 +380,7 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void AddActivity(int studentID, int? classroomID, TimeSpans timeSpan, string place,
+        public static void AddActivity(int studentID, int? groupID, int? classroomID, TimeSpans timeSpan, string place,
              string title, string content)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -389,6 +389,7 @@ namespace WebApplication1.Data
 
                 Activities act = new Activities
                 {
+                    groupID = groupID,
                     timeSpanID = timeSpan.timeSpanID,
                     classroomID = classroomID,
                     place = place,
