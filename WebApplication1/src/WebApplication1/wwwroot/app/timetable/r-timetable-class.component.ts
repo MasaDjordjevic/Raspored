@@ -39,7 +39,7 @@ import {GlobalService} from "../services/global.service";
             global {{mode === _Mode.StudentGlobal}}
             personal {{mode === _Mode.StudentPersonal}}-->
             
-            {{isClass}}
+            {{classId}}
         
             <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
                     r-button raised text="Dodaj čas u lični"
@@ -70,6 +70,8 @@ import {GlobalService} from "../services/global.service";
             
         </div>
         
+        <b>Message</b> {{message}}
+        
     </template>
     `,
     styleUrls: ['app/timetable/r-timetable-class.css'],
@@ -94,7 +96,7 @@ export class TimetableClassComponent {
     @Input() mode: Mode;
     public _Mode = Mode;
 
-    public status: string;
+    public message: string;
 
     // Vremena za računanje
     @Input() startMinutes: number; // npr. 07:15 je 435
@@ -180,8 +182,17 @@ export class TimetableClassComponent {
     // dodavanje u lični
     public addToPersonal() {
         this._studentsService.unhideClass(this.classId)
-            .then(status => {console.log(status); this.status = <any>status})
-        ;
+            .then(
+                response => {
+                    console.log("Response: ", response);
+                    if (response.status === "uspelo") {
+
+                    } else {
+                        // status === "nije uspelo"
+                        this.message = response.message;
+                    }
+                }
+            );
     }
 
     // obrisi aktivnosti
@@ -192,6 +203,7 @@ export class TimetableClassComponent {
 
     // sakrij cas
     public hideClass() {
+        // TODO smisli nesto pametno umesto tajmauta
         this._studentsService.hideClass(this.classId)
             .then(status => console.log(status))
             .then(() => setTimeout(() => this._globalService.refreshStudentPanelPersonal(), 1000));
