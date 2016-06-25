@@ -17,6 +17,7 @@ namespace WebApplication1.Data
         public bool isClass { get; set; }
 
         //class
+        public int groupID { get; set; }
         public string className { get; set; }
         public string abbr { get; set; }
         public string classroom { get; set; }
@@ -24,6 +25,7 @@ namespace WebApplication1.Data
         public string type { get; set; }
 
         //activity
+        public int activityID { get; set; }
         public string activityTitle { get; set; }
         public string activityContent { get; set; }
 

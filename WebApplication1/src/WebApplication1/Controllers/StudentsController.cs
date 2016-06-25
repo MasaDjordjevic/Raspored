@@ -210,11 +210,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult HideClass(int studentID, int groupID)
+        public IActionResult HideClass(int groupID)
         {
             try
             {
-                Data.Student.HideClass(studentID, groupID);
+                //TODO vadi iz sesije
+                Data.Student.HideClass(3, groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -225,11 +226,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult UnHideClass(int studentID, int groupID)
+        public IActionResult UnHideClass(int groupID)
         {
             try
             {
-                Data.Student.UnHideClass(studentID, groupID);
+                //TODO vadi iz sesije
+                Data.Student.UnHideClass(3, groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -239,11 +241,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult AlertClass(int studentID, int groupID)
+        public IActionResult AlertClass(int groupID)
         {
             try
             {
-                Data.Student.AlertClass(studentID, groupID);
+                //TODO vadi iz sesije
+                Data.Student.AlertClass(3, groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -254,7 +257,6 @@ namespace WebApplication1.Controllers
 
         public class AddActivityBinding
         {
-            public int? studentID;
             public int? classroomID;
             public TimeSpans timeSpan;
             public string place;
@@ -265,12 +267,13 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult AddActivity([FromBody] AddActivityBinding obj)
         {
-            if(obj.studentID == null || obj.timeSpan == null)
+            if(obj.timeSpan == null)
                 return Ok(new { status = "parameter error" });
 
             try
             {
-                Data.Student.AddActivity(obj.studentID.Value, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
+                //TODO vadi iz sesije
+                Data.Student.AddActivity(3, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -280,11 +283,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteActivity(int studentID, int activityID)
+        public IActionResult DeleteActivity(int activityID)
         {
             try
             {
-                Data.Student.DeleteActivity(studentID, activityID);
+                //TODO vadi iz sesije
+                Data.Student.DeleteActivity(3, activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -294,11 +298,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult AlertActivity(int studentID, int activityID)
+        public IActionResult AlertActivity(int activityID)
         {
             try
             {
-                Data.Student.AlertActivity(studentID, activityID);
+                //TODO vadi iz sesije
+                Data.Student.AlertActivity(3, activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

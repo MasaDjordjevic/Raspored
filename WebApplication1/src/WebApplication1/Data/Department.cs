@@ -63,6 +63,7 @@ namespace WebApplication1.Data
                             active = Group.IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
                             isClass = true,
+                            groupID = a.groupID
                         }).ToList();
 
                 return Schedule.Convert(returnValue);

@@ -76,30 +76,29 @@ export class StudentsService {
                 .catch(this.handleError);
     }
 
-    hideClass(studentID:number, groupID:number): Promise<any[]> {
-        return this.http.get(this._url + `/HideClass/?studentID=${studentID}&groupID=${groupID}`)
+    hideClass(groupID:number): Promise<any[]> {
+        return this.http.get(this._url + `/HideClass/groupID=${groupID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
-    unhideClass(studentID:number, groupID:number): Promise<any[]> {
-        return this.http.get(this._url + `/UnHideClass/?studentID=${studentID}&groupID=${groupID}`)
+    unhideClass(groupID:number): Promise<any[]> {
+        return this.http.get(this._url + `/UnHideClass/groupID=${groupID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
-    alertClass(studentID:number, groupID:number): Promise<any[]> {
-    return this.http.get(this._url + `/AlertClass/?studentID=${studentID}&groupID=${groupID}`)
+    alertClass(groupID:number): Promise<any[]> {
+    return this.http.get(this._url + `/AlertClass/groupID=${groupID}`)
         .toPromise()
         .then(this.extractData)
         .catch(this.handleError);
     }
 
-    public addActivity(studentId: number, classroomId: number, timespan: TimeSpan, title: string, content: string, place: string) {
+    public addActivity(classroomId: number, timespan: TimeSpan, title: string, content: string, place: string) {
         let body = JSON.stringify({
-           "studentID" : studentId,
            "classroomID" : classroomId,
            "timeSpan" : timespan,
            "place" : place,
@@ -115,15 +114,15 @@ export class StudentsService {
             .catch(this.handleError);
     }
 
-    DeleteActivity(studentID:number, activityID:number): Promise<any[]> {
-        return this.http.get(this._url + `/DeleteActivity/?studentID=${studentID}&activityID=${activityID}`)
+    DeleteActivity(activityID:number): Promise<any[]> {
+        return this.http.get(this._url + `/DeleteActivity/activityID=${activityID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
     }
 
-    AlertActivity(studentID:number, activityID:number): Promise<any[]> {
-        return this.http.get(this._url + `/AlertActivity/?studentID=${studentID}&activityID=${activityID}`)
+    AlertActivity(activityID:number): Promise<any[]> {
+        return this.http.get(this._url + `/AlertActivity/activityID=${activityID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);
