@@ -83,7 +83,7 @@ export class AddActivityComponent {
             group => this.group = group,
             error => this.errorMessage = <any>error
         )
-            .then(() => this.group.timespan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period));
+            .then(() => this.group.timeSpan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period));
     }
 
     constructor(private _classroomsService: ClassroomsService,
