@@ -78,7 +78,7 @@ namespace WebApplication1.Data
         
       
 
-        public static IEnumerable GetSchedule(int studentID, int weeksFromNow = 0)
+        public static IEnumerable GetSchedule(int studentID, int weeksFromNow = 0, bool official = false)
         {
             using (RasporedContext _context = new RasporedContext())
             {
@@ -90,7 +90,7 @@ namespace WebApplication1.Data
                 };
                 List<int> groups = _context.GroupsStudents
                     .Where(a => a.studentID == studentID &&  
-                                a.ignore != true &&
+                                (official || a.ignore != true) &&
                                 TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
                                 .Select(a => a.groupID).ToList();
 
@@ -111,7 +111,7 @@ namespace WebApplication1.Data
                             groupID = a.groupID
                         }).ToList();
 
-                List<int> activities =
+                List<int> activities = official ? new List<int>() : 
                     _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
                 List<ScheduleDTO> activitiesSchedule =
                     _context.Activities.Where(a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value))
@@ -134,6 +134,16 @@ namespace WebApplication1.Data
 
                 return Schedule.Convert(returnValue);
             }
+        }
+
+        public static IEnumerable GetPersonalSchedule(int studentID, int weeksFromNow = 0)
+        {
+            return GetSchedule(studentID, weeksFromNow, false);
+        }
+
+        public static IEnumerable GetOfficialSchedule(int studentID, int weeksFromNow = 0)
+        {
+            return GetSchedule(studentID, weeksFromNow, true);
         }
 
         /// <summary>

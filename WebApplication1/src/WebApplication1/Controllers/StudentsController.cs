@@ -143,6 +143,40 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetPersonalSchedule(int studentID, int weeksFromNow)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var schedule = Data.Student.GetPersonalSchedule(studentID, weeksFromNow);
+
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(schedule);
+        }[HttpGet]
+        public IActionResult GetOfficialSchedule(int studentID, int weeksFromNow)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var schedule = Data.Student.GetOfficialSchedule(studentID, weeksFromNow);
+
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(schedule);
+        }
+
+        [HttpGet]
         public IActionResult AddToGroup(int studentID, int groupID)
         {
             if (!ModelState.IsValid)
