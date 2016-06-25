@@ -1,9 +1,19 @@
-import {Injectable} from "angular2/core";
+import {Injectable, EventEmitter} from "angular2/core";
 
 @Injectable()
 export class GlobalService {
 
-    public static colorClassName(color): string {
+    private _emitters:
+        { [channel: string]: EventEmitter<any> } = {};
+
+    get(channel: string): EventEmitter<any> {
+        if (!this._emitters[channel])
+            this._emitters[channel] = new EventEmitter();
+        return this._emitters[channel]
+    }
+
+    //region Tema na Assistant panel
+    public static colorClassName(color):string {
         if (color.indexOf("Material") === 0) {
             // boja je data material kodom
             // sklanjamo "Material"
@@ -15,7 +25,9 @@ export class GlobalService {
         }
         return "blue";
     }
+    //endregion
 
+    //region Jezici
     private _currentLanguage = "sr";
     
     public set currentLanguage(language) {
@@ -315,7 +327,27 @@ export class GlobalService {
         }
         return this._strings[id][this._currentLanguage];
     }
+    //endregion
 
+    //region Assistant Panel
+    refreshAssistantPanelAll() {
+        this.get("channel_refresh_assistant_panel_all").emit({
+            status: "hello"
+        });
+    }
+    refreshAssistantPanelMoveMinusOne() {
+        this.get("channel_refresh_assistant_panel_move_minus_one").emit({
+            status: "hello"
+        })
+    }
+    //endregion
 
+    //region Student Panel
+    public refreshStudentPanelPersonal$: EventEmitter<any> = new EventEmitter<any>();
+    refreshStudentPanelPersonal() {
+        this.refreshStudentPanelPersonal$.emit({});
+        
+    }
+    //endregion
 
 }

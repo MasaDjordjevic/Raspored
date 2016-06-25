@@ -1,17 +1,85 @@
 <template [ngIf]="student">
     <div id="panel-header-wrapper">
-        <r-panel-header [name]="student.UniMembers.name"
-                        [surname]="student.UniMembers.surname"
-                        [address]="student.UniMembers.address"
-                        [email]="student.UniMembers.email"
-                        [avatarUrl]="'avatar.png'"
-                        [showLanguagePicker]="true"
-                        [showThemePicker]="false"
-        >
-        </r-panel-header>
+        <header>
+
+            <div class="profile-picture">
+                <div style="background-image: url('avatar.png')"></div>
+            </div>
+
+            <div class="basic-info">
+                <div class="name">{{student.UniMembers.name}} {{student.UniMembers.surname}}</div>
+                <div class="details">
+                    <div class="office"><i class="fa fa-briefcase"></i> {{student.UniMembers.address}}</div>
+                    <div class="e-mail"><i class="fa fa-envelope"></i> {{student.UniMembers.email}}</div>
+                </div>
+            </div>
+
+            <button #StudentEditButton>
+                <i class="fa fa-pencil"></i>
+            </button>
+
+            <div class="flex-spacer"></div>
+
+            <div class="options">
+                <button (click)="languagePickerOpened = !languagePickerOpened">
+                    <i class="fa fa-globe"></i>
+                </button>
+            </div>
+
+            <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">
+                <div class="dropdown-item" (click)="language = 'en'; languagePickerOpened = false">
+                    <span class="language-name">English</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg')"></div>
+                </div>
+                <div class="dropdown-item" (click)="language = 'sr'; languagePickerOpened = false">
+                    <span class="language-name">srpski</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
+                </div>
+                <div class="dropdown-item" (click)="language = 'src'; languagePickerOpened = false">
+                    <span class="language-name">српски</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
+                </div>
+                <div class="dropdown-item" (click)="language = 'eo'; languagePickerOpened = false">
+                    <span class="language-name">Esperanto</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg'); background-position: 0% center"></div>
+                </div>
+                <div class="dropdown-item" (click)="language = 'es'; languagePickerOpened = false">
+                    <span class="language-name">español</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg')"></div>
+                </div>
+                <div class="dropdown-item" (click)="language = 'de'; languagePickerOpened = false">
+                    <span class="language-name">deutsch</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')"></div>
+                </div>
+                <div class="dropdown-item" (click)="language = 'fr'; languagePickerOpened = false">
+                    <span class="language-name">français</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg')"></div>
+                </div>
+                <div class="dropdown-item" (click)="language = 'ja'; languagePickerOpened = false">
+                    <span class="language-name">日本語</span>
+                    <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg')"></div>
+                </div>
+            </div>
+            <div class="invisible-blackout" (click)="languagePickerOpened = false"></div>
+
+        </header>
     </div>
 
     <div id="timetable-wrapper">
-        <r-timetable [studentID]="student.studentID"></r-timetable>
+        <r-timetable [studentID]="studentID"
+                     [officialStudentID]="studentOfficialID"
+                     [departmentID]="departmentID"
+                     [type]="timetableType === 0 ? 'official' : timetableType === 1 ? 'personal' : 'global'"
+        >
+        </r-timetable>
+    </div>
+
+    <div id="menu">
+        <div class="tabs">
+            <div class="tab-bar" [style.left]="(timetableType * 100) + 'px'" ></div>
+            <div class="tab" [class.current]="timetableType === 0" (click)="timetableType = _TimetableType.Official">Zvanični</div>
+            <div class="tab" [class.current]="timetableType === 1" (click)="timetableType = _TimetableType.Personal">Lični</div>
+            <div class="tab" [class.current]="timetableType === 2" (click)="timetableType = _TimetableType.Global">Globalni</div>
+        </div>
     </div>
 </template>

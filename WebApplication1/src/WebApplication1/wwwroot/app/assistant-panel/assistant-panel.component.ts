@@ -19,7 +19,9 @@ import {StudentsListComponent} from "./list/students-list.component";
 import {StudentOptionsComponent} from "./options/student-options.component";
 import {R_BUTTON} from "../ui/r-button.component";
 import {R_DIALOG} from "../ui/r-dialog";
-import {GlobalService} from "../services/global.service";
+import {
+    GlobalService
+} from "../services/global.service";
 
 @Component({
     selector: "r-assistant-panel",
@@ -32,7 +34,8 @@ import {GlobalService} from "../services/global.service";
         R_BUTTON, R_DIALOG, AssistantEditComponent,
     ],
     templateUrl: 'app/assistant-panel/assistant-panel.html',
-    styleUrls: ['app/assistant-panel/assistant-panel.css']
+    styleUrls: ['app/assistant-panel/assistant-panel.css'],
+    providers: [GlobalService]
 })
 
 export class AssistantPanelComponent {
@@ -79,8 +82,9 @@ export class AssistantPanelComponent {
     errorMessage: string;
 
     constructor(
-        private _globalService: GlobalService
+        public _globalService: GlobalService
     ) {
+        //region Themes and language
         this._themes = [];
         this._themes["material"] = {
             departmentPrimaryColor: "MaterialOrange", // #FFC107
@@ -107,8 +111,49 @@ export class AssistantPanelComponent {
             studentPrimaryColor: "_Neon-Poison", // #18DD00
         };
         this.theme = "material";
-
         this.language = "en";
+        //endregion
+        
+        //region Service subscriptions
+        this._globalService
+            .get("channel_refresh_assistant_panel_all")
+            .subscribe(item => this.refresh(null));
+        
+        this._globalService
+            .get("channel_refresh_assistant_panel_move_minus_one")
+            .subscribe(item => this.refresh({shiftMinutesOne: true}));
+        //endregion
+        
+    }
+
+    // Osvezava referencu da bi se prosledili ID-jevi kroz inpute (i da se opet pozove AJAX)
+    public refresh($options) {
+
+        console.log("primljen event");
+        console.log($options);
+
+        // Ako uopste nisu prosledjene opcije, samo uradi refresh
+        if (!$options) {
+            this._selectedStudentId = <any>(new Number(this._selectedStudentId));
+            this._selectedGroupId = <any>(new Number(this._selectedGroupId));
+            this._selectedDivisionId = <any>(new Number(this._selectedDivisionId));
+            this._selectedDepartmentId = <any>(new Number(this._selectedDepartmentId));
+            // this._selectedStudentId = +(this._selectedStudentId + ""); // TODO ovako
+        } else {
+            // Inace, u zavisnosti od prosledjene opcije uradi odgovarajuce manipulacije
+            if ( $options.shiftMinusOne) {
+                this._selectedDepartmentId = this._selectedDivisionId === -1 ? -1 : <any>(new Number(this._selectedDepartmentId));
+                this._selectedDivisionId = this._selectedGroupId === -1 ? -1 : <any>(new Number(this._selectedDivisionId));
+                this._selectedGroupId = this._selectedStudentId === -1 ? -1 : <any>(new Number(this._selectedGroupId));
+                this._selectedStudentId = -1;
+            } else if ($options.allMinusOne) {
+                this._selectedStudentId = -1;
+                this._selectedGroupId = -1;
+                this._selectedDivisionId = -1;
+                this._selectedDepartmentId = -1;
+            }
+        }
+
     }
 
     private lang = this._globalService.currentLanguage;
@@ -177,35 +222,6 @@ export class AssistantPanelComponent {
     get isAtGroup() { return this.currentLevel == 3; }
     get isAtStudent() { return this.currentLevel == 4; }
 
-    // Osvezava referencu da bi se prosledili ID-jevi kroz inpute (i da se opet pozove AJAX)
-    public refresh($options) {
-
-        console.log("primljen event");
-        console.log($options);
-
-        // Ako uopste nisu prosledjene opcije, samo uradi refresh
-        if (!$options) {
-            this._selectedStudentId = <any>(new Number(this._selectedStudentId));
-            this._selectedGroupId = <any>(new Number(this._selectedGroupId));
-            this._selectedDivisionId = <any>(new Number(this._selectedDivisionId));
-            this._selectedDepartmentId = <any>(new Number(this._selectedDepartmentId));
-            // this._selectedStudentId = +(this._selectedStudentId + ""); // TODO ovako
-        } else {
-            // Inace, u zavisnosti od prosledjene opcije uradi odgovarajuce manipulacije
-            if ( $options.shiftMinusOne) {
-                this._selectedDepartmentId = this._selectedDivisionId === -1 ? -1 : <any>(new Number(this._selectedDepartmentId));
-                this._selectedDivisionId = this._selectedGroupId === -1 ? -1 : <any>(new Number(this._selectedDivisionId));
-                this._selectedGroupId = this._selectedStudentId === -1 ? -1 : <any>(new Number(this._selectedGroupId));
-                this._selectedStudentId = -1;
-            } else if ($options.allMinusOne) {
-                this._selectedStudentId = -1;
-                this._selectedGroupId = -1;
-                this._selectedDivisionId = -1;
-                this._selectedDepartmentId = -1;
-            }
-        }
-        
-    }
 
 
 }

@@ -10,6 +10,7 @@ import {DivisionsService} from "../services/divisions.service";
 import {DepartmentService} from "../services/department.service";
 import {ClassroomsService} from "../services/classrooms.service";
 import {AssistantService} from "../services/assistant.service";
+import {GlobalService} from "../services/global.service";
 
 
 export enum Mode {
@@ -148,11 +149,12 @@ export class TimetableComponent {
     _weeksFromNow: number = 0;
     _groupID: number;
     _studentID: number;
+    _officialStudentID: number;
     _departmentID: number;
     _classroomID: number;
     _assistantID: number;
 
-    @Input() type: 'official' | 'global' | 'personal' = 'personal';
+    @Input() type: 'official' | 'global' | 'personal' = 'official';
 
     get mode() {
         if (this.type === 'official' && this.studentID) {
@@ -165,6 +167,8 @@ export class TimetableComponent {
             return Mode.ClassroomOfficial;
         } else if (this.assistantID) {
             return Mode.AssistantOfficial;
+        } else {
+            return Mode.StudentOfficial; // default
         }
     }
 
@@ -177,7 +181,6 @@ export class TimetableComponent {
     }
 
     getSchedule() {
-        debugger;
         if (this.studentID)
             this.getStudentSchedule();
         if (this.classroomID)
@@ -206,12 +209,20 @@ export class TimetableComponent {
         this.getStudentSchedule();
     }
 
+    get officialStudentID() {
+        return this._officialStudentID;
+    }
+    @Input() set officialStudentID(id) {
+        if (!id) return;
+        this._officialStudentID = id;
+        this.getOfficialStudentSchedule();
+    }
+
     get departmentID () {
         return this._departmentID;
     }
     @Input() set departmentID(g) {
         if (!g) return;
-
         this._departmentID = g;
         this.getDepartmentSchedule();
     }
@@ -221,7 +232,6 @@ export class TimetableComponent {
     }
     @Input() set classroomID(g) {
         if (!g) return;
-
         this._classroomID = g;
         this.getClassroomSchedule();
     }
@@ -231,7 +241,6 @@ export class TimetableComponent {
     }
     @Input() set assistantID(a) {
         if (!a) return;
-
         this._assistantID = a;
         this.getAssistantSchedule();
     }
@@ -248,18 +257,35 @@ export class TimetableComponent {
         return ret;
     };
 
-    constructor(private _studentsService: StudentsService,
-                private _groupsService: GroupsService,
-                private _departmentsService: DepartmentService,
-                private _clasroomsService: ClassroomsService,
-                private _assistantService: AssistantService)
+    constructor(
+        private _studentsService: StudentsService,
+        private _groupsService: GroupsService,
+        private _departmentsService: DepartmentService,
+        private _clasroomsService: ClassroomsService,
+        private _assistantService: AssistantService,
+        private _globalService: GlobalService
+    )
     {
-
+        this._globalService.refreshStudentPanelPersonal$
+            .subscribe(item => this.refresh());
+    }
+    
+    public refresh() {
+        this.studentID = <any>(new Number(this.studentID));
     }
 
     getStudentSchedule(){
-        //TODO prosledi lepo ID
-        this._studentsService.getSchedule(this.studentID, this.weeksFromNow)
+        //TODO prosledi lepo ID, preko sesije
+        this._studentsService.getPersonalSchedule(this.studentID, this.weeksFromNow)
+            .then(
+                sch => this.classes = sch,
+                error => this.errorMessage = error
+            ).then(() => this.pom());
+    }
+
+    getOfficialStudentSchedule() {
+        //TODO prosledi lepo ID, preko sesije (valjda)
+        this._studentsService.getOfficialSchedule(this.officialStudentID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
                 error => this.errorMessage = error
@@ -303,7 +329,7 @@ export class TimetableComponent {
     
     
 
-    pom(){
+    pom() {
         console.log(this.classes);
     }
 

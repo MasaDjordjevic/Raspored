@@ -127,10 +127,11 @@ export class MassGroupEditComponent {
 
         for (let i = 0; i < this.editedDivision.length; i++) {
             // pripremanje parametara za slanje
-            let sendObj = {};
-            sendObj.groupId = this.editedDivision[i].groupId;
-            sendObj.classroomId = this.editedDivision[i].classroomId;
-            sendObj.timespan = null;
+            let sendObj: any = {
+                groupId: this.editedDivision[i].groupId,
+                classroomId: this.editedDivision[i].classroomId,
+                timespan: null
+            };
             // ostace null ukoliko nista nije izabrano
             if (this.editedDivision[i].period) {
                 sendObj.timespan = {

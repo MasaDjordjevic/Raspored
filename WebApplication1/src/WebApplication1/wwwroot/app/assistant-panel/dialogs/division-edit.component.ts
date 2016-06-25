@@ -11,6 +11,9 @@ import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_BUTTON} from "../../ui/r-button.component";
 
 import * as moment_ from "../../../js/moment.js";
+import {
+    GlobalService
+} from "../../services/global.service";
 const moment = moment_["default"];
 
 @Component({
@@ -70,7 +73,8 @@ export class DivisionEditComponent implements AfterViewInit {
     constructor(
         private _coursesService: CoursesService,
         private _divisionsService: DivisionsService,
-        private _studentsService: StudentsService
+        private _studentsService: StudentsService,
+        private _globalService: GlobalService
     ) {
         //this.control = new Control();
         //this.controlValue$ = this.control.valueChanges;
@@ -134,7 +138,10 @@ export class DivisionEditComponent implements AfterViewInit {
         debugger;
 
         //TODO nesto pametnije sa odgovorom
-        this._divisionsService.updateDivision(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID).then(any => console.log(any));
+        this._divisionsService.updateDivision(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID)
+            .then(any => console.log(any))
+            .then(() => this._globalService.refreshAssistantPanelAll());
+
     }
 
 }

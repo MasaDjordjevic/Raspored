@@ -17,13 +17,16 @@ import {Mode} from "./r-timetable.component";
                         'height': ((c.durationMinutes) * scale) + 'px',
                         'left': (c.overlapIndex * 100 / c.overlapNumber) + '%',
                         'width': (100 / c.overlapNumber) + '%'}">
-            <r-timetable-class    
+            <r-timetable-class
+                [classId]="c.groupID"
                 [className]="c.className" 
+                [isClass]="c.isClass"
                 [abbr]="c.abbr"
                 [classroom]="c.classroom"
                 [assistant]="c.assistant"
                 [color]="c.color"
                 [type]="c.type"
+                [activityId]="c.activityID"
                 [activityContent]="c.activityContent"
                 [activityTitle]="c.activityTitle"
                 [active]="c.active"

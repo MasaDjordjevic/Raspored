@@ -2,6 +2,8 @@ import {Component, Input, ElementRef} from "angular2/core";
 import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 import {R_BUTTON} from "../ui/r-button.component";
 import {Mode} from "./r-timetable.component";
+import {StudentsService} from "../services/students.service";
+import {GlobalService} from "../services/global.service";
 
 @Component({
     selector: 'r-timetable-class',
@@ -32,15 +34,22 @@ import {Mode} from "./r-timetable.component";
     
         <div class="controls">
         
-            <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal"
+            <!--{{mode}}
+            official {{mode === _Mode.StudentOfficial}}
+            global {{mode === _Mode.StudentGlobal}}
+            personal {{mode === _Mode.StudentPersonal}}-->
+            
+            {{isClass}}
+        
+            <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
                     r-button raised text="Dodaj čas u lični"
-                    (click)="addToPersonal">Dodaj u lični</button>
+                    (click)="addToPersonal()">Dodaj u lični</button>
                     
-            <button *ngIf="mode === _Mode.StudentPersonal"
+            <button *ngIf="mode === _Mode.StudentPersonal && !isClass"
                     r-button raised text="Obriši aktivnost"
                     (click)="deleteActivity()">Obriši aktivnost</button>
                     
-            <button *ngIf="mode === _Mode.StudentPersonal"
+            <button *ngIf="mode === _Mode.StudentPersonal && isClass"
                     r-button raised text="Sakrij čas"
                     (click)="hideClass()">Sakrij čas</button>
                     
@@ -83,8 +92,9 @@ import {Mode} from "./r-timetable.component";
 export class TimetableClassComponent {
     
     @Input() mode: Mode;
-
     public _Mode = Mode;
+
+    public status: string;
 
     // Vremena za računanje
     @Input() startMinutes: number; // npr. 07:15 je 435
@@ -92,15 +102,20 @@ export class TimetableClassComponent {
     @Input() durationMinutes: number; // npr. 45
 
     // Opšti podaci o času
+    @Input() classId: number;
     @Input() className: string; // "Objektno-orijentisano programiranje"
+    @Input() isClass: boolean; // true = class, false = activity
     @Input() abbr: string; // "OOP"
     @Input() classroom: string; // "431", "A1"
     @Input() assistant: string; // "Vladan Mihajlovitj"
     @Input() announcement: string; // "Obavezno poneti 3D sliku na čas!"
+    @Input() activityId: number;
     @Input() activityTitle: string; // "Teretana"
     @Input() activityContent: string; // "Samo džim bajo moj"
     @Input() active: boolean = true; // true: defaultno, false: zasivljeno
     @Input() type: string = "predavanje";
+    
+    @Input() groupId: number;
 
     // Prikaz
     @Input() color: string;
@@ -164,26 +179,29 @@ export class TimetableClassComponent {
 
     // dodavanje u lični
     public addToPersonal() {
-        // TODO
-        alert("TODO");
+        this._studentsService.unhideClass(this.classId)
+            .then(status => {console.log(status); this.status = <any>status})
+        ;
     }
 
     // obrisi aktivnosti
     public deleteActivity() {
-        // TODO
-        alert("TODO");
+        this._studentsService.deleteActivity(this.activityId)
+            .then(status => console.log(status));
     }
 
     // sakrij cas
     public hideClass() {
-        // TODO
-        alert("TODO");
+        this._studentsService.hideClass(this.classId)
+            .then(status => console.log(status))
+            .then(() => setTimeout(() => this._globalService.refreshStudentPanelPersonal(), 1000));
     }
 
     // dodaj task
     public addTask() {
-        // TODO
-        alert("TODO");
+        //TODO
+        /*this._studentsService.addActivity()
+            .then(status => console.log(status));*/
     }
 
     // dodaj obavestenje
@@ -197,9 +215,12 @@ export class TimetableClassComponent {
         // TODO
         alert("TODO");
     }
+    
 
     constructor(
-        private elementRef: ElementRef
+        private elementRef: ElementRef,
+        private _studentsService: StudentsService,
+        private _globalService: GlobalService
     ) {
 
     }
