@@ -392,6 +392,7 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                 bool canceled =  !_context.Activities.Any(ac =>
+                    !_context.StudentsActivities.Any(sa=>sa.activityID == ac.activityID) &&
                     ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
                 bool ignored = studentID == null ||
