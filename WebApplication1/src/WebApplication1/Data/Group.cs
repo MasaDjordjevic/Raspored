@@ -381,7 +381,7 @@ namespace WebApplication1.Data
             }
         }
 
-        // zbog linq izraza koji mi ne daje da pozvem funkciju koja ima optional paremeter
+        // zbog linq izraza koji mi ne daje da pozvem funkciju koja ima optional parameter
         public static bool IsActive(int groupID, TimeSpans tsNow)
         {
             return IsActive(groupID, tsNow, null);
@@ -391,14 +391,14 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                bool canceled =  !_context.Activities.Any(ac =>
-                    IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
+                bool canceled =  _context.Activities.Any(ac =>
+                    !IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
                     ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
-                bool ignored = studentID == null ||
-                               !_context.StudentsActivities.Any(
-                                   sa => sa.activity.groupID == groupID && sa.ignore != true);
-                return canceled && ignored;
+                bool ignored = studentID != null &&
+                               _context.StudentsActivities.Any(
+                                   sa => sa.studentID == studentID.Value && sa.activity.groupID == groupID && sa.ignore == true);
+                return !(canceled || ignored);
 
             }
         }
@@ -408,7 +408,7 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                return !_context.StudentsActivities.Any(sa => sa.activityID == activityID);
+                return _context.StudentsActivities.Any(sa => sa.activityID == activityID);
             }
         }
 
@@ -417,6 +417,7 @@ namespace WebApplication1.Data
             using (RasporedContext _context = new RasporedContext())
             {
                List<NotificationDTO> groupsNotifications = _context.Activities.Where(ac =>
+                    !IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
                     ac.groupID == groupID &&
                     ac.cancelling != true &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, ts))

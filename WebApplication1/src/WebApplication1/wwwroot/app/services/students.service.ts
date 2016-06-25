@@ -111,13 +111,14 @@ export class StudentsService {
         .catch(this.handleError);
     }
 
-    public addActivity(classroomId: number, timespan: TimeSpan, title: string, content: string, place: string) {
+    public addActivity(classroomId: number, timespan: TimeSpan, title: string, content: string, place: string, groupId: number) {
         let body = JSON.stringify({
-           "classroomID" : classroomId,
-           "timeSpan" : timespan,
-           "place" : place,
-           "title" : title,
-           "content" : content
+            "classroomID" : classroomId,
+            "timeSpan" : timespan,
+            "place" : place,
+            "title" : title,
+            "content" : content,
+            "groupID": groupId
         });
         console.log(body);
         let headers = new Headers({ 'Content-Type': 'application/json' });

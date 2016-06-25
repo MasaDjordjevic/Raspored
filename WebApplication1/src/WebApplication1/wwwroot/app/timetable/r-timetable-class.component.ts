@@ -7,6 +7,7 @@ import {GlobalService} from "../services/global.service";
 import {R_DIALOG} from "../ui/r-dialog";
 import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activity.component";
 import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.component";
+import {AddTaskComponent} from "../student-panel/dialogs/add-task.component";
 
 @Component({
     selector: 'r-timetable-class',
@@ -60,7 +61,8 @@ import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.comp
                     
             <button *ngIf="mode === _Mode.StudentPersonal"
                     r-button raised text="Dodaj task"
-                    (click)="addTask()">Dodaj task</button>
+                    #addTaskButton
+                    (click)="addTaskDialog.open()">Dodaj task</button>
             
             <button *ngIf="mode === _Mode.AssistantOfficial"
                     r-button raised text="Dodaj obaveštenje"
@@ -79,8 +81,8 @@ import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.comp
         
         <b>Message</b> {{message}}
         
-        <r-dialog class="add-announcement" #cancelClassDialog [source]="cancelClassButton">
-            <cancel-class           
+        <r-dialog class="cancel-class" #cancelClassDialog [source]="cancelClassButton">
+            <cancel-class
                 [groupId]="classId"
                 [primaryColor]="color"
                 [secondaryColor]="color"
@@ -97,6 +99,16 @@ import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.comp
                 (close)="addAnnouncementDialog.close()"
             >
             </add-activity>
+        </r-dialog>
+        
+        <r-dialog class="add-task" #addTaskDialog [source]="addTaskButton">
+            <r-add-task
+                [primaryColor]="color"
+                [secondaryColor]="color"
+                [groupId]="classId"
+                (close)="addTaskDialog.close()"
+            >
+            </r-add-task>
         </r-dialog>
         
     </template>
@@ -116,7 +128,7 @@ import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.comp
         "(click)": "expand($event)",
     },
     pipes: [ToTimestampPipe],
-    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent]
+    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent, AddTaskComponent]
 })
 export class TimetableClassComponent {
     

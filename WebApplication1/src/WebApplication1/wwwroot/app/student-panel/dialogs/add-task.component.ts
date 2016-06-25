@@ -10,41 +10,73 @@ import * as moment_ from "../../../js/moment.js";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
+import {StudentsService} from "../../services/students.service";
 const moment = moment_["default"];
 
 @Component({
-    selector: 'add-activity',
+    selector: 'r-add-task',
     template: `
+<template [ngIf]="groupId">
     <span *ngIf="dateChoices && dateChoices.length === 1">
-        Dodavanje obaveštenja za čas zakazan za {{dateChoices[0]}}.    
+        Dodavanje zadatka za čas zakazan za {{dateChoices[0]}}.    
     </span>
     <r-dropdown *ngIf="dateChoices && dateChoices.length > 1"
-    [label]="'Dodajem obaveštenje za čas koji treba da bude održan...'" [(val)]="announcement.startDate" [primaryColor]="primaryColor">
+    [label]="'Dodajem zadatak za čas koji treba da bude održan...'" [(val)]="task.startDate" [primaryColor]="primaryColor">
         <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="dateChoice">{{dateChoice}}</r-dropdown-item>  
     </r-dropdown>
 
     <r-input [label]="'Naslov'"
-             [(val)]="announcement.title"
+             [(val)]="task.title"
              [primaryColor]="primaryColor">
     </r-input>
     
-    <textarea [(ngModel)]="announcement.content">
+    <div class="classroom-place">
+        <div><r-dropdown [primaryColor]="primaryColor"
+                    [secondaryColor]="secondaryColor"             
+                    [(val)]="classroomId"
+                    [label]="'Učionica'"
+                    *ngIf="classrooms && classrooms.length"
+        >
+            <r-dropdown-item
+                *ngFor="let classroom of classrooms"
+                [value]="classroom.classroomID"
+            >
+                {{classroom.number}}
+            </r-dropdown-item>
+        </r-dropdown></div>
+        
+        <div><r-input [label]="'Mesto'" [(val)]="task.place" [primaryColor]="primaryColor"></r-input></div>
+    </div>
+    
+    <textarea [(ngModel)]="task.content">
     </textarea>
            
     <div class="controls">
         <button r-button flat [text]="'Odustani'" (click)="closeMe()" [primaryColor]="primaryColor">Odustani</button>
         <button r-button raised [text]="'Dodaj obaveštenje'" (click)="save()" [primaryColor]="primaryColor">Dodaj obaveštenje</button> 
     </div>
+</template>
     `,
     providers: [ClassroomsService, GroupsService],
     directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
-    styleUrls: ['app/assistant-panel/dialogs/group-add-activity.css']
+    styleUrls: ['app/assistant-panel/dialogs/group-add-activity.css'],
+    styles: [
+    `
+        .classroom-place {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .classroom-place > div {
+            width: 48%;
+        }        
+    `
+    ]
 })
-export class AddActivityComponent {
+export class AddTaskComponent {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
-
 
     @Output() close: EventEmitter<any> = new EventEmitter<any>();
 
@@ -63,9 +95,11 @@ export class AddActivityComponent {
 
     private _groupId: number = 0;
 
-    announcement:any = {
-        title: "",
-        content: "",
+    task: any = {
+        title: null,
+        content: null,
+        classroomId: null,
+        place: null
     };
 
     @Input() set groupId(n: number) {
@@ -82,29 +116,33 @@ export class AddActivityComponent {
             group => this.group = group,
             error => this.errorMessage = <any>error
         )
-            .then(() => this.group.timeSpan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period));
+            .then(() => {
+                this.group.timeSpan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period)
+            });
     }
 
-    constructor(private _classroomsService: ClassroomsService,
-                private _groupsService: GroupsService) {
+    constructor(
+        private _classroomsService: ClassroomsService,
+        private _groupsService: GroupsService,
+        private _studentsService: StudentsService
+    ) {
         this.getClassrooms();
-
     }
 
 
     save() {
         var timespan:TimeSpan = new TimeSpan;
-        timespan.startDate = this.announcement.startDate;
-        timespan.endDate = this.announcement.startDate;
+        timespan.startDate = this.task.startDate;
+        timespan.endDate = this.task.startDate;
         timespan.period = 0;
 
-        this._groupsService.addActivity(
-            this.group.groupID,
-            null, // classroom
-            null, // place
-            this.announcement.title,
-            this.announcement.content,
-            timespan
+        this._studentsService.addActivity(
+            this.task.classroomId, // classroom
+            timespan,
+            this.task.title,
+            this.task.content,
+            this.task.place,
+            this.group.groupID            
         ).then(status=> console.log(status));
     }
 
@@ -140,7 +178,7 @@ export class AddActivityComponent {
             }
         }
         this.dateChoices = ret;
-        this.announcement.startDate = this.dateChoices[0];
+        this.task.startDate = this.dateChoices[0];
         return ret;
     }
 }
