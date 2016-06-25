@@ -74,7 +74,8 @@ namespace WebApplication1.Data
                             active = Group.IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
                             isClass = true,
-                            groupID = a.groupID
+                            groupID = a.groupID,
+                            notifications = Group.GetNotifications(a.groupID, tsNow)
                         }).ToList();
 
                 List<ScheduleDTO> activitiesSchedule =

@@ -104,7 +104,8 @@ namespace WebApplication1.Data
                             active = Group.IsActive(a.groupID, tsNow, studentID),
                             color = Schedule.GetNextColor(),
                             isClass = true,
-                            groupID = a.groupID
+                            groupID = a.groupID,
+                            notifications = GetClassNotification(studentID, a.groupID, tsNow)
                         }).ToList();
 
                 List<int> activities = official ? new List<int>() : 
@@ -141,6 +142,31 @@ namespace WebApplication1.Data
         {
             return GetSchedule(studentID, weeksFromNow, true);
         }
+
+        public static List<NotificationDTO> GetClassNotification(int studentID, int groupID, TimeSpans ts)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                List<NotificationDTO> studentsNotifications = _context.StudentsActivities.Where(ac =>
+                    ac.studentID == studentID && 
+                    ac.activity.groupID == groupID &&
+                    ac.activity.cancelling != true &&
+                    TimeSpan.TimeSpanOverlap(ac.activity.timeSpan, ts))
+                    .Select(ac => new NotificationDTO
+                    {
+                        activityID = ac.activityID,
+                        activityContent = ac.activity.activityContent,
+                        title = ac.activity.title,
+                        classroomID = ac.activity.classroomID,
+                        place = ac.activity.place
+                    }).ToList();
+
+                List<NotificationDTO> groupsNotifications = Group.GetNotifications(groupID, ts);
+
+                return studentsNotifications.Concat(groupsNotifications).ToList();
+            }
+        }
+
 
         /// <summary>
         /// Proverava da li je student slobodan u to vreme.

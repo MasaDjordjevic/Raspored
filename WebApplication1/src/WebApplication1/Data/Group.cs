@@ -409,6 +409,27 @@ namespace WebApplication1.Data
             }
         }
 
+        public static List<NotificationDTO> GetNotifications(int groupID, TimeSpans ts)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+               List<NotificationDTO> groupsNotifications = _context.Activities.Where(ac =>
+                    ac.groupID == groupID &&
+                    ac.cancelling != true &&
+                    TimeSpan.TimeSpanOverlap(ac.timeSpan, ts))
+                    .Select(ac => new NotificationDTO
+                    {
+                        activityID = ac.activityID,
+                        activityContent = ac.activityContent,
+                        title = ac.title,
+                        classroomID = ac.classroomID,
+                        place = ac.place
+                    }).ToList();
+
+                return groupsNotifications;
+            }
+        }
+
         public static IEnumerable GetCombinedSchedule(int groupID, int weeksFromNow = 0)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -438,7 +459,7 @@ namespace WebApplication1.Data
                             type = a.division.divisionType.type,
                             active = IsActive(a.groupID, tsNow),
                             color = Schedule.GetNextColor(),
-                            isClass = true
+                            isClass = true,
                         }).ToList();
                 
                 List<ScheduleDTO> activitiesSchedule =

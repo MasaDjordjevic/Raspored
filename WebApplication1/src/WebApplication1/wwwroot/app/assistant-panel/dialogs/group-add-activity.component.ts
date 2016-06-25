@@ -21,8 +21,8 @@ const moment = moment_["default"];
         Dodavanje obaveštenja za čas zakazan za {{dateChoices[0]}}.    
     </span>
     <r-dropdown *ngIf="dateChoices && dateChoices.length > 1"
-    [label]="'Dodajem obaveštenje za čas koji treba da bude održan...'" [(val)]="weekNumber" [primaryColor]="primaryColor">
-        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="i">{{dateChoice}}</r-dropdown-item>  
+    [label]="'Dodajem obaveštenje za čas koji treba da bude održan...'" [(val)]="announcement.startDate" [primaryColor]="primaryColor">
+        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="dateChoice">{{dateChoice}}</r-dropdown-item>  
     </r-dropdown>
 
     <r-input [label]="'Naslov'"
@@ -30,7 +30,7 @@ const moment = moment_["default"];
              [primaryColor]="primaryColor">
     </r-input>
     
-    <textarea [value]="announcement.content">
+    <textarea [(ngModel)]="announcement.content">
     </textarea>
            
     <div class="controls">
@@ -93,11 +93,11 @@ export class AddActivityComponent {
     }
 
 
-    save(value) {
+    save() {
         var timespan:TimeSpan = new TimeSpan;
-        timespan.startDate = value.timeStart;
-        timespan.endDate = value.timeEnd;
-        timespan.period = value.period;
+        timespan.startDate = this.announcement.startDate;
+        timespan.endDate = this.announcement.startDate;
+        timespan.period = 0;
 
         this._groupsService.addActivity(
             this.group.groupID,
@@ -105,8 +105,8 @@ export class AddActivityComponent {
             null, // place
             this.announcement.title,
             this.announcement.content,
-            null // timespan // TODO ovde treba da se prosledi weekNumber i da se to ocekuje na backendu
-        );
+            timespan
+        ).then(status=> console.log(status));
     }
 
     getClassrooms() {

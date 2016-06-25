@@ -6,6 +6,15 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Data
 {
+    public class NotificationDTO
+    {
+        public int activityID { get; set; }
+        public string title { get; set; }
+        public string activityContent { get; set; }
+        public string place { get; set; }   
+        public int? classroomID { get; set; }
+    }
+
     public class ScheduleDTO
     {
         public DayOfWeek day { get; set; }
@@ -22,6 +31,7 @@ namespace WebApplication1.Data
         public string classroom { get; set; }
         public string assistant { get; set; }
         public string type { get; set; }
+        public List<NotificationDTO> notifications { get; set; }
 
         //activity
         public int activityID { get; set; }

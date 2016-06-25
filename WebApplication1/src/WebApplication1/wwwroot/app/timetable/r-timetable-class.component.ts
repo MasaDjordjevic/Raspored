@@ -40,6 +40,8 @@ import {GlobalService} from "../services/global.service";
             personal {{mode === _Mode.StudentPersonal}}-->
             
             {{classId}}
+            {{notifications | json}}
+            
         
             <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
                     r-button raised text="Dodaj čas u lični"
@@ -116,6 +118,7 @@ export class TimetableClassComponent {
     @Input() activityContent: string; // "Samo džim bajo moj"
     @Input() active: boolean = true; // true: defaultno, false: zasivljeno
     @Input() type: string = "predavanje";
+    @Input() notifications: any[];
     
     @Input() groupId: number;
 
