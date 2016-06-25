@@ -2,11 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using Microsoft.Data.Entity;
-using Remotion.Linq.Clauses;
 using WebApplication1.Models;
 using Newtonsoft.Json;
 using WebApplication1.Exceptions;
@@ -280,7 +276,7 @@ namespace WebApplication1.Data
         {
             _context = _context ?? new RasporedContext();
             
-            int removedId = RemoveFromAllGroups(studentID,
+            RemoveFromAllGroups(studentID,
                 _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First());
             
             AddToGroup(studentID, groupID, _context);

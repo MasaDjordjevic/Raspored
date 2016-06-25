@@ -74,7 +74,7 @@ export class TimetableColumnComponent implements OnInit {
         if (this._classes.length === 0) return;
 
         // sortiranje
-        this._classes.sort(function(a, b) {
+        this._classes.sort((a, b) => {
             var keyA = a.startMinutes;
             var keyB = b.startMinutes;
             if (keyA < keyB) return -1;
