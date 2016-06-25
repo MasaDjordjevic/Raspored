@@ -395,10 +395,7 @@ namespace WebApplication1.Data
                     !IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
                     ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
-                bool ignored = studentID != null &&
-                               _context.StudentsActivities.Any(
-                                   sa => sa.studentID == studentID.Value && sa.activity.groupID == groupID && sa.ignore == true);
-                return !(canceled || ignored);
+                return !canceled;
 
             }
         }
