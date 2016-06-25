@@ -80,6 +80,7 @@ import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activit
                 [primaryColor]="color"
                 [secondaryColor]="color"
                 [groupId]="classId"
+                (close)="addAnnouncementDialog.close()"
             >
             </add-activity>
         </r-dialog>

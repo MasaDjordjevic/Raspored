@@ -15,8 +15,6 @@ const moment = moment_["default"];
 @Component({
     selector: 'add-activity',
     template: `    
-    
-    
     <span *ngIf="dateChoices && dateChoices.length === 1">
         Dodavanje obaveštenja za čas zakazan za {{dateChoices[0]}}.    
     </span>
