@@ -5,7 +5,7 @@ import {TimetableComponent} from "../timetable/r-timetable.component";
 import {PanelHeaderComponent} from "../panel-header/panel-header.component";
 
 
-enum TimetableType {
+export enum TimetableType {
     Official, Personal, Global,
 }
 

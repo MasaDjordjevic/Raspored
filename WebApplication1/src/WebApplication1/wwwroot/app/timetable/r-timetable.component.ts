@@ -13,10 +13,14 @@ import {AssistantService} from "../services/assistant.service";
 import {GlobalService} from "../services/global.service";
 
 
+export enum TimetableType {
+    Official, Personal, Global
+}
+
 export enum Mode {
-    StudentGlobal,
-    StudentPersonal,
     StudentOfficial,
+    StudentPersonal,
+    StudentGlobal,
     AssistantOfficial,
     ClassroomOfficial,
 }
@@ -154,14 +158,19 @@ export class TimetableComponent {
     _classroomID: number;
     _assistantID: number;
 
-    @Input() type: 'official' | 'global' | 'personal' = 'official';
+    clearAll() {
+        this._groupID = this._studentID = this._officialStudentID =
+            this._departmentID = this._classroomID = this._assistantID = null;
+    }
+
+    @Input() type: TimetableType;
 
     get mode() {
-        if (this.type === 'official' && this.studentID) {
+        if (this.type === TimetableType.Official && this.officialStudentID) {
             return Mode.StudentOfficial;
-        } else if (this.type === 'global' && this.studentID) {
+        } else if (this.type === TimetableType.Global && this.departmentID) {
             return Mode.StudentGlobal;
-        } else if (this.type === 'personal' && this.studentID) {
+        } else if (this.type === TimetableType.Personal && this.studentID) {
             return Mode.StudentPersonal;
         } else if (this.classroomID) {
             return Mode.ClassroomOfficial;
@@ -181,19 +190,22 @@ export class TimetableComponent {
     }
 
     getSchedule() {
-        if (this.studentID)
+        if (this.studentID) {
             this.getStudentSchedule();
-        if (this.classroomID)
+        } else if (this.classroomID) {
             this.getClassroomSchedule();
-        if (this.groupID)
+        } else if (this.groupID) {
             this.getGroupSchedule();
-        if (this.departmentID)
+        } else if (this.departmentID) {
             this.getDepartmentSchedule();
-        if (this.officialStudentID)
+        } else if (this.officialStudentID) {
             this.getOfficialStudentSchedule();
-        if (this.assistantID)
+        } else if (this.assistantID) {
             this.getAssistantSchedule();
-
+        } else {
+            debugger;
+            throw "nesto ne valja";
+        }
     }
 
     get groupID () {
@@ -201,6 +213,7 @@ export class TimetableComponent {
     }
     @Input() set groupID(g) {
         if (!g) return;
+        this.clearAll();
         this._groupID = g;
         this.getGroupSchedule();
     }
@@ -210,6 +223,7 @@ export class TimetableComponent {
     }
     @Input() set studentID(s) {
         if (!s) return;
+        this.clearAll();
         this._studentID = s;
         this.getStudentSchedule();
     }
@@ -219,6 +233,7 @@ export class TimetableComponent {
     }
     @Input() set officialStudentID(id) {
         if (!id) return;
+        this.clearAll();
         this._officialStudentID = id;
         this.getOfficialStudentSchedule();
     }
@@ -228,6 +243,7 @@ export class TimetableComponent {
     }
     @Input() set departmentID(g) {
         if (!g) return;
+        this.clearAll();
         this._departmentID = g;
         this.getDepartmentSchedule();
     }
@@ -237,6 +253,7 @@ export class TimetableComponent {
     }
     @Input() set classroomID(g) {
         if (!g) return;
+        this.clearAll();
         this._classroomID = g;
         this.getClassroomSchedule();
     }
@@ -246,6 +263,7 @@ export class TimetableComponent {
     }
     @Input() set assistantID(a) {
         if (!a) return;
+        this.clearAll();
         this._assistantID = a;
         this.getAssistantSchedule();
     }
