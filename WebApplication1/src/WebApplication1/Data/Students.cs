@@ -112,7 +112,8 @@ namespace WebApplication1.Data
                     _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
                 List<ScheduleDTO> activitiesSchedule =
                     _context.Activities.Where(a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value))
-                                                    && TimeSpan.Overlap(a.timeSpan, tsNow))
+                                                    && TimeSpan.Overlap(a.timeSpan, tsNow)
+                                                    && a.groupID == null) //nisu obavestenja vezana za casove
                                                     .Select(a => new ScheduleDTO
                                                     {
                                                         day = a.timeSpan.startDate.DayOfWeek,
