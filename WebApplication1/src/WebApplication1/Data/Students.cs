@@ -317,10 +317,27 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
-                if(gs.ignore == false)
-                    throw new Exception("vec je u licnom");
-                gs.ignore = false;
+                var query = _context.GroupsStudents.Where(a => a.studentID == studentID && a.groupID == groupID);
+
+                if (query.Any())
+                {
+                    GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
+                    if (gs.ignore == false)
+                        throw new Exception("vec je u licnom");
+                    gs.ignore = false;
+                }
+                else
+                {
+                    GroupsStudents gs = new GroupsStudents
+                    {
+                        studentID = studentID,
+                        groupID = groupID,
+                        ignore = false,
+                        alert = false
+                    };
+                    _context.GroupsStudents.Add(gs);
+                }
+               
                 _context.SaveChanges();
             }
         }
