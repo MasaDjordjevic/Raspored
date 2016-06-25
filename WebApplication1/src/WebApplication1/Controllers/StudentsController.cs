@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
@@ -192,9 +191,9 @@ namespace WebApplication1.Controllers
             {
                 return Ok(new {status = "inconsistent division", message = ex.Message});
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-               throw;
+                return Ok(new { status = "nije uspelo", message = ex.Message });
             }
 
             return Ok(new { status = "uspelo" });
@@ -234,10 +233,9 @@ namespace WebApplication1.Controllers
                     return Ok(new { status = "student not in the group" });
                 }
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                throw;
-
+                return Ok(new { status = "nije uspelo", message = ex.Message });
             }
 
             return Ok(new { status = "uspelo" });

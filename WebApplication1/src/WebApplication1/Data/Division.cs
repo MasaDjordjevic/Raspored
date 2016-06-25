@@ -2,12 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
-using Microsoft.AspNet.Mvc.ActionConstraints;
-using Microsoft.AspNet.Razor.Chunks;
 using Microsoft.Data.Entity;
-using WebApplication1.Extentions;
 using WebApplication1.Models;
 using WebApplication1.Models.DTOs;
 
@@ -120,11 +115,10 @@ namespace WebApplication1.Data
             int numGroupsHeigher = studs.Count % x;
 
             List<List<StudentDTO>> groups =  new List<List<StudentDTO>>();
-            int num;
             int total = 0;
             for (int i = 0; i < x; i++)
             {
-                num = studsInGroupLower;
+                var num = studsInGroupLower;
                 if (numGroupsHeigher-- > 0)
                     num++;
 
@@ -141,11 +135,9 @@ namespace WebApplication1.Data
             List<Models.DTOs.StudentDTO> studs = GetStudentsOfCourse(courseID, sortOrder);
             int ceil = (int)Math.Ceiling((double)studs.Count/x);
             int diff = Int32.MaxValue;
-            int mod = studs.Count%x;
 
             while ((int)Math.Ceiling((double)studs.Count / x) == ceil)
             {
-                diff = x - studs.Count % x;
                 x--;
             }
             
@@ -153,11 +145,10 @@ namespace WebApplication1.Data
             int numGroupsHeigher = studs.Count % x;
 
             List<List<StudentDTO>> groups = new List<List<StudentDTO>>();
-            int num;
             int total = 0;
             for (int i = 0; total < studs.Count; i++)
             {
-                num = studsInGroupLower;
+                var num = studsInGroupLower;
                 if (numGroupsHeigher-- > 0)
                     num++;
 

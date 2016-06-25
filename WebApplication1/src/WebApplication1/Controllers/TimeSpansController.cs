@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
-using WebApplication1.Extentions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers

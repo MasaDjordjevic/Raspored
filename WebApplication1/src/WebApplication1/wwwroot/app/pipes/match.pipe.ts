@@ -36,9 +36,7 @@ export class MatchPipe implements PipeTransform {
         var ret = ret1.concat(ret3);
 
         // ...pa onda obrisemo duplikate
-        ret = ret.sort().filter(function(item, pos, ary) {
-            return !pos || item != ary[pos-1];
-        });
+        ret = ret.sort().filter((item, pos, ary) => (!pos || item != ary[pos-1]));
 
         return ret;
     }

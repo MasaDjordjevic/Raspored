@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using WebApplication1.Models;
 
 
 namespace WebApplication1.Controllers

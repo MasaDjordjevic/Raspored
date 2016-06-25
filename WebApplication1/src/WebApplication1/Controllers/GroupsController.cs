@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
-using Microsoft.Data.Entity.Query.Expressions;
 using WebApplication1.Models;
 using Newtonsoft.Json;
 using WebApplication1.Exceptions;
@@ -162,7 +160,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult MassGroupEdit([FromBody] MassGroupEditBinding obj)
         {
-            if (obj == null || obj.groups == null)
+            if (obj?.groups == null)
             {
                 return Ok(new { status = "parameter error" });
             }
@@ -305,7 +303,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult AddActivity([FromBody] AddActivityBinding obj)
         {
-            if (obj == null || obj.groupID == null)
+            if (obj?.groupID == null)
             {
                 return Ok(new { status = "parameter error" });
             }

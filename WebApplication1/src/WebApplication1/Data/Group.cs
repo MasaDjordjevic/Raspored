@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Data.Entity;
 using WebApplication1.Exceptions;
 using WebApplication1.Extentions;
 using WebApplication1.Models;
-using WebApplication1.Models.DTOs;
 
 namespace WebApplication1.Data
 {
@@ -426,8 +424,9 @@ namespace WebApplication1.Data
                     .Where(a => students.Contains(a.studentID) &&
                                 TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
                                 .Select(a => a.groupID).ToList();
-                ;
-                List<ScheduleDTO> groupsSchedule = Queryable.Select(_context.Groups.Where(a => groups.Contains(a.groupID) && TimeSpan.Overlap(a.timeSpan, tsNow)), a => new ScheduleDTO
+                
+                List<ScheduleDTO> groupsSchedule = _context.Groups.Where(a => groups.Contains(a.groupID) && TimeSpan.Overlap(a.timeSpan, tsNow))
+                    .Select(a => new ScheduleDTO
                         {
                             day = a.timeSpan.startDate.DayOfWeek,
                             startMinutes = (int)a.timeSpan.startDate.TimeOfDay.TotalMinutes,
