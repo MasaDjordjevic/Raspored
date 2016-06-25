@@ -1,25 +1,7 @@
-﻿@import "../palette";
 @import "../ljubenovic-toolkit";
+@import "../palette";
+@import "../themes";
 
-:host {
-  display: flex;
-  height: calc(100vh);
-  margin: 0;
-  padding: 0;
-  flex-flow: column;
-  justify-content: space-between;
-}
-
-main {
-  height: 100%;
-  min-height: 0; // FireFox u tebe gledam
-  display: flex;
-  justify-content: flex-start;
-}
-
-
-
-//TODO verovatno treba da se skloni odavde
 header {
   $height: 3.6em;
   background-color: palette($blue-grey, 100);
@@ -147,12 +129,12 @@ header {
   &.hidden {
     display: none;
 
-    & + .invisible-blackout {
+    + .invisible-blackout {
       display: none;
     }
   }
 
-  & + .invisible-blackout {
+  + .invisible-blackout {
     background-color: rgba(black, 0);
     position: fixed;
     width: 100vw;
@@ -201,7 +183,7 @@ header {
   .theme-preview {
     display: flex;
 
-    & > div {
+    > div {
       width: 1.2em;
       height: 1.2em;
       //box-shadow: 0 0 0 1px rgba(black, .3);

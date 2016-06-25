@@ -12,6 +12,14 @@ import {ClassroomsService} from "../services/classrooms.service";
 import {AssistantService} from "../services/assistant.service";
 
 
+export enum Mode {
+    StudentGlobal,
+    StudentPersonal,
+    StudentOfficial,
+    AssistantOfficial,
+    ClassroomOfficial,
+}
+
 @Component({
     selector: 'r-timetable',
     template: `
@@ -115,14 +123,15 @@ import {AssistantService} from "../services/assistant.service";
                 [classes]="classes[i]"
                 [beginningMinutes]="beginningMinutes"
                 [showEvery]="showEvery"
-                [scale]="scale">
+                [scale]="scale"
+                [mode]="mode">
             </r-timetable-column>
         </template>
         
     </template>
     `,
     styleUrls: ['app/timetable/r-timetable.css'],
-    providers: [StudentsService, GroupsService, DepartmentService, ClassroomsService],
+    providers: [StudentsService, GroupsService, DepartmentService, ClassroomsService, AssistantService],
     directives: [TimetableColumnComponent, R_BUTTON, R_DIALOG],
     pipes: [ToTimestampPipe]
 })
@@ -142,6 +151,22 @@ export class TimetableComponent {
     _departmentID: number;
     _classroomID: number;
     _assistantID: number;
+
+    @Input() type: 'official' | 'global' | 'personal' = 'personal';
+
+    get mode() {
+        if (this.type === 'official' && this.studentID) {
+            return Mode.StudentOfficial;
+        } else if (this.type === 'global' && this.studentID) {
+            return Mode.StudentGlobal;
+        } else if (this.type === 'personal' && this.studentID) {
+            return Mode.StudentPersonal;
+        } else if (this.classroomID) {
+            return Mode.ClassroomOfficial;
+        } else if (this.assistantID) {
+            return Mode.AssistantOfficial;
+        }
+    }
 
     get weeksFromNow() {
         return this._weeksFromNow;
@@ -296,9 +321,8 @@ export class TimetableComponent {
             activityContent: value.newActivityDesc,
             active: true,
             color: "#FF00FF",
-        }
+        };
 
-        // TODO Ne znam zašto se dole buni Webstorm, TS lepo kompajlira i JS se lepo izvršava.
         var theDay = this.classes[+value.newActivityDay].push(newClass);
     }
 

@@ -85,9 +85,9 @@ export class AppComponent implements OnInit {
                     loader: () => System.import("app/assistant-panel/assistant-panel.component").then(c => c["AssistantPanelComponent"])
                 }),
                 new AsyncRoute({
-                    path: "/timetable",
+                    path: "/student-panel",
                     name: "Timetable",
-                    loader: () => System.import("app/timetable/r-timetable.component").then(c => c["TimetableComponent"])
+                    loader: () => System.import("app/student-panel/student-panel.component").then(c => c["StudentPanelComponent"])
                 }),
                 new AsyncRoute({
                     path: "/login",

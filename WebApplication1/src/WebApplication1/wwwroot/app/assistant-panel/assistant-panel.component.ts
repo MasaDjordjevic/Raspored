@@ -204,8 +204,7 @@ export class AssistantPanelComponent {
                 this._selectedDepartmentId = -1;
             }
         }
-
-
+        
     }
 
 

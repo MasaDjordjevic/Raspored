@@ -1,0 +1,17 @@
+<template [ngIf]="student">
+    <div id="panel-header-wrapper">
+        <r-panel-header [name]="student.UniMembers.name"
+                        [surname]="student.UniMembers.surname"
+                        [address]="student.UniMembers.address"
+                        [email]="student.UniMembers.email"
+                        [avatarUrl]="'avatar.png'"
+                        [showLanguagePicker]="true"
+                        [showThemePicker]="false"
+        >
+        </r-panel-header>
+    </div>
+
+    <div id="timetable-wrapper">
+        <r-timetable [studentID]="student.studentID"></r-timetable>
+    </div>
+</template>
