@@ -90,6 +90,7 @@ namespace WebApplication1.Data
                 };
                 List<int> groups = _context.GroupsStudents
                     .Where(a => a.studentID == studentID &&  
+                                a.ignore != true &&
                                 TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
                                 .Select(a => a.groupID).ToList();
 
