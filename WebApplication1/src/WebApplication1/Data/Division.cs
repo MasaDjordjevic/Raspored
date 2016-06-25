@@ -134,7 +134,6 @@ namespace WebApplication1.Data
         {
             List<Models.DTOs.StudentDTO> studs = GetStudentsOfCourse(courseID, sortOrder);
             int ceil = (int)Math.Ceiling((double)studs.Count/x);
-            int diff = Int32.MaxValue;
 
             while ((int)Math.Ceiling((double)studs.Count / x) == ceil)
             {
@@ -248,23 +247,7 @@ namespace WebApplication1.Data
                 }
             }
         }
-
-        public static void CancelClasses(int divisionID, string title, string content, int weekNumber)
-        {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                //TODO pogledaj sta si pisla ovde, deluje mi kao glupost
-                List<Groups> groups =
-                    (from a in _context.Divisions.Include(a => a.Groups)
-                        where a.divisionID == divisionID
-                        select a.Groups.ToList())
-                        .First();
-                foreach (Groups group in groups)
-                {
-                    Group.CancelClass(group.groupID, title, content, weekNumber);
-                }
-            }
-        }
+        
 
         public static void UpdateDivision(int divisionID, string name, DateTime beginning, DateTime ending, int? divisionTypeID, int? courseID)
         {

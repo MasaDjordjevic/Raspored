@@ -73,12 +73,12 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
-    cancelClass(groupID:number, title: string, content: string, weekNumber:number) {
+    cancelClass(groupID:number, title: string, content: string, timespan: TimeSpan) {
         let body = JSON.stringify({
             groupID: groupID,
             title: title,
             content: content,
-            weekNumber: weekNumber
+            timespan: timespan
         });
         console.log(body);
         let headers = new Headers({ 'Content-Type': 'application/json' });

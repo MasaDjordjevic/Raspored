@@ -6,6 +6,7 @@ import {StudentsService} from "../services/students.service";
 import {GlobalService} from "../services/global.service";
 import {R_DIALOG} from "../ui/r-dialog";
 import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activity.component";
+import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.component";
 
 @Component({
     selector: 'r-timetable-class',
@@ -68,7 +69,8 @@ import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activit
                     
             <button *ngIf="mode === _Mode.AssistantOfficial"
                     r-button raised text="Otkaži čas"
-                    (click)="cancelClass()">Otkaži čas</button>
+                    #cancelClassButton
+                    (click)="cancelClassDialog.open()">Otkaži čas</button>
             
             <button r-button raised text="Oglasna tabla">Oglasna tabla</button>
             <button r-button flat text="Odzumiraj" (click)="toggle()">Odzumiraj</button>
@@ -76,6 +78,16 @@ import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activit
         </div>
         
         <b>Message</b> {{message}}
+        
+        <r-dialog class="add-announcement" #cancelClassDialog [source]="cancelClassButton">
+            <cancel-class           
+                [groupId]="classId"
+                [primaryColor]="color"
+                [secondaryColor]="color"
+                (close)="cancelClassDialog.close()"
+            >
+            </cancel-class>
+        </r-dialog>
         
         <r-dialog class="add-announcement" #addAnnouncementDialog [source]="addAnnouncementButton">
             <add-activity
@@ -104,7 +116,7 @@ import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activit
         "(click)": "expand($event)",
     },
     pipes: [ToTimestampPipe],
-    directives: [R_BUTTON, R_DIALOG, AddActivityComponent]
+    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent]
 })
 export class TimetableClassComponent {
     

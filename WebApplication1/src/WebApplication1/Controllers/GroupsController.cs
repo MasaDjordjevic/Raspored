@@ -325,7 +325,7 @@ namespace WebApplication1.Controllers
             public int groupID;
             public string title;
             public string content;
-            public int weekNumber;
+            public TimeSpans timespan;
         }
 
         [HttpPost]
@@ -338,7 +338,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Data.Group.CancelClass(obj.groupID, obj.title, obj.content, obj.weekNumber);
+                Data.Group.CancelClass(obj.groupID, obj.title, obj.content, obj.timespan);
             }
             catch (Exception ex)
             {

@@ -71,26 +71,18 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void CancelClass(int groupID, string title, string content, int weekNumber)
+        public static void CancelClass(int groupID, string title, string content, TimeSpans timespan)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                TimeSpans gts = _context.Groups.Where(a => a.groupID == groupID).Select(a=> a.timeSpan).First();
-                TimeSpans ts = new TimeSpans
-                {
-                    startDate = gts.startDate.DayOfReferencedWeek(DateTime.Now, gts.period.Value).AddDays(7*weekNumber),
-                    endDate = gts.endDate.DayOfReferencedWeek(DateTime.Now, gts.period.Value).AddDays(7*weekNumber),
-                    period = gts.period
-                };
-
-                _context.TimeSpans.Add(ts);
+                _context.TimeSpans.Add(timespan);
                 Activities act = new Activities
                 {
                     title = title,
                     activityContent = content,
                     groupID = groupID,
                     cancelling = true,
-                    timeSpanID = ts.timeSpanID
+                    timeSpanID = timespan.timeSpanID
                 };
                 _context.Activities.Add(act);
                 _context.SaveChanges();

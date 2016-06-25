@@ -30,12 +30,12 @@ class AddWeeksPipe implements PipeTransform {
     <span *ngIf="dateChoices && dateChoices.length === 1">
         Otkazivanje časa zakazanog za {{dateChoices[0]}}.    
     </span>
-    <r-dropdown *ngIf="dateChoices && dateChoices.length > 1" [label]="'Otkazujem čas koji treba da bude održan...'" [(val)]="weekNumber" [primaryColor]="primaryColor">
-        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="i">{{dateChoice}}</r-dropdown-item>  
+    <r-dropdown *ngIf="dateChoices && dateChoices.length > 1" [label]="'Otkazujem čas koji treba da bude održan...'" [(val)]="cancel.startDate" [primaryColor]="primaryColor">
+        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="dateChoice">{{dateChoice}}</r-dropdown-item>  
     </r-dropdown>
 
-    <r-input [label]="'Naslov'" [(val)]="title" [primaryColor]="primaryColor"></r-input>
-    <textarea [value]="content"></textarea>
+    <r-input [label]="'Naslov'" [(val)]="cancel.title" [primaryColor]="primaryColor"></r-input>
+    <textarea [(ngModel)]="cancel.content"></textarea>
    
     <div class="controls">
         <button r-button flat [text]="'Odustani'" [primaryColor]="primaryColor" (click)="closeMe()">Odustani</button>
@@ -58,27 +58,38 @@ export class CancelClassComponent implements AfterContentInit{
         this.close.emit("close!");
     }
 
-    private _timespan: any;
-    @Input() groupId: number;
+    group: any;
+    private errorMessage;
 
-    @Input() set timespan(timespan) {
-        this._timespan = timespan;
-        this.listDateChoices(timespan.startDate, timespan.period);
+    private _groupId: number = 0;
+
+    @Input() set groupId(n: number) {
+        this._groupId = n;
+        this.getGroup();
     }
 
-    get timespan() {
-        return this._timespan;
+    get groupId() {
+        return this._groupId;
     }
 
-    // Mora da se pozove samo jednom da se Angular ne bi šlogirao
-    today = new Date();
+    getGroup(): void {
+        this._groupsService.getGroup(this.groupId).then(
+            group => this.group = group,
+            error => this.errorMessage = <any>error
+            )
+            .then(() => 
+                this.group.timeSpan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period)
+            );
+    }
 
-    weekNumber: number = 0;
 
-    constructor( private _service: GroupsService ) {}
 
-    title: string = "";
-    content: string = "";
+    constructor( private _groupsService: GroupsService ) {}
+
+    cancel:any = {
+        title: "",
+        content: "",
+    };
     dateChoices: string[];
 
     ngAfterContentInit() {
@@ -87,6 +98,7 @@ export class CancelClassComponent implements AfterContentInit{
 
     // iskopirano u grou-add-activity.component.ts
     public listDateChoices(date, period) {
+
         var ret: string[] = [];
         if (period === 0) {
             // cas se samo jednom odrzava, ponudi mu samo taj jedan izbor
@@ -110,11 +122,16 @@ export class CancelClassComponent implements AfterContentInit{
             }
         }
         this.dateChoices = ret;
+        this.cancel.startDate = this.dateChoices[0];
         return ret;
     }
 
     cancelClass() {
-        alert('Testirati da li ovo ima veze s mozgom');
-        this._service.cancelClass(this.groupId, this.title, this.content, this.weekNumber);
+        var timespan:TimeSpan = new TimeSpan;
+        timespan.startDate = this.cancel.startDate;
+        timespan.endDate = this.cancel.startDate;
+        timespan.period = 0;
+        this._groupsService.cancelClass(this.groupId, this.cancel.title, this.cancel.content, timespan)
+            .then(status => console.log(status));
     }
 }
