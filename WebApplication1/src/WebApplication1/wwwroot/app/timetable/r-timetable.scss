@@ -22,7 +22,7 @@ r-timetable-column {
   right: 0;
   top: 0;
   display: flex;
-  z-index: 20;
+  z-index: 1;
   background-color: white;
   @include z-depth(1);
 
@@ -54,6 +54,7 @@ r-timetable-column {
 
 #options-button {
   position: fixed;
+  z-index: 10;
   bottom: 10px;
   right: 10px;
 }

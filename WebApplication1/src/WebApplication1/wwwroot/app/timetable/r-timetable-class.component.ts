@@ -1,6 +1,7 @@
 import {Component, Input, ElementRef} from "angular2/core";
 import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
 import {R_BUTTON} from "../ui/r-button.component";
+import {Mode} from "./r-timetable.component";
 
 @Component({
     selector: 'r-timetable-class',
@@ -25,11 +26,41 @@ import {R_BUTTON} from "../ui/r-button.component";
     <template [ngIf]="announcement">
         <button r-button raised class="announcement-button" text="!" [title]="announcement">!</button>
     </template>
+    
+    
     <template [ngIf]="expanded">
+    
         <div class="controls">
-            <button r-button raised text="Dodaj u lični" (click)="addToPersonal()">Dodaj u lični</button>
+        
+            <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal"
+                    r-button raised text="Dodaj čas u lični"
+                    (click)="addToPersonal">Dodaj u lični</button>
+                    
+            <button *ngIf="mode === _Mode.StudentPersonal"
+                    r-button raised text="Obriši aktivnost"
+                    (click)="deleteActivity()">Obriši aktivnost</button>
+                    
+            <button *ngIf="mode === _Mode.StudentPersonal"
+                    r-button raised text="Sakrij čas"
+                    (click)="hideClass()">Sakrij čas</button>
+                    
+            <button *ngIf="mode === _Mode.StudentPersonal"
+                    r-button raised text="Dodaj task"
+                    (click)="addTask()">Dodaj task</button>
+            
+            <button *ngIf="mode === _Mode.AssistantOfficial"
+                    r-button raised text="Dodaj obaveštenje"
+                    (click)="addAnnouncement()">Dodaj obaveštenje</button>
+                    
+            <button *ngIf="mode === _Mode.AssistantOfficial"
+                    r-button raised text="Otkaži čas"
+                    (click)="cancelClass()">Otkaži čas</button>
+            
+            <button r-button raised text="Oglasna tabla">Oglasna tabla</button>
             <button r-button flat text="Odzumiraj" (click)="toggle()">Odzumiraj</button>
+            
         </div>
+        
     </template>
     `,
     styleUrls: ['app/timetable/r-timetable-class.css'],
@@ -50,6 +81,10 @@ import {R_BUTTON} from "../ui/r-button.component";
     directives: [R_BUTTON]
 })
 export class TimetableClassComponent {
+    
+    @Input() mode: Mode;
+
+    public _Mode = Mode;
 
     // Vremena za računanje
     @Input() startMinutes: number; // npr. 07:15 je 435
@@ -129,6 +164,36 @@ export class TimetableClassComponent {
 
     // dodavanje u lični
     public addToPersonal() {
+        // TODO
+        alert("TODO");
+    }
+
+    // obrisi aktivnosti
+    public deleteActivity() {
+        // TODO
+        alert("TODO");
+    }
+
+    // sakrij cas
+    public hideClass() {
+        // TODO
+        alert("TODO");
+    }
+
+    // dodaj task
+    public addTask() {
+        // TODO
+        alert("TODO");
+    }
+
+    // dodaj obavestenje
+    public addAnnouncement() {
+        // TODO
+        alert("TODO");
+    }
+
+    // otkazi cas
+    public cancelClass() {
         // TODO
         alert("TODO");
     }

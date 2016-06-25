@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "angular2/core";
 import {TimetableClassComponent} from "./r-timetable-class.component";
 import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
+import {Mode} from "./r-timetable.component";
 
 
 
@@ -30,6 +31,7 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
                 [startMinutes]="c.startMinutes"
                 [durationMinutes]="c.durationMinutes"
                 [endMinutes]="c.startMinutes + c.durationMinutes"
+                [mode]="mode"
             >
             </r-timetable-class>
         </div>
@@ -40,6 +42,8 @@ import {ToTimestampPipe} from "../pipes/to-timestamp.pipe";
     pipes: [ToTimestampPipe]
 })
 export class TimetableColumnComponent implements OnInit {
+
+    @Input() mode: Mode; // za proslednjivanje do timetable-class
 
     @Input('classes') _classes: any[]; // niz časova
     // mora da ima startMinutes, durationMinutes
