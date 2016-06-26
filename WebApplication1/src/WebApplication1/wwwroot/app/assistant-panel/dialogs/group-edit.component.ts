@@ -138,7 +138,7 @@ export class GroupEditComponent {
     }
 
     concatAssistanst(asst) {
-        this.assistants = this.assistants.concat(asst);
+        this.assistants = this.assistants ? this.assistants.concat(asst) : asst;
 
         //brisanje duplikata
         this.assistants = this.uniq_fast(this.assistants)
