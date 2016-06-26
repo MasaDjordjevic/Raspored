@@ -79,6 +79,7 @@ export class RFabButtonDirective {
         "[class.blue]": "primaryColorClassName === 'blue'",
         "[class.orange]": "primaryColorClassName === 'orange'",
         "[class.green]": "primaryColorClassName === 'green'",
+        "[class.purple]": "primaryColorClassName === 'purple'",
         "[class.sunset-purple]": "primaryColorClassName === 'sunset-purple'",
         "[class.sunset-red]": "primaryColorClassName === 'sunset-red'",
         "[class.sunset-orange]": "primaryColorClassName === 'sunset-orange'",
