@@ -103,6 +103,9 @@
       padding: 18px;
       text-align: center;
       font-size: 1.2em;
+      display: flex;
+      align-items: center; // da ne bude baseline
+      justify-content: center;
     }
   }
 
@@ -204,7 +207,37 @@
     }
 
     .additional-info {
+      display: flex;
+      justify-content: center;
+
+      .no-notifications {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > div {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          i {
+            color: rgba(black, .15);
+            font-size: 5em;
+          }
+
+          span {
+            display: inline-block;
+            margin-top: 1em;
+            text-align: center;
+            color: rgba(black, .25);
+            font-size: 1.5em;
+          }
+        }
+      }
+
       .notifications {
+        flex: 1;
         display: flex;
         flex-direction: column;
 

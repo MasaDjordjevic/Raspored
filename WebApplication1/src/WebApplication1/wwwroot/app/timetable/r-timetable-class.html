@@ -68,12 +68,13 @@
             </div>
             <div class="tab" (click)="selectedTab = 1"
                  [style.fontWeight]="selectedTab === 1 ? 'bold' : 'normal'"
-            >Opšti podaci
+            >
+                <span>Opšti podaci</span>
             </div>
             <div class="tab" (click)="selectedTab = 2"
                  [style.fontWeight]="selectedTab === 2 ? 'bold' : 'normal'"
             >
-                Obaveštenja
+                <span>Obaveštenja</span>
             </div>
         </div>
 
@@ -229,7 +230,10 @@
                 <div class="additional-info">
 
                     <div class="no-notifications" *ngIf="notifications && !notifications.length">
-                        Nema notifikacija
+                        <div>
+                            <i class="fa fa-bell-slash-o"></i>
+                            <span>Trenutno nema<br>obaveštenja</span>
+                        </div>
                     </div>
 
                     <div class="notifications" *ngIf="notifications && notifications.length">
