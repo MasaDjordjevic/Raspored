@@ -397,13 +397,13 @@ namespace WebApplication1.Controllers
             {
                 //TODO vadi iz sesije
                 Data.Group.AddActivity(1, obj.groupID.Value, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
+                return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
             {
                 return Ok(new { status = "neuspelo", message = ex.Message });
             }
 
-            return Ok(new { status = "uspelo" });
         }
 
         public class CancelClassBinding
@@ -425,13 +425,45 @@ namespace WebApplication1.Controllers
             try
             {
                 Data.Group.CancelClass(obj.groupID, obj.title, obj.content, obj.timespan);
+                return Ok(new { status = "uspelo" });
+
             }
             catch (Exception ex)
             {
                 return Ok(new { status = "neuspelo", message = ex.Message });
             }
 
-            return Ok(new {status = "uspelo"});
+        }
+
+        [HttpGet]
+        public IActionResult UnCancelClass(int activityID)
+        {
+            try
+            {
+                Data.Group.DeleteActivity(activityID);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "neuspelo", message = ex.Message });
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult GetCanceledTimes(int groupID)
+        {
+            try
+            {
+                var times = Data.Group.GetCanceledTimes(groupID);
+                return Ok(times);
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "neuspelo", message = ex.Message });
+            }
+
         }
 
         [HttpGet]
@@ -493,20 +525,16 @@ namespace WebApplication1.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteGroups(int id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return HttpBadRequest(ModelState);
+                Data.Group.RemoveGroup(id);
+                return Ok(new { status = "uspelo" });
             }
-
-            Groups group = _context.Groups.Single(m => m.groupID == id);
-            if (group == null)
+            catch (Exception ex)
             {
-                return HttpNotFound();
+                return Ok(new { status = "neuspelo", message = ex.Message });
             }
-
-            Data.Group.RemoveGroup(group);
-
-            return Ok(group);
+            
         }
 
         protected override void Dispose(bool disposing)

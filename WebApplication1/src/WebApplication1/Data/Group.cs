@@ -77,6 +77,10 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
+
+                if(!IsActive(groupID, timespan))
+                    throw new Exception("Čas je već otkazan.");
+
                 _context.TimeSpans.Add(timespan);
                 Activities act = new Activities
                 {
@@ -90,6 +94,41 @@ namespace WebApplication1.Data
                 _context.SaveChanges();
             }
         }
+
+        public static IEnumerable GetCanceledTimes(int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var times = _context.Activities.Where(ac =>
+                   !IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
+                   ac.groupID == groupID && ac.cancelling == true)
+                   .Select(a=> new
+                   {
+                       activityID = a.activityID,
+                       time = TimeSpan.ToString(a.timeSpan)
+                   }).ToList();
+                return times;
+            }
+        }
+
+        public static void DeleteActivity(int activityID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                // brisanje timeSpana
+                Activities act = _context.Activities.Include(a => a.timeSpan).First(a => a.activityID == activityID);
+                TimeSpans ts = act.timeSpan;
+                // brisanje same grupe
+                _context.Activities.Remove(act);
+                _context.SaveChanges();
+                if (ts != null)
+                {
+                    _context.TimeSpans.Remove(ts);
+                }
+                _context.SaveChanges();
+            }
+        }
+
 
         // prebacuje studente u grupu
         // brise studente iz ostalih grupa raspodele i ubacuje u tu
@@ -479,19 +518,13 @@ namespace WebApplication1.Data
         }
 
 
-        // zbog linq izraza koji mi ne daje da pozvem funkciju koja ima optional parameter
         public static bool IsActive(int groupID, TimeSpans tsNow)
-        {
-            return IsActive(groupID, tsNow, null);
-        }
-
-        public static bool IsActive(int groupID, TimeSpans tsNow, int? studentID = null)
         {
             using (RasporedContext _context = new RasporedContext())
             {
                 bool canceled =  _context.Activities.Any(ac =>
                     !IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
-                    ac.groupID == groupID && ac.cancelling != null && ac.cancelling.Value &&
+                    ac.groupID == groupID && ac.cancelling == true &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, tsNow));
                 return !canceled;
 

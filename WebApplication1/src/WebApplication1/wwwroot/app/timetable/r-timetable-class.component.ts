@@ -9,6 +9,7 @@ import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activit
 import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.component";
 import {AddTaskComponent} from "../student-panel/dialogs/add-task.component";
 import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-board.component";
+import {UncancelClassComponent} from "../assistant-panel/dialogs/uncancel-class.component";
 
 @Component({
     selector: 'r-timetable-class',
@@ -21,7 +22,7 @@ import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-b
         "[style.height]": "expanded ? expandedHeightHost : '100%'"
     },
     pipes: [ToTimestampPipe],
-    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent, AddTaskComponent, BulletinBoardComponent]
+    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent, AddTaskComponent, BulletinBoardComponent, UncancelClassComponent]
 })
 export class TimetableClassComponent {
     

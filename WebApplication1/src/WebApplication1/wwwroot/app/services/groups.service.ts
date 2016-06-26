@@ -89,6 +89,20 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
+    unCancelClass(activityID:number): Promise<any[]> {
+        return this.http.get(this._url + `/UnCancelClass/?activityID=${activityID}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCanceledTimes(groupID: number): Promise<any[]> {
+        return this.http.get(this._url + `/GetCanceledTimes/?groupID=${groupID}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     getSchedule(groupID: number, weeksFromNow:number): Promise<any[]> {
         return this.http.get(this._url + `/GetSchedule/?groupID=${groupID}&weeksFromNow=${weeksFromNow}`)
             .toPromise()

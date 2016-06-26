@@ -172,6 +172,12 @@
                                 (click)="cancelClassDialog.open()"
                                 [primaryColor]="color">Otkaži čas</button>
 
+                        <button *ngIf="mode === _Mode.AssistantOfficial"
+                                r-button raised text="Otkaži otkazivanje časa"
+                                #uncancelClassButton
+                                (click)="uncancelClassDialog.open()"
+                                [primaryColor]="color">"Otkaži otkazivanje časa"</button>
+
                         <button r-button raised text="Oglasna tabla"
                                 #bulletinBoardButton
                                 (click)="bulletinBoardDialog.open()"
@@ -218,6 +224,17 @@
                                     (close)="bulletinBoardDialog.close()"
                             >
                             </r-bulletin-board>
+                        </r-dialog>
+
+                        <r-dialog class="uncancel-class" #uncancelClassDialog [source]="uncancelClassButton">
+                            <uncancel-class
+                                    [groupId]="classId"
+                                    [primaryColor]="color"
+                                    [secondaryColor]="color"
+                                    (close)="cancelClassDialog.close()"
+                            >
+
+                            </uncancel-class>
                         </r-dialog>
 
                     </div>
