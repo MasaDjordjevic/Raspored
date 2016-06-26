@@ -286,25 +286,22 @@ namespace WebApplication1.Data
         }
 
         // brise studenta iz svih grupa raspodele divisionID
-        // vraca id grupe iz koje je izbrisan (trebalo bi da bude samo jedna ukoliko je raspodela bila konzistentna)
-        // vraca id da bih mogla da odglumim transakciju
         public static int RemoveFromAllGroups(int studentID, int divisionID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                int groupID = -1;
+
                 var groupStudents =
                     _context.GroupsStudents.Where(a => a.studentID == studentID && a.group.divisionID == divisionID)
                         .ToList();
 
                 foreach (GroupsStudents gs in groupStudents)
                 {
-                    groupID = gs.groupID;
                     _context.Remove(gs);
                 }
                 _context.SaveChanges();
-                return groupID;
             }
+
         }
 
         // prebacuje studenta u grupu
