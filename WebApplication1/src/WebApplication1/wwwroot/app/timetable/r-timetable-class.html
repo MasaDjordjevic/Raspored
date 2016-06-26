@@ -1,162 +1,255 @@
-<template [ngIf]="!expanded">
+<div class="invisible-blackout"
+     (click)="collapse()"
+     *ngIf="expanded"
+>
+</div>
+
+<div class="r-timetable-class-wrapper-in"
+     [class.red]= "color === 'MaterialRed'"
+     [class.yellow]= "color === 'MaterialYellow'"
+     [class.blue]= "color === 'MaterialBlue'"
+     [class.orange]= "color === 'MaterialOrange'"
+     [class.purple]= "color === 'MaterialPurple'"
+     [class.green]= "color === 'MaterialGreen'"
+     [class.active]= "active"
+     [class.expanded]= "expanded"
+     [style.left]= "expanded ? expandedLeft : ''"
+     [style.top]= "expanded ? expandedTop : ''"
+     [style.width]= "expanded ? expandedWidth : ''"
+     [style.height]= "expanded ? expandedHeight : ''"
+     [style.boxShadow]= "expanded ? '0 0 0 0.7em ' + color + ' inset' : ''"
+     [style.color]= "expanded ? 'black' : textColor"
+     (click)= "expand($event)"
+>
+
+
+    <template [ngIf]="!expanded">
 
     <span class="times">
         <span class="start">{{startMinutes | toTimestamp}}</span> — <span class="end">{{endMinutes | toTimestamp}}</span>
     </span>
 
-    <!-- ako je čas (nije aktivnost) -->
-    <template [ngIf]="abbr && classroom">
+        <!-- ako je čas (nije aktivnost) -->
+        <template [ngIf]="abbr && classroom">
         <span class="title">
             <template [ngIf]="!expanded">{{abbr}}</template>
             <template [ngIf]="expanded">{{className}}</template>
             u
             {{classroom}}
         </span>
-        <span class="type">{{type}}</span>
-        <span class="assistant">{{assistant}}</span>
-    </template>
+            <span class="type">{{type}}</span>
+            <span class="assistant">{{assistant}}</span>
+        </template>
 
-    <!-- ako je aktivnost (nije čas) -->
-    <template [ngIf]="activityContent && activityTitle">
-        <span class="title">{{activityTitle}}</span>
-        <span class="text">{{activityContent}}</span>
-    </template>
+        <!-- ako je aktivnost (nije čas) -->
+        <template [ngIf]="activityContent && activityTitle">
+            <span class="title">{{activityTitle}}</span>
+            <span class="text">{{activityContent}}</span>
+        </template>
 
-    <!-- ako ima bar jedna aktivnost -->
-    <template [ngIf]="notifications && notifications.length">
-        <div class="notification-notification">
-            <i class="fa fa-bell"></i>
+        <!-- ako ima bar jedna aktivnost -->
+        <template [ngIf]="notifications && notifications.length">
+            <div class="notification-notification">
+                <i class="fa fa-bell"></i>
             <span class="counter">
                 <span>{{notifications.length}}</span>
             </span>
+            </div>
+        </template>
+
+    </template>
+
+
+    <template [ngIf]="expanded">
+
+        <div class="tabs">
+            <div class="tab-line">
+                <div [style.left]="(selectedTab - 1) * 100 + '%'"></div>
+            </div>
+            <div class="tab" (click)="selectedTab = 1"
+                 [style.fontWeight]="selectedTab === 1 ? 'bold' : 'normal'"
+            >Opšti podaci
+            </div>
+            <div class="tab" (click)="selectedTab = 2"
+                 [style.fontWeight]="selectedTab === 2 ? 'bold' : 'normal'"
+            >
+                Obaveštenja
+            </div>
         </div>
+
+        <div class="tab-content">
+            <template [ngIf]="selectedTab === 1">
+                <!-- čas, a ne aktivnost -->
+                <div class="main-info" *ngIf="abbr && classroom">
+                    <dl>
+                        <div><dt class="class-time">
+                            <i class="fa fa-clock-o"></i>
+                            <span>Vreme</span>
+                        </dt>
+                            <dd>
+                                {{startMinutes | toTimestamp}} — {{endMinutes | toTimestamp}}
+                            </dd></div>
+
+                        <div><dt class="class-place">
+                            <i class="fa fa-server"></i>
+                            <span>Mesto</span>
+                        </dt>
+                            <dd>
+                                {{classroom}}
+                            </dd></div>
+
+                        <div><dt class="class-subject">
+                            <i class="fa fa-graduation-cap"></i>
+                            <span>Predmet</span>
+                        </dt>
+                            <dd>
+                                {{className}}
+                                <!--<div class="more-info">-->
+                                <!--<i class="fa fa-question"></i>-->
+                                <!--<div>-->
+                                <!--{{abbr}},&nbsp;OER2015-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </dd></div>
+
+                        <div><dt class="type">
+                            <i class="fa fa-sitemap"></i>
+                            <span>Tip</span>
+                        </dt>
+                            <dd>
+                                {{type}}
+                            </dd></div>
+
+                        <div><dt class="assistant">
+                            <i class="fa fa-male"></i>
+                            <span>Asistent</span>
+                        </dt>
+                            <dd>
+                                Vladan Mihajlović{{assistant}}
+                                <!--<div class="more-info">-->
+                                <!--<i class="fa fa-question"></i>-->
+                                <!--<div>-->
+                                <!--331-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </dd></div>
+
+                    </dl>
+
+                    <div class="controls">
+
+                        <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
+                                r-button raised text="Dodaj čas u lični"
+                                (click)="addToPersonal()"
+                                [primaryColor]="color">Dodaj u lični</button>
+
+                        <button *ngIf="mode === _Mode.StudentPersonal && !isClass"
+                                r-button raised text="Obriši aktivnost"
+                                (click)="deleteActivity()"
+                                [primaryColor]="color">Obriši aktivnost</button>
+
+                        <button *ngIf="mode === _Mode.StudentPersonal && isClass"
+                                r-button raised text="Sakrij čas"
+                                (click)="hideClass()"
+                                [primaryColor]="color">Sakrij čas</button>
+
+                        <button *ngIf="mode === _Mode.StudentPersonal"
+                                r-button raised text="Dodaj task"
+                                #addTaskButton
+                                (click)="addTaskDialog.open()"
+                                [primaryColor]="color">Dodaj task</button>
+
+                        <button *ngIf="mode === _Mode.AssistantOfficial"
+                                r-button raised text="Dodaj obaveštenje"
+                                #addAnnouncementButton
+                                (click)="addAnnouncementDialog.open()"
+                                [primaryColor]="color">Dodaj obaveštenje</button>
+
+                        <button *ngIf="mode === _Mode.AssistantOfficial"
+                                r-button raised text="Otkaži čas"
+                                #cancelClassButton
+                                (click)="cancelClassDialog.open()"
+                                [primaryColor]="color">Otkaži čas</button>
+
+                        <button r-button raised text="Oglasna tabla"
+                                #bulletinBoardButton
+                                (click)="bulletinBoardDialog.open()"
+                                [primaryColor]="color">Oglasna tabla</button>
+
+                        <button r-button flat text="×" (click)="toggle()"
+                                [primaryColor]="color">×</button>
+
+                        <r-dialog class="cancel-class" #cancelClassDialog [source]="cancelClassButton">
+                            <cancel-class
+                                    [groupId]="classId"
+                                    [primaryColor]="color"
+                                    [secondaryColor]="color"
+                                    (close)="cancelClassDialog.close()"
+                            >
+                            </cancel-class>
+                        </r-dialog>
+
+                        <r-dialog class="add-announcement" #addAnnouncementDialog [source]="addAnnouncementButton">
+                            <add-activity
+                                    [primaryColor]="color"
+                                    [secondaryColor]="color"
+                                    [groupId]="classId"
+                                    (close)="addAnnouncementDialog.close()"
+                            >
+                            </add-activity>
+                        </r-dialog>
+
+                        <r-dialog class="add-task" #addTaskDialog [source]="addTaskButton">
+                            <r-add-task
+                                    [primaryColor]="color"
+                                    [secondaryColor]="color"
+                                    [groupId]="classId"
+                                    (close)="addTaskDialog.close()"
+                            >
+                            </r-add-task>
+                        </r-dialog>
+
+                        <r-dialog class="bulletin-board" #bulletinBoardDialog [source]="bulletinBoardButton">
+                            <r-bulletin-board
+                                    [primaryColor]="color"
+                                    [secondaryColor]="color"
+                                    [groupId]="classId"
+                                    (close)="bulletinBoardDialog.close()"
+                            >
+                            </r-bulletin-board>
+                        </r-dialog>
+
+                    </div>
+
+                </div>
+            </template>
+
+            <template [ngIf]="selectedTab === 2">
+
+                <div class="additional-info">
+
+                    <div class="no-notifications" *ngIf="notifications && !notifications.length">
+                        Nema notifikacija
+                    </div>
+
+                    <div class="notifications" *ngIf="notifications && notifications.length">
+                        <div class="notification"
+                             *ngFor="let notification of notifications"
+                        >
+                            <div class="title">{{notification.title}}</div>
+                            <div class="info">
+                                <div class="place">{{notification.place}}</div>
+                            </div>
+                            <div class="content">{{notification.activityContent}}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </template>
+        </div>
+
     </template>
 
-</template>
 
-<template [ngIf]="expanded">
-
-    <span class="times">
-        <span class="start">{{startMinutes | toTimestamp}}</span> — <span class="end">{{endMinutes | toTimestamp}}</span>
-    </span>
-
-    <!-- čas -->
-    <template [ngIf]="abbr && classroom">
-        <span class="title">
-            <template [ngIf]="!expanded">{{abbr}}</template>
-            <template [ngIf]="expanded">{{className}}</template>
-            u
-            {{classroom}}
-        </span>
-        <span class="type">{{type}}</span>
-        <span class="assistant">{{assistant}}</span>
-    </template>
-
-    <!-- aktivnost -->
-    <template [ngIf]="activityContent && activityTitle">
-        <span class="title">{{activityTitle}}</span>
-        <span class="text">{{activityContent}}</span>
-    </template>
-
-
-    <template [ngIf]="announcement">
-        <button r-button raised class="announcement-button" text="!" [title]="announcement">!</button>
-    </template>
-    <div class="controls">
-
-        <!--{{mode}}
-        official {{mode === _Mode.StudentOfficial}}
-        global {{mode === _Mode.StudentGlobal}}
-        personal {{mode === _Mode.StudentPersonal}}-->
-
-        {{classId}}
-        {{notifications | json}}
-
-
-        <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
-                r-button raised text="Dodaj čas u lični"
-                (click)="addToPersonal()"
-                [primaryColor]="color">Dodaj u lični</button>
-
-        <button *ngIf="mode === _Mode.StudentPersonal && !isClass"
-                r-button raised text="Obriši aktivnost"
-                (click)="deleteActivity()"
-                [primaryColor]="color">Obriši aktivnost</button>
-
-        <button *ngIf="mode === _Mode.StudentPersonal && isClass"
-                r-button raised text="Sakrij čas"
-                (click)="hideClass()"
-                [primaryColor]="color">Sakrij čas</button>
-
-        <button *ngIf="mode === _Mode.StudentPersonal"
-                r-button raised text="Dodaj task"
-                #addTaskButton
-                (click)="addTaskDialog.open()"
-                [primaryColor]="color">Dodaj task</button>
-
-        <button *ngIf="mode === _Mode.AssistantOfficial"
-                r-button raised text="Dodaj obaveštenje"
-                #addAnnouncementButton
-                (click)="addAnnouncementDialog.open()"
-                [primaryColor]="color">Dodaj obaveštenje</button>
-
-        <button *ngIf="mode === _Mode.AssistantOfficial"
-                r-button raised text="Otkaži čas"
-                #cancelClassButton
-                (click)="cancelClassDialog.open()"
-                [primaryColor]="color">Otkaži čas</button>
-
-        <button r-button raised text="Oglasna tabla"
-                #bulletinBoardButton
-                (click)="bulletinBoardDialog.open()"
-                [primaryColor]="color">Oglasna tabla</button>
-
-        <button r-button flat text="Odzumiraj" (click)="toggle()"
-                [primaryColor]="color">Odzumiraj</button>
-
-        {{materialColorString}}
-
-    </div>
-
-    <b>Message</b> {{message}}
-
-    <r-dialog class="cancel-class" #cancelClassDialog [source]="cancelClassButton">
-        <cancel-class
-                [groupId]="classId"
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                (close)="cancelClassDialog.close()"
-        >
-        </cancel-class>
-    </r-dialog>
-
-    <r-dialog class="add-announcement" #addAnnouncementDialog [source]="addAnnouncementButton">
-        <add-activity
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                [groupId]="classId"
-                (close)="addAnnouncementDialog.close()"
-        >
-        </add-activity>
-    </r-dialog>
-
-    <r-dialog class="add-task" #addTaskDialog [source]="addTaskButton">
-        <r-add-task
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                [groupId]="classId"
-                (close)="addTaskDialog.close()"
-        >
-        </r-add-task>
-    </r-dialog>
-
-    <r-dialog class="bulletin-board" #bulletinBoardDialog [source]="bulletinBoardButton">
-        <r-bulletin-board
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                [groupId]="classId"
-                (close)="bulletinBoardDialog.close()"
-        >
-        </r-bulletin-board>
-    </r-dialog>
-</template>
+</div>
