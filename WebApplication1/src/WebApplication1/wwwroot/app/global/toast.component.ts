@@ -21,7 +21,7 @@ export class ToastComponent {
             this.message = message;
             setTimeout(() => {
                 this.message = null;
-            }, 2500);
+            }, 6000);
         })
     }
 

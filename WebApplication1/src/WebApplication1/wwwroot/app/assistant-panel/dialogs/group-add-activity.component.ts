@@ -10,6 +10,7 @@ import * as moment_ from "../../../js/moment.js";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
+import {GlobalService} from "../../services/global.service";
 const moment = moment_["default"];
 
 @Component({
@@ -93,10 +94,12 @@ export class AddActivityComponent {
             .then(() => this.group.timeSpan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period));
     }
 
-    constructor(private _classroomsService: ClassroomsService,
-                private _groupsService: GroupsService) {
+    constructor(
+        private _classroomsService: ClassroomsService,
+        private _groupsService: GroupsService,
+        private _globalService: GlobalService
+    ) {
         this.getClassrooms();
-
     }
 
 
@@ -113,7 +116,24 @@ export class AddActivityComponent {
             this.announcement.title,
             this.announcement.content,
             timespan
-        ).then(status=> console.log(status));
+        )
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast("Uspešno dodata aktivnost.");
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije dodata aktivnost.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this.closeMe();
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
+            });
     }
 
     getClassrooms() {

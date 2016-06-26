@@ -31,18 +31,30 @@
 
     <r-dialog #editDivisionDialog [source]="editDivisionButton">
         <div>
-            <division-edit [primaryColor]="primaryColor" [division]="division" [new]="false"></division-edit>
+            <division-edit [primaryColor]="primaryColor"
+                           [division]="division"
+                           [new]="false"
+                           (close)="editDivisionDialog.close()"
+            ></division-edit>
         </div>
     </r-dialog>
 
     <r-dialog #newGroupDialog [source]="newGroupButton">
         <div>
-            <group-edit [primaryColor]="primaryColor" [group]="emptyGroup"></group-edit>
+            <group-edit [primaryColor]="primaryColor"
+                        [group]="emptyGroup"
+                        (close)="newGroupDialog.close()"
+            >
+            </group-edit>
         </div>
     </r-dialog>
 
     <r-dialog #groupsDialog [source]="groupsButton">
-        <r-mass-group-edit [division]="division" style="max-height: 90vh;"></r-mass-group-edit>
+        <r-mass-group-edit [division]="division"
+                           style="max-height: 90vh;"
+                           (close)="groupsDialog.close()"
+        >
+        </r-mass-group-edit>
     </r-dialog>
 
     <r-dialog #exportDivisionDialog [source]="exportDivisionButton">

@@ -13,6 +13,7 @@ import {CancelClassComponent} from "../dialogs/Cancel-class.component";
 import * as moment_ from "../../../js/moment.js";
 import {TimetableComponent} from "../../timetable/r-timetable.component";
 import {AssistantService} from "../../services/assistant.service";
+import {GlobalService} from "../../services/global.service";
 const moment = moment_["default"];
 
 @Component({
@@ -32,7 +33,7 @@ export class GroupOptionsComponent {
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
-    group: Group;
+    group: any;
     errorMessage: string;
 
     private _groupId: number = 0;
@@ -46,7 +47,10 @@ export class GroupOptionsComponent {
         return this._groupId;
     }
 
-    constructor( private _service: GroupsService ) {}
+    constructor(
+        private _service: GroupsService,
+        private _globalService: GlobalService
+    ) {}
     
     get descriptiveString() {
         if (!this.group.timeSpan) {
@@ -90,10 +94,21 @@ export class GroupOptionsComponent {
     }
     
     removeGroup() {
-        //TODO uradi nesto pametnije sa odgovorom
-        this._service.removeGroup(this.groupId).then(any => console.log(any));
+        this._service.removeGroup(this.groupId)
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Uspešno obrisana grupa *${this.group.name}*.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije obrisana grupa *${this.group.name}*.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelMoveMinusOne();
+            });
     }
-
-    
 
 }

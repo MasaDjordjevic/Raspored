@@ -1,4 +1,4 @@
-import {Component, Input} from "angular2/core";
+import {Component, Input, Output, EventEmitter} from "angular2/core";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {ClassroomsService} from "../../services/classrooms.service";
@@ -8,6 +8,7 @@ import {GroupsService} from "../../services/groups.service";
 
 
 import * as moment_ from "../../../js/moment.js";
+import {GlobalService} from "../../services/global.service";
 const moment = moment_["default"];
 
 @Component({
@@ -70,6 +71,11 @@ export class MassGroupEditComponent {
         return this._division;
     }
 
+    @Output() close: EventEmitter<any> = new EventEmitter<any>();
+    public closeMe() {
+        this.close.emit({});
+    }
+
     @Input() public set division(d) {
         this._division = d;
         this.editedDivision = [];
@@ -107,7 +113,8 @@ export class MassGroupEditComponent {
 
     constructor(
         private _classroomsService: ClassroomsService,
-        private _groupsService: GroupsService
+        private _groupsService: GroupsService,
+        private _globalService: GlobalService
     ) {
         this.getClassrooms();
     }
@@ -122,9 +129,7 @@ export class MassGroupEditComponent {
     private editedDivision = [];
 
     public save() {
-
         var sendData = [];
-
         for (let i = 0; i < this.editedDivision.length; i++) {
             // pripremanje parametara za slanje
             let sendObj: any = {
@@ -143,13 +148,27 @@ export class MassGroupEditComponent {
                     timeEnd: this.editedDivision[i].timeEnd
                 };
             }
-
             sendData.push(sendObj);
         }
 
-        console.log(sendData);
         this._groupsService.massGroupEdit(sendData)
-            .then(status => console.log(status));
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Uspešno izmenjene grupe iz raspodele *${this.division.name}*.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije uspelo menjanje grupa iz raspodele *${this.division.name}*.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this.closeMe();
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
+            });
     }
 
 }

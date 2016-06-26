@@ -15,24 +15,36 @@
 
     <div class="flex-spacer"></div>
 
-    <r-dialog #newDivisionDialog [source]="newDivisionButton">
-        <r-division-creator [departmentID]="department.departmentID" [primaryColor]="primaryColor">
-
+    <r-dialog #newDivisionDialog
+              [source]="newDivisionButton"
+    >
+        <r-division-creator [departmentID]="department.departmentID"
+                            [primaryColor]="primaryColor"
+                            (close)="newDivisionDialog.close()"
+        >
         </r-division-creator>
     </r-dialog>
 
-    <r-dialog #allStudentsDialog [source]="allStudentsButton">
+    <r-dialog #allStudentsDialog
+              [source]="allStudentsButton"
+    >
         <div style="height: 680px; width: 1100px;" *ngIf="students">
-            <r-students-selector [(selected)]="selectedStudents" [students]="students" [primaryColor]="primaryColor" [columns]="3">
+            <r-students-selector [(selected)]="selectedStudents"
+                                 [students]="students"
+                                 [primaryColor]="primaryColor"
+                                 [columns]="3"
+            >
             </r-students-selector>
         </div>
     </r-dialog>
 
     <r-dialog #globalScheduleDialog [source]="globalScheduleButton">
-        Globalni raspored
+        Globalni raspored <!-- TODO -->
     </r-dialog>
 
-    <r-dialog class="json-debugging" #debuggingDialog [source]="debuggingButton">
+    <r-dialog class="json-debugging"
+              #debuggingDialog
+              [source]="debuggingButton">
         <pre>{{department | json | trim}}</pre>
     </r-dialog>
 

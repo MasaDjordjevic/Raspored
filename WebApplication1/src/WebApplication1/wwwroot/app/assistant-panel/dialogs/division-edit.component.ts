@@ -1,4 +1,4 @@
-import {Component, Input, AfterViewInit} from 'angular2/core';
+import {Component, Input, AfterViewInit, Output, EventEmitter} from 'angular2/core';
 import {DivisionsService} from "../../services/divisions.service";
 import {Division} from "../../models/Division";
 import {R_INPUT} from "../../ui/r-input-text.component";
@@ -33,6 +33,11 @@ export class DivisionEditComponent implements AfterViewInit {
     _division: any;
     @Input() new: boolean;
     oldDivision: any;
+
+    @Output() close: EventEmitter<any> = new EventEmitter<any>();
+    public closeMe() {
+        this.close.emit({});
+    }
 
     public get division() { return this._division }
 
@@ -139,7 +144,19 @@ export class DivisionEditComponent implements AfterViewInit {
 
         //TODO nesto pametnije sa odgovorom
         this._divisionsService.updateDivision(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID)
-            .then(any => console.log(any))
+            .then(response => {
+                //console.log(response);
+                switch (response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Uspešno izmenjena grupa *${sendName}*.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Grupa nije izmenjena.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => this.closeMe())
             .then(() => this._globalService.refreshAssistantPanelAll());
 
     }
