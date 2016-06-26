@@ -26,3 +26,24 @@ $theme-neon-diamond: #A239CA;
 $theme-neon-gemstone: #4717F6;
 $theme-neon-poison: #18DD00;
 
+$theme-all-var-string: (
+        $theme-material-red: "red",
+        $theme-material-yellow: "yellow",
+        $theme-material-blue: "blue",
+        $theme-material-orange: "orange",
+        $theme-material-green: "green",
+        $theme-material-purple: "purple",
+        $theme-sunset-purple: "sunset-purple",
+        $theme-sunset-red: "sunset-red",
+        $theme-sunset-orange: "sunset-orange",
+        $theme-sunset-yellow: "sunset-yellow",
+        $theme-ice-darkest: "ice-darkest",
+        $theme-ice-darker: "ice-darker",
+        $theme-ice-melted: "ice-melted",
+        $theme-ice-green: "ice-green",
+        $theme-neon-empty: "neon-empty",
+        $theme-neon-diamond: "neon-diamond",
+        $theme-neon-gemstone: "neon-gemstone",
+        $theme-neon-poison: "neon-poison"
+);
+

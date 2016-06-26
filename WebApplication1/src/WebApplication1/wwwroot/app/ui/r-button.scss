@@ -8,8 +8,8 @@
   background-color: transparent;
   outline: none;
   border: none;
-  margin: 0;
-  padding: 0;
+  //margin: 0;
+  //padding: 0;
   cursor: pointer;
 
   // Material
@@ -46,129 +46,12 @@
     color: rgba(palette($blue), .5); // default
   }
 
-  &.red {
-    color: rgba($theme-material-red, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-material-red, .1);
-    }
-  }
-
-  &.yellow {
-    color: rgba($theme-material-yellow, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-material-yellow, .1);
-    }
-  }
-
-  &.blue {
-    color: rgba($theme-material-blue, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-material-blue, .1);
-    }
-  }
-
-  &.green {
-    color: rgba($theme-material-green, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-material-green, .1);
-    }
-  }
-
-  &.orange {
-    color: rgba($theme-material-orange, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-material-orange, .1);
-    }
-  }
-
-  &.purple {
-    color: rgba($theme-material-purple, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-material-purple, .1);
-    }
-  }
-
-  &.sunset-purple {
-    color: rgba($theme-sunset-purple, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-sunset-purple, .1);
-    }
-  }
-
-  &.sunset-red {
-    color: rgba($theme-sunset-red, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-sunset-red, .1);
-    }
-  }
-
-  &.sunset-orange {
-    color: rgba($theme-sunset-orange, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-sunset-orange, .1);
-    }
-  }
-
-  &.sunset-yellow {
-    color: rgba($theme-sunset-yellow, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-sunset-yellow, .1);
-    }
-  }
-
-  &.ice-darkest {
-    color: rgba($theme-ice-darkest, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-ice-darkest, .1);
-    }
-  }
-
-  &.ice-darker {
-    color: rgba($theme-ice-darker, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-ice-darker, .1);
-    }
-  }
-
-  &.ice-melted {
-    color: rgba($theme-ice-melted, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-ice-melted, .1);
-    }
-  }
-
-  &.ice-green {
-    color: rgba($theme-ice-green, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-ice-green, .1);
-    }
-  }
-
-  &.neon-empty {
-    color: rgba($theme-neon-empty, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-neon-empty, .1);
-    }
-  }
-
-  &.neon-diamond {
-    color: rgba($theme-neon-diamond, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-neon-diamond, .1);
-    }
-  }
-
-  &.neon-gemstone {
-    color: rgba($theme-neon-gemstone, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-neon-gemstone, .1);
-    }
-  }
-
-  &.neon-poison {
-    color: rgba($theme-neon-poison, .9);
-    &:hover:not([disabled]) {
-      background-color: rgba($theme-neon-poison, .1);
+  @each $var, $string in $theme-all-var-string {
+    &.#{$string} {
+      color: rgba($var, .9);
+      &:hover:not([disabled]) {
+        background-color: rgba($var, .1);
+      }
     }
   }
 }
@@ -191,223 +74,21 @@
     color: rgba(white, .5);
   }
 
-  // Boje
+  //region Themes
+  @each $var, $string in $theme-all-var-string {
+    &.#{$string} {
+      background-color: $var;
 
-  &.red {
-    background-color: $theme-material-red;
+      &:hover:not([disabled]) {
+        background-color: tint($var, 10%);
+      }
 
-    &:hover:not([disabled]) {
-      background-color: tint($theme-material-red, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-material-red, .7), 50%);
-    }
-  }
-
-  &.yellow {
-    background-color: $theme-material-yellow;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-material-yellow, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-material-yellow, .7), 50%);
+      &[disabled] {
+        background-color: desaturate(rgba($var, .7), 50%);
+      }
     }
   }
-
-  &.blue {
-    background-color: $theme-material-blue;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-material-blue, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-material-blue, .7), 50%);
-    }
-  }
-
-  &.orange {
-    background-color: $theme-material-orange;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-material-orange, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-material-orange, .7), 50%);
-    }
-  }
-
-  &.green {
-    background-color: $theme-material-green;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-material-green, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-material-green, .7), 50%);
-    }
-  }
-
-  &.purple {
-    background-color: $theme-material-purple;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-material-purple, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-material-purple, .7), 50%);
-    }
-  }
-
-  &.sunset-purple {
-    background-color: $theme-sunset-purple;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-sunset-purple, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-sunset-purple, .7), 50%);
-    }
-  }
-
-  &.sunset-red {
-    background-color: $theme-sunset-red;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-sunset-red, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-sunset-red, .7), 50%);
-    }
-  }
-
-  &.sunset-orange {
-    background-color: $theme-sunset-orange;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-sunset-orange, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-sunset-orange, .7), 50%);
-    }
-  }
-
-  &.sunset-yellow {
-    background-color: $theme-sunset-yellow;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-sunset-yellow, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-sunset-yellow, .7), 50%);
-    }
-  }
-
-  &.ice-darkest {
-    background-color: $theme-ice-darkest;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-ice-darkest, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-ice-darkest, .7), 50%);
-    }
-  }
-
-  &.ice-darker {
-    background-color: $theme-ice-darker;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-ice-darker, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-ice-darker, .7), 50%);
-    }
-  }
-
-  &.ice-melted {
-    background-color: $theme-ice-melted;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-ice-melted, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-ice-melted, .7), 50%);
-    }
-  }
-
-  &.ice-green {
-    background-color: $theme-ice-green;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-ice-green, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-ice-green, .7), 50%);
-    }
-  }
-
-  &.neon-empty {
-    background-color: $theme-neon-empty;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-neon-empty, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-neon-empty, .7), 50%);
-    }
-  }
-
-  &.neon-diamond {
-    background-color: $theme-neon-diamond;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-neon-diamond, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-neon-diamond, .7), 50%);
-    }
-  }
-
-  &.neon-gemstone {
-    background-color: $theme-neon-gemstone;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-neon-gemstone, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-neon-gemstone, .7), 50%);
-    }
-  }
-
-  &.neon-poison {
-    background-color: $theme-neon-poison;
-
-    &:hover:not([disabled]) {
-      background-color: tint($theme-neon-poison, 10%);
-    }
-
-    &[disabled] {
-      background-color: desaturate(rgba($theme-neon-poison, .7), 50%);
-    }
-  }
+  //endregion
 
 }
 
