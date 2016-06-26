@@ -242,10 +242,10 @@ namespace WebApplication1.Data
         }
         
         // provera da li studend moze biti dodan u grupu
-        public static void TryAddToGroup(int studentID, int groupID)
+        public static void TryAddToGroup(int studentID, int groupID, RasporedContext _context = null)
         {
-            using (RasporedContext _context = new RasporedContext())
-            {
+            _context = _context ?? new RasporedContext();
+            
                 //proveri da li dolazi do nekonzistentnosti raspodele
                 //provera da li student vec postoji u toj grupi
                 var otherStuds =
@@ -266,7 +266,7 @@ namespace WebApplication1.Data
                     message += " (" + TimeSpan.ToString(groupTs) + " )."; 
                     throw new InconsistentDivisionException(message);
                 }
-            }
+            
         }
 
         public static void AddToGroup(int studentID, int groupID, RasporedContext _context = null)
@@ -274,7 +274,7 @@ namespace WebApplication1.Data
             _context = _context ?? new RasporedContext();
             
             // provera da li dolazi do nekonzistentnosti
-            TryAddToGroup(studentID, groupID);
+            TryAddToGroup(studentID, groupID, _context);
 
             GroupsStudents gs = new GroupsStudents
             {
@@ -286,12 +286,11 @@ namespace WebApplication1.Data
         }
 
         // brise studenta iz svih grupa raspodele divisionID
-        public static int RemoveFromAllGroups(int studentID, int divisionID)
+        public static void RemoveFromAllGroups(int studentID, int divisionID, RasporedContext _context = null)
         {
-            using (RasporedContext _context = new RasporedContext())
-            {
+            _context = _context ?? new RasporedContext();
 
-                var groupStudents =
+            var groupStudents =
                     _context.GroupsStudents.Where(a => a.studentID == studentID && a.group.divisionID == divisionID)
                         .ToList();
 
@@ -299,9 +298,6 @@ namespace WebApplication1.Data
                 {
                     _context.Remove(gs);
                 }
-                _context.SaveChanges();
-            }
-
         }
 
         // prebacuje studenta u grupu
@@ -311,7 +307,8 @@ namespace WebApplication1.Data
             _context = _context ?? new RasporedContext();
             
             RemoveFromAllGroups(studentID,
-                _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First());
+                _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First(),
+                _context);
             
             AddToGroup(studentID, groupID, _context);
             
