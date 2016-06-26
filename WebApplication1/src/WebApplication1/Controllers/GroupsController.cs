@@ -96,9 +96,94 @@ namespace WebApplication1.Controllers
             {
                 return Ok(new { status = "greska", message = ex.Message });
             }
-            
-
         }
+
+        // vraca termine ostalih grupa raspodele
+        [HttpGet("{id}", Name = "GetBulletinBoardChoices")]
+        public IActionResult GetBulletinBoardChoices([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            try
+            {
+                var BulletinBoardChoices = Data.Group.GetAllBulletinBoardChoices(id);
+                return Ok(BulletinBoardChoices);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "greska", message = ex.Message });
+            }
+        }
+
+        // vraca oglase koji odgovaraju studentu iz grupe groupID (sa kojima bi mogo da se menja)
+        [HttpGet("{id}", Name = "GetPossibleBulletinBoardChoices")]
+        public IActionResult GetPossibleBulletinBoardChoices([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            try
+            {
+                var BulletinBoardChoices = Data.Group.GetPossibleBulletinBoardChoices(id);
+                return Ok(BulletinBoardChoices);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "greska", message = ex.Message });
+            }
+        }
+
+        // menja studenta sa onim koji je postavio oglas koji mu odgovara
+        [HttpGet("{id}", Name = "ExchangeStudents")]
+        public IActionResult ExchangeStudents(int groupID, int adID)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            try
+            {
+                // TODO vadi iz sesije
+                Data.Group.ExchangeStudents(3, groupID, adID);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "greska", message = ex.Message });
+            }
+        }
+
+        public class AddAdBinding
+        {
+            public int? groupID;
+            public List<int> groupIDs;
+        }
+
+        [HttpPost]
+        public IActionResult AddAd([FromBody] AddAdBinding obj)
+        {
+            if ( obj?.groupID == null || obj?.groupIDs == null)
+            {
+                return Ok(new { status = "parameter error" });
+            }
+            try
+            {
+                // TODO vadi iz sesije
+                Data.Group.AddAd(3, obj.groupID.Value, obj.groupIDs);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "greska", message = ex.Message });
+            }
+        }
+
 
         // PUT: api/Groups/5
         [HttpPut("{id}")]

@@ -120,6 +120,43 @@ export class GroupsService {
             .catch(this.handleError);
     }
 
+    //////// BulletinBoard ///////////
+
+    getAllBulletinBoardChoices(groupId: number): Promise<Group> {
+        return this.http.get(this._url + '/GetAllBulletinBoardChoices/' + groupId)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getPossibleBulletinBoardChoices(groupId: number): Promise<Group> {
+        return this.http.get(this._url + '/GetPossibleBulletinBoardChoices/' + groupId)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    exchangeStudents(groupId: number, adID: number): Promise<Group> {
+        return this.http.get(this._url + `/ExchangeStudents/?groupID=${groupId}&adID=${adID}`)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
+    addAd(groupID: number, groupIDs: any) {
+        let body = JSON.stringify({
+            groupID: groupID,
+            groupIDs: groupIDs
+        });
+        console.log(body);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        return this.http.post(this._url + '/AddAd', body, options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);

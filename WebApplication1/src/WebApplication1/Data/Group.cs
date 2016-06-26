@@ -6,6 +6,7 @@ using Microsoft.Data.Entity;
 using WebApplication1.Exceptions;
 using WebApplication1.Extentions;
 using WebApplication1.Models;
+using WebApplication1.Models.DTOs;
 
 namespace WebApplication1.Data
 {
@@ -44,7 +45,7 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                //brisanje oglasa (nekim cudom se ne obrise)
+                //brisanje oglasa (cascade circle)
                 var ads = _context.Periods.Where(a => a.groupID == @group.groupID).Select(a => a.ad).ToList();
                 foreach (Ads ad in ads)
                 {
@@ -380,6 +381,73 @@ namespace WebApplication1.Data
 
             }
         }
+
+        // vraca termine ostalih grupa raspodele
+        public static List<BulletinBoardChoice> GetAllBulletinBoardChoices(int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+
+                return _context.Groups.Where(a => a.groupID != groupID &&
+                                                a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID)
+                                                .Select(a => new BulletinBoardChoice
+                                                {
+                                                    groupID = a.groupID,
+                                                    time = TimeSpan.ToString(a.timeSpan)
+                                                }).ToList();
+            }
+        }
+
+        // vraca oglase koji odgovaraju studentu iz grupe groupID (sa kojima bi mogo da se menja)
+        public static List<BulletinBoardChoice> GetPossibleBulletinBoardChoices(int groupID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return _context.Periods.Where(a => a.groupID == groupID).Select(a=> new BulletinBoardChoice
+                {
+                    adID  = a.adID,
+                    time = TimeSpan.ToString(a.ad.group.timeSpan)
+                }).ToList();
+            }
+        }
+
+        // menja studenta sa onim koji je postavio oglas koji mu odgovara
+        public static void ExchangeStudents(int studentID, int groupID, int adID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                Ads ad = _context.Ads.First(a => a.adID == adID);
+                Student.MoveToGroup(studentID, ad.groupID, _context);
+                Student.MoveToGroup(ad.studentID, groupID, _context);
+                _context.SaveChanges();
+            }
+        }
+
+        // student iz grupe groupID dodaje oglas i odgovaraju mu termini grupa iz liste
+        public static void AddAd(int studentID, int groupID, List<int> groupIDs)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                Ads ad = new Ads
+                {
+                    studentID = studentID,
+                    groupID = groupID
+                };
+                _context.Ads.Add(ad);
+
+                foreach (int g in groupIDs)
+                {
+                    Periods p = new Periods
+                    {
+                        adID = ad.adID,
+                        groupID = g
+                    };
+                    _context.Periods.Add(p);
+                }
+                _context.SaveChanges();
+            }
+        }
+
 
         // zbog linq izraza koji mi ne daje da pozvem funkciju koja ima optional parameter
         public static bool IsActive(int groupID, TimeSpans tsNow)
