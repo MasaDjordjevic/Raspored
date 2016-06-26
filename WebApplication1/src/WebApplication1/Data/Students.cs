@@ -86,6 +86,7 @@ namespace WebApplication1.Data
                 };
                 List<int> groups = _context.GroupsStudents
                     .Where(a => a.studentID == studentID &&  
+                                (!official || a.falseMember != true) &&
                                 (official || a.ignore != true) &&
                                 TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, tsNow.startDate, tsNow.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
                                 .Select(a => a.groupID).ToList();
@@ -340,12 +341,14 @@ namespace WebApplication1.Data
         }
 
         // dodaje u licni raspored
-        public static void UnHideClass(int studentID, int groupID)
+        public static void AddClassToPersonalSchedule(int studentID, int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
                 var query = _context.GroupsStudents.Where(a => a.studentID == studentID && a.groupID == groupID);
 
+
+                // unhide
                 if (query.Any())
                 {
                     GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
@@ -353,14 +356,15 @@ namespace WebApplication1.Data
                         throw new Exception("vec je u licnom");
                     gs.ignore = false;
                 }
-                else
+                else // dodaj u licni
                 {
                     GroupsStudents gs = new GroupsStudents
                     {
                         studentID = studentID,
                         groupID = groupID,
                         ignore = false,
-                        alert = false
+                        alert = false,
+                        falseMember = true
                     };
                     _context.GroupsStudents.Add(gs);
                 }

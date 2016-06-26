@@ -99,18 +99,33 @@ namespace WebApplication1.Data
             return ts;
         }
 
+        // moze lepse da se organizuje funkcija
         public static string ToString(TimeSpans ts)
         {
-            var ret = ts.startDate.ToStr();
-            if (ts.startDate.Date != ts.endDate.Date)
+            var ret = "";
+            if (ts.period != 1)
             {
-                ret += " - " + ts.endDate.ToStr();
+                ret += ts.startDate.ToStr();
+                if (ts.startDate.Date != ts.endDate.Date)
+                {
+                    ret += " - " + ts.endDate.ToStr();
+                }
+                else
+                {
+                    ret += " - " + ts.endDate.ToString("HH:mm");
+                }
+                return ret;
             }
             else
             {
+                ret += ts.startDate.DayOfWeek.ToStr() + " ";
+                ret += ts.startDate.ToString("HH:mm");
                 ret += " - " + ts.endDate.ToString("HH:mm");
             }
             return ret;
         }
+
+
+
     }
 }

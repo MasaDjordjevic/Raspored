@@ -98,7 +98,7 @@ export class StudentsService {
     }
 
     unhideClass(groupID:number): Promise<any[]> {
-        return this.http.get(this._url + `/UnHideClass/?groupID=${groupID}`)
+        return this.http.get(this._url + `/AddClassToPersonalSchedule/?groupID=${groupID}`)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

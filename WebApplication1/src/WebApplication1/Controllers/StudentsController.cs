@@ -258,12 +258,12 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult UnHideClass(int groupID)
+        public IActionResult AddClassToPersonalSchedule(int groupID)
         {
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.UnHideClass(3, groupID);
+                Data.Student.AddClassToPersonalSchedule(3, groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
