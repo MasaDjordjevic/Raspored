@@ -257,8 +257,8 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Divisions newDivision = Data.Division.CopyDivision(divisionID);
-                return Ok(new { status = "uspelo", division = newDivision });
+                Data.Division.CopyDivision(divisionID);
+                return Ok(new {status = "uspelo"});
             }
             catch (Exception ex)
             {

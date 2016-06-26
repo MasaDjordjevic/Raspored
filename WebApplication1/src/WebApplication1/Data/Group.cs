@@ -41,11 +41,20 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void RemoveGroup(Groups group)
+        public static void RemoveGroup(int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
+                // brisanje timeSpana
+                Groups group = _context.Groups.Include(a => a.timeSpan).First(a => a.groupID == groupID);
+                TimeSpans ts = group.timeSpan;
+                // brisanje same grupe
                 _context.Groups.Remove(@group);
+                _context.SaveChanges();
+                if (ts != null)
+                {
+                    _context.TimeSpans.Remove(ts);
+                }
                 _context.SaveChanges();
             }
         }
