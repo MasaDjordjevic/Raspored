@@ -16,7 +16,7 @@ import {R_BUTTON} from "../../ui/r-button.component";
     </r-dropdown>
     <div class="controls">
         <button r-button flat [text]="'Odustani'" [primaryColor]="primaryColor" (click)="closeMe()">Odustani</button>
-        <button r-button raised [text]="'Otkaži čas'" [primaryColor]="primaryColor" (click)="uncancelClass()">Otkaži čas</button>    
+        <button r-button raised [text]="'Otkaži otkazivanje'" [primaryColor]="primaryColor" (click)="uncancelClass()">Otkaži čas</button>    
     </div>
     `,
     providers: [GroupsService],
