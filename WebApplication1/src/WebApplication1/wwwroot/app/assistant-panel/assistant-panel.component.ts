@@ -22,6 +22,7 @@ import {R_DIALOG} from "../ui/r-dialog";
 import {
     GlobalService
 } from "../services/global.service";
+import {ToastComponent} from "../global/toast.component";
 
 @Component({
     selector: "r-assistant-panel",
@@ -32,6 +33,7 @@ import {
         GroupsListComponent, GroupOptionsComponent,
         StudentsListComponent, StudentOptionsComponent,
         R_BUTTON, R_DIALOG, AssistantEditComponent,
+        ToastComponent
     ],
     templateUrl: 'app/assistant-panel/assistant-panel.html',
     styleUrls: ['app/assistant-panel/assistant-panel.css'],
@@ -111,7 +113,7 @@ export class AssistantPanelComponent {
             studentPrimaryColor: "_Neon-Poison", // #18DD00
         };
         this.theme = "material";
-        this.language = "en";
+        //this.language = "en";
         //endregion
         
         //region Service subscriptions
@@ -128,9 +130,6 @@ export class AssistantPanelComponent {
 
     // Osvezava referencu da bi se prosledili ID-jevi kroz inpute (i da se opet pozove AJAX)
     public refresh($options) {
-
-        console.log("primljen event");
-        console.log($options);
 
         // Ako uopste nisu prosledjene opcije, samo uradi refresh
         if (!$options) {
@@ -158,7 +157,7 @@ export class AssistantPanelComponent {
 
     private lang = this._globalService.currentLanguage;
 
-    private _language: string = "sr";
+    private _language: string/* = "sr"*/;
 
     public get language() {
         return this._language;

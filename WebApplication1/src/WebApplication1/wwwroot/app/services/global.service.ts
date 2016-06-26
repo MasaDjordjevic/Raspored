@@ -3,6 +3,26 @@ import {Injectable, EventEmitter} from "angular2/core";
 @Injectable()
 export class GlobalService {
 
+    private cookies;
+
+    constructor() {
+        if (document.cookie) {
+            this.cookies = document.cookie.split('; ').map(el => el.split('='));
+            console.log(document.cookie);
+            this.currentLanguage = this.getCookie("language");
+        } else {
+            this.currentLanguage = "en"; // default language
+        }
+    }
+
+    getCookie(key: string) {
+        return this.cookies.filter(el => el[0] == key)[0][1];
+    }
+
+    setCookie() {
+        document.cookie = `language=${this.currentLanguage}`;
+    }
+
     private _emitters:
         { [channel: string]: EventEmitter<any> } = {};
 
@@ -12,7 +32,15 @@ export class GlobalService {
         return this._emitters[channel]
     }
 
-    //region Tema na Assistant panel
+    //region Toasts
+    public toast$: EventEmitter<any> = new EventEmitter<any>();
+
+    public toast(message: string) {
+        this.toast$.emit(message);
+    }
+    //endregion
+
+    //region Themes for Assistant panel
     public static colorClassName(color):string {
         try {
             if (color.indexOf("Material") === 0) {
@@ -32,16 +60,18 @@ export class GlobalService {
     }
     //endregion
 
-    //region Jezici
-    private _currentLanguage = "sr";
+    //region Languages
+    private _currentLanguage/* = "sr"*/;
     
     public set currentLanguage(language) {
-        ///*debugger;*/
+        if (!language) {
+            return;
+        }
         this._currentLanguage = language.concat();
+        this.setCookie();
     }
 
     public get currentLanguage() {
-        ///*debugger;*/
         return this._currentLanguage;
     }
 
@@ -349,9 +379,9 @@ export class GlobalService {
 
     //region Student Panel
     public refreshStudentPanelPersonal$: EventEmitter<any> = new EventEmitter<any>();
+
     refreshStudentPanelPersonal() {
         this.refreshStudentPanelPersonal$.emit({});
-        
     }
     //endregion
 
