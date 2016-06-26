@@ -1,0 +1,107 @@
+<template [ngIf]="classes">
+
+
+    <div class="day-titles-fixed">
+        <template ngFor let-i [ngForOf]="[0, 1, 2, 3, 4, 5, 6]">
+            <div *ngIf="displayDay[i]">{{dayNames[i]}}</div>
+        </template>
+    </div>
+
+    <div class="time-marks">
+        <div *ngFor="let timeStamp of timeStamps"
+             [style.height]="showEvery * scale + 'px'">
+            <span>{{timeStamp}}</span>
+        </div>
+    </div>
+
+    <div class="gutter"></div>
+
+    <button id="options-button"
+            #optionsButton
+            (click)="optionsDialog.open()"
+    >
+        <i class="fa fa-cog"></i>
+    </button>
+
+    <r-dialog #optionsDialog [source]="optionsButton">
+        <div style="padding:2em; height: 600px; width: 600px;">
+            <form><fieldset style="padding:.5em">
+                <legend>Prikaz dana u nedelji</legend>
+                <label *ngFor="let day of dayNames; let i = index">
+                    <input type="checkbox" [(ngModel)]="displayDay[i]"/>
+                    {{day}}
+                    <br/>
+                </label>
+            </fieldset></form>
+            <form><fieldset style="padding:.5em">
+                <legend>Advanced</legend>
+                <label>
+                    Weeks from now ({{weeksFromNow}})
+                    <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" />
+                </label><br/>
+                <!--
+                <select name="mode" [(ngModel)]="mode">
+                    <option [value]="0">student</option>
+                    <option [value]="1">grupa</option>
+                    <option [value]="2">globalni</option>
+                    <option [value]="3">ucionica</option>
+                </select>
+                <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" />
+                <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" />
+                <input type="number" min="0" max="15000" step="1" *ngIf="mode == 2" [(ngModel)]="departmentID" />
+                <select *ngIf="mode == 3" name="classroom"  [(ngModel)]="classroomID">
+                    <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
+                </select>
+                mode: {{mode}} s:{{studentID}} g:{{groupID}} dep:{{departmentID}} c:{{classroomID}}
+                -->
+                <br/>
+                Beginning minutes ({{beginningMinutes | toTimestamp}})
+                <input type="number" min="0" max="1440" step="5" [(ngModel)]="beginningMinutes"/>
+                <br/>
+                <label>
+                    Ending minutes ({{endingMinutes | toTimestamp}})
+                    <input type="number" min="0" max="1440" step="5" [(ngModel)]="endingMinutes"/>
+                </label><br/>
+                <label>
+                    Show every ({{showEvery | toTimestamp}})
+                    <input type="number" min="1" max="60" step="1" [(ngModel)]="showEvery"/>
+                </label><br/>
+                <label>
+                    Scale
+                    <input type="number" min="1" max="10" step=".1" [(ngModel)]="scale"/>
+                </label>
+            </fieldset></form>
+            <form #form="ngForm" (submit)="addNewActivity(form.value)"><fieldset style="padding:.5em">
+                <legend>Nova lična aktivnost</legend>
+                <label>Dan</label>
+                <select #newActivityDay ngControl="newActivityDay" required>
+                    <option *ngFor="let dayName of dayNames; let i = index" [value]="i">{{dayName}}</option>
+                </select> {{newActivityDay.value}}<br/>
+                <label>Početak</label>
+                <input required type="number" min="0" max="1440" step="10" value="730" #newActivityStart ngControl="newActivityStart"/> {{newActivityStart.value | toTimestamp}} <br/>
+                <label>Trajanje</label>
+                <input required type="number" min="1" max="1439" step="1" value="60" #newActivityDuration ngControl="newActivityDuration"/> {{newActivityDuration.value | toTimestamp}} <br/>
+                <label>Naslov</label>
+                <input required type="text" value="Moja Aktivnost" #newActivityTitle ngControl="newActivityTitle"/> {{newActivityTitle.value}} <br/>
+                <label>Opis</label>
+                <textarea required #newActicityDesc ngControl="newActivityDesc">Opis moje aktivnosti.</textarea> {{newActicityDesc.value}} <br/>
+                <button type="submit">Dodaj</button>
+            </fieldset></form>
+        </div>
+    </r-dialog>
+
+
+    <template ngFor let-i [ngForOf]="[0, 1, 2, 3, 4, 5, 6]">
+        <r-timetable-column
+                *ngIf="displayDay[i] && classes[i]"
+                [title]="dayNames[i]"
+                [titleAbbr]="dayNamesAbbr[i]"
+                [classes]="classes[i]"
+                [beginningMinutes]="beginningMinutes"
+                [showEvery]="showEvery"
+                [scale]="scale"
+                [mode]="mode">
+        </r-timetable-column>
+    </template>
+
+</template>
