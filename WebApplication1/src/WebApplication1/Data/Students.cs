@@ -44,6 +44,15 @@ namespace WebApplication1.Data
             }
         }
 
+        public static string GetStudentName(int studentID)
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return _context.Students.Where(a => a.studentID == studentID)
+                    .Select(a=> a.UniMembers.name + " " + a.UniMembers.surname).First();
+            }
+        }
+
         public static IEnumerable GetStudentsOfGroup(int groupID)
         {
             using (RasporedContext _context = new RasporedContext())

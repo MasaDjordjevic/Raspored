@@ -393,7 +393,8 @@ namespace WebApplication1.Data
                                                 .Select(a => new BulletinBoardChoice
                                                 {
                                                     groupID = a.groupID,
-                                                    time = TimeSpan.ToString(a.timeSpan) + " (" + a.classroom.number + ")"
+                                                    time = TimeSpan.ToString(a.timeSpan),
+                                                    classroom = a.classroom.number
                                                 }).ToList();
             }
         }
@@ -406,7 +407,9 @@ namespace WebApplication1.Data
                 return _context.Periods.Where(a => a.groupID == groupID).Select(a=> new BulletinBoardChoice
                 {
                     adID  = a.adID,
-                    time = TimeSpan.ToString(a.ad.group.timeSpan) + " (" + a.ad.group.classroom.number + ")"
+                    time = TimeSpan.ToString(a.ad.group.timeSpan),
+                    classroom = a.ad.group.classroom.number,
+                    studentName = Student.GetStudentName(a.ad.studentID)
                 }).ToList();
             }
         }
