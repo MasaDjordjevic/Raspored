@@ -10,6 +10,5 @@ namespace WebApplication1.Models.DTOs
         public int groupID { get; set; }
         public int adID { get; set; }
         public string time { get; set; }
-
     }
 }
