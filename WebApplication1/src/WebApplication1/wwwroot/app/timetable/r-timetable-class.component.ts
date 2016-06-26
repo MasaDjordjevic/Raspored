@@ -129,7 +129,12 @@ import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-b
     `,
     styleUrls: ['app/timetable/r-timetable-class.css'],
     host: {
-        "[style.backgroundColor]": "color",
+        "[class.red]": "color === 'MaterialRed'",
+        "[class.yellow]": "color === 'MaterialYellow'",
+        "[class.blue]": "color === 'MaterialBlue'",
+        "[class.orange]": "color === 'MaterialOrange'",
+        "[class.purple]": "color === 'MaterialPurple'",
+        "[class.green]": "color === 'MaterialGreen'",
         //"[style.color]": "textColor",
         "[style.opacity]": "active ? 1 : 0.5",
         "[class.expanded]": "expanded",
@@ -173,22 +178,13 @@ export class TimetableClassComponent {
 
     // Prikaz
     @Input() color: string;
+
     get textColor(): string {
-        try {
-            // Detektuje da li je boja pozadine previse tamna
-            var c = this.color.substring(1); // skini # iz stringa boje pozadine
-            var rgb = parseInt(c, 16);   // konvertuj rrggbb u decimalni
-            var r = (rgb >> 16) & 0xff;  // uzmi crvenu (R)
-            var g = (rgb >> 8) & 0xff;  // uzmi zelenu (G)
-            var b = (rgb >> 0) & 0xff;  // uzmi plavu  (B)
-            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-            if (luma < 100) {
-                return "white";
-            } else {
+        switch (this.color) {
+            case "MaterialYellow":
                 return "black";
-            }
-        } catch (e) {
-            return "black";
+            default:
+                return "white";
         }
     }
 

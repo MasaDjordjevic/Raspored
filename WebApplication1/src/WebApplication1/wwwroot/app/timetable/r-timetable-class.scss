@@ -14,9 +14,9 @@
   $padding: 0.5em;
   padding: $padding;
   box-sizing: border-box;
-  border-radius: 3px;
   transition: all .3s ease;
   z-index: 2;
+  overflow: hidden;
   @include z-depth(1);
   cursor: pointer;
   -webkit-touch-callout: none; /* iOS Safari */
@@ -26,6 +26,16 @@
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
+
+  @each $key, $value in $all-colors-key-value {
+    &.#{$key} {
+      background-color: palette($value);
+    }
+
+    &.expanded.#{$key} {
+      box-shadow: 0 0 0 0.7em palette($value) inset,
+    }
+  }
 
   & > span {
     cursor: default;
@@ -43,7 +53,6 @@
   z-index: 20!important;
   @include z-depth(2);
   padding: 1.5em;
-  border-radius: 10px;
   background-color: white!important;
   cursor: default;
 
