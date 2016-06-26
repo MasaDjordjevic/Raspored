@@ -41,7 +41,7 @@ export class BulletinBoardParametersComponent {
     ) {}
 
     public exchangeWith() {
-        debugger;
+        /*debugger;*/
         this._groupsService.exchangeStudents(this.groupId, this.chosenChoices.map(Number)[0]) //TODO da ovo ne bude niz, i promeni komponentu
             .then(response => console.log(response));
     }

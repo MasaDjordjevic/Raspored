@@ -119,7 +119,7 @@ export class DivisionEditComponent implements AfterViewInit {
 
     update() {
         //console.log(this.division.courseID);
-        //debugger;
+        ///*debugger;*/
         if (this.new) {
             //this.division.divisionID = -1;
         }
@@ -135,7 +135,7 @@ export class DivisionEditComponent implements AfterViewInit {
         var sendCourseID = this.editedDivision.courseID;
 
         console.log(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID);
-        debugger;
+        /*debugger;*/
 
         //TODO nesto pametnije sa odgovorom
         this._divisionsService.updateDivision(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID)

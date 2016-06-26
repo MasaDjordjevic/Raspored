@@ -102,7 +102,7 @@ export class RDropdownItemComponent implements OnInit, AfterViewInit {
     ngOnInit() { }
 
     ngAfterViewInit() {
-        //debugger;
+        ///*debugger;*/
         this._emitter.get("channel_item_initialized").emit({
             hello: "hello"
         });
@@ -288,7 +288,7 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
         });
 
         this.emitter.get("channel_item_initialized").subscribe(msg => {
-            //debugger;
+            ///*debugger;*/
             this.select();
         });
 

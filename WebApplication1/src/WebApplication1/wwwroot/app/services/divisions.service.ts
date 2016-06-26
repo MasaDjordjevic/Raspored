@@ -101,7 +101,7 @@ export class DivisionsService {
             ending: ending,
             groups: groups
         });
-        debugger;
+        /*debugger;*/
         console.log(body);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });

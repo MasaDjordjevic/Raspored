@@ -364,7 +364,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
     }
 
     createInitialDivision() {
-        debugger;
+        /*debugger;*/
         console.log("Creating division...")
         this._divisionsService.createInitialDivision(
             this.newDivisionName,

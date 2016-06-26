@@ -50,7 +50,7 @@ export class BulletinBoardComponent {
     private getPossibleChoices(groupId: number): void {
         this._groupsService.getPossibleBulletinBoardChoices(this.groupId)
             .then(result => {
-                debugger;
+                /*debugger;*/
                 this.possibleChoices = result;
             });
     }

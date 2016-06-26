@@ -6,7 +6,7 @@ import {Pipe, PipeTransform} from "angular2/core";
 export class HighlightPipe implements PipeTransform {
     transform(value: string, query: string) {
 
-        //debugger;
+        ///*debugger;*/
 
         // Ako nista nije upisano kao query
         if (query == undefined || query == "" || query == null) {

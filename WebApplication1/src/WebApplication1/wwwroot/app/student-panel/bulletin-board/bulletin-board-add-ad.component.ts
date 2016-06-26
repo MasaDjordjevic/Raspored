@@ -40,7 +40,7 @@ export class BulletinBoardAddAdComponent {
     ) {}
     
     addAd(choices: {groupID: number, time: string[]}[]): void {
-        debugger;
+        /*debugger;*/
         this._groupsService.addAd(this.groupId, this._chosenChoices.map(Number))
             .then(result => console.log(result));
     }

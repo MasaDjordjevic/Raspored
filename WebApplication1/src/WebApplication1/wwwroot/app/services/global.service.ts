@@ -31,12 +31,12 @@ export class GlobalService {
     private _currentLanguage = "sr";
     
     public set currentLanguage(language) {
-        //debugger;
+        ///*debugger;*/
         this._currentLanguage = language.concat();
     }
 
     public get currentLanguage() {
-        //debugger;
+        ///*debugger;*/
         return this._currentLanguage;
     }
 

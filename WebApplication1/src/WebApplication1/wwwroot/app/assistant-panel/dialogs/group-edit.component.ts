@@ -184,7 +184,7 @@ export class GroupEditComponent {
     }
     
     save() {
-        debugger;
+        /*debugger;*/
         var pom: Array<number> = this.chosenStudents.map(i => i.studentID);
         console.log(pom);
         var timespan: any = {};
@@ -202,7 +202,7 @@ export class GroupEditComponent {
         }
 
         console.log(timespan);
-        debugger;
+        /*debugger;*/
         this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, this.editedAssistant, this.editedGroupName, this.editedClassroom, timespan,  pom)
             .then(status => console.log(status));
     }

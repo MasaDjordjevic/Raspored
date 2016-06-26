@@ -203,7 +203,7 @@ export class TimetableComponent {
         } else if (this.assistantID) {
             this.getAssistantSchedule();
         } else {
-            debugger;
+            /*debugger;*/
             throw "nesto ne valja";
         }
     }
