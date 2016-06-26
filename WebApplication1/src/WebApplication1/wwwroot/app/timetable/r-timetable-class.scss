@@ -27,23 +27,6 @@
   user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
 
-  @each $key, $value in $all-colors-key-value {
-    &.#{$key} {
-      background-color: palette($value);
-
-      &.expanded {
-        box-shadow: 0 0 0 0.7em palette($value) inset,
-      }
-    }
-  }
-
-  &:not(.active) {
-    color: rgba(black, .54)!important;
-    background-color: palette($blue-grey, 100)!important;
-    &.expanded {
-      box-shadow: 0 0 0 0 .7em palette($blue-grey, 100) inset!important;
-    }
-  }
 
   & > span {
     cursor: default;
@@ -61,7 +44,7 @@
   z-index: 20!important;
   @include z-depth(2);
   padding: 1.5em;
-  background-color: white!important;
+  background-color: white;
   cursor: default;
 
   & > span {
@@ -75,8 +58,76 @@
 }
 
 
-.announcement-button {
+//region Notifikacija za notifikacije (yo dwag)
+.notification-notification {
+  $margin: .7em;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  top: $margin;
+  right: $margin;
+  width: 2em;
+  height: 2em;
+  font-size: 1em;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  i {
+    color: palette($blue); // default
+  }
+
+  .counter {
+    background-color: palette($red, a400);
+    $s: 1em;
+    width: $s;
+    height: $s;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    border-radius: 50%;
+    border: white 2px solid;
+    top: -.3em;
+    right: -.3em;
+    color: white;
+    position: absolute;
+    font-family: Arial, serif;
+    font-weight: bold;
+
+    span {
+      display: block;
+      font-size: $s * .66;
+    }
+  }
 }
+//endregion
+
+//region Themes
+@each $string, $var in $all-colors-string-var {
+  :host.#{$string} {
+    background-color: palette($var);
+
+    &.expanded {
+      background-color: mix(palette($var, 50), white);
+      @include z-depth(3);
+      //box-shadow: 0 0 0 0.7em palette($value) inset,
+    }
+
+    .notification-notification {
+
+      i {
+        color: palette($var);
+      }
+    }
+
+    &:not(.active) {
+      color: rgba(white, .54);
+      background-color: desaturate(palette($var), 70%);
+
+      &.expanded {
+        background-color: mix(desaturate(palette($var, 50), 70%), white);
+      }
+    }
+  }
+}
+//endregion

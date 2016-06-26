@@ -12,131 +12,7 @@ import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-b
 
 @Component({
     selector: 'r-timetable-class',
-    template: `
-    <span class="times">
-        <span class="start">{{startMinutes | toTimestamp}}</span> — <span class="end">{{endMinutes | toTimestamp}}</span>
-    </span>
-    <template [ngIf]="abbr && classroom">
-        <span class="title">
-            <template [ngIf]="!expanded">{{abbr}}</template>
-            <template [ngIf]="expanded">{{className}}</template>
-            u
-            {{classroom}}
-        </span>
-        <span class="type">{{type}}</span>
-        <span class="assistant">{{assistant}}</span>
-    </template>
-    <template [ngIf]="activityContent && activityTitle">
-        <span class="title">{{activityTitle}}</span>
-        <span class="text">{{activityContent}}</span>
-    </template>
-    <template [ngIf]="announcement">
-        <button r-button raised class="announcement-button" text="!" [title]="announcement">!</button>
-    </template>
-    
-    
-    <template [ngIf]="expanded">
-    
-        <div class="controls">
-        
-            <!--{{mode}}
-            official {{mode === _Mode.StudentOfficial}}
-            global {{mode === _Mode.StudentGlobal}}
-            personal {{mode === _Mode.StudentPersonal}}-->
-            
-            {{classId}}
-            {{notifications | json}}
-            
-        
-            <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
-                    r-button raised text="Dodaj čas u lični"
-                    (click)="addToPersonal()"
-                    [primaryColor]="color">Dodaj u lični</button>
-                    
-            <button *ngIf="mode === _Mode.StudentPersonal && !isClass"
-                    r-button raised text="Obriši aktivnost"
-                    (click)="deleteActivity()"
-                    [primaryColor]="color">Obriši aktivnost</button>
-                    
-            <button *ngIf="mode === _Mode.StudentPersonal && isClass"
-                    r-button raised text="Sakrij čas"
-                    (click)="hideClass()"
-                    [primaryColor]="color">Sakrij čas</button>
-                    
-            <button *ngIf="mode === _Mode.StudentPersonal"
-                    r-button raised text="Dodaj task"
-                    #addTaskButton
-                    (click)="addTaskDialog.open()"
-                    [primaryColor]="color">Dodaj task</button>
-            
-            <button *ngIf="mode === _Mode.AssistantOfficial"
-                    r-button raised text="Dodaj obaveštenje"
-                    #addAnnouncementButton
-                    (click)="addAnnouncementDialog.open()"
-                    [primaryColor]="color">Dodaj obaveštenje</button>
-                    
-            <button *ngIf="mode === _Mode.AssistantOfficial"
-                    r-button raised text="Otkaži čas"
-                    #cancelClassButton
-                    (click)="cancelClassDialog.open()"
-                    [primaryColor]="color">Otkaži čas</button>
-            
-            <button r-button raised text="Oglasna tabla"
-                    #bulletinBoardButton
-                    (click)="bulletinBoardDialog.open()"
-                    [primaryColor]="color">Oglasna tabla</button>
-            
-            <button r-button flat text="Odzumiraj" (click)="toggle()"
-                    [primaryColor]="color">Odzumiraj</button>
-                    
-                    {{materialColorString}}
-            
-        </div>
-        
-        <b>Message</b> {{message}}
-        
-        <r-dialog class="cancel-class" #cancelClassDialog [source]="cancelClassButton">
-            <cancel-class
-                [groupId]="classId"
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                (close)="cancelClassDialog.close()"
-            >
-            </cancel-class>
-        </r-dialog>
-        
-        <r-dialog class="add-announcement" #addAnnouncementDialog [source]="addAnnouncementButton">
-            <add-activity
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                [groupId]="classId"
-                (close)="addAnnouncementDialog.close()"
-            >
-            </add-activity>
-        </r-dialog>
-        
-        <r-dialog class="add-task" #addTaskDialog [source]="addTaskButton">
-            <r-add-task
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                [groupId]="classId"
-                (close)="addTaskDialog.close()"
-            >
-            </r-add-task>
-        </r-dialog>
-        
-        <r-dialog class="bulletin-board" #bulletinBoardDialog [source]="bulletinBoardButton">
-            <r-bulletin-board
-                [primaryColor]="color"
-                [secondaryColor]="color"
-                [groupId]="classId"
-                (close)="bulletinBoardDialog.close()"
-            >
-            </r-bulletin-board>
-        </r-dialog>
-        
-    </template>
-    `,
+    templateUrl: 'app/timetable/r-timetable-class.html',
     styleUrls: ['app/timetable/r-timetable-class.css'],
     host: {
         "[class.red]": "color === 'MaterialRed'",
@@ -177,13 +53,12 @@ export class TimetableClassComponent {
     @Input() abbr: string; // "OOP"
     @Input() classroom: string; // "431", "A1"
     @Input() assistant: string; // "Vladan Mihajlovitj"
-    @Input() announcement: string; // "Obavezno poneti 3D sliku na čas!"
     @Input() activityId: number;
     @Input() activityTitle: string; // "Teretana"
     @Input() activityContent: string; // "Samo džim bajo moj"
     @Input() active: boolean = true; // true: defaultno, false: zasivljeno
     @Input() type: string = "predavanje";
-    @Input() notifications: any[];
+    @Input() notifications: {activityContent: string, activityID: number, classroomID: number, place: string, title: string}[];
 
     // Prikaz
     @Input() color: string;

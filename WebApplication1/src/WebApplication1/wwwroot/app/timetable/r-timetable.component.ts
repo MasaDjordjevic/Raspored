@@ -242,8 +242,6 @@ export class TimetableComponent {
                 error => this.errorMessage = error
             ).then(() => this.pom());
     }
-    
-    
 
     pom() {
         console.log(this.classes);
@@ -262,7 +260,7 @@ export class TimetableComponent {
             activityTitle: value.newActivityTitle,
             activityContent: value.newActivityDesc,
             active: true,
-            color: "#FF00FF",
+            color: "MaterialBlue",
         };
 
         var theDay = this.classes[+value.newActivityDay].push(newClass);

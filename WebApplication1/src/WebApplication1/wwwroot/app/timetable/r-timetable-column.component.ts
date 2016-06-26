@@ -30,12 +30,11 @@ import {Mode} from "./r-timetable.component";
                 [activityContent]="c.activityContent"
                 [activityTitle]="c.activityTitle"
                 [active]="c.active"
-                [announcement]="c.announcement"
+                [notifications]="c.notifications"
                 [startMinutes]="c.startMinutes"
                 [durationMinutes]="c.durationMinutes"
                 [endMinutes]="c.startMinutes + c.durationMinutes"
                 [mode]="mode"
-                [notifications]="c.notifications"
             >
             </r-timetable-class>
         </div>

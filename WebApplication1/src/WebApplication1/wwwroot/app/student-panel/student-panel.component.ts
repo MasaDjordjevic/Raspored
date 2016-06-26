@@ -23,7 +23,7 @@ export class StudentPanelComponent implements AfterContentInit {
     student: any;
     public error: string = "";
     
-    public _timetableType: TimetableType = TimetableType.Official;
+    public _timetableType: TimetableType;
     public _TimetableType = TimetableType;
 
     public studentOfficialID: number;
@@ -60,7 +60,6 @@ export class StudentPanelComponent implements AfterContentInit {
         private _elementRef: ElementRef
     )
     {
-
     }
 
     ngAfterContentInit() {
