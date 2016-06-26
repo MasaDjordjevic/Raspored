@@ -81,7 +81,7 @@ namespace WebApplication1.Data
 
                 List<TimeSpans> activitiesSchedule =
                     _context.Activities.Where(a => a.classroomID == classroomID &&
-                        !_context.StudentsActivities.Any(sa => sa.activityID == a.activityID))
+                        !Group.IsStudentActivity(a.activityID))
                         .Select(a => a.timeSpan).ToList();
 
                 List<TimeSpans> schedule = groupsSchedule.Concat(activitiesSchedule).ToList();

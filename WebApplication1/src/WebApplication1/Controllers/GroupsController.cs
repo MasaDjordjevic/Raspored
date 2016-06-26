@@ -99,8 +99,8 @@ namespace WebApplication1.Controllers
         }
 
         // vraca termine ostalih grupa raspodele
-        [HttpGet("{id}", Name = "GetBulletinBoardChoices")]
-        public IActionResult GetBulletinBoardChoices([FromRoute] int id)
+        [HttpGet("{id}", Name = "GetAllBulletinBoardChoices")]
+        public IActionResult GetAllBulletinBoardChoices([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
