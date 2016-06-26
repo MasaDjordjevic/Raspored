@@ -1,3 +1,5 @@
+<r-toast></r-toast>
+
 <template [ngIf]="student">
     <div id="panel-header-wrapper">
         <header>
@@ -14,7 +16,9 @@
                 </div>
             </div>
 
-            <button #StudentEditButton>
+            <button #StudentEditButton
+                    (click)="_globalService.toast('test')"
+            >
                 <i class="fa fa-pencil"></i>
             </button>
 

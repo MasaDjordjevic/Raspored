@@ -109,13 +109,13 @@ export class TimetableClassComponent {
         this.expandedLeftHost = (+parentRect.left - +thisRect.left);
         this.expandedTopHost = (+parentRect.top - +thisRect.top);
 
-        if (this.expandedWidth < 480 || this.expandedHeight < 520) {
+        if (this.expandedWidth < 520 || this.expandedHeight < 520) {
             // Ako je izracunata vrednost premala, ipak idemo od ivice do ivice rasporeda i ne stavljamo margine.
             this.expandedWidth /= ratio;
             this.expandedHeight /= ratio;
         } else {
             // Ako ipak imamo dovoljno mesta za ono sto hocemo, nema potrebe da ga sirimo vise nego sto treba
-            this.expandedWidth = 480;
+            this.expandedWidth = 520;
             this.expandedHeight = 520;
 
             // Pomeramo na sredinu

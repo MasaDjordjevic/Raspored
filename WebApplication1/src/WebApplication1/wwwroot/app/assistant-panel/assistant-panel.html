@@ -1,4 +1,6 @@
-﻿<header>
+﻿<r-toast></r-toast>
+
+<header>
 
     <div class="profile-picture">
         <div style="background-image: url('avatar.png')"></div>
@@ -45,37 +47,38 @@
     </div>
 
 
+
     <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">
         <div class="dropdown-item" (click)="language = 'en'; languagePickerOpened = false">
-            <span class="language-name">English</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'en' ? 'bold' : 'normal'">English</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg')"></div>
         </div>
         <div class="dropdown-item" (click)="language = 'sr'; languagePickerOpened = false">
-            <span class="language-name">srpski</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'sr' ? 'bold' : 'normal'">srpski</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
         </div>
         <div class="dropdown-item" (click)="language = 'src'; languagePickerOpened = false">
-            <span class="language-name">српски</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'src' ? 'bold' : 'normal'">српски</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
         </div>
         <div class="dropdown-item" (click)="language = 'eo'; languagePickerOpened = false">
-            <span class="language-name">Esperanto</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'eo' ? 'bold' : 'normal'">Esperanto</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg'); background-position: 0% center"></div>
         </div>
         <div class="dropdown-item" (click)="language = 'es'; languagePickerOpened = false">
-            <span class="language-name">español</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'es' ? 'bold' : 'normal'">español</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg')"></div>
         </div>
         <div class="dropdown-item" (click)="language = 'de'; languagePickerOpened = false">
-            <span class="language-name">deutsch</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'de' ? 'bold' : 'normal'">deutsch</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')"></div>
         </div>
         <div class="dropdown-item" (click)="language = 'fr'; languagePickerOpened = false">
-            <span class="language-name">français</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'fr' ? 'bold' : 'normal'">français</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg')"></div>
         </div>
         <div class="dropdown-item" (click)="language = 'ja'; languagePickerOpened = false">
-            <span class="language-name">日本語</span>
+            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'ja' ? 'bold' : 'normal'">日本語</span>
             <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg')"></div>
         </div>
     </div>

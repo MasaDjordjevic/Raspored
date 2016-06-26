@@ -6,6 +6,7 @@ import {R_INPUT} from "../../ui/r-input-text.component";
 import {R_BUTTON} from "../../ui/r-button.component";
 
 import * as moment_ from "../../../js/moment.js";
+import {GlobalService} from "../../services/global.service";
 const moment =  moment_["default"];
 
 
@@ -84,7 +85,10 @@ export class CancelClassComponent implements AfterContentInit{
 
 
 
-    constructor( private _groupsService: GroupsService ) {}
+    constructor(
+        private _groupsService: GroupsService,
+        private _globalService: GlobalService
+    ) {}
 
     cancel:any = {
         title: "",
@@ -132,6 +136,17 @@ export class CancelClassComponent implements AfterContentInit{
         timespan.endDate = this.cancel.startDate;
         timespan.period = 0;
         this._groupsService.cancelClass(this.groupId, this.cancel.title, this.cancel.content, timespan)
-            .then(status => console.log(status));
+            .then(response => {
+                console.log("cancelClass", response.status);
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast("Uspešno otkazan čas.");
+                        break;
+                    default:
+                        this._globalService.toast("Došlo je do greške. Čas nije otkazan.");
+                        debugger;
+                        break;
+                }
+            });
     }
 }

@@ -3,6 +3,7 @@ import {StudentsService} from "../services/students.service";
 import {GlobalService} from "../services/global.service";
 import {TimetableComponent} from "../timetable/r-timetable.component";
 import {PanelHeaderComponent} from "../panel-header/panel-header.component";
+import {ToastComponent} from "../global/toast.component";
 
 
 export enum TimetableType {
@@ -14,8 +15,8 @@ export enum TimetableType {
     selector: 'r-student-panel',
     templateUrl: 'app/student-panel/student-panel.html',
     styleUrls: ['app/student-panel/student-panel.css', 'app/panel-header/panel-header.css'],
-    providers: [StudentsService, GlobalService],
-    directives: [TimetableComponent, PanelHeaderComponent]
+    providers: [StudentsService],
+    directives: [TimetableComponent, PanelHeaderComponent, ToastComponent]
 })
 
 export class StudentPanelComponent implements AfterContentInit {
