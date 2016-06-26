@@ -1,0 +1,20 @@
+<r-bulletin-board-parameters
+        *ngIf="possibleChoices && possibleChoices.length > 0"
+        [possibleChoices]="possibleChoices"
+        [(chosenChoices)]="chosenPossibleChoices"
+        [groupId]="groupId"
+>
+</r-bulletin-board-parameters>
+
+<template [ngIf]="possibleChoices && possibleChoices.length === 0">
+    <span>Nema oglasa. Mozes da ubacis svoj.</span>
+</template>
+
+<r-bulletin-board-add-ad
+        [possibleChoices]="allChoices"
+        [(chosenChoices)]="chosenAllChoices"
+        [groupId]="groupId"
+>
+</r-bulletin-board-add-ad>
+
+chosenAll: {{chosenAllChoices | json}}

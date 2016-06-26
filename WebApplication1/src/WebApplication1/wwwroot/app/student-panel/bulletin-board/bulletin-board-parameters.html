@@ -1,0 +1,22 @@
+<r-multiple-selector
+        [primaryColor]="primaryColor"
+        [secondaryColor]="secondaryColor"
+        [title]="'Naslov'"
+        [(val)]="chosenChoices"
+>
+    <r-multiple-selector-item
+            *ngFor="let item of possibleChoices"
+            [val]="item.adID"
+    >
+        {{item.time}}
+    </r-multiple-selector-item>
+</r-multiple-selector>
+
+<button r-button raised
+        [text]="'Zameni se'"
+        (click)="exchangeWith()">
+    Zameni se!!!!!
+</button>
+
+possible: {{possibleChoices | json}}
+chosen: {{chosenChoices | json}}

@@ -139,7 +139,7 @@ namespace WebApplication1.Controllers
         }
 
         // menja studenta sa onim koji je postavio oglas koji mu odgovara
-        [HttpGet("{id}", Name = "ExchangeStudents")]
+        //[HttpGet("{id}", Name = "ExchangeStudents")]
         public IActionResult ExchangeStudents(int groupID, int adID)
         {
             if (!ModelState.IsValid)
@@ -150,7 +150,7 @@ namespace WebApplication1.Controllers
             try
             {
                 // TODO vadi iz sesije
-                Data.Group.ExchangeStudents(3, groupID, adID);
+                Data.Group.ExchangeStudents(12100, groupID, adID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

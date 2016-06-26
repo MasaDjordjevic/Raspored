@@ -1,0 +1,20 @@
+<r-multiple-selector
+        [primaryColor]="primaryColor"
+        [secondaryColor]="secondaryColor"
+        [title]="'Naslov'"
+        [(val)]="chosenChoices"
+>
+    <r-multiple-selector-item
+            *ngFor="let item of possibleChoices"
+            [val]="item.groupID"
+    >
+        {{item.time}}
+    </r-multiple-selector-item>
+</r-multiple-selector>
+
+<button r-button raised
+        [text]="'Dodaj oglas'"
+        (click)="addAd()"
+>
+    Dodaj oglas
+</button>

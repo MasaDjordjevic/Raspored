@@ -8,6 +8,7 @@ import {R_DIALOG} from "../ui/r-dialog";
 import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activity.component";
 import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.component";
 import {AddTaskComponent} from "../student-panel/dialogs/add-task.component";
+import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-board.component";
 
 @Component({
     selector: 'r-timetable-class',
@@ -74,7 +75,10 @@ import {AddTaskComponent} from "../student-panel/dialogs/add-task.component";
                     #cancelClassButton
                     (click)="cancelClassDialog.open()">Otkaži čas</button>
             
-            <button r-button raised text="Oglasna tabla">Oglasna tabla</button>
+            <button r-button raised text="Oglasna tabla"
+                    #bulletinBoardButton
+                    (click)="bulletinBoardDialog.open()">Oglasna tabla</button>
+            
             <button r-button flat text="Odzumiraj" (click)="toggle()">Odzumiraj</button>
             
         </div>
@@ -111,6 +115,16 @@ import {AddTaskComponent} from "../student-panel/dialogs/add-task.component";
             </r-add-task>
         </r-dialog>
         
+        <r-dialog class="bulletin-board" #bulletinBoardDialog [source]="bulletinBoardButton">
+            <r-bulletin-board
+                [primaryColor]="primaryColor"
+                [secondaryColor]="secondaryColor"
+                [groupId]="classId"
+                (close)="bulletinBoardDialog.close()"
+            >
+            </r-bulletin-board>
+        </r-dialog>
+        
     </template>
     `,
     styleUrls: ['app/timetable/r-timetable-class.css'],
@@ -128,7 +142,7 @@ import {AddTaskComponent} from "../student-panel/dialogs/add-task.component";
         "(click)": "expand($event)",
     },
     pipes: [ToTimestampPipe],
-    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent, AddTaskComponent]
+    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent, AddTaskComponent, BulletinBoardComponent]
 })
 export class TimetableClassComponent {
     
@@ -143,7 +157,7 @@ export class TimetableClassComponent {
     @Input() durationMinutes: number; // npr. 45
 
     // Opšti podaci o času
-    @Input() classId: number;
+    @Input() classId: number; // groupId
     @Input() className: string; // "Objektno-orijentisano programiranje"
     @Input() isClass: boolean; // true = class, false = activity
     @Input() abbr: string; // "OOP"
@@ -156,8 +170,6 @@ export class TimetableClassComponent {
     @Input() active: boolean = true; // true: defaultno, false: zasivljeno
     @Input() type: string = "predavanje";
     @Input() notifications: any[];
-    
-    @Input() groupId: number;
 
     // Prikaz
     @Input() color: string;

@@ -107,7 +107,6 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         setTimeout(() => {
-            //debugger;
             this.initElement = this._element.nativeElement.cloneNode(true); // true - klonira u dubinu
         }, 0);
     }
@@ -118,7 +117,7 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
     // prodje kroz svu svoju decu i onda selektira ono sto treba. Dakle, ova komponenta sluzi samo za stil i kao
     // "nosilac" eventa da moze da se klikne.
     select() {
-        this._emitter.get("channel1").emit({
+        this._emitter.get("channel_toggle").emit({
             value: this.value + "",
         });
     }
@@ -237,7 +236,7 @@ export class MultipleSelectorComponent implements AfterViewInit {
     ) {
 
         // Kad se dobije poruka, toggluj opciju. Poruka treba da sadrzi samo value.
-        this.emitter.get("channel1").subscribe(msg => {
+        this.emitter.get("channel_toggle").subscribe(msg => {
             this.toggleOption(msg.value);
         });
 
