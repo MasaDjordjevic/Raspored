@@ -32,12 +32,51 @@ export class GlobalService {
         return this._emitters[channel]
     }
 
-    //region Toasts
+    //region Toast & Markdown parser
     public toast$: EventEmitter<any> = new EventEmitter<any>();
 
     public toast(message: string) {
-        this.toast$.emit(message);
+        this.toast$.emit(GlobalService.parseMarkdown(message));
     }
+
+    private static parseMarkdown(message) {
+        let currentMode: '*' | '_' | '`' | '' = "";
+        let output = "";
+        for (var i = 0; i < message.length; i++) {
+            switch (message[i]) {
+                case "*":
+                    if (currentMode === "*") {
+                        output += "</strong>";
+                        currentMode = "";
+                    } else {
+                        output += "<strong>";
+                        currentMode = "*";
+                    }
+                    break;
+                case "_":
+                    if (currentMode === "_") {
+                        output += "</em>";
+                        currentMode = "";
+                    } else {
+                        output += "<em>";
+                        currentMode = "_";
+                    }
+                    break;
+                case "`":
+                    if (currentMode === "`") {
+                        output += "</code>";
+                        currentMode = "";
+                    } else {
+                        output += "<code>";
+                        currentMode = "`";
+                    }
+                    break;
+                default:
+                    output += message[i];
+            }
+        }
+    return output;
+};
     //endregion
 
     //region Themes for Assistant panel
@@ -365,22 +404,21 @@ export class GlobalService {
     //endregion
 
     //region Assistant Panel
-    refreshAssistantPanelAll() {
-        this.get("channel_refresh_assistant_panel_all").emit({
-            status: "hello"
-        });
+    public refreshAssistantPanelAll$: EventEmitter<any> = new EventEmitter<any>();
+    public refreshAssistantPanelAll() {
+        this.refreshAssistantPanelAll$.emit({});
     }
-    refreshAssistantPanelMoveMinusOne() {
-        this.get("channel_refresh_assistant_panel_move_minus_one").emit({
-            status: "hello"
-        })
+
+    public refreshAssistantPanelMoveMinusOne$: EventEmitter<any> = new EventEmitter<any>();
+    public refreshAssistantPanelMoveMinusOne() {
+        this.refreshAssistantPanelMoveMinusOne$.emit({});
     }
     //endregion
 
     //region Student Panel
     public refreshStudentPanelPersonal$: EventEmitter<any> = new EventEmitter<any>();
 
-    refreshStudentPanelPersonal() {
+    public refreshStudentPanelPersonal() {
         this.refreshStudentPanelPersonal$.emit({});
     }
     //endregion

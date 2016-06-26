@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, AfterViewInit} from "angular2/core";
+import {Component, OnInit, Input, AfterViewInit, Output, EventEmitter} from "angular2/core";
 import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_INPUT} from "../../ui/r-input-text.component";
@@ -12,6 +12,7 @@ import {Student} from "../../models/Student";
 import {TypeDivisions} from "../../models/TypeDivisions";
 import {DivisionType} from "../../models/DivisionType";
 import {R_DL} from "../../ui/r-dl";
+import {GlobalService} from "../../services/global.service";
 
 /**
  * Za pravljenje nove raspodele (division), neophodno je znati sledeće:
@@ -48,7 +49,7 @@ import {R_DL} from "../../ui/r-dl";
 
 @Component({
     selector: 'r-division-creator',
-    template: `    
+    template: `
     <r-stepper (onSubmit)="createInitialDivision()" [primaryColor]="primaryColor">
     
         <r-step stepTitle="Osnovni podaci" [valid]="isValid(1)">
@@ -188,7 +189,12 @@ export class DivisionCreatorComponent implements AfterViewInit {
     @Input() primaryColor: string = "MaterialRed";
     @Input() secondaryColor: string = "MaterialOrange";
 
-    // Podaci o novoj raspodeli koja se kreira
+    @Output() close: EventEmitter<any> = new EventEmitter<any>();
+    public closeMe() {
+        this.close.emit({});
+    }
+
+    //region Podaci o novoj raspodeli koja se kreira
     public newDivisionName: string;
     public newDivisionClassId: string;
     public newDivisionClassName = (id = this.newDivisionClassId) => this.courses.filter(i => i.courseID === +id)[0].name;
@@ -203,8 +209,9 @@ export class DivisionCreatorComponent implements AfterViewInit {
     public newDivisionCreationNumberX: string;
     public newDivisionCreationOrderIsRandom: '0' | '1';
     public newDivisionCreationOrderName = (i = this.newDivisionCreationOrderIsRandom) => i === '0' ? 'po indeksu' : 'nasumično';
+    //endregion
 
-    // Validacije, read-only
+    //region Validacije, read-only
     public get $$newDivisionName(): boolean {
         var ret: boolean = !!this.newDivisionName; // da ne bude null
         ret = ret && !!this.newDivisionName.trim().match(/.+/); // da ima bar jedno... nesto
@@ -269,6 +276,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
         }
 
     }
+    //endregion
 
     courses: Course[];
     errorMessage: string;
@@ -290,7 +298,8 @@ export class DivisionCreatorComponent implements AfterViewInit {
     
     constructor(
         private _coursesService: CoursesService,
-        private _divisionsService: DivisionsService
+        private _divisionsService: DivisionsService,
+        private _globalService: GlobalService
     ) {
         this.resetAll();
     }
@@ -333,7 +342,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
      * @param studentsOrder - 0 za redom i 1 za nasumice
      */
     getList(courseId: string, creationWay: 'on_x' | 'with_x' | 'manual', numberX: string, studentsOrder: '0' | '1'): any {
-        console.log("Parametri:", courseId, creationWay, numberX, studentsOrder);
+        //console.log("Parametri:", courseId, creationWay, numberX, studentsOrder);
         if (creationWay === "with_x") {
             this._divisionsService.getGroupsWithX(+courseId, +numberX, +studentsOrder)
                 .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
@@ -364,8 +373,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
     }
 
     createInitialDivision() {
-        /*debugger;*/
-        console.log("Creating division...")
+        console.log("Creating division...");
         this._divisionsService.createInitialDivision(
             this.newDivisionName,
             this.departmentID,
@@ -374,7 +382,24 @@ export class DivisionCreatorComponent implements AfterViewInit {
             this.newDivisionBeginningDateToDate(),
             this.newDivisionEndingDateToDate(),
             this.getNamedGroups()
-        ).then(status => this.errorMessage = <any>status, error => this.errorMessage = <any>error);
+        )
+            .then(response => {
+            switch(response.status) {
+                case "uspelo":
+                    this._globalService.toast(`Uspešno kreirana raspodela *${this.newDivisionName}*.`);
+                    break;
+                default:
+                    this._globalService.toast(`Došlo je do greške! Nije kreirana raspodela.`);
+                    debugger;
+                    break;
+            }
+        })
+            .then(() => {
+                this.closeMe();
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
+            });
     }
 
     public numberOfStudents = () => this.createdGroups.map(s => s.length).reduce((p, c) => p + c);

@@ -11,6 +11,7 @@ import {GroupEditComponent} from "../dialogs/group-edit.component";
 import {GroupsService} from "../../services/groups.service";
 import {DivisionEditComponent} from "../dialogs/division-edit.component";
 import {MassGroupEditComponent} from "../dialogs/mass-group-edit.component";
+import {GlobalService} from "../../services/global.service";
 
 
 
@@ -31,6 +32,7 @@ export class DivisionOptionsComponent implements AfterViewInit {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
+
     @Output() update: EventEmitter<any> = new EventEmitter<any>();
 
     division: any;
@@ -48,8 +50,10 @@ export class DivisionOptionsComponent implements AfterViewInit {
         return this._divisionId;
     }
 
-    constructor(private _service: DivisionsService) {
-    }
+    constructor(
+        private _service: DivisionsService,
+        private _globalService: GlobalService
+    ) { }
 
     getDivision(): void {
         this._service.getDivision(this.divisionId).then(
@@ -75,16 +79,39 @@ export class DivisionOptionsComponent implements AfterViewInit {
     }
 
     copyDivision() {
-        var newDiv;
-        this._service.copyDivision(this.divisionId).then(obj => newDiv = obj.division).then(() => console.log(newDiv));
+        this._service.copyDivision(this.divisionId)
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Uspešno kopirana raspodela *${this.division.name}*.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije kopirana raspodela.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
+            });
     }
 
     removeDivision() {
         this._service.deleteDivision(this.division.divisionID)
-            .then(any => console.log(any))
-            .then(() => this.refreshAssistantPanel({
-                shiftMinusOne: true,
-            }));
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Obrisana raspodela *${this.division.name}*.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Brisanje raspodele *${this.division.name}* nije uspelo.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelMoveMinusOne();
+            });
     }
 
     public refreshAssistantPanel($options) {

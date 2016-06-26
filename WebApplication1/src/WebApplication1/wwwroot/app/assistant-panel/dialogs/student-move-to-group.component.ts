@@ -5,6 +5,7 @@ import {Student} from "../../models/Student";
 import {StudentsService} from "../../services/students.service";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
+import {GlobalService} from "../../services/global.service";
 
 
 @Component({
@@ -51,8 +52,11 @@ export class MoveStudentToGroupComponent {
             && this.groups.filter(a => a.groupID == this.groupId)[0].name;
     }
 
-    constructor (   private _groupsService: GroupsService,
-                    private _studentsService: StudentsService) { }
+    constructor(
+        private _groupsService: GroupsService,
+        private _studentsService: StudentsService,
+        private _globalService: GlobalService
+    ) { }
 
     private _studentId: number = 0;
 
@@ -90,7 +94,24 @@ export class MoveStudentToGroupComponent {
     }
 
     onSave() {
-        this._studentsService.moveToGroup(this.student.studentID, this.selectedGroupId);
+        this._studentsService.moveToGroup(this.student.studentID, this.selectedGroupId)
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Student uspešno prebačen.`); // TODO koji, odakle, gde?
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Student nije prebačen.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this.closeMe();
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
+            });
     }
     
     @Output() close: EventEmitter<any> = new EventEmitter<any>();

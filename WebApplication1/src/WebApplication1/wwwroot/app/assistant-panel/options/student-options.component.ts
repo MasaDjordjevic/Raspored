@@ -7,6 +7,7 @@ import {R_STEPPER} from "../../ui/r-stepper.component";
 import {R_DL} from "../../ui/r-dl";
 import {TrimPipe} from "../../pipes/trim.pipe";
 import {MoveStudentToGroupComponent} from "../dialogs/student-move-to-group.component";
+import {GlobalService} from "../../services/global.service";
 
 
 @Component({
@@ -42,7 +43,10 @@ export class StudentOptionsComponent {
     //grupa koja je selektirana trenutno
     @Input() groupId: number;
 
-    constructor(private _service: StudentsService) { }
+    constructor(
+        private _service: StudentsService,
+        private _globalService: GlobalService
+    ) { }
 
     getStudent(): void {
         this._service.getStudent(this.studentId).then(
@@ -53,7 +57,21 @@ export class StudentOptionsComponent {
 
     removeFromGroup(){
         //TODO nesto pametnije sa odgovorom
-        this._service.removeFromGroup(this.studentId, this.groupId).then(any => console.log(any));
+        this._service.removeFromGroup(this.studentId, this.groupId)
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Student uspesňo uklonjen iz grupe.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije uspelo brisanje studenta iz grupe.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
+            });
     }
 
 }

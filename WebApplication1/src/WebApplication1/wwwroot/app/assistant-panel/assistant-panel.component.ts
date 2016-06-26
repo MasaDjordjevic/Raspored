@@ -58,6 +58,7 @@ export class AssistantPanelComponent {
         return this.currentTheme.studentPrimaryColor;
     }
 
+    // TODO
     private assistant = {
         "uniMemberID": 1,
         "address": "331",
@@ -113,24 +114,22 @@ export class AssistantPanelComponent {
             studentPrimaryColor: "_Neon-Poison", // #18DD00
         };
         this.theme = "material";
-        //this.language = "en";
         //endregion
         
         //region Service subscriptions
         this._globalService
-            .get("channel_refresh_assistant_panel_all")
+            .refreshAssistantPanelAll$
             .subscribe(item => this.refresh(null));
         
         this._globalService
-            .get("channel_refresh_assistant_panel_move_minus_one")
-            .subscribe(item => this.refresh({shiftMinutesOne: true}));
+            .refreshAssistantPanelMoveMinusOne$
+            .subscribe(item => this.refresh({shiftMinusOne: true}));
         //endregion
         
     }
 
     // Osvezava referencu da bi se prosledili ID-jevi kroz inpute (i da se opet pozove AJAX)
     public refresh($options) {
-
         // Ako uopste nisu prosledjene opcije, samo uradi refresh
         if (!$options) {
             this._selectedStudentId = <any>(new Number(this._selectedStudentId));

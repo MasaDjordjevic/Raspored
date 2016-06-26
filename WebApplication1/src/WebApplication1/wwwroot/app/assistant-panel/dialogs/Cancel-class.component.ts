@@ -137,16 +137,32 @@ export class CancelClassComponent implements AfterContentInit{
         timespan.period = 0;
         this._groupsService.cancelClass(this.groupId, this.cancel.title, this.cancel.content, timespan)
             .then(response => {
-                console.log("cancelClass", response.status);
                 switch(response.status) {
                     case "uspelo":
                         this._globalService.toast("Uspešno otkazan čas.");
+                        break;
+                    case "neuspelo":
+                        switch(response.message) {
+                            case "Čas je već otkazan.":
+                                this._globalService.toast(`Čas je već otkazan.`);
+                                break;
+                            default:
+                                this._globalService.toast(`Došlo je do greške. Nije obrisana grupa *${this.group.name}*.`);
+                                debugger;
+                                break;
+                        }
                         break;
                     default:
                         this._globalService.toast("Došlo je do greške. Čas nije otkazan.");
                         debugger;
                         break;
                 }
+            })
+            .then(() => {
+                this.closeMe();
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
             });
     }
 }

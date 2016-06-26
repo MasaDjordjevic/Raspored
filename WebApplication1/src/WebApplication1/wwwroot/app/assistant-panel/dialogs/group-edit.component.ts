@@ -1,4 +1,4 @@
-import {Component, Input, AfterContentInit, Pipe, PipeTransform, ChangeDetectionStrategy} from "angular2/core";
+import {Component, Input, AfterContentInit, Pipe, PipeTransform, ChangeDetectionStrategy, Output, EventEmitter} from "angular2/core";
 import {Control} from "angular2/common";
 import {Group} from "../../models/Group";
 import {ClassroomsService} from "../../services/classrooms.service";
@@ -92,7 +92,10 @@ export class GroupEditComponent {
         }
     }
 
-
+    @Output() close: EventEmitter<any> = new EventEmitter<any>();
+    public closeMe() {
+        this.close.emit({});
+    }
 
     private classrooms;
     private assistants;
@@ -109,7 +112,8 @@ export class GroupEditComponent {
         private _service: ClassroomsService,
         private _groupsService: GroupsService,
         private _studentsService: StudentsService,
-        private _assistantsService: AssistantService
+        private _assistantsService: AssistantService,
+        private _globalService: GlobalService
     ) {
         this.getClassrooms();
     }
@@ -184,9 +188,7 @@ export class GroupEditComponent {
     }
     
     save() {
-        /*debugger;*/
         var pom: Array<number> = this.chosenStudents.map(i => i.studentID);
-        console.log(pom);
         var timespan: any = {};
 
         // ako nista nije odabrano
@@ -201,10 +203,28 @@ export class GroupEditComponent {
             timespan.timeEnd = this.editedTimeEnd;
         }
 
-        console.log(timespan);
-        /*debugger;*/
-        this._groupsService.updateGroup(this.group.groupID, this.group.division.divisionID, this.editedAssistant, this.editedGroupName, this.editedClassroom, timespan,  pom)
-            .then(status => console.log(status));
+        //console.log(timespan);
+        this._groupsService.updateGroup(
+            this.group.groupID, this.group.division.divisionID, this.editedAssistant,
+            this.editedGroupName, this.editedClassroom, timespan,  pom
+        )
+            .then(response => {
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Uspešno izmenjena grupa *${this.editedGroupName}*.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije izmenjena grupa *${this.group.name}*.`);
+                        debugger;
+                        break
+                }
+            })
+            .then(() => {
+                this.closeMe();
+            })
+            .then(() => {
+                this._globalService.refreshAssistantPanelAll();
+            });
     }
 
 

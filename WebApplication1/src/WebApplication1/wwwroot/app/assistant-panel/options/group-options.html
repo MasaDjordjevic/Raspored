@@ -20,7 +20,10 @@
     <div class="flex-spacer"></div>
     <r-dialog #editGroupDialog [source]="editGroupButton">
         <div>
-            <group-edit [group]="group"></group-edit>
+            <group-edit
+                    [group]="group"
+                    (close)="editGroupDialog.close()"
+            ></group-edit>
         </div>
     </r-dialog>
 
@@ -36,7 +39,7 @@
 
     <r-dialog #combinedScheduleDialog [source]="combinedScheduleButton">
         <div id="combinedSchedule">
-            <r-timetable [groupID]="group.groupID" ></r-timetable>
+            <r-timetable [groupID]="group.groupID"></r-timetable>
         </div>
     </r-dialog>
 
@@ -44,7 +47,8 @@
         <div>
             <add-activity [groupId]="group.groupID"
                           [primaryColor]="primaryColor"
-                          (close)="addNotificationDialog.close()">
+                          (close)="addNotificationDialog.close()"
+            >
             </add-activity>
         </div>
     </r-dialog>

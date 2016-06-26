@@ -11,6 +11,7 @@ import {R_BUTTON} from "../../ui/r-button.component";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {StudentsService} from "../../services/students.service";
+import {GlobalService} from "../../services/global.service";
 const moment = moment_["default"];
 
 @Component({
@@ -78,12 +79,11 @@ export class AddTaskComponent {
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
-    @Output() close: EventEmitter<any> = new EventEmitter<any>();
-
     weekNumber: number = 0;
-
+    
+    @Output() close: EventEmitter<any> = new EventEmitter<any>();
     public closeMe() {
-        this.close.emit("close!");
+        this.close.emit({});
     }
 
     group: any;
@@ -124,7 +124,8 @@ export class AddTaskComponent {
     constructor(
         private _classroomsService: ClassroomsService,
         private _groupsService: GroupsService,
-        private _studentsService: StudentsService
+        private _studentsService: StudentsService,
+        private _globalService: GlobalService
     ) {
         this.getClassrooms();
     }
@@ -143,7 +144,22 @@ export class AddTaskComponent {
             this.task.content,
             this.task.place,
             this.group.groupID            
-        ).then(status=> console.log(status));
+        )
+            .then(response => {
+                console.log(response);
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Uspelo dodavanje zadatka.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije uspelo dodavanje novog zadatka.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this.closeMe();
+            });
     }
 
     getClassrooms() {
