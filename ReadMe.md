@@ -64,6 +64,7 @@ Radi UNIQUE constraint ali tako da vrednost kolone moze da bude i NULL
 
 # Cascade koji nije implementiran u bazi
 
+- Ad > Periods (ciklus)
 - Group > Ads (kada se obrise grupa, obrisu se periods ali ne i ads)
 - Division > Groups (ne daje mi da stavim jer se stvara ciklus (multiple paths))
 

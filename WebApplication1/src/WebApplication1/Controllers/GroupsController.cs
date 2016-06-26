@@ -150,7 +150,7 @@ namespace WebApplication1.Controllers
             try
             {
                 // TODO vadi iz sesije
-                Data.Group.ExchangeStudents(12100, groupID, adID);
+                Data.Group.ExchangeStudents(4, groupID, adID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

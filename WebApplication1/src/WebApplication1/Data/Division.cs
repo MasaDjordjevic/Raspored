@@ -334,13 +334,12 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                Divisions division = _context.Divisions.Include(a => a.Groups).Where(a => a.divisionID == divisionID).First();
+                Divisions division = _context.Divisions.Include(a => a.Groups).First(a => a.divisionID == divisionID);
 
                 foreach (Groups g in division.Groups)
                 {
-                    Group.RemoveGroup(g);
+                    _context.Groups.Remove(g);
                 }
-                _context.SaveChanges();
 
                 _context.Divisions.Remove(division); 
 

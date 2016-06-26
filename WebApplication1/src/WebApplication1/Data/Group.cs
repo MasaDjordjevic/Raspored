@@ -45,14 +45,6 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                //brisanje oglasa (cascade circle)
-                var ads = _context.Periods.Where(a => a.groupID == @group.groupID).Select(a => a.ad).ToList();
-                foreach (Ads ad in ads)
-                {
-                    _context.Ads.Remove(ad);
-                }
-
-                //brisanje same grupe
                 _context.Groups.Remove(@group);
                 _context.SaveChanges();
             }
@@ -169,37 +161,37 @@ namespace WebApplication1.Data
 
         //proverava da li svi studenti te grupe nisu clanovi neke druge grupe te raspodele
         //groupID moze da bude null u slucaju provere prilikom kreiranja nove grupe
-        public static bool CheckConsistencyWithOtherGroups(int? groupID, List<int> students)
+        public static bool CheckConsistencyWithOtherGroups(int? groupID, List<int> students, RasporedContext _context = null)
         {
-            using (RasporedContext _context = new RasporedContext())
+            _context = _context ?? new RasporedContext();
+            
+            //proverava studente u ostalim grupama raspodele
+
+            var groups =
+                _context.Groups.Where(
+                    a => (groupID == null || a.groupID != groupID) && //bez te konkrentne grupe
+                    a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID) //sve grupe raspodele kojo ta grupa pripada
+                    .Select(a => a.groupID).ToList();
+
+            //studenti koji pripadaju tim grupama, kao i grupe
+            var studentsGroups = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => new {student = a.studentID, grupa = a.group.name}).ToList(); 
+            var studs = studentsGroups.Select(a => a.student);
+            //proverava da li za svakog studenta vazi da nije u studs odnosno ne pripada ni jednoj drugoj grupi
+            if (students.Any(stud => studs.Contains(stud)))
             {
-                //proverava studente u ostalim grupama raspodele
-
-                var groups =
-                    _context.Groups.Where(
-                        a => (groupID == null || a.groupID != groupID) && //bez te konkrentne grupe
-                        a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID) //sve grupe raspodele kojo ta grupa pripada
-                        .Select(a => a.groupID).ToList();
-
-                //studenti koji pripadaju tim grupama, kao i grupe
-                var studentsGroups = _context.GroupsStudents.Where(a => groups.Contains(a.groupID)).Select(a => new {student = a.studentID, grupa = a.group.name}).ToList(); 
-                var studs = studentsGroups.Select(a => a.student);
-                //proverava da li za svakog studenta vazi da nije u studs odnosno ne pripada ni jednoj drugoj grupi
-                if (students.Any(stud => studs.Contains(stud)))
-                {
-                    var inconsistants = _context.Students
-                        .Where(stud => students.Contains(stud.studentID) && studs.Contains(stud.studentID))
-                        .Select(a=> a.UniMembers.name + " " + a.UniMembers.surname + " pripada grupi " + studentsGroups.First(sg=> sg.student == a.studentID).grupa)
-                        .ToList();
-                    string exp = inconsistants.Count > 1 ? "Studenti pripadaju drugim grupama raspodele. " : "Student pripada drugoj grupi raspodele. ";
-                    exp += inconsistants.Concat("\n");
-                    throw new InconsistentDivisionException(exp);
-                }
-                else
-                {
-                    return true;
-                }
+                var inconsistants = _context.Students
+                    .Where(stud => students.Contains(stud.studentID) && studs.Contains(stud.studentID))
+                    .Select(a=> a.UniMembers.name + " " + a.UniMembers.surname + " pripada grupi " + studentsGroups.First(sg=> sg.student == a.studentID).grupa)
+                    .ToList();
+                string exp = inconsistants.Count > 1 ? "Studenti pripadaju drugim grupama raspodele. " : "Student pripada drugoj grupi raspodele. ";
+                exp += inconsistants.Concat("\n");
+                throw new InconsistentDivisionException(exp);
             }
+            else
+            {
+                return true;
+            }
+            
         }
        
         public static void RemoveStudents(int groupID, List<int> students)
@@ -419,11 +411,37 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                Ads ad = _context.Ads.First(a => a.adID == adID);
-                Student.MoveToGroup(studentID, ad.groupID, _context);
-                Student.MoveToGroup(ad.studentID, groupID, _context);
-                _context.SaveChanges();
+
+                var transaction = _context.Database.BeginTransaction();
+                try
+                {
+                    Ads ad = _context.Ads.First(a => a.adID == adID);
+                    Student.MoveToGroup(studentID, ad.groupID, _context);
+                    Student.MoveToGroup(ad.studentID, groupID, _context);
+                    RemoveAd(ad.adID, _context);
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (InconsistentDivisionException ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
+                }
+              
             }
+        }
+
+        public static void RemoveAd(int adID, RasporedContext _context = null)
+        {
+            _context = _context ?? new RasporedContext();
+            var ad = _context.Ads.Include(a => a.Periods).First(a => a.adID == adID);
+            foreach (var period in ad.Periods)
+            {
+                _context.Remove(period);
+            }
+            _context.SaveChanges();
+            _context.Ads.Remove(ad);
+            _context.SaveChanges();
         }
 
         // student iz grupe groupID dodaje oglas i odgovaraju mu termini grupa iz liste
@@ -487,7 +505,6 @@ namespace WebApplication1.Data
                List<NotificationDTO> groupsNotifications = _context.Activities.Where(ac =>
                     !IsStudentActivity(ac.activityID) && // nece ako se ovde direktno ispita
                     ac.groupID == groupID &&
-                    ac.cancelling != true &&
                     TimeSpan.TimeSpanOverlap(ac.timeSpan, ts))
                     .Select(ac => new NotificationDTO
                     {

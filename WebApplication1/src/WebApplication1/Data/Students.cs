@@ -161,7 +161,6 @@ namespace WebApplication1.Data
                 List<NotificationDTO> studentsNotifications = _context.StudentsActivities.Where(ac =>
                     ac.studentID == studentID && 
                     ac.activity.groupID == groupID &&
-                    ac.activity.cancelling != true &&
                     TimeSpan.TimeSpanOverlap(ac.activity.timeSpan, ts))
                     .Select(ac => new NotificationDTO
                     {
@@ -186,32 +185,32 @@ namespace WebApplication1.Data
         /// <param name="ts"></param>
         /// <param name="groupID">Groupa ciji ce se cas izuzeti pri proveri</param>
         /// <returns></returns>
-        public static bool CheckIfAvailable(int studentID, TimeSpans ts, int? groupID = null)
+        public static bool CheckIfAvailable(int studentID, TimeSpans ts, int? groupID = null, RasporedContext _context = null)
         {
-            using (RasporedContext _context = new RasporedContext())
-            {
-                List<int> groups = _context.GroupsStudents
-                    .Where(a => a.studentID == studentID &&
-                                (groupID == null || a.groupID != groupID.Value) &&
-                                TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, ts.startDate, ts.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
-                                .Select(a => a.groupID).ToList();
+            _context = _context ?? new RasporedContext();
+            
+            List<int> groups = _context.GroupsStudents
+                .Where(a => a.studentID == studentID &&
+                            (groupID == null || a.groupID != groupID) &&
+                            TimeSpan.DatesOverlap(a.group.division.beginning, a.group.division.ending, ts.startDate, ts.endDate)) //provera da li raspodela kojoj grupa pripada i dalje vazi
+                            .Select(a => a.groupID).ToList();
 
-                List<TimeSpans> groupsSchedule =
-                    _context.Groups.Where(a => groups.Contains(a.groupID) && Group.IsActive(a.groupID, ts)).Select(a => a.timeSpan).ToList();
+            List<TimeSpans> groupsSchedule =
+                _context.Groups.Where(a => groups.Contains(a.groupID) && Group.IsActive(a.groupID, ts)).Select(a => a.timeSpan).ToList();
 
 
-                List<int> activities =
-                    _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
-                List<TimeSpans> activitiesSchedule =
-                    _context.Activities.Where(
-                        a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value)))
-                        .Select(a => a.timeSpan)
-                        .ToList();
+            List<int> activities =
+                _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
+            List<TimeSpans> activitiesSchedule =
+                _context.Activities.Where(
+                    a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value)))
+                    .Select(a => a.timeSpan)
+                    .ToList();
 
-                List<TimeSpans> schedule = groupsSchedule.Concat(activitiesSchedule).ToList();
+            List<TimeSpans> schedule = groupsSchedule.Concat(activitiesSchedule).ToList();
 
-                return schedule.All(timespan => !TimeSpan.Overlap(timespan, ts));
-            }
+            return schedule.All(timespan => !TimeSpan.Overlap(timespan, ts));
+            
         }
 
 
@@ -223,7 +222,7 @@ namespace WebApplication1.Data
                     return true;
 
                 var unaveliable = _context.Students
-                    .Where(a => students.Contains(a.studentID) && !Student.CheckIfAvailable(a.studentID, ts, groupID))
+                    .Where(a => students.Contains(a.studentID) && !Student.CheckIfAvailable(a.studentID, ts, groupID, null))
                      .Select(a => a.UniMembers.name + " " + a.UniMembers.surname).ToList();
 
                 if (unaveliable.Any())
@@ -246,26 +245,27 @@ namespace WebApplication1.Data
         {
             _context = _context ?? new RasporedContext();
             
-                //proveri da li dolazi do nekonzistentnosti raspodele
-                //provera da li student vec postoji u toj grupi
-                var otherStuds =
-                    _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
-                if (otherStuds.Contains(studentID))
-                {
-                    throw new InconsistentDivisionException("Student već pripada toj grupi.");
-                }
+            //proveri da li dolazi do nekonzistentnosti raspodele
+            //provera da li student vec postoji u toj grupi
+            var otherStuds =
+                _context.GroupsStudents.Where(a => a.groupID == groupID).Select(a => a.studentID).ToList();
+            if (otherStuds.Contains(studentID))
+            {
+                throw new InconsistentDivisionException("Student već pripada toj grupi.");
+            }
 
-                //proverva konzistentnost sa ostalim grupama, bacice exeption ako nije
-                Data.Group.CheckConsistencyWithOtherGroups(groupID, new List<int>() {studentID});
+            //proverva konzistentnost sa ostalim grupama, bacice exeption ako nije
+            Data.Group.CheckConsistencyWithOtherGroups(groupID, new List<int>() {studentID}, _context);
 
-                //provera da li je student slobodan u vreme kada ta grupa ima cas
-                TimeSpans groupTs = _context.Groups.First(a => a.groupID == groupID).timeSpan;
-                if (groupTs != null && Student.CheckIfAvailable(studentID, groupTs))
-                {
-                    string message = "Student nije slobodan u vreme kada grupa ima cas";
-                    message += " (" + TimeSpan.ToString(groupTs) + " )."; 
-                    throw new InconsistentDivisionException(message);
-                }
+            //provera da li je student slobodan u vreme kada ta grupa ima cas
+            TimeSpans groupTs = _context.Groups.Where(a => a.groupID == groupID).Select(a=> a.timeSpan).First();
+            if (groupTs != null && !Student.CheckIfAvailable(studentID, groupTs, _context:_context))
+            {
+                string name = GetStudentName(studentID);
+                string message = "Student ("+ name + ") nije slobodan u vreme kada grupa ima cas";
+                message += " (" + TimeSpan.ToString(groupTs) + " )."; 
+                throw new InconsistentDivisionException(message);
+            }
             
         }
 
@@ -296,7 +296,7 @@ namespace WebApplication1.Data
 
                 foreach (GroupsStudents gs in groupStudents)
                 {
-                    _context.Remove(gs);
+                    _context.GroupsStudents.Remove(gs);
                 }
         }
 
@@ -305,13 +305,30 @@ namespace WebApplication1.Data
         public static void MoveToGroup(int studentID, int groupID, RasporedContext _context = null)
         {
             _context = _context ?? new RasporedContext();
+            int divisionID = _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First();
+
             
-            RemoveFromAllGroups(studentID,
-                _context.Groups.Where(a => a.groupID == groupID).Select(a => a.divisionID).First(),
-                _context);
+
+            var groupStudents =
+                    _context.GroupsStudents.Where(a => a.studentID == studentID && a.group.divisionID == divisionID)
+                        .ToList();
+
+            foreach (GroupsStudents gs in groupStudents)
+            {
+                _context.GroupsStudents.Remove(gs);
+            }
+
+            _context.SaveChanges();
+
+            var obrisan =
+                _context.GroupsStudents.Where(a => a.studentID == studentID && a.group.divisionID == divisionID)
+                    .ToList();
             
             AddToGroup(studentID, groupID, _context);
+                
             
+
+
         }
 
         public static bool RemoveFromGroup(int studentID, int groupID)

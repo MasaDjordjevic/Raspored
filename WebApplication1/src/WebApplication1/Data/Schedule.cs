@@ -46,7 +46,7 @@ namespace WebApplication1.Data
 
         public static string GetNextColor()
         {
-            string[] boje = new string[] { "MaterialRed", "MaterialYellow", "MaterialBlue", "MaterialGreen", "MaterialOrange", "MaterialPurple" };
+            string[] boje = new string[] { "MaterialRed", "MaterialBlue", "MaterialGreen", "MaterialOrange", "MaterialPurple" };
 
             colorCounter++;
             if (colorCounter == boje.Length)
