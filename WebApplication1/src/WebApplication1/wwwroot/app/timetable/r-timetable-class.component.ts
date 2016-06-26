@@ -50,36 +50,46 @@ import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-b
         
             <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
                     r-button raised text="Dodaj čas u lični"
-                    (click)="addToPersonal()">Dodaj u lični</button>
+                    (click)="addToPersonal()"
+                    [primaryColor]="color">Dodaj u lični</button>
                     
             <button *ngIf="mode === _Mode.StudentPersonal && !isClass"
                     r-button raised text="Obriši aktivnost"
-                    (click)="deleteActivity()">Obriši aktivnost</button>
+                    (click)="deleteActivity()"
+                    [primaryColor]="color">Obriši aktivnost</button>
                     
             <button *ngIf="mode === _Mode.StudentPersonal && isClass"
                     r-button raised text="Sakrij čas"
-                    (click)="hideClass()">Sakrij čas</button>
+                    (click)="hideClass()"
+                    [primaryColor]="color">Sakrij čas</button>
                     
             <button *ngIf="mode === _Mode.StudentPersonal"
                     r-button raised text="Dodaj task"
                     #addTaskButton
-                    (click)="addTaskDialog.open()">Dodaj task</button>
+                    (click)="addTaskDialog.open()"
+                    [primaryColor]="color">Dodaj task</button>
             
             <button *ngIf="mode === _Mode.AssistantOfficial"
                     r-button raised text="Dodaj obaveštenje"
                     #addAnnouncementButton
-                    (click)="addAnnouncementDialog.open()">Dodaj obaveštenje</button>
+                    (click)="addAnnouncementDialog.open()"
+                    [primaryColor]="color">Dodaj obaveštenje</button>
                     
             <button *ngIf="mode === _Mode.AssistantOfficial"
                     r-button raised text="Otkaži čas"
                     #cancelClassButton
-                    (click)="cancelClassDialog.open()">Otkaži čas</button>
+                    (click)="cancelClassDialog.open()"
+                    [primaryColor]="color">Otkaži čas</button>
             
             <button r-button raised text="Oglasna tabla"
                     #bulletinBoardButton
-                    (click)="bulletinBoardDialog.open()">Oglasna tabla</button>
+                    (click)="bulletinBoardDialog.open()"
+                    [primaryColor]="color">Oglasna tabla</button>
             
-            <button r-button flat text="Odzumiraj" (click)="toggle()">Odzumiraj</button>
+            <button r-button flat text="Odzumiraj" (click)="toggle()"
+                    [primaryColor]="color">Odzumiraj</button>
+                    
+                    {{materialColorString}}
             
         </div>
         
@@ -117,8 +127,8 @@ import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-b
         
         <r-dialog class="bulletin-board" #bulletinBoardDialog [source]="bulletinBoardButton">
             <r-bulletin-board
-                [primaryColor]="primaryColor"
-                [secondaryColor]="secondaryColor"
+                [primaryColor]="color"
+                [secondaryColor]="color"
                 [groupId]="classId"
                 (close)="bulletinBoardDialog.close()"
             >
@@ -135,8 +145,7 @@ import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-b
         "[class.orange]": "color === 'MaterialOrange'",
         "[class.purple]": "color === 'MaterialPurple'",
         "[class.green]": "color === 'MaterialGreen'",
-        //"[style.color]": "textColor",
-        "[style.opacity]": "active ? 1 : 0.5",
+        "[class.active]": "active",
         "[class.expanded]": "expanded",
         "[style.left]": "expanded ? expandedLeft : ''",
         "[style.top]": "expanded ? expandedTop : ''",

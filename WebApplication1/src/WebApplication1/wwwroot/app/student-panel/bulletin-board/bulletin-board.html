@@ -3,6 +3,7 @@
         [possibleChoices]="possibleChoices"
         [(chosenChoices)]="chosenPossibleChoices"
         [groupId]="groupId"
+        [primaryColor]="primaryColor"
 >
 </r-bulletin-board-parameters>
 
@@ -14,7 +15,10 @@
         [possibleChoices]="allChoices"
         [(chosenChoices)]="chosenAllChoices"
         [groupId]="groupId"
+        [primaryColor]="primaryColor"
 >
 </r-bulletin-board-add-ad>
 
 chosenAll: {{chosenAllChoices | json}}
+
+color bulletin board: {{primaryColor}} 

@@ -14,8 +14,10 @@
 
 <button r-button raised
         [text]="'Zameni se'"
-        (click)="exchangeWith()">
-    Zameni se!!!!!
+        (click)="exchangeWith()"
+        [primaryColor]="primaryColor"
+>
+    Zameni se
 </button>
 
 possible: {{possibleChoices | json}}

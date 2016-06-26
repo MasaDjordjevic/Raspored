@@ -15,12 +15,20 @@ const moment = moment_["default"];
 @Component({
     selector: 'add-activity',
     template: `
+
     <span *ngIf="dateChoices && dateChoices.length === 1">
         Dodavanje obaveštenja za čas zakazan za {{dateChoices[0]}}.    
     </span>
+    
     <r-dropdown *ngIf="dateChoices && dateChoices.length > 1"
-    [label]="'Dodajem obaveštenje za čas koji treba da bude održan...'" [(val)]="announcement.startDate" [primaryColor]="primaryColor">
-        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="dateChoice">{{dateChoice}}</r-dropdown-item>  
+        [label]="'Dodajem obaveštenje za čas koji treba da bude održan...'"
+        [(val)]="announcement.startDate" [primaryColor]="primaryColor"
+    >
+        <r-dropdown-item
+            *ngFor="let dateChoice of dateChoices; let i = index"
+            [value]="dateChoice">
+                {{dateChoice}}
+        </r-dropdown-item>  
     </r-dropdown>
 
     <r-input [label]="'Naslov'"

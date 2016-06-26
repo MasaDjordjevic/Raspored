@@ -30,10 +30,18 @@
   @each $key, $value in $all-colors-key-value {
     &.#{$key} {
       background-color: palette($value);
-    }
 
-    &.expanded.#{$key} {
-      box-shadow: 0 0 0 0.7em palette($value) inset,
+      &.expanded {
+        box-shadow: 0 0 0 0.7em palette($value) inset,
+      }
+    }
+  }
+
+  &:not(.active) {
+    color: rgba(black, .54)!important;
+    background-color: palette($blue-grey, 100)!important;
+    &.expanded {
+      box-shadow: 0 0 0 0 .7em palette($blue-grey, 100) inset!important;
     }
   }
 

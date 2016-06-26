@@ -134,7 +134,7 @@ export class MultipleSelectorItemComponent implements AfterViewInit {
 @Component({
     selector: 'r-multiple-selector',
     template: `
-    <div class="title" *ngIf="title && title !== ''">{{title}}</div>
+    <div *ngIf="title && title !== ''" [class]="'title ' + primaryColorClassName">{{title}}</div>
     <!--Selected: {{values | json}}<br/>-->
     <div class="r-multiple-selector-content">
         <ng-content></ng-content>

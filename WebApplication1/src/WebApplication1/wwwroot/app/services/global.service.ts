@@ -14,14 +14,19 @@ export class GlobalService {
 
     //region Tema na Assistant panel
     public static colorClassName(color):string {
-        if (color.indexOf("Material") === 0) {
-            // boja je data material kodom
-            // sklanjamo "Material"
-            return color.substring("Material".length).toLowerCase();
-        } else if (color.indexOf("_") === 0) {
-            // boja je iz neke palete
-            // sklanjamo donju crtu
-            return color.substring(1).toLowerCase();
+        try {
+            if (color.indexOf("Material") === 0) {
+                // boja je data material kodom
+                // sklanjamo "Material"
+                return color.substring("Material".length).toLowerCase();
+            } else if (color.indexOf("_") === 0) {
+                // boja je iz neke palete
+                // sklanjamo donju crtu
+                return color.substring(1).toLowerCase();
+            }
+            return "blue";
+        } catch (e) {
+            console.warn("GlobalService, colorClassName", color)
         }
         return "blue";
     }
