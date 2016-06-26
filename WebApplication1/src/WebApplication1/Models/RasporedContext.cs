@@ -57,7 +57,7 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.adID);
 
-                entity.HasOne(d => d.division).WithMany(p => p.Ads).HasForeignKey(d => d.divisionID);
+                entity.HasOne(d => d.group).WithMany(p => p.Ads).HasForeignKey(d => d.groupID);
 
                 entity.HasOne(d => d.student).WithMany(p => p.Ads).HasForeignKey(d => d.studentID);
             });
@@ -157,6 +157,8 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.groupsStudentID);
 
+                entity.Property(e => e.falseMember).HasDefaultValue(false);
+
                 entity.HasOne(d => d.group).WithMany(p => p.GroupsStudents).HasForeignKey(d => d.groupID);
 
                 entity.HasOne(d => d.student).WithMany(p => p.GroupsStudents).HasForeignKey(d => d.studentID);
@@ -166,7 +168,7 @@ namespace WebApplication1.Models
             {
                 entity.HasKey(e => e.periodID);
 
-                entity.HasOne(d => d.ad).WithMany(p => p.Periods).HasForeignKey(d => d.adID);
+                entity.HasOne(d => d.ad).WithMany(p => p.Periods).HasForeignKey(d => d.adID).OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(d => d.group).WithMany(p => p.Periods).HasForeignKey(d => d.groupID);
             });

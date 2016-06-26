@@ -7,7 +7,6 @@ namespace WebApplication1.Models
     {
         public Divisions()
         {
-            Ads = new HashSet<Ads>();
             Groups = new HashSet<Groups>();
         }
 
@@ -20,7 +19,6 @@ namespace WebApplication1.Models
         public DateTime ending { get; set; }
         public string name { get; set; }
 
-        public virtual ICollection<Ads> Ads { get; set; }
         public virtual ICollection<Groups> Groups { get; set; }
         public virtual Courses course { get; set; }
         public virtual UniMembers creator { get; set; }

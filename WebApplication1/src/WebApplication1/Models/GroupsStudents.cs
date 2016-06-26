@@ -7,6 +7,7 @@ namespace WebApplication1.Models
     {
         public int groupsStudentID { get; set; }
         public bool? alert { get; set; }
+        public bool? falseMember { get; set; }
         public int groupID { get; set; }
         public bool? ignore { get; set; }
         public int studentID { get; set; }

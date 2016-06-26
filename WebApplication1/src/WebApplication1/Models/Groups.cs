@@ -8,6 +8,7 @@ namespace WebApplication1.Models
         public Groups()
         {
             Activities = new HashSet<Activities>();
+            Ads = new HashSet<Ads>();
             GroupsStudents = new HashSet<GroupsStudents>();
             Periods = new HashSet<Periods>();
         }
@@ -20,6 +21,7 @@ namespace WebApplication1.Models
         public int? timeSpanID { get; set; }
 
         public virtual ICollection<Activities> Activities { get; set; }
+        public virtual ICollection<Ads> Ads { get; set; }
         public virtual ICollection<GroupsStudents> GroupsStudents { get; set; }
         public virtual ICollection<Periods> Periods { get; set; }
         public virtual UniMembers assistant { get; set; }
