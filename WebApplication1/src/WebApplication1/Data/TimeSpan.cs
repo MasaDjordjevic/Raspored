@@ -67,8 +67,8 @@ namespace WebApplication1.Data
             if (bind.period == 0)
             {
                 ts.period = bind.period;
-                ts.startDate = bind.startDate;
-                ts.endDate = bind.endDate;
+                ts.startDate = bind.startDate.Value;
+                ts.endDate = bind.endDate.Value;
                 return ts;
             }
             else

@@ -249,14 +249,14 @@ namespace WebApplication1.Data
         }
         
 
-        public static void UpdateDivision(int divisionID, string name, DateTime beginning, DateTime ending, int? divisionTypeID, int? courseID)
+        public static void UpdateDivision(int divisionID, string name, DateTime? beginning, DateTime? ending, int? divisionTypeID, int? courseID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
                 Divisions div = _context.Divisions.First(a => a.divisionID == divisionID);
                 if (beginning != null)
                 {
-                    div.beginning = beginning;
+                    div.beginning = beginning.Value;
                 }
                 if (name != null )
                 {
@@ -264,7 +264,7 @@ namespace WebApplication1.Data
                 }
                 if (ending != null)
                 {
-                    div.ending = ending;
+                    div.ending = ending.Value;
                 }
                 if (divisionTypeID != null)
                 {

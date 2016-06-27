@@ -163,14 +163,14 @@ export class AssistantPanelOptionsComponent {
     }
 
     public toggle2() {
-        this.multipleSelector = this.multipleSelector.concat();
+        this.multipleSelector = this.multipleSelector && this.multipleSelector.concat();
         var ind = this._multipleSelector.indexOf("2");
         if (!~ind) this._multipleSelector.push("2");
         else this._multipleSelector.splice(ind, 1);
     }
 
     public addNew() {
-        this.stuff = this.stuff.concat();
+        this.stuff = this.stuff && this.stuff.concat();
         this.stuff.push(this.randomString(10));
     }
 

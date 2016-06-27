@@ -222,8 +222,8 @@ namespace WebApplication1.Controllers
 
         public class TimeSpanBinding
         {
-            public DateTime startDate;
-            public DateTime endDate;
+            public DateTime? startDate;
+            public DateTime? endDate;
             public int? period;
             public int? dayOfWeek;
             public string timeStart;

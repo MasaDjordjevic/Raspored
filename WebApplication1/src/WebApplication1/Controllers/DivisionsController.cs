@@ -143,6 +143,7 @@ namespace WebApplication1.Controllers
             try
             {
                 Data.Division.CreateInitialDivision(obj.name, obj.departmentID, obj.courseID, obj.divisionTypeID, obj.beginning, obj.ending, obj.groups.ToList());
+                return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
             {
@@ -151,7 +152,6 @@ namespace WebApplication1.Controllers
 
 
 
-            return Ok(new {status = "uspelo"});
 
 
             //return CreatedAtRoute("GetDivisions", new { id = divisions.divisionID }, divisions);
@@ -222,8 +222,8 @@ namespace WebApplication1.Controllers
         {
             public int? divisionID;
             public string name;
-            public DateTime beginning;
-            public DateTime ending;
+            public DateTime? beginning;
+            public DateTime? ending;
             public int? divisionTypeID;
             public int? courseID;
         }
