@@ -11,6 +11,13 @@
      [class.orange]= "color === 'MaterialOrange'"
      [class.purple]= "color === 'MaterialPurple'"
      [class.green]= "color === 'MaterialGreen'"
+     [class.pink] = "color === 'MaterialPink'"
+     [class.deep-purple] = "color === 'MaterialDeep-purple'"
+     [class.light-blue] = "color === 'MaterialLight-blue'"
+     [class.lime] = "color === 'MaterialLime'"
+     [class.light-green] = "color === 'MaterialLight-green'"
+     [class.teal] = "color === 'MaterialTeal'"
+     [class.brown] = "color === 'MaterialBrown'"
      [class.active]= "active"
      [class.expanded]= "expanded"
      [style.left]= "expanded ? expandedLeft : ''"
@@ -21,7 +28,6 @@
      [style.color]= "expanded ? 'black' : textColor"
      (click)= "expand($event)"
 >
-
 
     <template [ngIf]="!expanded">
 
