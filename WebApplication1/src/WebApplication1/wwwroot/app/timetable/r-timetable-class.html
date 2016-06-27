@@ -189,6 +189,7 @@
                                 [primaryColor]="color">"Opozovi otkazivanje"</button>
 
                         <button r-button raised text="Oglasna tabla"
+                                *ngIf="mode !== _Mode.StudentGlobal"
                                 #bulletinBoardButton
                                 (click)="bulletinBoardDialog.open()"
                                 [primaryColor]="color">Oglasna tabla</button>
