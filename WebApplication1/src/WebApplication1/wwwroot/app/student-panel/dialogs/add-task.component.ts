@@ -95,7 +95,7 @@ export class AddTaskComponent {
 
     private _groupId: number = 0;
 
-    task: any = {
+    private task: any = {
         title: null,
         content: null,
         classroomId: null,
@@ -159,6 +159,9 @@ export class AddTaskComponent {
             })
             .then(() => {
                 this.closeMe();
+            })
+            .then(() => {
+                this._globalService.refreshStudentPanelPersonal();
             });
     }
 

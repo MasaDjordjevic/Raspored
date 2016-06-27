@@ -161,7 +161,6 @@ export class TimetableComponent {
         this.getAssistantSchedule();
     }
 
-
     get timeStamps(): Array<string> {
         var ret = [];
         var toTimestampPipe = new ToTimestampPipe();
@@ -183,7 +182,9 @@ export class TimetableComponent {
     )
     {
         this._globalService.refreshStudentPanelPersonal$
-            .subscribe(item => this.refresh());
+            .subscribe(item => {
+                this.refresh();
+            });
     }
     
     public refresh() {
