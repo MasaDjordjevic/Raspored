@@ -16,6 +16,11 @@ namespace WebApplication1.Controllers
     {
         private RasporedContext _context;
 
+        // 2827 - Isidora Nikolic (3. grupa)
+        // 2723 - Milena Arsic (2. grupa)
+        // 2597 - Aleksandar milanov (1. grupa)
+        private int STUDENT_ID = 2723;
+
         public StudentsController(RasporedContext context)
         {
             _context = context;
@@ -247,7 +252,7 @@ namespace WebApplication1.Controllers
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.HideClass(3, groupID);
+                Data.Student.HideClass(STUDENT_ID, groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -263,7 +268,7 @@ namespace WebApplication1.Controllers
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.AddClassToPersonalSchedule(3, groupID);
+                Data.Student.AddClassToPersonalSchedule(STUDENT_ID, groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -278,7 +283,7 @@ namespace WebApplication1.Controllers
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.AlertClass(3, groupID);
+                Data.Student.AlertClass(STUDENT_ID, groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -306,7 +311,7 @@ namespace WebApplication1.Controllers
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.AddActivity(3, obj.groupID, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
+                Data.Student.AddActivity(STUDENT_ID, obj.groupID, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -321,7 +326,7 @@ namespace WebApplication1.Controllers
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.DeleteActivity(3, activityID);
+                Data.Student.DeleteActivity(STUDENT_ID, activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -336,7 +341,7 @@ namespace WebApplication1.Controllers
             try
             {
                 //TODO vadi iz sesije
-                Data.Student.AlertActivity(3, activityID);
+                Data.Student.AlertActivity(STUDENT_ID, activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
