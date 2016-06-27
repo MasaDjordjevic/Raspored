@@ -76,7 +76,7 @@
             <div class="dialog-text">Obriši raspodelu <b>{{division.name}}</b>?</div>
             <div class="dialog-controls">
                 <button r-button flat text="Odustani" (click)="removeDivisionDialog.close()" [primaryColor]="primaryColor">Odustani</button>
-                <button r-button raised text="Obriši" (click)="removeDivision()" [primaryColor]="primaryColor">Obriši</button>
+                <button r-button raised text="Obriši" (click)="removeDivision(); removeDivisionDialog.close()" [primaryColor]="primaryColor">Obriši</button>
             </div>
         </div>
     </r-dialog>
