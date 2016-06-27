@@ -4,6 +4,7 @@ import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {GroupsService} from "../../services/groups.service";
+import {GlobalService} from "../../services/global.service";
 
 
 @Component({
@@ -36,13 +37,28 @@ export class BulletinBoardAddAdComponent {
     }
     
     constructor(
-        private _groupsService: GroupsService
+        private _groupsService: GroupsService,
+        private _globalService: GlobalService
     ) {}
     
     addAd(choices: {groupID: number, time: string[]}[]): void {
-        /*debugger;*/
         this._groupsService.addAd(this.groupId, this._chosenChoices.map(Number))
-            .then(result => console.log(result));
+            .then(result => {
+                //console.log(result)
+                switch (result.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Uspešno dodat oglas.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške. Nije uspelo dodavanje oglasa.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this._globalService.refreshStudentPanelPersonal();
+                this._globalService.refreshStudentPanelOfficial(); // oglas moze da se doda iz zvanicnog i licnog
+            });
     }
 
 }

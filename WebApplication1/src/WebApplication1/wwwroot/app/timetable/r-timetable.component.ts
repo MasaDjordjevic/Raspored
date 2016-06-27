@@ -183,12 +183,13 @@ export class TimetableComponent {
     {
         this._globalService.refreshStudentPanelPersonal$
             .subscribe(item => {
-                this.refresh();
+                this.studentID = <any>(new Number(this.studentID));
             });
-    }
-    
-    public refresh() {
-        this.studentID = <any>(new Number(this.studentID));
+
+        this._globalService.refreshStudentPanelOfficial$
+            .subscribe(item => {
+                this.officialStudentID = <any>(new Number(this.officialStudentID));
+            })
     }
 
     getStudentSchedule(){
