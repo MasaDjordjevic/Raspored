@@ -128,10 +128,10 @@ export class AddActivityComponent {
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast("Uspešno dodata aktivnost.");
+                        this._globalService.toast("Uspešno dodato obaveštenje.");
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije dodata aktivnost.`);
+                        this._globalService.toast(`Došlo je do greške. Nije dodato obaveštenje.`);
                         debugger;
                         break;
                 }
