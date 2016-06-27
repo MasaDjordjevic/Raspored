@@ -44,7 +44,7 @@ namespace WebApplication1.Data
     {
         private static int colorCounter = -1;
 
-        public static string GetNextColor()
+        public static string GetNextColor(string name)
         {
             string[] boje = new string[] { "MaterialRed", "MaterialBlue", "MaterialGreen", "MaterialOrange", "MaterialPurple" };
 
@@ -52,7 +52,15 @@ namespace WebApplication1.Data
             if (colorCounter == boje.Length)
                 colorCounter = 0;
 
-            return boje[colorCounter];
+            int num = 0;
+            foreach (char c in name)
+            {
+                num += Math.Abs((c+1)*(c+1));
+            }
+            num *= num;
+            num = Math.Abs(num);
+            num = num%boje.Length;
+            return boje[num];
 
         }
 

@@ -359,5 +359,16 @@ namespace MyFirstDnxUnitTests
             DateTime date = new DateTime(2016, 2, 16, 16, 15, 0);
             string ret = date.ToStr();
         }
+
+        [Fact]
+        public void Colors()
+        {
+            string c1 = WebApplication1.Data.Schedule.GetNextColor("Laza");
+            string c2 = WebApplication1.Data.Schedule.GetNextColor("Masa    ");
+            string c3 = WebApplication1.Data.Schedule.GetNextColor("Pera");
+            string c4 = WebApplication1.Data.Schedule.GetNextColor("Mika");
+            string c5 = WebApplication1.Data.Schedule.GetNextColor("Programski jezici");
+            string c6 = WebApplication1.Data.Schedule.GetNextColor("nesto sdafjsjdf sajdkf askj");
+        }
     }
 }

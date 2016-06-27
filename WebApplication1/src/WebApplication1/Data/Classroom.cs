@@ -40,7 +40,7 @@ namespace WebApplication1.Data
                             assistant = Group.GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
                             active = Group.IsActive(a.groupID, tsNow),
-                            color = Schedule.GetNextColor(),
+                            color = Schedule.GetNextColor(a.division.course.name + " " + a.name),
                             isClass = true,
                         }).ToList();
 
@@ -54,7 +54,7 @@ namespace WebApplication1.Data
                         startMinutes = (int) a.timeSpan.startDate.TimeOfDay.TotalMinutes,
                         durationMinutes = (int) (a.timeSpan.endDate.Subtract(a.timeSpan.startDate)).TotalMinutes,
                         active = true,
-                        color = Schedule.GetNextColor(),
+                        color = Schedule.GetNextColor(a.title),
                         activityTitle = a.title,
                         activityContent = a.activityContent,
                         isClass = false,

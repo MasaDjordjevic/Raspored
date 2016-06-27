@@ -60,7 +60,7 @@ namespace WebApplication1.Data
                             assistant = Group.GetAssistant(a.groupID),
                             type = a.division.divisionType.type,
                             active = Group.IsActive(a.groupID, tsNow),
-                            color = Schedule.GetNextColor(),
+                            color = Schedule.GetNextColor(a.division.course.name + " " + a.name),
                             isClass = true,
                             groupID = a.groupID
                         }).ToList();
