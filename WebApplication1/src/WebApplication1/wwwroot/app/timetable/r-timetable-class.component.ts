@@ -156,12 +156,25 @@ export class TimetableClassComponent {
         this._studentsService.unhideClass(this.classId)
             .then(
                 response => {
-                    console.log("Response: ", response);
-                    if (response.status === "uspelo") {
-
-                    } else {
-                        // status === "nije uspelo"
-                        this.message = response.message;
+                    switch (response.status) {
+                        case "uspelo":
+                            this._globalService.toast(`Čas uspešno dodat u lični.`);
+                            break;
+                        case "nije uspelo":
+                            switch (response.message) {
+                                case "vec je u licnom":
+                                    this._globalService.toast(`Čas se već nalazi u ličnom rasporedu.`);
+                                    break;
+                                default:
+                                    this._globalService.toast(`Došlo je do greške. Čas nije dodat u lični raspored.`);
+                                    debugger;
+                                    break;
+                            }
+                            break;
+                        default:
+                            this._globalService.toast(`Došlo je do greške. Čas nije dodat u lični raspored.`);
+                            debugger;
+                            break;
                     }
                 }
             );
@@ -175,10 +188,19 @@ export class TimetableClassComponent {
 
     // sakrij cas
     public hideClass() {
-        // TODO smisli nesto pametno umesto tajmauta
         this._studentsService.hideClass(this.classId)
-            .then(status => console.log(status))
-            .then(() => setTimeout(() => this._globalService.refreshStudentPanelPersonal(), 1000));
+            .then(response => {
+                switch (response.status) {
+                    case "uspelo":
+                        this._globalService.toast(`Sakriven čas.`);
+                        break;
+                    default:
+                        this._globalService.toast(`Došlo je do greške.`);
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => setTimeout(() => this._globalService.refreshStudentPanelPersonal(), 300));
     }
 
     // dodaj task

@@ -59,9 +59,7 @@ export class StudentPanelComponent implements AfterContentInit {
         private _studentsService: StudentsService,
         private _globalService: GlobalService,
         private _elementRef: ElementRef
-    )
-    {
-    }
+    ) { }
 
     ngAfterContentInit() {
         this.getStudent();
