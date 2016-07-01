@@ -8,13 +8,11 @@ import {R_DL} from "../../ui/r-dl";
 import {TrimPipe} from "../../pipes/trim.pipe";
 import {GroupEditComponent} from "../dialogs/group-edit.component";
 import {AddActivityComponent} from "../dialogs/group-add-activity.component";
-import {CancelClassComponent} from "../dialogs/Cancel-class.component";
-
-import * as moment_ from "../../../js/moment.js";
+import {CancelClassComponent} from "../dialogs/cancel-class.component";
 import {TimetableComponent} from "../../timetable/r-timetable.component";
 import {AssistantService} from "../../services/assistant.service";
 import {GlobalService} from "../../services/global.service";
-const moment = moment_["default"];
+import {moment} from "../../global/moment.import"; 
 
 @Component({
     selector: 'r-group-options',
@@ -72,16 +70,27 @@ export class GroupOptionsComponent {
 
             // tražimo dan
             let day = start.day(); // 0 nedelja, 1 ponedeljak, ..., 6 subota
-            let modifier = period === 1 ? "" : period === 2 ? "druge" : "četvrte";
+            let modifier = period === 1 ? "" :
+                period === 2 ? this._globalService.translate('second__acc') :
+                    this._globalService.translate('fourth__acc');
+            
             let dayName =
-                day === 0 ? "nedelju" :
-                    day === 1 ? "ponedeljak" :
-                        day === 2 ? "utorak" :
-                            day === 3 ? "sredu" :
-                                day === 4 ? "četvrtak" :
-                                    day === 5 ? "petak" : "subotu";
+                day === 0 ? this._globalService.translate('sunday') :
+                    day === 1 ? this._globalService.translate('monday__acc') :
+                        day === 2 ? this._globalService.translate('tuesday__acc') :
+                            day === 3 ? this._globalService.translate('wednesday__acc') :
+                                day === 4 ? this._globalService.translate('thursday__acc') :
+                                    day === 5 ? this._globalService.translate('friday__acc') :
+                                        this._globalService.translate('saturday__acc');
 
-            return `Svake ${modifier} nedelje u ${dayName} od ${start.format("HH:mm")} do ${end.format("HH:mm")}`;
+            return this._globalService.translate('duration_descriptive_string__1') + 
+                modifier + 
+                this._globalService.translate('duration_descriptive_string__2') + 
+                dayName + 
+                this._globalService.translate('duration_descriptive_string__3') + 
+                start.format("HH:mm") + 
+                this._globalService.translate('duration_descriptive_string__4') + 
+                end.format("HH:mm");
         }
 
     }
@@ -98,10 +107,15 @@ export class GroupOptionsComponent {
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast(`Uspešno obrisana grupa *${this.group.name}*.`);
+                        this._globalService.toast(this._globalService.translate('group_delete_successful__1') +
+                            ' *' + this.group.name + '*'
+                            + this._globalService.translate('group_delete_successful__2'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije obrisana grupa *${this.group.name}*.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' '
+                            + this._globalService.translate('group_delete_unsuccessful__1') +
+                            ' *' + this.group.name + '*' +
+                            + this._globalService.translate('group_delete_unsuccessful__2'));
                         debugger;
                         break;
                 }

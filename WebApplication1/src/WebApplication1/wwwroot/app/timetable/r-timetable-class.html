@@ -32,7 +32,9 @@
     <template [ngIf]="!expanded">
 
     <span class="times">
-        <span class="start">{{startMinutes | toTimestamp}}</span> — <span class="end">{{endMinutes | toTimestamp}}</span>
+        <span class="start">{{startMinutes | toTimestamp}}</span>
+        —
+        <span class="end">{{endMinutes | toTimestamp}}</span>
     </span>
 
         <!-- ako je čas (nije aktivnost) -->
@@ -40,7 +42,7 @@
         <span class="title">
             <template [ngIf]="!expanded">{{abbr}}</template>
             <template [ngIf]="expanded">{{className}}</template>
-            u
+            {{_globalService.translate('in')}}
             {{classroom}}
         </span>
             <span class="type">{{type}}</span>
@@ -75,12 +77,12 @@
             <div class="tab" (click)="selectedTab = 1"
                  [style.fontWeight]="selectedTab === 1 ? 'bold' : 'normal'"
             >
-                <span>Opšti podaci</span>
+                <span>{{_globalService.translate('basic_info')}}</span>
             </div>
             <div class="tab" (click)="selectedTab = 2"
                  [style.fontWeight]="selectedTab === 2 ? 'bold' : 'normal'"
             >
-                <span>Obaveštenja</span>
+                <span>{{_globalService.translate('announcements')}}</span>
             </div>
         </div>
 
@@ -91,7 +93,7 @@
                     <dl>
                         <div><dt class="class-time">
                             <i class="fa fa-clock-o"></i>
-                            <span>Vreme</span>
+                            <span>{{_globalService.translate('time')}}</span>
                         </dt>
                             <dd>
                                 {{startMinutes | toTimestamp}} — {{endMinutes | toTimestamp}}
@@ -99,7 +101,7 @@
 
                         <div><dt class="class-place">
                             <i class="fa fa-server"></i>
-                            <span>Mesto</span>
+                            <span>{{_globalService.translate('place')}}</span>
                         </dt>
                             <dd>
                                 {{classroom}}
@@ -107,7 +109,7 @@
 
                         <div><dt class="class-subject">
                             <i class="fa fa-graduation-cap"></i>
-                            <span>Predmet</span>
+                            <span>{{_globalService.translate('subject')}}</span>
                         </dt>
                             <dd>
                                 {{className}}
@@ -121,7 +123,7 @@
 
                         <div><dt class="type">
                             <i class="fa fa-sitemap"></i>
-                            <span>Tip</span>
+                            <span>{{_globalService.translate('type')}}</span>
                         </dt>
                             <dd>
                                 {{type}}
@@ -129,7 +131,7 @@
 
                         <div><dt class="assistant">
                             <i class="fa fa-male"></i>
-                            <span>Asistent</span>
+                            <span>{{_globalService.translate('assistant')}}</span>
                         </dt>
                             <dd>
                                 {{assistant}}
@@ -137,6 +139,7 @@
                                 <a [href]="'mailto:' + assistantEmail">
                                     <i class="fa fa-envelope"></i>
                                 </a>
+                                <!-- todo mejl asistena -->
                                 <!--<div class="more-info">-->
                                 <!--<i class="fa fa-question"></i>-->
                                 <!--<div>-->
@@ -150,45 +153,45 @@
                     <div class="controls">
 
                         <button *ngIf="mode === _Mode.StudentOfficial || mode === _Mode.StudentGlobal && isClass"
-                                r-button raised text="Dodaj čas u lični"
+                                r-button raised [text]="_globalService.translate('add_to_personal')"
                                 (click)="addToPersonal()"
-                                [primaryColor]="color">Dodaj u lični</button>
+                                [primaryColor]="color">{{_globalService.translate('add_to_personal')}}</button>
 
                         <button *ngIf="mode === _Mode.StudentPersonal && !isClass"
-                                r-button raised text="Obriši aktivnost"
+                                r-button raised [text]="_globalService.translate('delete_activity')"
                                 (click)="deleteActivity()"
                                 [primaryColor]="color">Obriši aktivnost</button>
 
                         <button *ngIf="mode === _Mode.StudentPersonal && isClass"
-                                r-button raised text="Sakrij čas"
+                                r-button raised [text]="_globalService.translate('delete_activity')"
                                 (click)="hideClass()"
                                 [primaryColor]="color">Sakrij čas</button>
 
                         <button *ngIf="mode === _Mode.StudentPersonal"
-                                r-button raised text="Dodaj task"
+                                r-button raised [text]="_globalService.translate('add_task')"
                                 #addTaskButton
                                 (click)="addTaskDialog.open()"
                                 [primaryColor]="color">Dodaj task</button>
 
                         <button *ngIf="mode === _Mode.AssistantOfficial"
-                                r-button raised text="Dodaj obaveštenje"
+                                r-button raised [text]="_globalService.translate('add_announcement')"
                                 #addAnnouncementButton
                                 (click)="addAnnouncementDialog.open()"
                                 [primaryColor]="color">Dodaj obaveštenje</button>
 
                         <button *ngIf="mode === _Mode.AssistantOfficial"
-                                r-button raised text="Otkaži čas"
+                                r-button raised [text]="_globalService.translate('cancel_class')"
                                 #cancelClassButton
                                 (click)="cancelClassDialog.open()"
                                 [primaryColor]="color">Otkaži čas</button>
 
                         <button *ngIf="mode === _Mode.AssistantOfficial"
-                                r-button raised text="Opozovi otkazivanje"
+                                r-button raised [text]="_globalService.translate('undo_cancel')"
                                 #uncancelClassButton
                                 (click)="uncancelClassDialog.open()"
                                 [primaryColor]="color">"Opozovi otkazivanje"</button>
 
-                        <button r-button raised text="Oglasna tabla"
+                        <button r-button raised [text]="_globalService.translate('bulletin_board')"
                                 *ngIf="mode !== _Mode.StudentGlobal"
                                 #bulletinBoardButton
                                 (click)="bulletinBoardDialog.open()"
@@ -244,7 +247,6 @@
                                     [secondaryColor]="color"
                                     (close)="uncancelClassDialog.close()"
                             >
-
                             </uncancel-class>
                         </r-dialog>
 
@@ -260,7 +262,7 @@
                     <div class="no-notifications" *ngIf="notifications && !notifications.length">
                         <div>
                             <i class="fa fa-bell-slash-o"></i>
-                            <span>Trenutno nema<br>obaveštenja</span>
+                            <span>{{_globalService.translate('no_announcements__1')}}<br>{{_globalService.translate('no_announcements__2')}}</span>
                         </div>
                     </div>
 

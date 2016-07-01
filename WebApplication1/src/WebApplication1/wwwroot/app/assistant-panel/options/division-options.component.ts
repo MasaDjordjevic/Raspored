@@ -83,10 +83,13 @@ export class DivisionOptionsComponent implements AfterViewInit {
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast(`Uspešno kopirana raspodela *${this.division.name}*.`);
+                        this._globalService.toast(this._globalService.translate('successfully_copied_division__1') +
+                            ' *' + this.division.name + '*'
+                            + this._globalService.translate('successfully_copied_division__2'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije kopirana raspodela.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' ' 
+                            + this._globalService.translate('division_not_copied'));
                         debugger;
                         break;
                 }
@@ -101,10 +104,15 @@ export class DivisionOptionsComponent implements AfterViewInit {
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast(`Obrisana raspodela *${this.division.name}*.`);
+                        this._globalService.toast(this._globalService.translate('successfully_deleted_division__1')
+                            + ' *' + this.division.name + '*'
+                            + this._globalService.translate('successfully_deleted_division__2'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Brisanje raspodele *${this.division.name}* nije uspelo.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' '
+                            + this._globalService.translate('division_not_deleted__1')
+                            + ' *' + this.division.name + '*'
+                            + this._globalService.translate('division_not_deleted__2'));
                         debugger;
                         break;
                 }
@@ -149,11 +157,15 @@ export class DivisionOptionsComponent implements AfterViewInit {
         // Probamo da kopiramo selektirano (nece na svakom browseru)
         try {
             document.execCommand("copy");
+            this._globalService.toast(this._globalService.translate('copy_successful'));
         } catch (err) {
-            console.error("Neuspelo kopiranje :/");
+            this._globalService.toast(this._globalService.translate('copy_unsuccessful'));
+            console.log('Kopiranje na klipbord nije uspelo. Verovatno koristite prastari pretraživač, ' +
+                'ili koristite aplikaciju Raspored u dalekoj budućnosti, a već odavno je trebalo da je zamenite.');
+        } finally {
+            // deselektiramo
+            el.selectionEnd = 0;
         }
-        // Deselektiramo
-        el.selectionEnd = 0;
     }
 
 }

@@ -3,14 +3,15 @@
     <h1>{{department.departmentName}} ({{department.year | roman}})</h1>
 
     <dl r-dl>
-        <dt>ID</dt>
+        <dt>{{_globalService.translate('id')}}</dt>
         <dd>{{department.departmentID}}</dd>
-        <dt>Ime</dt>
+        <dt>{{_globalService.translate('name')}}</dt>
         <dd>{{department.departmentName}}</dd>
-        <dt>Godina</dt>
+        <dt>{{_globalService.translate('year')}}</dt>
         <dd>{{department.year}}</dd>
     </dl>
 
+    <!-- TODO lol -->
     <p>{{errorMessage}}</p>
 
     <div class="flex-spacer"></div>
@@ -58,21 +59,21 @@
         <div class="flex-spacer"></div>
 
         <button r-button raised #newDivisionButton
-                text="Nova raspodela"
+                [text]="_globalService.translate('new_division')"
                 (click)="newDivisionDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
 
         <button r-button raised #allStudentsButton
-                [text]="'Studenti'"
+                [text]="_globalService.translate('students')"
                 (click)="allStudentsDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
 
         <button r-button raised #globalScheduleButton
-                [text]="'Globani raspored'"
+                [text]="_globalService.translate('global_timetable')"
                 (click)="globalScheduleDialog.open()"
                 [primaryColor]="primaryColor">
         </button>

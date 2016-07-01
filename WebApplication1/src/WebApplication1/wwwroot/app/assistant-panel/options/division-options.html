@@ -4,27 +4,28 @@
     <h2>({{division.divisionType.type}} za {{division.course.alias}})</h2>
 
     <dl r-dl>
-        <!--<dt>ID</dt>
-        <dd>{{division.divisionID}}</dd>-->
-        <dt>Predmet</dt>
+        <dt>ID</dt>
+        <dd>{{division.divisionID}}</dd>
+        <dt>{{_globalService.translate('subject')}}</dt>
         <dd>{{division.course.name}} (<code>{{division.course.code}}</code>)</dd>
 
-        <dt>Trajanje</dt>
+        <dt>{{_globalService.translate('duration')}}</dt>
         <dd>{{division.beginning.slice(0, 10)}} — {{division.ending.slice(0, 10)}}</dd>
 
-        <dt>Broj grupa</dt>
+        <dt>{{_globalService.translate('number_of_groups')}}</dt>
         <dd>{{division.Groups.length}}</dd>
 
-        <dt>Broj studenata</dt>
+        <dt>{{_globalService.translate('number_of_students')}}</dt>
         <dd>{{totalNumberOfStudents()}}</dd>
 
-        <dt>Osnivač grupe</dt>
+        <dt>{{_globalService.translate('group_creator')}}</dt>
         <dd>
             {{division.creator.name}} {{division.creator.surname}}
             <a [href]="'mailto:' + division.creator.email"><i class="fa fa-envelope"></i></a>
         </dd>
     </dl>
 
+    <!-- todo lel -->
     <p>{{errorMessage}}</p>
 
     <div class="flex-spacer"></div>
@@ -61,7 +62,11 @@
         <div class="export">
             <textarea id="csvExport" #csvExport readonly cols="100" rows="20"></textarea>
             <div class="controls">
-                <button r-button flat [text]="'Kopiraj'" (click)="copyToClipboard(csvExport)">Kopiraj</button>
+                <button r-button flat [text]="_globalService.translate('copy')"
+                        (click)="copyToClipboard(csvExport)"
+                >
+                    {{_globalService.translate('copy')}}
+                </button>
             </div>
         </div>
     </r-dialog>
@@ -73,10 +78,18 @@
 
     <r-dialog #removeDivisionDialog [source]="removeDivisionButton">
         <div class="remove-division-dialog">
-            <div class="dialog-text">Obriši raspodelu <b>{{division.name}}</b>?</div>
+            <div class="dialog-text">
+                {{_globalService.translate('delete_division__1')}}<b>{{division.name}}</b>{{_globalService.translate('delete_division__2')}}
+            </div>
             <div class="dialog-controls">
-                <button r-button flat text="Odustani" (click)="removeDivisionDialog.close()" [primaryColor]="primaryColor">Odustani</button>
-                <button r-button raised text="Obriši" (click)="removeDivision(); removeDivisionDialog.close()" [primaryColor]="primaryColor">Obriši</button>
+                <button r-button flat [text]="_globalService.translate('cancel')"
+                        (click)="removeDivisionDialog.close()" [primaryColor]="primaryColor">
+                    {{_globalService.translate('cancel')}}
+                </button>
+                <button r-button raised [text]="_globalService.translate('delete')"
+                        (click)="removeDivision(); removeDivisionDialog.close()" [primaryColor]="primaryColor">
+                    {{_globalService.translate('delete')}}
+                </button>
             </div>
         </div>
     </r-dialog>
@@ -84,45 +97,45 @@
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
-                text="JSON" (click)="debuggingDialog.open()"
+                [text]="_globalService.translate('json')" (click)="debuggingDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('json')}}
         </button>
 
         <div class="flex-spacer"></div>
 
         <button r-button raised #editDivisionButton
-                text="Izmeni raspodelu"
+                [text]="_globalService.translate('division_edit')"
                 (click)="editDivisionDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #newGroupButton
-                text="Nova grupa"
+                [text]="_globalService.translate('new_group')"
                 (click)="newGroupDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
-        <!-- TODO -->
         <button r-button raised
-                text="Kopiraj raspodelu"
+                [text]="_globalService.translate('copy_division')"
                 (click)="copyDivision()"
                 [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #groupsButton
-                text="Grupe"
+                [text]="_globalService.translate('groups')"
                 (click)="groupsDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #exportDivisionButton
-                text="Izvezi raspodelu"
+                [text]="_globalService.translate('export_division')"
                 (click)="generateCSV(); exportDivisionDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
         <button r-button raised #removeDivisionButton
-                text="Obriši raspodelu"
+                [text]="_globalService.translate('delete_division')"
                 (click)="removeDivisionDialog.open()"
                 [primaryColor]="primaryColor">
         </button>

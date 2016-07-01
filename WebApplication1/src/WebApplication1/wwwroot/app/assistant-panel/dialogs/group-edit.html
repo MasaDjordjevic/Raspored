@@ -4,55 +4,68 @@
 
         <div class="inputs-top">
             <div class="inputs-left">
-                <r-input class="light-theme" [label]="'Ime grupe'" [(val)]="editedGroupName"></r-input>
+                <r-input [label]="_globalService.translate('group_name')"
+                         [(val)]="editedGroupName"></r-input>
 
-                <r-dropdown [label]="'Učionica'" [(val)]="editedClassroom">
+                <r-dropdown [label]="_globalService.translate('classroom')" [(val)]="editedClassroom">
                     <r-dropdown-item *ngFor="let classroom of classrooms" [value]="classroom.classroomID">
                         {{classroom.number}}
                     </r-dropdown-item>
                 </r-dropdown>
 
                 <r-dropdown *ngIf="assistants" [label]="'Asistent'" [(val)]="editedAssistant">
-                    <r-dropdown-item *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >{{assistant.name}} {{assistant.surname}}</r-dropdown-item>
+                    <r-dropdown-item *ngFor="let assistant of assistants" [value]="assistant.uniMemberID" >
+                        {{assistant.name}} {{assistant.surname}}
+                    </r-dropdown-item>
                 </r-dropdown>
 
-                <button r-button flat type="button" (click)="getAllAssistants()" [text]="'Svi asistenti'"></button>
+                <!-- TODO smisli nesto pametno + ovo ima bag valjda kad se pravi nvoa -->
+                <button r-button flat type="button" (click)="getAllAssistants()"
+                        [text]="_globalService.translate('all_assistants')">
+                    {{_globalService.translate('all_assistants')}}
+                </button>
             </div>
 
             <div class="inputs-right">
-                <r-dropdown [label]="'Perioda'" [(val)]="editedPeriod">
-                    <r-dropdown-item [value]="1">Svake nedelje</r-dropdown-item>
-                    <r-dropdown-item [value]="2">Na dve nedelje</r-dropdown-item>
-                    <r-dropdown-item [value]="4">Na četiri nedelje</r-dropdown-item>
-                    <r-dropdown-item [value]="0">Jednom</r-dropdown-item>
+                <r-dropdown [label]="_globalService.translate('period')" [(val)]="editedPeriod">
+                    <r-dropdown-item [value]="1">{{_globalService.translate('every_week')}}</r-dropdown-item>
+                    <r-dropdown-item [value]="2">{{_globalService.translate('every_second_week')}}</r-dropdown-item>
+                    <r-dropdown-item [value]="4">{{_globalService.translate('every_fourth_week')}}</r-dropdown-item>
+                    <r-dropdown-item [value]="0">{{_globalService.translate('just_once')}}</r-dropdown-item>
                 </r-dropdown>
                 <template [ngIf]="editedPeriod && editedPeriod !== 0">
-                    <r-dropdown [label]="'Dan u nedelji'" [(val)]="editedDayOfWeek">
-                        <r-dropdown-item [value]="1">Ponedeljak</r-dropdown-item>
-                        <r-dropdown-item [value]="2">Utorak</r-dropdown-item>
-                        <r-dropdown-item [value]="3">Sreda</r-dropdown-item>
-                        <r-dropdown-item [value]="4">Četvrtak</r-dropdown-item>
-                        <r-dropdown-item [value]="5">Petak</r-dropdown-item>
-                        <r-dropdown-item [value]="6">Subota</r-dropdown-item>
-                        <r-dropdown-item [value]="0">Nedelja</r-dropdown-item>
+                    <r-dropdown [label]="_globalService.translate('day_of_week')" [(val)]="editedDayOfWeek">
+                        <r-dropdown-item [value]="1">{{_globalService.translate('monday')}}</r-dropdown-item>
+                        <r-dropdown-item [value]="2">{{_globalService.translate('tuesday')}}</r-dropdown-item>
+                        <r-dropdown-item [value]="3">{{_globalService.translate('wednesday')}}</r-dropdown-item>
+                        <r-dropdown-item [value]="4">{{_globalService.translate('thursday')}}</r-dropdown-item>
+                        <r-dropdown-item [value]="5">{{_globalService.translate('friday')}}</r-dropdown-item>
+                        <r-dropdown-item [value]="6">{{_globalService.translate('saturday')}}</r-dropdown-item>
+                        <r-dropdown-item [value]="0">{{_globalService.translate('sunday')}}</r-dropdown-item>
                     </r-dropdown>
-                    <r-input class="light-theme" [label]="'Početak (HH:MM)'" [(val)]="editedTimeStart"></r-input>
-                    <r-input class="light-theme" [label]="'Kraj (HH:MM)'" [(val)]="editedTimeEnd"></r-input>
+                    <r-input [label]="_globalService.translate('beginning') + ' (HH:MM)'"
+                             [(val)]="editedTimeStart"></r-input>
+                    <r-input [label]="_globalService.translate('ending') + ' (HH:MM)'"
+                             [(val)]="editedTimeEnd"></r-input>
                 </template>
                 <template [ngIf]="editedPeriod == 0">
-                    <r-input class="light-theme" [label]="'Početak (YYYY-MM-DD HH:MM)'" [(val)]="editedDateTimeStart"></r-input>
-                    <r-input class="light-theme" [label]="'Kraj (YYYY-MM-DD HH:MM)'" [(val)]="editedDateTimeEnd"></r-input>
+                    <r-input [label]="_globalService.translate('beginning') + ' (YYYY-MM-DD HH:MM)'"
+                             [(val)]="editedDateTimeStart"></r-input>
+                    <r-input [label]="_globalService.translate('ending') + ' (YYYY-MM-DD HH:MM)'"
+                             [(val)]="editedDateTimeEnd"></r-input>
                 </template>
             </div>
         </div>
 
         <div class="in-out-buttons">
-            <button r-button raised [text]="'Ubaci u grupu'" primaryColor="MaterialGreen"
+            <button r-button raised [text]="_globalService.translate('to_group')" [primaryColor]="'MaterialGreen'"
                     (click)="moveToChosen(otherStuds.selected)"
             >
+                {{_globalService.translate("to_group")}}
             </button>
-            <button r-button raised [text]="'Izbaci iz grupe'" primaryColor="MaterialRed"
+            <button r-button raised [text]="_globalService.translate('out_of_group')" [primaryColor]="'MaterialRed'"
                     (click)="moveToOthers(chosenStuds.selected); chosenStuds.selected = null">
+                {{_globalService.translate("out_of_group")}}
             </button>
         </div>
 
@@ -60,7 +73,11 @@
 
     <div class="chosen-selector">
         <div>
-            <r-students-selector [columns]="2" [title]="'Iz grupe'" #chosenStuds [students]="chosenStudents" primaryColor="MaterialRed">
+            <r-students-selector [columns]="2"
+                                 [title]="_globalService.translate('this_group')"
+                                 #chosenStuds
+                                 [students]="chosenStudents"
+                                 [primaryColor]="primaryColor">
             </r-students-selector>
         </div>
     </div>
@@ -69,13 +86,18 @@
 
 <div class="others-selector">
     <div>
-        <r-students-selector [columns]="3" [title]="'Ostali'" #otherStuds [students]="otherStudents | withoutStudents : chosenStudents" primaryColor="MaterialRed">
+        <r-students-selector [columns]="3"
+                             [title]="_globalService.translate('others')"
+                             #otherStuds
+                             [students]="otherStudents | withoutStudents : chosenStudents"
+                             [primaryColor]="primaryColor">
         </r-students-selector>
     </div>
 </div>
 
 <div class="controls">
-    <div>
+    <!-- todo skloni ovo? -->
+    <div *ngIf="false">
         <b>as:</b> {{editedAssistant}}
         <b>cl:</b> {{editedClassroom}}
         <b>name:</b> {{editedGroupName}}
@@ -86,6 +108,9 @@
         <b>datetime start:</b> {{editedDateTimeStart}}
         <b>datetime end:</b> {{editedDateTimeEnd}}
     </div>
-    <button r-button raised [text]="'Sačuvaj izmene'" type="submit" (click)="save()"></button>
+    <button r-button raised [text]="_globalService.translate('save_changes')" type="submit"
+            (click)="save()" [primaryColor]="primaryColor">
+        {{_globalService.translate('save_changes')}}
+    </button>
 </div>
 

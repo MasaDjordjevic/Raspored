@@ -3,18 +3,19 @@
     <h1>{{group.name}}</h1>
 
     <dl r-dl>
-        <dt>ID</dt>
+        <dt>{{_globalService.translate('id')}}</dt>
         <dd>{{group.groupID}}</dd>
-        <div style="opacity: .5">
-            <dt>Trajanje</dt>
+        <div style="opacity: .5" *ngIf="false">
+            <dt>{{_globalService.translate('duration')}}</dt>
             <dd>{{group.timeSpan && group.timeSpan.startDate}} — {{group.timeSpan && group.timeSpan.endDate}}</dd>
-            <dt>Perioda</dt>
+            <dt>{{_globalService.translate('period')}}</dt>
             <dd>{{group.timeSpan && group.timeSpan.period}}</dd>
         </div>
-        <dt>Trajanje</dt>
+        <dt>{{_globalService.translate('duration')}}</dt>
         <dd>{{descriptiveString}}</dd>
     </dl>
 
+    <!-- kek todo -->
     <p>{{errorMessage}}</p>
 
     <div class="flex-spacer"></div>
@@ -55,10 +56,16 @@
 
     <r-dialog #removeGroupDialog [source]="removeGroupButton">
         <div class="remove-group-dialog">
-            <div class="dialog-text">Obriši grupu <b>{{group.name}}</b>?</div>
+            <div class="dialog-text">{{_globalService.translate('delete_group__1')}}<b>{{group.name}}</b>{{_globalService.translate('delete_group__2')}}</div>
             <div class="dialog-controls">
-                <button r-button flat text="Odustani" (click)="removeGroupDialog.close()" [primaryColor]="primaryColor">Odustani</button>
-                <button r-button raised text="Obriši" (click)="removeGroup()" [primaryColor]="primaryColor">Obriši</button>
+                <button r-button flat [text]="_globalService.translate('cancel')"
+                        (click)="removeGroupDialog.close()" [primaryColor]="primaryColor">
+                    {{_globalService.translate('cancel')}}
+                </button>
+                <button r-button raised [text]="_globalService.translate('delete')"
+                        (click)="removeGroup()" [primaryColor]="primaryColor">
+                    {{_globalService.translate('delete')}}
+                </button>
             </div>
         </div>
     </r-dialog>
@@ -70,41 +77,46 @@
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
-                text="JSON" (click)="debuggingDialog.open()"
+                [text]="_globalService.translate('json')" (click)="debuggingDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
         <div class="flex-spacer"></div>
 
         <button r-button raised #editGroupButton
-                text="Izmeni grupu"
+                [text]="_globalService.translate('group_edit')"
                 (click)="editGroupDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('group_edit')}}
         </button>
 
         <button *ngIf="group.timeSpanID"
                 r-button raised #cancelClassButton
-                text="Otkazi cas"
+                [text]="_globalService.translate('cancel_class')"
                 (click)="cancelClassDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('cancel_class')}}
         </button>
 
         <button r-button raised #combinedScheduleButton
-                text="Kombinovani raspored"
+                [text]="_globalService.translate('combined_timetable')"
                 (click)="combinedScheduleDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('combined_timetable')}}
         </button>
 
         <button r-button raised #addNotificationButton
-                text="Dodaj obaveštenje"
+                [text]="_globalService.translate('add_announcement')"
                 (click)="addNotificationDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('add_announcement')}}
         </button>
 
         <button r-button raised #removeGroupButton
-                text="Obriši grupu"
+                [text]="_globalService.translate('delete_group')"
                 (click)="removeGroupDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('delete_group')}}
         </button>
 
     </div>

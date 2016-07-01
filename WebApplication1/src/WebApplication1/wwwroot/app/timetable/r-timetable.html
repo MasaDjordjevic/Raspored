@@ -23,6 +23,7 @@
         <i class="fa fa-cog"></i>
     </button>
 
+    <!-- todo -->
     <r-dialog #optionsDialog [source]="optionsButton">
         <div style="padding:2em; height: 600px; width: 600px;">
             <form><fieldset style="padding:.5em">
@@ -38,22 +39,7 @@
                 <label>
                     Weeks from now ({{weeksFromNow}})
                     <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" />
-                </label><br/>
-                <!--
-                <select name="mode" [(ngModel)]="mode">
-                    <option [value]="0">student</option>
-                    <option [value]="1">grupa</option>
-                    <option [value]="2">globalni</option>
-                    <option [value]="3">ucionica</option>
-                </select>
-                <input type="number" min="0" max="15000" step="1" *ngIf="mode == 0" [(ngModel)]="studentID" />
-                <input type="number" min="0" max="15000" step="1" *ngIf="mode == 1" [(ngModel)]="groupID" />
-                <input type="number" min="0" max="15000" step="1" *ngIf="mode == 2" [(ngModel)]="departmentID" />
-                <select *ngIf="mode == 3" name="classroom"  [(ngModel)]="classroomID">
-                    <option *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</option>
-                </select>
-                mode: {{mode}} s:{{studentID}} g:{{groupID}} dep:{{departmentID}} c:{{classroomID}}
-                -->
+                </label>
                 <br/>
                 Beginning minutes ({{beginningMinutes | toTimestamp}})
                 <input type="number" min="0" max="1440" step="5" [(ngModel)]="beginningMinutes"/>
@@ -89,7 +75,6 @@
             </fieldset></form>
         </div>
     </r-dialog>
-
 
     <template ngFor let-i [ngForOf]="[0, 1, 2, 3, 4, 5, 6]">
         <r-timetable-column

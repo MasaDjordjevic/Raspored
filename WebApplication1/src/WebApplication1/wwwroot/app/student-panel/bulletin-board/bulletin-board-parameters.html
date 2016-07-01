@@ -1,7 +1,7 @@
 <r-multiple-selector
         [primaryColor]="primaryColor"
         [secondaryColor]="secondaryColor"
-        [title]="'Naslov'"
+        [title]="_globalService.translate('choose_ad')"
         [(val)]="chosenChoices"
 >
     <r-multiple-selector-item
@@ -13,12 +13,9 @@
 </r-multiple-selector>
 
 <button r-button raised
-        [text]="'Zameni se'"
+        [text]="_globalService.translate('exchange')"
         (click)="exchangeWith()"
         [primaryColor]="primaryColor"
 >
-    Zameni se
+    {{_globalService.translate('exchange')}}
 </button>
-
-possible: {{possibleChoices | json}}
-chosen: {{chosenChoices | json}}

@@ -95,7 +95,6 @@ export class RFabButtonDirective {
         "[class.neon-poison]": "primaryColorClassName === 'neon-poison'",
         // additional material (for students):
         "[class.pink]": "primaryColorClassName === 'pink'",
-        "[class.purple]": "primaryColorClassName === 'purple'",
         "[class.deep-purple]": "primaryColorClassName === 'deep-purple'",
         "[class.indigo]": "primaryColorClassName === 'indigo'",
         "[class.light-blue]": "primaryColorClassName === 'light-blue'",

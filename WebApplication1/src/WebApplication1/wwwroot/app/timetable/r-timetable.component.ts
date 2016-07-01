@@ -96,7 +96,7 @@ export class TimetableComponent {
         } else if (this.assistantID) {
             this.getAssistantSchedule();
         } else {
-            /*debugger;*/
+            debugger;
             throw "nesto ne valja";
         }
     }
@@ -246,11 +246,21 @@ export class TimetableComponent {
     }
 
     pom() {
-        console.log(this.classes);
+        //console.log(this.classes);
     }
 
-    dayNames: Array<string> = ["Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak", "Subota", "Nedelja"];
-    dayNamesAbbr: Array<string> = ["pon", "uto", "sre", "čet", "pet", "sub", "ned"];
+    @Input() public dayNames;
+
+    public get dayNamesAbbr(): string[] {
+        // japanski uzima prvo slovo, ostali jeizici uzimaju prva tri slova
+        // TODO testiraj
+        let length = 3;
+        if (this._globalService.currentLanguage == "ja") {
+            length = 1;
+        }
+        return this.dayNames.map(dayName => dayName.substr(0, length));
+    }
+
     displayDay: Array<boolean> = [true, true, true, true, true, true, false];
 
     public addNewActivity(value) {

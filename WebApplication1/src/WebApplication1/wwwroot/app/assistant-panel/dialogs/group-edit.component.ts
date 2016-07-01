@@ -12,13 +12,15 @@ import {R_INPUT} from "../../ui/r-input-text.component";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {R_STUDENT_SELECTOR} from "./students-selector.component";
 import {GlobalService} from "../../services/global.service";
-import * as moment_ from "../../../js/moment.js";
-const moment = moment_["default"];
+import {moment} from "../../global/moment.import";
+
+
 
 @Pipe({
     name: 'withoutStudents',
     pure: false
 })
+
 class WithoutStudentsPipe implements PipeTransform {
     // students bez studenata iz groupStudents
     transform(students, groupStudents) {
@@ -41,6 +43,8 @@ class WithoutStudentsPipe implements PipeTransform {
     }
 }
 
+
+
 @Component({
     selector: 'group-edit',
     templateUrl: 'app/assistant-panel/dialogs/group-edit.html',
@@ -52,6 +56,9 @@ class WithoutStudentsPipe implements PipeTransform {
 
 // Koristi se i za Editovanje postojece grupe i za kreiranje nove grupe.
 export class GroupEditComponent {
+    
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     private _group;
 
@@ -211,10 +218,14 @@ export class GroupEditComponent {
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast(`Uspešno izmenjena grupa *${this.editedGroupName}*.`);
+                        this._globalService.toast(this._globalService.translate('successfully_edited_group__1') + 
+                            '*' + this.editedGroupName + '*'
+                            + this._globalService.translate('successfully_edited_group__2'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije izmenjena grupa *${this.group.name}*.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' ' +
+                            this._globalService.translate('group_not_edited__1') +
+                            this.group.name + this._globalService.translate('group_not_edited__2'));
                         debugger;
                         break
                 }

@@ -13,6 +13,7 @@ import {StudentSearchComponent} from "../dialogs/student-search.component";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {RomanNumeralsPipe} from "../../pipes/roman-numerals.pipe";
 import {R_STUDENT_SELECTOR} from "../dialogs/students-selector.component";
+import {GlobalService} from "../../services/global.service";
 
 
 
@@ -56,7 +57,8 @@ export class DepartmentOptionsComponent {
 
     constructor(
         private _service: DepartmentService,
-        private _studentService: StudentsService
+        private _studentService: StudentsService,
+        private _globalService: GlobalService
     ) {  }
 
     getDepartment(): void {

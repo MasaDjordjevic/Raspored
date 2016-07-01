@@ -14,171 +14,11 @@ import {DivisionType} from "../../models/DivisionType";
 import {R_DL} from "../../ui/r-dl";
 import {GlobalService} from "../../services/global.service";
 
-/**
- * Za pravljenje nove raspodele (division), neophodno je znati sledeće:
- *  - ID asistenta koji kreira raspodelu. Ovo je dostupno na osnovu
- *    korisnika koji je trenutno ulogovan.
- *  + Predmet (course) za koji se raspodela kreira. Ovo korisnik treba
- *    da izabere iz padajućeg menija. Padajući meni se kreira na osnovu
- *    smera (department) koji je trenutno aktivan na asistentskom panelu.
- *  + Vreme važenja raspodele (beginning i ending). Podrazumevano će
- *    raspodela važiti od početka do kraja tekućeg semestra.
- *  + Treba izabrati i tip podele (za račuske vežbe, za predavanja, za
- *    laboratorijske vežbe, itd).
- *
- * Prilikom kreiranja, korisnik može izabrati da kreira praznu raspodelu
- * (u tom slučaju su neophodne stvari opisane gore), ali može i automatski
- * kreirati grupe, na jedan od dva načina (podeli na X i podeli da ima X).
- * U tom slučaju prilikom kreiranja raspodele treba kreirati i odgovarajući
- * broj grupa sa odgovarajućim brojem studenata. Prilikom kreiranja,
- * korisnik ima sledeće opcije:
- *  + Izbor "podeli na X" ili "podeli da ima X".
- *  + Izbor broja X u oba slučaja.
- *  + Izbor redosleda studenata u grupama (po broju indeksa ili nasumice).
- *
- * Korisnik pre potvrđivanja treba da ima pregled promena koje će kreirati.
- *
- * Korisniku treba vizuelno prikazati proces izvršenja zahteva na serveru,
- * kao i odgovarajuću poruku nakon završetka obrade. Ukoliko zahtev nije
- * uspešan, dati izbor:
- *  - Ponovno slanje istih podataka.
- *  - Vraćanje na početak forme za kreiranje nove raspodele (brišu se svi
- *    uneti podaci).
- *  - Potpuni izlazak iz forme (povratak na asistentski panel).
- */
+
 
 @Component({
     selector: 'r-division-creator',
-    template: `
-    <r-stepper (onSubmit)="createInitialDivision()" [primaryColor]="primaryColor">
-    
-        <r-step stepTitle="Osnovni podaci" [valid]="isValid(1)">
-            <div class="osnovni-podaci">
-        
-                <div class="top">
-                    <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="newDivisionName" label="Ime raspodele"></r-input>
-                </div>
-                
-                <div class="left">
-                    <r-dropdown [primaryColor]="primaryColor" *ngIf="courses" label="Predmet" [(val)]="newDivisionClassId">
-                        <r-dropdown-item *ngFor="let course of courses" [value]="course.courseID">{{course.name}}</r-dropdown-item>
-                    </r-dropdown>
-                    
-                    <r-dropdown [primaryColor]="primaryColor" *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="newDivisionTypeId">
-                        <r-dropdown-item *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</r-dropdown-item>
-                    </r-dropdown>
-                </div>
-                
-                <div class="right">
-                    <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="newDivisionBeginningDate" label="Početak važenja (YYYY-MM-DD)"></r-input>
-                    
-                    <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="newDivisionEndingDate" label="Kraj važenja (YYYY-MM-DD)"></r-input>
-                </div>
-                
-            </div>
-        </r-step>
-        
-        <r-step stepTitle="Način kreiranja" [valid]="isValid(2)"><div class="nacin-kreiranja">
-        
-            <div class="top">
-                <div class="input-wrap">
-                    <r-dropdown [primaryColor]="primaryColor" [(val)]="newDivisionCreationWay" label="Način kreiranja">
-                        <r-dropdown-item value="on_x">Po broju grupa</r-dropdown-item>
-                        <r-dropdown-item value="with_x">Po broju studenata</r-dropdown-item>
-                        <r-dropdown-item value="manual">Ručno</r-dropdown-item>
-                    </r-dropdown>
-                </div>
-                
-                <div class="input-wrap">
-                    <r-input
-                        *ngIf="newDivisionCreationWay !== 'manual'"
-                        class="light-theme"
-                        [(val)]="newDivisionCreationNumberX"
-                        [label]="newDivisionCreationWay === 'on_x' ? 'Broj grupa' : 'Broj studenata'"
-                        [primaryColor]="primaryColor"
-                    >    
-                    </r-input>
-                </div>
-                
-                <div class="input-wrap">
-                    <r-dropdown [primaryColor]="primaryColor" *ngIf="newDivisionCreationWay !== 'manual'" [(val)]="newDivisionCreationOrderIsRandom" label="Način sortiranja">
-                        <r-dropdown-item value="0" selected>Po broju indeksa</r-dropdown-item>
-                        <r-dropdown-item value="1">Nasumično</r-dropdown-item>
-                    </r-dropdown>
-                </div>
-                
-                <button [primaryColor]="primaryColor" r-button raised [disabled]="false" (click)="getList(newDivisionClassId, newDivisionCreationWay, newDivisionCreationNumberX, newDivisionCreationOrderIsRandom, '')" text="Prikaz"></button>
-            </div>                
-            
-            <div class="clearfix"></div>            
-            
-            <div class="info" *ngIf="createdGroups">
-                Ukupno {{numberOfStudents()}} studenata može se podeliti u {{createdGroups.length}} grupa (prosečno {{averageNumberOfStudents().toFixed()}} studenata po grupi).
-            </div>
-            
-            <div class="clearfix"></div>
-     
-            <div class="preview-list-of-students" *ngIf="createdGroups">
-                <table>
-                    <thead><tr><th>Ime</th><th>#</th><th>Studenti</th></tr></thead>
-                    <tbody>
-                        <tr *ngFor="let group of createdGroups; let i = index">
-                            <td>Grupa&nbsp;{{i + 1}}</td>
-                            <td>{{group.length}}</td>
-                            <td>{{groupPreview(i, 4)}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="clearfix"></div>
-            
-        </div></r-step>
-        
-        <r-step stepTitle="Potvrda">
-            <div class="potvrda" *ngIf="createdGroups">
-            
-                <div class="top">
-                    <dl r-dl>
-                        <dt>Ime</dt>
-                        <dd>{{newDivisionName}}</dd>
-                        <dt>Vrsta raspodele</dt>
-                        <dd>{{newDivisionTypeName()}}</dd>
-                        <dt>Za predmet</dt>
-                        <dd>{{newDivisionClassName()}}</dd>
-                        <dt>Važenje</dt>
-                        <dd>{{newDivisionBeginningDateToDate().toISOString().slice(0, 10)}} — {{newDivisionEndingDateToDate().toISOString().slice(0, 10)}}</dd>
-                    </dl>
-                    
-                    <dl r-dl>
-                        <dt>Ukupno studenata</dt>
-                        <dd>{{numberOfStudents()}}</dd>
-                        <dt>Ukupno grupa</dt>
-                        <dd>{{createdGroups.length}}</dd>
-                        <dt>Prosečno studenata po grupi</dt>
-                        <dd>{{averageNumberOfStudents().toFixed(2)}}</dd>
-                        <dt>Način sortiranja</dt>
-                        <dd>{{newDivisionCreationOrderName()}}</dd>
-                    </dl>
-                </div>
-                
-                <div class="bottom">
-                    <div class="group-list" *ngFor="let group of createdGroups; let i = index">
-                        <div class="group-name">Grupa {{i}}</div>
-                        <div class="students">
-                            <div class="student" *ngFor="let student of group">
-                                <span>{{student.indexNumber}}</span>
-                                <span>{{student.name}} {{student.surname}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-                
-            </div>
-        </r-step>
-        
-    </r-stepper>
-    `,
+    templateUrl: 'app/assistant-panel/dialogs/division-creator.html',
     styleUrls: ['app/assistant-panel/dialogs/division-creator.css'],
     directives: [R_STEPPER, R_INPUT, R_DROPDOWN, R_BUTTON, R_DL],
     providers: [CoursesService, DivisionsService]
@@ -197,18 +37,21 @@ export class DivisionCreatorComponent implements AfterViewInit {
     //region Podaci o novoj raspodeli koja se kreira
     public newDivisionName: string;
     public newDivisionClassId: string;
-    public newDivisionClassName = (id = this.newDivisionClassId) => this.courses.filter(i => i.courseID === +id)[0].name;
+    public newDivisionClassName = (id = this.newDivisionClassId) =>
+        this.courses.filter(i => i.courseID === +id)[0].name;
     public newDivisionBeginningDate: string;
     public newDivisionBeginningDateToDate = () => new Date(this.newDivisionBeginningDate);
     public newDivisionEndingDate: string;
     public newDivisionEndingDateToDate = () => new Date(this.newDivisionEndingDate);
     public newDivisionTypeId: string;
-    public newDivisionTypeName = (id = this.newDivisionTypeId) => (<any>this.divisionTypes).filter(i => i.divisionTypeID == id)[0].type;
+    public newDivisionTypeName = (id = this.newDivisionTypeId) =>
+        (<any>this.divisionTypes).filter(i => i.divisionTypeID == id)[0].type;
 
     public newDivisionCreationWay: 'on_x' | 'with_x' | 'manual';
     public newDivisionCreationNumberX: string;
     public newDivisionCreationOrderIsRandom: '0' | '1';
-    public newDivisionCreationOrderName = (i = this.newDivisionCreationOrderIsRandom) => i === '0' ? 'po indeksu' : 'nasumično';
+    public newDivisionCreationOrderName = (i = this.newDivisionCreationOrderIsRandom) =>
+        i === '0' ? this._globalService.translate("by_index_number") : this._globalService.translate("random");
     //endregion
 
     //region Validacije, read-only
@@ -310,8 +153,8 @@ export class DivisionCreatorComponent implements AfterViewInit {
         this.errorMessage = null;
         this.newDivisionName = "default name";
         this.newDivisionClassId = null;
-        this.newDivisionBeginningDate = "2016-05-04";
-        this.newDivisionEndingDate = "2020-04-20";
+        this.newDivisionBeginningDate = "2016-05-04"; //TODO
+        this.newDivisionEndingDate = "2020-04-20"; //TODO
         this.newDivisionTypeId = null;
         this.newDivisionCreationWay = null;
         this.newDivisionCreationNumberX = "12";
@@ -341,8 +184,8 @@ export class DivisionCreatorComponent implements AfterViewInit {
      *                  Vrednost se ignorise ukoliko je creationWay postavljen na manual.
      * @param studentsOrder - 0 za redom i 1 za nasumice
      */
-    getList(courseId: string, creationWay: 'on_x' | 'with_x' | 'manual', numberX: string, studentsOrder: '0' | '1'): any {
-        //console.log("Parametri:", courseId, creationWay, numberX, studentsOrder);
+    getList(courseId: string, creationWay: string, numberX: string, studentsOrder: '0' | '1'): any {
+        console.log("Parametri:", courseId, creationWay, numberX, studentsOrder);
         if (creationWay === "with_x") {
             this._divisionsService.getGroupsWithX(+courseId, +numberX, +studentsOrder)
                 .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
@@ -350,8 +193,8 @@ export class DivisionCreatorComponent implements AfterViewInit {
             this._divisionsService.getGroupsOnX(+courseId, +numberX, +studentsOrder)
                 .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
         } else {
-            alert("Selektirano je manuelno. Nema liste za prikaz.");
-            // manual
+            this._globalService.toast(this._globalService.translate("selected_manual_no_list_to_display"));
+            // manual TODO
         }
     }
 
@@ -365,7 +208,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
         var ret: Array<any> = [];
         for (let i = 0; i < this.createdGroups.length; i++) {
             ret[i] = {
-                name: "Grupa " + (i + 1),
+                name: this._globalService.translate("group") + " " + (i + 1),
                 students: this.createdGroups[i]
             };
         }
@@ -373,7 +216,6 @@ export class DivisionCreatorComponent implements AfterViewInit {
     }
 
     createInitialDivision() {
-        console.log("Creating division...");
         this._divisionsService.createInitialDivision(
             this.newDivisionName,
             this.departmentID,
@@ -384,20 +226,22 @@ export class DivisionCreatorComponent implements AfterViewInit {
             this.getNamedGroups()
         )
             .then(response => {
-            switch(response.status) {
-                case "uspelo":
-                    this._globalService.toast(`Uspešno kreirana raspodela *${this.newDivisionName}*.`);
-                    break;
-                default:
-                    this._globalService.toast(`Došlo je do greške! Nije kreirana raspodela.`);
-                    debugger;
-                    break;
-            }
-        })
-            .then(() => {
-                this.closeMe();
+                switch(response.status) {
+                    case "uspelo":
+                        this._globalService.toast(
+                            this._globalService.translate("successfully_created_division__1") +
+                            "*" + this.newDivisionName + "*" +
+                            this._globalService.translate("successfully_created_division__2"));
+                        break;
+                    default:
+                        this._globalService.toast(this._globalService.translate("error") + " " +
+                            this._globalService.translate("division_not_created"));
+                        debugger;
+                        break;
+                }
             })
             .then(() => {
+                this.closeMe();
                 this._globalService.refreshAssistantPanelAll();
             });
     }
@@ -405,6 +249,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
     public numberOfStudents = () => this.createdGroups.map(s => s.length).reduce((p, c) => p + c);
     public averageNumberOfStudents = () => this.numberOfStudents() / this.createdGroups.length;
 
-    public groupPreview = (i, n) => (this.createdGroups[i].slice(0, n).map(e => e.name + ' ' + e.surname + ' (' + e.indexNumber + ')').join(', ').concat('...'));
+    public groupPreview = (i, n) => (this.createdGroups[i].slice(0, n)
+        .map(e => e.name + ' ' + e.surname + ' (' + e.indexNumber + ')').join(', ').concat('...'));
 
 }

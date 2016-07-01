@@ -1,0 +1,45 @@
+<span *ngIf="dateChoices && dateChoices.length === 1">
+    {{_globalService.translate("canceling_class_scheduled_for__1")}}
+    {{dateChoices[0]}}
+    {{_globalService.translate("canceling-class_scheduled_for__2")}}.
+</span>
+<r-dropdown
+        *ngIf="dateChoices && dateChoices.length > 1"
+        [label]="_globalService.translate('canceling_class_scheduled_for__1')
+                    + '...' +
+                 _globalService.translate('canceling_class_scheduled_for__2')"
+        [(val)]="cancel.startDate"
+        [primaryColor]="primaryColor"
+>
+    <r-dropdown-item
+            *ngFor="let dateChoice of dateChoices; let i = index"
+            [value]="dateChoice"
+    >
+        {{dateChoice}}
+    </r-dropdown-item>
+</r-dropdown>
+
+<r-input
+        [label]="_globalService.translate('title')"
+        [(val)]="cancel.title"
+        [primaryColor]="primaryColor"></r-input>
+
+<textarea [(ngModel)]="cancel.content"></textarea>
+
+<div class="controls">
+    <button r-button flat
+            [text]="_globalService.translate('back')"
+            [primaryColor]="primaryColor"
+            (click)="closeMe()"
+    >
+        {{_globalService.translate('back')}}
+    </button>
+
+    <button r-button raised
+            [text]="_globalService.translate('cancel_class')"
+            [primaryColor]="primaryColor"
+            (click)="cancelClass()"
+    >
+        {{_globalService.translate('cancel_class')}}
+    </button>
+</div>

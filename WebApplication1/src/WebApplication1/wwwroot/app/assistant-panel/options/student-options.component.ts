@@ -59,12 +59,13 @@ export class StudentOptionsComponent {
         //TODO nesto pametnije sa odgovorom
         this._service.removeFromGroup(this.studentId, this.groupId)
             .then(response => {
-                switch(response.status) {
+                switch(response["status"]) {
                     case "uspelo":
-                        this._globalService.toast(`Student uspesňo uklonjen iz grupe.`);
+                        this._globalService.toast(this._globalService.translate('student_kick_successful'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije uspelo brisanje studenta iz grupe.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' '
+                            + this._globalService.translate('student_kick_unsuccessful'));
                         debugger;
                         break;
                 }

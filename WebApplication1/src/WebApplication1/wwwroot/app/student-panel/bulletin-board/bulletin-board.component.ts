@@ -5,6 +5,7 @@ import {R_INPUT} from "../../ui/r-input-text.component";
 import {BulletinBoardParametersComponent} from "./bulletin-board-parameters.component";
 import {GroupsService} from "../../services/groups.service";
 import {BulletinBoardAddAdComponent} from "./bulletin-board-add-ad.component";
+import {GlobalService} from "../../services/global.service";
 
 
 
@@ -44,21 +45,22 @@ export class BulletinBoardComponent {
     }
 
     constructor(
-        private _groupsService: GroupsService
-    ) {}
+        private _groupsService: GroupsService,
+        private _globalService: GlobalService
+    ) { }
 
     private getPossibleChoices(groupId: number): void {
         this._groupsService.getPossibleBulletinBoardChoices(this.groupId)
             .then(result => {
                 /*debugger;*/
-                this.possibleChoices = result;
+                this.possibleChoices = <any>result;
             });
     }
 
     private getAllChoices(groupId: number): void {
         this._groupsService.getAllBulletinBoardChoices(this.groupId)
             .then(result => {
-                this.allChoices = result;
+                this.allChoices = <any>result;
             });
     }
 

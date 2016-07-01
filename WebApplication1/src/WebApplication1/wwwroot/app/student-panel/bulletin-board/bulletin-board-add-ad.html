@@ -1,7 +1,7 @@
 <r-multiple-selector
         [primaryColor]="primaryColor"
         [secondaryColor]="secondaryColor"
-        [title]="'Naslov'"
+        [title]="_globalService.translate('pick_advertise_period')"
         [(val)]="chosenChoices"
 >
     <r-multiple-selector-item
@@ -13,9 +13,9 @@
 </r-multiple-selector>
 
 <button r-button raised
-        [text]="'Dodaj oglas'"
+        [text]="_globalService.translate('add_ad')"
         (click)="addAd()"
         [primaryColor]="primaryColor"
 >
-    Dodaj oglas
+    {{_globalService.translate('add_ad')}}
 </button>

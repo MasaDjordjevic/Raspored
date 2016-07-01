@@ -1,0 +1,168 @@
+<r-stepper (onSubmit)="createInitialDivision()" [primaryColor]="primaryColor">
+
+    <r-step [stepTitle]="_globalService.translate('basic_info')" [valid]="isValid(1)">
+        <div class="osnovni-podaci">
+
+            <div class="top">
+                <r-input [primaryColor]="primaryColor"
+                         [(val)]="newDivisionName"
+                         [label]="_globalService.translate('division_name')"
+                >
+                </r-input>
+            </div>
+
+            <div class="left">
+                <r-dropdown [primaryColor]="primaryColor"
+                            *ngIf="courses"
+                            [label]="_globalService.translate('subject')"
+                            [(val)]="newDivisionClassId"
+                >
+                    <r-dropdown-item *ngFor="let course of courses"
+                                     [value]="course.courseID"
+                    >
+                        {{course.name}}
+                    </r-dropdown-item>
+                </r-dropdown>
+
+                <r-dropdown [primaryColor]="primaryColor"
+                            *ngIf="divisionTypes"
+                            [label]="_globalService.translate('division_type')"
+                            [(val)]="newDivisionTypeId">
+                    <r-dropdown-item *ngFor="let typez of divisionTypes"
+                                     [value]="typez.divisionTypeID"
+                    >
+                        {{typez.type}}
+                    </r-dropdown-item>
+                </r-dropdown>
+            </div>
+
+            <div class="right">
+                <r-input [primaryColor]="primaryColor"
+                         [(val)]="newDivisionBeginningDate"
+                         [label]="_globalService.translate('validity_start') + ' (YYYY-MM-DD)'">
+                </r-input>
+                <r-input [primaryColor]="primaryColor"
+                         [(val)]="newDivisionEndingDate"
+                         [label]="_globalService.translate('validity_end') + ' (YYYY-MM-DD)'">
+                </r-input>
+            </div>
+
+        </div>
+    </r-step>
+
+    <r-step [stepTitle]="_globalService.translate('creation_way')" [valid]="isValid(2)"><div class="nacin-kreiranja">
+
+        <div class="top">
+            <div class="input-wrap">
+                <r-dropdown [primaryColor]="primaryColor"
+                            [(val)]="newDivisionCreationWay"
+                            [label]="_globalService.translate('creation_way')">
+                    <r-dropdown-item [value]="'on_x'">{{_globalService.translate('by_number_of_groups')}}</r-dropdown-item>
+                    <r-dropdown-item [value]="'with_x'">{{_globalService.translate('by_number_of_students')}}</r-dropdown-item>
+                    <r-dropdown-item [value]="'manual'">{{_globalService.translate('manual')}}</r-dropdown-item>
+                </r-dropdown>
+            </div>
+
+            <div class="input-wrap">
+                <r-input
+                        *ngIf="newDivisionCreationWay !== 'manual'"
+                        class="light-theme"
+                        [(val)]="newDivisionCreationNumberX"
+                        [label]="newDivisionCreationWay === 'on_x' ? _globalService.translate('number_of_groups') : _globalService.translate('number_of_students')"
+                        [primaryColor]="primaryColor"
+                >
+                </r-input>
+            </div>
+
+            <div class="input-wrap">
+                <r-dropdown [primaryColor]="primaryColor"
+                            *ngIf="newDivisionCreationWay !== 'manual'"
+                            [(val)]="newDivisionCreationOrderIsRandom"
+                            [label]="_globalService.translate('sort_style')">
+                    <r-dropdown-item [value]="'0'">{{_globalService.translate('by_index_number')}}</r-dropdown-item>
+                    <r-dropdown-item [value]="'1'">{{_globalService.translate('random')}}</r-dropdown-item>
+                </r-dropdown>
+            </div>
+
+            <button [primaryColor]="primaryColor" r-button raised
+                    [disabled]="false"
+                    (click)="getList(newDivisionClassId, newDivisionCreationWay, newDivisionCreationNumberX, newDivisionCreationOrderIsRandom, '')"
+                    [text]="_globalService.translate('preview')">
+                {{_globalService.translate('preview')}}
+            </button>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="info" *ngIf="createdGroups">
+            {{_globalService.translate("division_creator_preview_info__1")}}
+            {{numberOfStudents()}}
+            {{_globalService.translate("division_creator_preview_info__2")}}
+            {{createdGroups.length}}
+            {{_globalService.translate("division_creator_preview_info__3")}}
+            {{averageNumberOfStudents().toFixed(2)}}
+            {{_globalService.translate("division_creator_preview_info__4")}}
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="preview-list-of-students" *ngIf="createdGroups">
+            <table>
+                <thead><tr><th>{{_globalService.translate('name')}}</th><th>#</th><th>{{_globalService.translate('students')}}</th></tr></thead>
+                <tbody>
+                <tr *ngFor="let group of createdGroups; let i = index">
+                    <td>{{_globalService.translate('group')}}&nbsp;{{i + 1}}</td>
+                    <td>{{group.length}}</td>
+                    <td>{{groupPreview(i, 4)}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="clearfix"></div>
+
+    </div></r-step>
+
+    <r-step [stepTitle]="_globalService.translate('confirm')">
+        <div class="potvrda" *ngIf="createdGroups">
+
+            <div class="top">
+                <dl r-dl>
+                    <dt>{{_globalService.translate("name")}}</dt>
+                    <dd>{{newDivisionName}}</dd>
+                    <dt>{{_globalService.translate("division_type")}}</dt>
+                    <dd>{{newDivisionTypeName()}}</dd>
+                    <dt>{{_globalService.translate("for_subject")}}</dt>
+                    <dd>{{newDivisionClassName()}}</dd>
+                    <dt>{{_globalService.translate("validity")}}</dt>
+                    <dd>{{newDivisionBeginningDateToDate().toISOString().slice(0, 10)}} — {{newDivisionEndingDateToDate().toISOString().slice(0, 10)}}</dd>
+                </dl>
+
+                <dl r-dl>
+                    <dt>{{_globalService.translate("total_students")}}</dt>
+                    <dd>{{numberOfStudents()}}</dd>
+                    <dt>{{_globalService.translate("total_groups")}}</dt>
+                    <dd>{{createdGroups.length}}</dd>
+                    <dt>{{_globalService.translate("average_students_per_group")}}</dt>
+                    <dd>{{averageNumberOfStudents().toFixed(2)}}</dd>
+                    <dt>{{_globalService.translate("sort_style")}}</dt>
+                    <dd>{{newDivisionCreationOrderName()}}</dd>
+                </dl>
+            </div>
+
+            <div class="bottom">
+                <div class="group-list" *ngFor="let group of createdGroups; let i = index">
+                    <div class="group-name">{{_globalService.translate("group")}}&nbsp;{{i}}</div>
+                    <div class="students">
+                        <div class="student" *ngFor="let student of group">
+                            <span>{{student.indexNumber}}</span>
+                            <span>{{student.name}} {{student.surname}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </r-step>
+
+</r-stepper>

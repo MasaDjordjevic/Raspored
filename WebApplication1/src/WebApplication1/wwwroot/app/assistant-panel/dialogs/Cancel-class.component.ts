@@ -1,62 +1,30 @@
-import {Component, Input, Pipe, PipeTransform, AfterContentInit, Output, EventEmitter} from "angular2/core";
+import {Component, Input, Output, EventEmitter} from "angular2/core";
 import {TimeSpan} from "../../models/TimeSpan";
 import {GroupsService} from "../../services/groups.service";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {R_BUTTON} from "../../ui/r-button.component";
-
-import * as moment_ from "../../../js/moment.js";
 import {GlobalService} from "../../services/global.service";
-const moment =  moment_["default"];
+import {moment} from "../../global/moment.import";
 
 
-@Pipe({
-    name: 'addWeeks',
-    pure: false
-})
-class AddWeeksPipe implements PipeTransform {
-    transform(date, weekNumber, today) {
-        //nije htelo normalno pa sam morala ovako da ga ukomplikujem
-        //TODO ovo dodaje na taj datum, treba da nadje refentni tom datumu u tekucoj nedelji pa da doda na to
-        // ne treba da se doda na date, nego na datum koji odgovara dateu u tekucoj nedelji
-        // pazi na periodu, dodaj 7*periodu dok ne predjes danasnji datum
-        var ret = new Date(today.setDate((new Date(date)).getDate() + 7*weekNumber));
-        return ret;
-    }
-}
 
 @Component({
     selector: 'cancel-class',
-    template: `
-    <span *ngIf="dateChoices && dateChoices.length === 1">
-        Otkazivanje časa zakazanog za {{dateChoices[0]}}.    
-    </span>
-    <r-dropdown *ngIf="dateChoices && dateChoices.length > 1" [label]="'Otkazujem čas koji treba da bude održan...'" [(val)]="cancel.startDate" [primaryColor]="primaryColor">
-        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="dateChoice">{{dateChoice}}</r-dropdown-item>  
-    </r-dropdown>
-
-    <r-input [label]="'Naslov'" [(val)]="cancel.title" [primaryColor]="primaryColor"></r-input>
-    <textarea [(ngModel)]="cancel.content"></textarea>
-   
-    <div class="controls">
-        <button r-button flat [text]="'Odustani'" [primaryColor]="primaryColor" (click)="closeMe()">Odustani</button>
-        <button r-button raised [text]="'Otkaži čas'" [primaryColor]="primaryColor" (click)="cancelClass()">Otkaži čas</button>    
-    </div>
-    `,
-    pipes: [AddWeeksPipe],
-    providers: [GroupsService],
-    directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
+    template: 'app/assistant-panel/dialogs/cancel-class.html',
     styleUrls: ['app/assistant-panel/dialogs/cancel-class.css'],
+    directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
+    providers: [GroupsService],
 })
-export class CancelClassComponent implements AfterContentInit{
+
+export class CancelClassComponent {
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
     @Output() close: EventEmitter<any> = new EventEmitter<any>();
-
     public closeMe() {
-        this.close.emit("close!");
+        this.close.emit({});
     }
 
     group: any;
@@ -74,33 +42,29 @@ export class CancelClassComponent implements AfterContentInit{
     }
 
     getGroup(): void {
-        this._groupsService.getGroup(this.groupId).then(
-            group => this.group = group,
-            error => this.errorMessage = <any>error
+        this._groupsService.getGroup(this.groupId)
+            .then(
+                group => this.group = group,
+                error => this.errorMessage = <any>error
             )
             .then(() => 
-                this.group.timeSpan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period)
+                this.group.timeSpan &&
+                this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period)
             );
     }
-
-
-
+    
     constructor(
         private _groupsService: GroupsService,
         private _globalService: GlobalService
     ) {}
 
-    cancel:any = {
+    cancel: any = {
         title: "",
         content: "",
     };
     dateChoices: string[];
 
-    ngAfterContentInit() {
-
-    }
-
-    // iskopirano u grou-add-activity.component.ts
+    // iskopirano u group-add-activity.component.ts
     public listDateChoices(date, period) {
 
         var ret: string[] = [];
@@ -131,7 +95,7 @@ export class CancelClassComponent implements AfterContentInit{
     }
 
     cancelClass() {
-        var timespan:TimeSpan = new TimeSpan;
+        var timespan: TimeSpan = new TimeSpan;
         timespan.startDate = this.cancel.startDate;
         timespan.endDate = this.cancel.startDate;
         timespan.period = 0;
@@ -139,21 +103,21 @@ export class CancelClassComponent implements AfterContentInit{
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast("Uspešno otkazan čas.");
+                        this._globalService.toast(this._globalService.translate("class_successfully_canceled"));
                         break;
                     case "neuspelo":
                         switch(response.message) {
                             case "Čas je već otkazan.":
-                                this._globalService.toast(`Čas je već otkazan.`);
+                                this._globalService.toast(this._globalService.translate("class_already_canceled"));
                                 break;
                             default:
-                                this._globalService.toast(`Došlo je do greške. Nije obrisana grupa *${this.group.name}*.`);
+                                this._globalService.toast(`${this._globalService.translate("error")} ${this._globalService.translate("clas_not_canceled")}`);
                                 debugger;
                                 break;
                         }
                         break;
                     default:
-                        this._globalService.toast("Došlo je do greške. Čas nije otkazan.");
+                        this._globalService.toast(`${this._globalService.translate("error")} ${this._globalService.translate("class_not_canceled")}.`);
                         debugger;
                         break;
                 }

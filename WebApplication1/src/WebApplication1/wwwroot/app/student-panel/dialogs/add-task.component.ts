@@ -5,28 +5,30 @@ import {TimeSpan} from "../../models/TimeSpan";
 import {Course} from "../../models/Course";
 import {CoursesService} from "../../services/courses.service";
 import {Group} from "../../models/Group";
-
-import * as moment_ from "../../../js/moment.js";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {StudentsService} from "../../services/students.service";
 import {GlobalService} from "../../services/global.service";
-const moment = moment_["default"];
+import {moment} from "../../global/moment.import";
 
 @Component({
     selector: 'r-add-task',
     template: `
 <template [ngIf]="groupId">
     <span *ngIf="dateChoices && dateChoices.length === 1">
-        Dodavanje zadatka za čas zakazan za {{dateChoices[0]}}.    
+        {{_globalService.translate('adding_task_for_class__1')}}{{dateChoices[0]}}{{_globalService.translate('adding_task_for_class__2')}}.     
     </span>
     <r-dropdown *ngIf="dateChoices && dateChoices.length > 1"
-    [label]="'Dodajem zadatak za čas koji treba da bude održan...'" [(val)]="task.startDate" [primaryColor]="primaryColor">
-        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="dateChoice">{{dateChoice}}</r-dropdown-item>  
+                [label]="_globalService.translate('adding_task_for_class__1') + '...'
+                            + _globalService.translate('adding_task_for_class__2')"
+                [(val)]="task.startDate" [primaryColor]="primaryColor">
+        <r-dropdown-item *ngFor="let dateChoice of dateChoices; let i = index" [value]="dateChoice">
+            {{dateChoice}}
+        </r-dropdown-item>  
     </r-dropdown>
 
-    <r-input [label]="'Naslov'"
+    <r-input [label]="_globalService.translate('title')"
              [(val)]="task.title"
              [primaryColor]="primaryColor">
     </r-input>
@@ -35,7 +37,7 @@ const moment = moment_["default"];
         <div><r-dropdown [primaryColor]="primaryColor"
                     [secondaryColor]="secondaryColor"             
                     [(val)]="classroomId"
-                    [label]="'Učionica'"
+                    [label]="_globalService.translate('classroom')"
                     *ngIf="classrooms && classrooms.length"
         >
             <r-dropdown-item
@@ -46,15 +48,23 @@ const moment = moment_["default"];
             </r-dropdown-item>
         </r-dropdown></div>
         
-        <div><r-input [label]="'Mesto'" [(val)]="task.place" [primaryColor]="primaryColor"></r-input></div>
+        <div>
+            <r-input [label]="_globalService.translate('place')"
+                     [(val)]="task.place" [primaryColor]="primaryColor"></r-input>
+        </div>
     </div>
     
-    <textarea [(ngModel)]="task.content">
-    </textarea>
+    <textarea [(ngModel)]="task.content"></textarea>
            
     <div class="controls">
-        <button r-button flat [text]="'Odustani'" (click)="closeMe()" [primaryColor]="primaryColor">Odustani</button>
-        <button r-button raised [text]="'Dodaj obaveštenje'" (click)="save()" [primaryColor]="primaryColor">Dodaj obaveštenje</button> 
+        <button r-button flat [text]="_globalService.translate('cancel')"
+                (click)="closeMe()" [primaryColor]="primaryColor">
+            {{_globalService.translate('cancel')}}
+        </button>
+        <button r-button raised [text]="_globalService.translate('add_task')"
+                (click)="save()" [primaryColor]="primaryColor">
+            {{_globalService.translate('add_task')}}
+        </button> 
     </div>
 </template>
     `,
@@ -149,10 +159,11 @@ export class AddTaskComponent {
                 console.log(response);
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast(`Uspelo dodavanje zadatka.`);
+                        this._globalService.toast(this._globalService.translate('add_task_successful'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije uspelo dodavanje novog zadatka.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' ' +
+                            this._globalService.translate('add_task_unsuccessful'));
                         debugger;
                         break;
                 }

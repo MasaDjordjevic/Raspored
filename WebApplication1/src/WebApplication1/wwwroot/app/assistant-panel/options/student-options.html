@@ -3,12 +3,13 @@
     <h1>{{student.name}} {{student.surname}}</h1>
 
     <dl r-dl>
-        <dt>ID</dt>
+        <dt>{{_globalService.translate('id')}}</dt>
         <dd>{{student.studentID}}</dd>
-        <dt>Indeks</dt>
+        <dt>{{_globalService.translate('index_number')}}</dt>
         <dd>{{student.indexNumber}}</dd>
     </dl>
 
+    <!-- todo -->
     <p>{{errorMessage}}</p>
 
     <div class="flex-spacer"></div>
@@ -29,10 +30,23 @@
 
     <r-dialog #removeFromGroupDialog [source]="removeFromGroupButton">
         <div class="remove-from-group-dialog">
-            <div class="dialog-text">Ukloni studenta <b>{{student.UniMembers.name}} {{student.UniMembers.surname}}</b> sa brojem indeksa <b>{{student.indexNumber}}</b> iz grupe <b>TODO, NEMAM GRUPU</b>?</div>
+            <!-- todo, nemam grupu -->
+            <div class="dialog-text">
+                {{_globalService.translate('remove_student__1')}}
+                <b>{{student.UniMembers.name}} {{student.UniMembers.surname}}</b>
+                {{_globalService.translate('remove_student__2')}}
+                <b>{{student.indexNumber}}</b>
+                {{_globalService.translate('remove_student__3')}}
+                <b>TODO, NEMAM GRUPU</b>{{_globalService.translate('remove_student__4')}}</div>
             <div class="dialog-controls">
-                <button r-button flat text="Odustani" (click)="removeFromGroupDialog.close()" [primaryColor]="primaryColor">Odustani</button>
-                <button r-button raised text="Ukloni" (click)="removeFromGroup(); removeFromGroupDialog.close()" [primaryColor]="primaryColor">Ukloni</button>
+                <button r-button flat [text]="_globalService.translate('cancel')"
+                        (click)="removeFromGroupDialog.close()" [primaryColor]="primaryColor">
+                    {{_globalService.translate('cancel')}}
+                </button>
+                <button r-button raised [text]="_globalService.translate('kick')"
+                        (click)="removeFromGroup(); removeFromGroupDialog.close()" [primaryColor]="primaryColor">
+                    {{_globalService.translate('kick')}}
+                </button>
             </div>
         </div>
     </r-dialog>
@@ -44,22 +58,24 @@
     <div class="footer-buttons">
 
         <button r-button flat #debuggingButton
-                text="JSON" (click)="debuggingDialog.open()"
+                [text]="_globalService.translate('json')" (click)="debuggingDialog.open()"
                 [primaryColor]="primaryColor">
         </button>
 
         <div class="flex-spacer"></div>
 
         <button r-button raised #moveToGroupButton
-                text="Pomeri u grupu"
+                [text]="_globalService.translate('move_to_group')"
                 (click)="moveToGroupDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('move_to_group')}}
         </button>
 
         <button r-button raised #removeFromGroupButton
-                text="Izbaci iz grupe"
+                [text]="_globalService.translate('kick_student')"
                 (click)="removeFromGroupDialog.open()"
                 [primaryColor]="primaryColor">
+            {{_globalService.translate('kick_student')}}
         </button>
     </div>
 </div>

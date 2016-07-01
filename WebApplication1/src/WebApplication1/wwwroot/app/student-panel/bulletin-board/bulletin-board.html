@@ -8,7 +8,7 @@
 </r-bulletin-board-parameters>
 
 <template [ngIf]="possibleChoices && possibleChoices.length === 0">
-    <span>Nema oglasa. Mozes da ubacis svoj.</span>
+    <span>{{_globalService.translate('no_ads')}}</span>
 </template>
 
 <r-bulletin-board-add-ad
@@ -18,7 +18,3 @@
         [primaryColor]="primaryColor"
 >
 </r-bulletin-board-add-ad>
-
-chosenAll: {{chosenAllChoices | json}}
-
-color bulletin board: {{primaryColor}} 

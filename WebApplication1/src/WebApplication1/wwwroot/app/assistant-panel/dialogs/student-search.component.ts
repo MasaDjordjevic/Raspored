@@ -23,6 +23,8 @@ import {TrimPipe} from "../../pipes/trim.pipe";
     pipes: [MatchPipe, HighlightPipe]
 })
 export class StudentSearchComponent {
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
 
     @Input() students: Student[];
 

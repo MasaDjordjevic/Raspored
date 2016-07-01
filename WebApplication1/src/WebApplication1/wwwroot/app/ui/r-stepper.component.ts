@@ -74,12 +74,18 @@ export class RStepperHeaderComponent {
     <!-- Prev/Next buttons -->
     <div class="r-stepper-footer">
         {{allAreValid()}}
-        <button r-button flat [text]="'Nazad'" (click)="goToPrev()" [disabled]="currentIsFirst()" [primaryColor]="primaryColor">Nazad</button>
+        <button r-button flat [text]="_globalService.translate('back')" (click)="goToPrev()"
+                [disabled]="currentIsFirst()" [primaryColor]="primaryColor">{{_globalService.translate('back')}}</button>
         <template [ngIf]="!currentIsLast()">
-            <button r-button raised [text]="'Sledeći korak'" (click)="goToNext()" [disabled]="currentIsLast() || !currentIsValid()" [primaryColor]="primaryColor" >Dalje</button>
+            <button r-button raised [text]="_globalService.translate('next')"
+                    (click)="goToNext()" [disabled]="currentIsLast() || !currentIsValid()"
+                    [primaryColor]="primaryColor" >{{_globalService.translate('next')}}</button>
         </template>
         <template [ngIf]="currentIsLast()">
-            <button r-button raised [text]="'Kreiraj raspodelu'" (click)="submit()" [disabled]="!currentIsLast() || !allAreValid()" [primaryColor]="primaryColor">Kreiraj raspodelu</button>
+            <button r-button raised [text]="_globalService.translate('create_division')" (click)="submit()"
+                    [disabled]="!currentIsLast() || !allAreValid()" [primaryColor]="primaryColor">
+                {{_globalService.translate('create_division')}}
+            </button>
         </template>
     </div>
     `,
@@ -92,7 +98,7 @@ export class RStepperHeaderComponent {
 
 export class RStepperComponent implements AfterContentInit {
 
-    @Input() primaryColor: string = "MaterialRed";
+    @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
     get primaryColorClassName(): string {
@@ -105,6 +111,10 @@ export class RStepperComponent implements AfterContentInit {
     @ContentChildren(RStepComponent) _steps: QueryList<RStepComponent>;
 
     private _currentStep: number = 1;
+
+    constructor(
+        private _globalService: GlobalService
+    ) { }
 
     set currentStep(n: number) {
         this._currentStep = n;

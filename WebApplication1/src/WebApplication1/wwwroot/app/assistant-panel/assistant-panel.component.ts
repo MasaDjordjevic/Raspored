@@ -87,7 +87,7 @@ export class AssistantPanelComponent {
     constructor(
         public _globalService: GlobalService
     ) {
-        //region Themes and language
+        //region Themes
         this._themes = [];
         this._themes["material"] = {
             departmentPrimaryColor: "MaterialOrange", // #FFC107
@@ -154,18 +154,35 @@ export class AssistantPanelComponent {
 
     }
 
+    //region Language stuff
     private lang = this._globalService.currentLanguage;
 
-    private _language: string/* = "sr"*/;
+    private _language: string;
 
     public get language() {
         return this._language;
     }
 
+    private dayNames: string[] = [];
+
+    public setDayNames() {
+        this.dayNames = [
+            this._globalService.translate('monday'),
+            this._globalService.translate('tuesday'),
+            this._globalService.translate('wednesday'),
+            this._globalService.translate('thursday'),
+            this._globalService.translate('friday'),
+            this._globalService.translate('saturday'),
+            this._globalService.translate('sunday'),
+        ];
+    }
+
     public set language(lan) {
         this._language = lan;
         this._globalService.currentLanguage = lan;
+        this.setDayNames();
     }
+    //endregion
 
     public theme: string = "material";
 

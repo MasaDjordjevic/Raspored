@@ -1,0 +1,34 @@
+<span *ngIf="dateChoices && dateChoices.length === 1">
+    {{_globalService.translate('adding_announcement_for_class__1')}}
+    {{dateChoices[0]}}
+    {{_globalService.translate('adding_announcement_for_class__2')}}
+</span>
+
+<r-dropdown *ngIf="dateChoices && dateChoices.length > 1"
+            [label]="_globalService.translate('adding_announcement_for_class__1') + '...'"
+            [(val)]="announcement.startDate" [primaryColor]="primaryColor"
+>
+    <r-dropdown-item
+            *ngFor="let dateChoice of dateChoices; let i = index"
+            [value]="dateChoice">
+        {{dateChoice}}
+    </r-dropdown-item>
+</r-dropdown>
+
+<r-input [label]="_globalService.translate('title')"
+         [(val)]="announcement.title"
+         [primaryColor]="primaryColor">
+</r-input>
+
+<textarea [(ngModel)]="announcement.content"></textarea>
+
+<div class="controls">
+    <button r-button flat [text]="_globalService.translate('back')"
+            (click)="closeMe()" [primaryColor]="primaryColor">
+        {{_globalService.translate('back')}}
+    </button>
+    <button r-button raised [text]="_globalService.translate('add_announcement')"
+            (click)="save()" [primaryColor]="primaryColor">
+        {{_globalService.translate('add_announcement')}}
+    </button>
+</div>

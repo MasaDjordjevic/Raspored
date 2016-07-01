@@ -5,49 +5,18 @@ import {TimeSpan} from "../../models/TimeSpan";
 import {Course} from "../../models/Course";
 import {CoursesService} from "../../services/courses.service";
 import {Group} from "../../models/Group";
-
-import * as moment_ from "../../../js/moment.js";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {GlobalService} from "../../services/global.service";
-const moment = moment_["default"];
+import {moment} from "../../global/moment.import";
 
 @Component({
     selector: 'add-activity',
-    template: `
-
-    <span *ngIf="dateChoices && dateChoices.length === 1">
-        Dodavanje obaveštenja za čas zakazan za {{dateChoices[0]}}.    
-    </span>
-    
-    <r-dropdown *ngIf="dateChoices && dateChoices.length > 1"
-        [label]="'Dodajem obaveštenje za čas koji treba da bude održan...'"
-        [(val)]="announcement.startDate" [primaryColor]="primaryColor"
-    >
-        <r-dropdown-item
-            *ngFor="let dateChoice of dateChoices; let i = index"
-            [value]="dateChoice">
-                {{dateChoice}}
-        </r-dropdown-item>  
-    </r-dropdown>
-
-    <r-input [label]="'Naslov'"
-             [(val)]="announcement.title"
-             [primaryColor]="primaryColor">
-    </r-input>
-    
-    <textarea [(ngModel)]="announcement.content">
-    </textarea>
-           
-    <div class="controls">
-        <button r-button flat [text]="'Odustani'" (click)="closeMe()" [primaryColor]="primaryColor">Odustani</button>
-        <button r-button raised [text]="'Dodaj obaveštenje'" (click)="save()" [primaryColor]="primaryColor">Dodaj obaveštenje</button> 
-    </div>
-    `,
-    providers: [ClassroomsService, GroupsService],
+    templateUrl: 'app/assistant-panel/dialogs/group-add-activity.html',
+    styleUrls: ['app/assistant-panel/dialogs/group-add-activity.css'],
     directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
-    styleUrls: ['app/assistant-panel/dialogs/group-add-activity.css']
+    providers: [ClassroomsService, GroupsService],
 })
 export class AddActivityComponent {
 
@@ -98,7 +67,8 @@ export class AddActivityComponent {
             group => this.group = group,
             error => this.errorMessage = <any>error
         )
-            .then(() => this.group.timeSpan && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period));
+            .then(() => this.group.timeSpan
+                && this.listDateChoices(this.group.timeSpan, this.group.timeSpan.period));
     }
 
     constructor(
@@ -128,10 +98,12 @@ export class AddActivityComponent {
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast("Uspešno dodato obaveštenje.");
+                        this._globalService.toast(
+                            this._globalService.translate("successfully_added_announcement"));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije dodato obaveštenje.`);
+                        this._globalService.toast(this._globalService.translate("error") + ' '
+                            + this._globalService.translate("announcement_not_added"));
                         debugger;
                         break;
                 }

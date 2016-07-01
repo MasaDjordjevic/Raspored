@@ -1,111 +1,52 @@
 <template [ngIf]="division">
 
     <div *ngIf="new">
-        <h3>Raspodela je kopirana</h3>
+        <h3>Raspodela je kopirana</h3> <!--TODO sta je ovo?-->
     </div>
 
     <div class="content" *ngIf="editedDivision">
 
         <div class="top">
-            <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="editedDivision.name" label="Ime raspodele"></r-input>
+            <r-input [primaryColor]="primaryColor" [(val)]="editedDivision.name"
+                     [label]="_globalService.translate('division_name')"></r-input>
         </div>
 
         <div class="left">
             <!-- TODO Ovo ngModelChange ne znam sta si htela ali ne treba tu, nego u getteru ovoga sto mu je bindovano kao value -->
-            <!-- trentno ionako nemamo studente tako da w/e -->
-            <r-dropdown [primaryColor]="primaryColor" *ngIf="courses" label="Predmet" [(val)]="editedDivision.courseID" (ngModelChange)="getStudents()">
-                <r-dropdown-item *ngFor="let course of courses" [value]="course.courseID">{{course.name}}</r-dropdown-item>
+            <!-- trentno ionako nemamo studente tako da w/e TODO sta bre nemamo studente?? -->
+            <r-dropdown [primaryColor]="primaryColor" *ngIf="courses"
+                        [label]="_globalService.translate('subject')" [(val)]="editedDivision.courseID"
+                        (ngModelChange)="getStudents()">
+                <r-dropdown-item *ngFor="let course of courses" [value]="course.courseID">
+                    {{course.name}}
+                </r-dropdown-item>
             </r-dropdown>
 
-            <r-dropdown [primaryColor]="primaryColor" *ngIf="divisionTypes" label="Vrsta raspodele" [(val)]="editedDivision.divisionTypeID">
-                <r-dropdown-item *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</r-dropdown-item>
+            <r-dropdown [primaryColor]="primaryColor" *ngIf="divisionTypes"
+                        [label]="_globalService.translate('division_type')" [(val)]="editedDivision.divisionTypeID">
+                <r-dropdown-item *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">
+                    {{typez.type}}
+                </r-dropdown-item>
             </r-dropdown>
         </div>
 
         <div class="right">
-            <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="editedDivision.beginning" label="Početak važenja (YYYY-MM-DD)"></r-input>
-            <r-input [primaryColor]="primaryColor" class="light-theme" [(val)]="editedDivision.ending" label="Kraj važenja (YYYY-MM-DD)"></r-input>
+            <r-input [primaryColor]="primaryColor" [(val)]="editedDivision.beginning"
+                     [label]="_globalService.translate('validity_start') + ' (YYYY-MM-DD)'"></r-input>
+            <r-input [primaryColor]="primaryColor" [(val)]="editedDivision.ending"
+                     [label]="_globalService.translate('validity_end') + ' (YYYY-MM-DD)'"></r-input>
         </div>
     </div>
 
     <div class="dialog-controls">
-        <button [primaryColor]="primaryColor" r-button flat text="Resetuj" (click)="reset()">Resetuj</button>
-        <button [primaryColor]="primaryColor" r-button raised text="Sačuvaj izmene" (click)="update()">Sačuvaj izmene</button>
+        <button [primaryColor]="primaryColor" r-button flat
+                [text]="_globalService.translate('reset')" (click)="reset()">
+            {{_globalService.translate("reset")}}
+        </button>
+        <button [primaryColor]="primaryColor" r-button raised
+                [text]="_globalService.translate('save_changes')" (click)="update()">
+            {{_globalService.translate("save_changes")}}
+        </button>
     </div>
-
-
-    <!--<label>Ime</label>
-    <input type="text" [(ngModel)]="division.name" />
-    <br>
-
-    <label>Tip</label>
-    <select name="divisionType" [(ngModel)]="division.divisionType.divisionTypeID">
-        <option *ngFor="let typez of divisionTypes" [value]="typez.divisionTypeID">{{typez.type}}</option>
-    </select>
-    <br>
-
-    <label>Pocetak</label>
-    <input type="text" [(ngModel)]="division.beginning" />
-    <br>
-    <label>Kraj</label>
-    <input type="text" [(ngModel)]="division.ending" />
-    <br>
-
-    <label>Kreator</label>
-    <label>{{division.creator.name}} {{division.creator.surname}}</label>
-    <br>
-
-    <lablel>Courses</lablel>
-    <select name="course" *ngIf="courses != null"  [(ngModel)]="division.courseID" (ngModelChange)="getStudents()">
-        <option *ngFor="let course of courses" [value]="course.courseID">
-            {{course.name}}
-        </option>
-    </select>
-    {{division.courseID}}
-    <br/>-->
-
-    <!--<div class="otherStudents" *ngIf="studentsOfCourse" style="width: 100px; height: 100px; overflow: scroll;">
-        <h2>Ostali sa kursa</h2>
-        <div class="student" *ngFor="let student of studentsOfCourse" style="background-color: #cccccc">
-            <label><strong>{{student.indexNumber}}</strong> {{student.UniMembers.name}} {{student.UniMembers.surname}}</label>
-        </div>
-
-    </div>-->
-
-
-    <!--<div class="groups" >
-
-        <div class="group" *ngFor="let group of division.Groups" style="width: 100px; height: 100px; overflow: scroll;">
-            <label>classroomID {{group.classroomID}}</label>
-
-            <div class="student" *ngFor="let stud of group.GroupsStudents"
-                 id="{{stud.studentID}}"
-                 style="background-color: #cccccc"
-            >
-                <strong>{{stud.student.indexNumber}}</strong> {{stud.student.UniMembers.name}} {{stud.student.UniMembers.surname}}
-            </div>
-        </div>
-    </div>-->
-
-
-
-    <!--<style>
-        .groups{
-            display: flex;
-            flex-direction: row;
-            align-content: flex-start;
-            justify-content: space-around;
-        }
-        .group {
-            display: flex;
-            flex-direction: column;
-            align-content: flex-start;
-            justify-content: flex-start;
-        }
-        .student {
-            margin-bottom: 1px;
-        }
-
-    </style>-->
 
 </template>

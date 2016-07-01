@@ -3,7 +3,6 @@ import {Http, Response} from "angular2/http";
 import {Injectable} from "angular2/core";
 import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
-
 import {Group} from "../models/Group";
 import {TimeSpan} from "../models/TimeSpan";
 

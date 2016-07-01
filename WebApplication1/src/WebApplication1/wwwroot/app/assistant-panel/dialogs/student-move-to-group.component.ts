@@ -11,16 +11,33 @@ import {GlobalService} from "../../services/global.service";
 @Component({
     selector: 'move-student-to-group',
     template: ` 
-        <span *ngIf="groups && groups.length > 1 && groupId">Student se treutno nalazi u grupi <b>{{groupName}}</b>.</span>
+        <span *ngIf="groups && groups.length > 1 && groupId">
+            {{_globalService.translate('student_is_currently_in_group__1')}}
+            <b>{{groupName}}</b>
+            {{_globalService.translate('student_is_currently_in_group__2')}}
+        </span>
         <div>
-            <r-dropdown *ngIf="groups && groups.length > 1" [(val)]="selectedGroupId" [label]="'Odredišna grupa'" [primaryColor]="primaryColor">
-                <r-dropdown-item *ngFor="let group of groupsWithoutCurrent" [value]="group && group.groupID">{{group && group.name}}</r-dropdown-item>
+            <r-dropdown *ngIf="groups && groups.length > 1" [(val)]="selectedGroupId"
+                        [label]="'Odredišna grupa'" [primaryColor]="primaryColor">
+                <r-dropdown-item *ngFor="let group of groupsWithoutCurrent"
+                                 [value]="group && group.groupID">
+                    {{group && group.name}}
+                </r-dropdown-item>
             </r-dropdown>
         </div>
         
         <div class="controls">
-            <button r-button flat [text]="'Odustani'" (click)="closeMe()" [primaryColor]="primaryColor">Odustani</button>
-            <button r-button raised [text]="'Prebaci'" (click)="onSave()" [primaryColor]="primaryColor">Prebaci</button>  
+        
+            <button r-button flat [text]="_globalService.translate('cancel')" (click)="closeMe()"
+                    [primaryColor]="primaryColor">
+                {{_globalService.translate('cancel')}}
+            </button>
+            
+            <button r-button raised [text]="_globalService.translate('move')" (click)="onSave()"
+                    [primaryColor]="primaryColor">
+                {{_globalService.translate('move')}}
+            </button>  
+            
         </div>
     `,
     providers: [DivisionsService, GroupsService],
@@ -30,8 +47,13 @@ import {GlobalService} from "../../services/global.service";
 
 export class MoveStudentToGroupComponent {
 
-    @Input() primaryColor: string = "MaterialOrange";
-    @Input() secondaryColor: string = "MaterialBlue";
+    @Input() primaryColor: string = "MaterialBlue";
+    @Input() secondaryColor: string = "MaterialOrange";
+
+    @Output() close: EventEmitter<any> = new EventEmitter<any>();
+    public closeMe() {
+        this.close.emit({});
+    }
 
     student: any;
     groups: any[];
@@ -96,12 +118,13 @@ export class MoveStudentToGroupComponent {
     onSave() {
         this._studentsService.moveToGroup(this.student.studentID, this.selectedGroupId)
             .then(response => {
-                switch(response.status) {
+                switch(response["status"]) {
                     case "uspelo":
-                        this._globalService.toast(`Student uspešno prebačen.`); // TODO koji, odakle, gde?
+                        this._globalService.toast(this._globalService.translate('student_successfully_moved')); // TODO koji, odakle, gde?
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Student nije prebačen.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' ' +
+                            this._globalService.translate('student_not_moved'));
                         debugger;
                         break;
                 }
@@ -113,10 +136,5 @@ export class MoveStudentToGroupComponent {
                 this._globalService.refreshAssistantPanelAll();
             });
     }
-    
-    @Output() close: EventEmitter<any> = new EventEmitter<any>();
-    
-    public closeMe() {
-        this.close.emit("Close!");
-    }
+
 }

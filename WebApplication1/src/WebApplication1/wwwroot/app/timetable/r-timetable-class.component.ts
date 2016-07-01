@@ -6,7 +6,7 @@ import {StudentsService} from "../services/students.service";
 import {GlobalService} from "../services/global.service";
 import {R_DIALOG} from "../ui/r-dialog";
 import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activity.component";
-import {CancelClassComponent} from "../assistant-panel/dialogs/Cancel-class.component";
+import {CancelClassComponent} from "../assistant-panel/dialogs/cancel-class.component";
 import {AddTaskComponent} from "../student-panel/dialogs/add-task.component";
 import {BulletinBoardComponent} from "../student-panel/bulletin-board/bulletin-board.component";
 import {UncancelClassComponent} from "../assistant-panel/dialogs/uncancel-class.component";
@@ -77,7 +77,7 @@ export class TimetableClassComponent {
     private selectedTab: number = 1;
 
     public expand($event = null) {
-        // Da se ne pozove expandovanje odmah nakon collapse() klikom an dugme. Hakic.
+        // Da se ne pozove expandovanje odmah nakon collapse() klikom an dugme (X). Hakic.
         if ($event && $event.target.nodeName === "BUTTON") {
             return;
         }
@@ -156,23 +156,25 @@ export class TimetableClassComponent {
         this._studentsService.unhideClass(this.classId)
             .then(
                 response => {
-                    switch (response.status) {
+                    switch (response["status"]) {
                         case "uspelo":
-                            this._globalService.toast(`Čas uspešno dodat u lični.`);
+                            this._globalService.toast(this._globalService.translate('class_added_to_personal_successful'));
                             break;
                         case "nije uspelo":
-                            switch (response.message) {
+                            switch (response["message"]) {
                                 case "vec je u licnom":
-                                    this._globalService.toast(`Čas se već nalazi u ličnom rasporedu.`);
+                                    this._globalService.toast(this._globalService.translate('class_already_in_personal'));
                                     break;
                                 default:
-                                    this._globalService.toast(`Došlo je do greške. Čas nije dodat u lični raspored.`);
+                                    this._globalService.toast(this._globalService.translate('error') + ' ' +
+                                        this._globalService.translate('class_added_to_personal_unsuccessful'));
                                     debugger;
                                     break;
                             }
                             break;
                         default:
-                            this._globalService.toast(`Došlo je do greške. Čas nije dodat u lični raspored.`);
+                            this._globalService.toast(this._globalService.translate('error') + ' ' +
+                                this._globalService.translate('class_added_to_personal_unsuccessful'));
                             debugger;
                             break;
                     }
@@ -191,20 +193,20 @@ export class TimetableClassComponent {
     public hideClass() {
         this._studentsService.hideClass(this.classId)
             .then(response => {
-                switch (response.status) {
+                switch (response["status"]) {
                     case "uspelo":
-                        this._globalService.toast(`Sakriven čas.`);
+                        this._globalService.toast(this._globalService.translate('class_hidden'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške.`);
+                        this._globalService.toast(this._globalService.translate('error'));
                         debugger;
                         break;
                 }
             })
             .then(() => {
                 setTimeout(() => {
-                    this._globalService.refreshStudentPanelPersonal(), 300
-                })
+                    this._globalService.refreshStudentPanelPersonal()
+                }, 300)
             });
     }
 

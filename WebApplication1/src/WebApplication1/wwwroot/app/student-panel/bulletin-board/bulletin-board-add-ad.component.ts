@@ -47,10 +47,11 @@ export class BulletinBoardAddAdComponent {
                 //console.log(result)
                 switch (result.status) {
                     case "uspelo":
-                        this._globalService.toast(`Uspešno dodat oglas.`);
+                        this._globalService.toast(this._globalService.translate('adding_ad_successful'));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije uspelo dodavanje oglasa.`);
+                        this._globalService.toast(this._globalService.translate('error') + ' '
+                            + this._globalService.translate('adding_ad_unsuccessful'));
                         debugger;
                         break;
                 }

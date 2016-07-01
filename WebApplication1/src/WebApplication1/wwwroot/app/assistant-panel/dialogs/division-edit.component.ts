@@ -9,12 +9,10 @@ import {Course} from "../../models/Course";
 import {StudentsService} from "../../services/students.service";
 import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_BUTTON} from "../../ui/r-button.component";
-
-import * as moment_ from "../../../js/moment.js";
 import {
     GlobalService
 } from "../../services/global.service";
-const moment = moment_["default"];
+import {moment} from "../../global/moment.import";
 
 @Component({
     selector: 'division-edit', 
@@ -143,15 +141,19 @@ export class DivisionEditComponent implements AfterViewInit {
         /*debugger;*/
 
         //TODO nesto pametnije sa odgovorom
-        this._divisionsService.updateDivision(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID)
+        this._divisionsService.updateDivision(
+            sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID)
             .then(response => {
                 //console.log(response);
                 switch (response.status) {
                     case "uspelo":
-                        this._globalService.toast(`Uspešno izmenjena grupa *${sendName}*.`);
+                        this._globalService.toast(this._globalService.translate("successfully_edited_division__1") +
+                            " *" + sendName + "*" +
+                            this._globalService.translate("successfully_edited_division__2"));
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Grupa nije izmenjena.`);
+                        this._globalService.toast(this._globalService.translate("error") + " " +
+                            this._globalService.translate("group_not_edited"));
                         debugger;
                         break;
                 }
