@@ -44,8 +44,14 @@
         <button (click)="themePickerOpened = !themePickerOpened">
             <i class="fa fa-paint-brush"></i>
         </button>
+        <button (click)="addAnnouncementDialog.open()">
+            <i class="fa fa-calendar"></i>
+        </button>
     </div>
 
+    <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
+        <add-announcement></add-announcement>
+    </r-dialog>
 
 
     <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">

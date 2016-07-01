@@ -89,7 +89,7 @@
         <div class="tab-content">
             <template [ngIf]="selectedTab === 1">
                 <!-- čas, a ne aktivnost -->
-                <div class="main-info" *ngIf="abbr && classroom">
+                <div class="main-info" *ngIf="isClass">
                     <dl>
                         <div><dt class="class-time">
                             <i class="fa fa-clock-o"></i>
@@ -253,6 +253,86 @@
                     </div>
 
                 </div>
+                <!-- aktivnost -->
+                <div class="main-info" *ngIf="!isClass">
+                    <dl>
+                        <div><dt class="class-time">
+                            <i class="fa fa-clock-o"></i>
+                            <span>{{_globalService.translate('time')}}</span>
+                        </dt>
+                            <dd>
+                                {{startMinutes | toTimestamp}} — {{endMinutes | toTimestamp}}
+                            </dd></div>
+
+                        <div *ngIf="classroom"><dt class="class-place">
+                            <i class="fa fa-server"></i>
+                            <span>{{_globalService.translate('classroom')}}</span>
+                        </dt>
+                            <dd>
+                                {{classroom}}
+                            </dd></div>
+
+                        <div *ngIf="place"><dt class="class-place">
+                            <i class="fa fa-server"></i>
+                            <span>{{_globalService.translate('place')}}</span>
+                        </dt>
+                            <dd>
+                                {{place}}
+                            </dd></div>
+
+                        <div><dt class="class-subject">
+                            <i class="fa fa-graduation-cap"></i>
+                            <span>{{_globalService.translate('title')}}</span>
+                        </dt>
+                            <dd>
+                                {{activityTitle}}
+                            </dd></div>
+
+                        <div><dt class="class-subject">
+                            <i class="fa fa-graduation-cap"></i>
+                            <span>{{_globalService.translate('content')}}</span>
+                        </dt>
+                            <dd>
+                                {{activityContent}}
+                            </dd></div>
+
+
+                        <div><dt class="assistant">
+                            <i class="fa fa-male"></i>
+                            <span>{{_globalService.translate('creator')}}</span>
+                        </dt>
+                            <dd>
+                                {{assistant}}
+                                &nbsp;
+                                <a [href]="'mailto:' + assistantEmail">
+                                    <i class="fa fa-envelope"></i>
+                                </a>
+                                <!-- todo mejl asistena -->
+                                <!--<div class="more-info">-->
+                                <!--<i class="fa fa-question"></i>-->
+                                <!--<div>-->
+                                <!--331-->
+                                <!--</div>-->
+                                <!--</div>-->
+                            </dd></div>
+
+                    </dl>
+
+                    <div class="controls">
+
+                        <button *ngIf="mode === _Mode.AssistantOfficial && !isClass"
+                                r-button raised [text]="_globalService.translate('delete_activity')"
+                                (click)="deleteGlobalActivity()"
+                                [primaryColor]="color">Obriši aktivnost</button>
+
+
+
+
+
+                    </div>
+
+                </div>
+
             </template>
 
             <template [ngIf]="selectedTab === 2">

@@ -121,7 +121,9 @@ namespace WebApplication1.Data
                 List<int> activities = official ? new List<int>() : 
                     _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
                 List<ScheduleDTO> activitiesSchedule =
-                    _context.Activities.Where(a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value))
+                    _context.Activities.Where(a => (activities.Contains(a.activityID) || 
+                                                    (a.groupID != null && a.cancelling == false && groups.Contains(a.groupID.Value)) ||
+                                                    a.groupID == null) 
                                                     && TimeSpan.Overlap(a.timeSpan, tsNow)
                                                     && a.groupID == null) //nisu obavestenja vezana za casove
                                                     .Select(a => new ScheduleDTO
@@ -134,7 +136,10 @@ namespace WebApplication1.Data
                                                         activityTitle = a.title,
                                                         activityContent = a.activityContent,
                                                         isClass = false,
-                                                        activityID = a.activityID
+                                                        activityID = a.activityID,
+                                                        assistant = a.assistant.name + " " + a.assistant.surname,
+                                                        classroom = a.classroom == null ? null : a.classroom.number,
+                                                        place = a.place
                                                     }).ToList();
 
                 List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();

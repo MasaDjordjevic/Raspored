@@ -35,6 +35,7 @@ import {Mode} from "./r-timetable.component";
                 [durationMinutes]="c.durationMinutes"
                 [endMinutes]="c.startMinutes + c.durationMinutes"
                 [mode]="mode"
+                [place]="c.place"
             >
             </r-timetable-class>
         </div>

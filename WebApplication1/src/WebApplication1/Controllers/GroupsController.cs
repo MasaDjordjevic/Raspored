@@ -385,18 +385,14 @@ namespace WebApplication1.Controllers
         }
 
         // POST: api/Groups/AddActivity
+        // ako je groupID null onda je to obavestenje za sve
         [HttpPost]
         public IActionResult AddActivity([FromBody] AddActivityBinding obj)
         {
-            if (obj?.groupID == null)
-            {
-                return Ok(new { status = "parameter error" });
-            }
-
             try
             {
                 //TODO vadi iz sesije
-                Data.Group.AddActivity(1, obj.groupID.Value, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
+                Data.Group.AddActivity(1, obj.groupID, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

@@ -19,6 +19,13 @@ export class ActivityScheduleService {
             .catch(this.handleError);
     }
 
+    deleteGlobalActivity(activityID: number) {
+        return this.http.get(this._url + '/DeleteGlobalActivity/' + activityID)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         if (res.status < 200 || res.status >= 300) {
             throw new Error('Bad response status: ' + res.status);

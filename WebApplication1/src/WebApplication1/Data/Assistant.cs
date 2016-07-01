@@ -79,7 +79,9 @@ namespace WebApplication1.Data
                         }).ToList();
 
                 List<ScheduleDTO> activitiesSchedule =
-                    _context.Activities.Where(a => (a.assistantID == assistantID || (a.cancelling == false && groups.Contains(a.groupID.Value))
+                    _context.Activities.Where(a => ((a.assistantID == assistantID || 
+                                                    (a.groupID != null && a.cancelling == false && groups.Contains(a.groupID.Value)) ||
+                                                    (a.groupID == null))
                                                     && TimeSpan.Overlap(a.timeSpan, tsNow)))
                                                     .Select(a => new ScheduleDTO
                                                     {
@@ -91,7 +93,10 @@ namespace WebApplication1.Data
                                                         activityTitle = a.title,
                                                         activityContent = a.activityContent,
                                                         isClass = false,
-                                                        activityID = a.activityID
+                                                        activityID = a.activityID,
+                                                        assistant = a.assistant.name + " " + a.assistant.surname,
+                                                        classroom = a.classroom == null ? null : a.classroom.number,
+                                                        place = a.place
                                                     }).ToList();
 
                 List<ScheduleDTO> returnValue = groupsSchedule.Concat(activitiesSchedule).ToList();
@@ -100,6 +105,7 @@ namespace WebApplication1.Data
                 return Schedule.Convert(returnValue);
             }
         }
+        
 
     }
 }
