@@ -4,6 +4,7 @@ import {R_BUTTON} from "../ui/r-button.component";
 import {Mode} from "./r-timetable.component";
 import {StudentsService} from "../services/students.service";
 import {GlobalService} from "../services/global.service";
+import {ActivityScheduleService} from "../services/activity-schedule.service";
 import {R_DIALOG} from "../ui/r-dialog";
 import {AddActivityComponent} from "../assistant-panel/dialogs/group-add-activity.component";
 import {CancelClassComponent} from "../assistant-panel/dialogs/cancel-class.component";
@@ -22,7 +23,8 @@ import {UncancelClassComponent} from "../assistant-panel/dialogs/uncancel-class.
         "[style.height]": "expanded ? expandedHeightHost : '100%'"
     },
     pipes: [ToTimestampPipe],
-    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent, AddTaskComponent, BulletinBoardComponent, UncancelClassComponent]
+    directives: [R_BUTTON, R_DIALOG, AddActivityComponent, CancelClassComponent, AddTaskComponent, BulletinBoardComponent, UncancelClassComponent],
+    providers: [ActivityScheduleService]
 })
 export class TimetableClassComponent {
     
@@ -48,6 +50,7 @@ export class TimetableClassComponent {
     @Input() activityContent: string; // "Samo džim bajo moj"
     @Input() active: boolean = true; // true: defaultno, false: zasivljeno
     @Input() type: string = "predavanje";
+    @Input() place: string; // za globalne aktivnosti
     @Input() notifications: {activityContent: string, activityID: number, classroomID: number, place: string, title: string}[];
 
     // Prikaz
@@ -184,8 +187,13 @@ export class TimetableClassComponent {
     }
 
     // obrisi aktivnosti
-    public deleteActivity() {
+    public deleteActivity() {      
         this._studentsService.deleteActivity(this.activityId)
+            .then(status => console.log(status));
+    }
+
+    public deleteGlobalActivity() {
+        this._activityScheduleService.deleteGlobalActivity(this.activityId)
             .then(status => console.log(status));
     }
 
@@ -233,7 +241,8 @@ export class TimetableClassComponent {
     constructor(
         private elementRef: ElementRef,
         private _studentsService: StudentsService,
-        private _globalService: GlobalService
+        private _globalService: GlobalService,
+        private _activityScheduleService: ActivityScheduleService
     ) {
 
     }

@@ -1,0 +1,40 @@
+<r-input [label]="_globalService.translate('title')"
+         [(val)]="announcement.title"
+         [primaryColor]="primaryColor">
+</r-input>
+
+<textarea [(ngModel)]="announcement.content"></textarea>
+
+<r-dropdown *ngIf="classrooms"
+            [label]="_globalService.translate('classroom')"
+            [(val)]="announcement.classroom"
+            [primaryColor]="primaryColor"
+>
+    <r-dropdown-item
+            *ngFor="let classroom of classrooms"
+            [value]="classroom.classroomID"
+    >
+        {{classroom.number}}
+    </r-dropdown-item>
+</r-dropdown>
+
+<r-input [label]="_globalService.translate('place')"
+         [(val)]="announcement.place"
+         [primaryColor]="primaryColor">
+</r-input>
+
+<r-input [label]="_globalService.translate('beginning') + ' (YYYY-MM-DD HH:MM)'"
+         [(val)]="announcement.startDate"></r-input>
+<r-input [label]="_globalService.translate('ending') + ' (YYYY-MM-DD HH:MM)'"
+         [(val)]="announcement.endDate"></r-input>
+
+<div class="controls">
+    <button r-button flat [text]="_globalService.translate('back')"
+            (click)="closeMe()" [primaryColor]="primaryColor">
+        {{_globalService.translate('back')}}
+    </button>
+    <button r-button raised [text]="_globalService.translate('add_announcement')"
+            (click)="save()" [primaryColor]="primaryColor">
+        {{_globalService.translate('add_announcement')}}
+    </button>
+</div>

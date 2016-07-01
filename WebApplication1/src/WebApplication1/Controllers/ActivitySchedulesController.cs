@@ -25,6 +25,20 @@ namespace WebApplication1.Controllers
             return Ok(Data.Schedule.GetCurrentSemesterTimeSpan());
         }
 
+        [HttpGet("{id}", Name = "DeleteGlobalActivity")]
+        public IActionResult DeleteGlobalActivity([FromRoute] int id)
+        {
+            try
+            {
+                Data.Group.DeleteActivity(id);
+                return Ok(new { status = "uspelo" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
+
         // GET: api/ActivitySchedules
         [HttpGet]
         public IEnumerable<ActivitySchedules> GetActivitySchedules()

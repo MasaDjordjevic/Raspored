@@ -164,7 +164,7 @@ export class GroupsService {
         console.log(body);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this.http.post(this._url + '/AddAd', body, options)
+        return this.http.post(this._url + '/AddEditAd', body, options)
             .toPromise()
             .then(this.extractData)
             .catch(this.handleError);

@@ -12,5 +12,6 @@ namespace WebApplication1.Models.DTOs
         public string time { get; set; }
         public string classroom { get; set; }
         public string studentName { get; set; }
+        public bool chosen { get; set; }
     }
 }

@@ -23,6 +23,7 @@ import {
     GlobalService
 } from "../services/global.service";
 import {ToastComponent} from "../global/toast.component";
+import {AddAnnouncementComponent} from "./dialogs/add-announcement.component";
 
 @Component({
     selector: "r-assistant-panel",
@@ -33,7 +34,7 @@ import {ToastComponent} from "../global/toast.component";
         GroupsListComponent, GroupOptionsComponent,
         StudentsListComponent, StudentOptionsComponent,
         R_BUTTON, R_DIALOG, AssistantEditComponent,
-        ToastComponent
+        ToastComponent, AddAnnouncementComponent
     ],
     templateUrl: 'app/assistant-panel/assistant-panel.html',
     styleUrls: ['app/assistant-panel/assistant-panel.css'],

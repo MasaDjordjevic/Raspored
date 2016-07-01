@@ -52,7 +52,6 @@ export class BulletinBoardComponent {
     private getPossibleChoices(groupId: number): void {
         this._groupsService.getPossibleBulletinBoardChoices(this.groupId)
             .then(result => {
-                /*debugger;*/
                 this.possibleChoices = <any>result;
             });
     }
@@ -61,6 +60,7 @@ export class BulletinBoardComponent {
         this._groupsService.getAllBulletinBoardChoices(this.groupId)
             .then(result => {
                 this.allChoices = <any>result;
+                this.chosenAllChoices = this.allChoices.filter(i => i["chosen"]).map(i=>i.groupID).map(String);
             });
     }
 

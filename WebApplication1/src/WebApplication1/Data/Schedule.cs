@@ -38,6 +38,10 @@ namespace WebApplication1.Data
         public string activityTitle { get; set; }
         public string activityContent { get; set; }
 
+        //global activity
+        public string place { get; set; }
+        
+
     }
 
     public static class Schedule
