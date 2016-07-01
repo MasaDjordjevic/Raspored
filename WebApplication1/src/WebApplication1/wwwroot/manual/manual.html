@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.4">
+<meta name="author" content="Lazar Ljubenovic, Marija Ðordevic (tim La Plávusha)">
+<title>Raspored v1.0&#8201;&#8212;&#8201;Korisničko upustvo</title>
+<link rel="stylesheet" href="./manual.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1><strong>Raspored</strong> v1.0&#8201;&#8212;&#8201;Korisničko upustvo</h1>
+<div class="details">
+<span id="author" class="author">Lazar Ljubenovic, Marija Ðordevic (tim La Plávusha)</span><br>
+<span id="email" class="email"><a href="mailto:lazar.ljubenovic.1995@gmail.com">lazar.ljubenovic.1995@gmail.com</a></span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Sadržaj</div>
+<ul class="sectlevel1">
+<li><a href="#_uvod">Uvod</a>
+<ul class="sectlevel2">
+<li><a href="#_prijavljivanje">Prijavljivanje</a></li>
+<li><a href="#_promena_jezika">Promena jezika</a></li>
+</ul>
+</li>
+<li><a href="#_asistentski_panel">Asistentski panel</a>
+<ul class="sectlevel2">
+<li><a href="#_struktura">Struktura</a></li>
+<li><a href="#_promena_teme">Promena teme</a></li>
+<li><a href="#_rasporedi">Rasporedi</a></li>
+<li><a href="#_raspodele">Raspodele</a></li>
+<li><a href="#_grupe">Grupe</a></li>
+<li><a href="#_studenti">Studenti</a></li>
+</ul>
+</li>
+<li><a href="#_studentski_panel">Studentski panel</a>
+<ul class="sectlevel2">
+<li><a href="#_informacije_o_času">Informacije o času</a></li>
+<li><a href="#_obaveštenja">Obaveštenja</a></li>
+<li><a href="#_sakrivanje_i_dodavanje_u_lični">Sakrivanje i dodavanje u lični</a></li>
+<li><a href="#_zamena_studenata">Zamena studenata</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_uvod"><a class="link" href="#_uvod">Uvod</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Namena aplikacije je mogućnost jednostavne personalizacije rasporeda časova za studente; i jednostavna podela studenata na grupe za razne tipove časova i aktivnosti za profesore.</p>
+</div>
+<div class="sect2">
+<h3 id="_prijavljivanje"><a class="link" href="#_prijavljivanje">Prijavljivanje</a></h3>
+<div class="paragraph">
+<p><strong>Prijava</strong> na aplikaciju se obavlja na formi sa početne stranice sajta.
+I studenti i zaposleni (asistenti i administracija) popunjavaju istu formu, gde je potrebno uneti <strong>adresu elektronske pošte</strong> i <strong>šifru</strong>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/786c9b761fc047f7bd53bf3dcc2f871f.png" alt="786c9b761fc047f7bd53bf3dcc2f871f">
+</div>
+<div class="title">Figure 1. Prijavljivanje na sistem.</div>
+</div>
+<div class="paragraph">
+<p><strong>Registracija</strong> nije obezbeđena jer se podrazumeva da će obrazovna ustanova koja koristi aplikaciju svojim korisnicima dodeliti naloge koje mogu da koriste.</p>
+</div>
+<div class="paragraph">
+<p>U zavisnosti od vrste naloga, odnosno od privilegija koje su veza za unesene akreditive, korisnik može biti redirektovan na asistentski ili studentski panel, koji su opisani u nastavku.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_promena_jezika"><a class="link" href="#_promena_jezika">Promena jezika</a></h3>
+<div class="paragraph">
+<p>U gornjem desnom uglu svakog prozora u oba panela nalazi se meni za izbor jezika u vidu ikonice koja predstavlja planetu Zemlju.
+Levim klikom na ikonicu otvara se padajući meni iz kojih se može izabrati jedan od ponuđenih jezika.
+Strukture aplikacije je takva da je dodavanje novih i brisanje jezika jednostavno, pa je lako načiniti promene u slučaju novih potreba obrazovanih ustanova.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/df353319b91246d9b5cb17ff9d5f3019.png" alt="df353319b91246d9b5cb17ff9d5f3019">
+</div>
+<div class="title">Figure 2. Izbor jezika</div>
+</div>
+<div class="paragraph">
+<p>Klikom na neki od jezika, menja se jezik većine interfejsa aplikacije (radi potpunog prelaska na drugi jezik je potrebno osvežiti stranicu iz pretraživača).
+Naravno, ovo ne uključuje prevođenje imena predmeta i sličnih naziva iz baze podataka koju fakultet koristi; očekuje se da asistenti i studenti fakulteta koriste aplikaciju na maternjem jeziku kako bi izgled aplikacije bio zadovoljavajuć.</p>
+</div>
+<div class="paragraph">
+<p>Izbor jezika s čuva u kolačićima (kukijima) veb-pretraživača, tako da će jezik prilikom svakog sledećeg pokretanja stranice biti već izabran.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_asistentski_panel"><a class="link" href="#_asistentski_panel">Asistentski panel</a></h2>
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/ec2cbc017f5d435b9831205cdfca79de.png" alt="ec2cbc017f5d435b9831205cdfca79de">
+</div>
+<div class="title">Figure 3. Izgled asistentskog panela</div>
+</div>
+<div class="paragraph">
+<p>Asistentski panel je namenjen svim zaposlenima, što pored samih asistenata, uključuje i profesore (koje u daljem tekstu vodimo pod "asistenti") i druge predavače, ali i administraciju.
+Služi prvenstveno za organizovanje rasporeda studenata, mada može i da posluži za pregled rasporeda asistenata.</p>
+</div>
+<div class="sect2">
+<h3 id="_struktura"><a class="link" href="#_struktura">Struktura</a></h3>
+<div class="sect3">
+<h4 id="_zaglavlje"><a class="link" href="#_zaglavlje">Zaglavlje</a></h4>
+<div class="paragraph">
+<p>Na vrhu asistentskog panela se nalazi zaglavlje sa osnovnim informacijama o asistentu (ili zaposlenom) koji je trenutno prijavljen na sistem.
+Uz ove informacije se nalazi i ikonica u vidu olovke.
+Klikom na nju se otvara panel za <strong>izmenu podataka o asistentu</strong>, gde korisnik može izmeniti podatke o sebi i sačuvati ih.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/ef7866fcbfcc42a0b656c32d755fb729.png" alt="ef7866fcbfcc42a0b656c32d755fb729">
+</div>
+<div class="title">Figure 4. Zaglavlje asistentskog panela</div>
+</div>
+<div class="paragraph">
+<p>Pored toga se sa desne stranice nalaze tri ikonice.
+Kućica služi za povratak na <strong>početnu stranu</strong> asistentskog panela.
+Klikom na četkicu se otvara padajući meni gde se može izabrati jedna od četiri ponuđenih tema, na osnovu koje se biraju četiri boje koje dominiraju stupcima.
+Globus služi za promenu jezika, kao što je ranije opisano.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_Četiri_kolone_i_opcije"><a class="link" href="#_Četiri_kolone_i_opcije">Četiri kolone i opcije</a></h4>
+<div class="paragraph">
+<p>S leve strane je u početku otvorena samo jedna kolona, koja predstavlja listu <strong>smerova</strong> (modula).
+U njoj se nalaze svi smerovi koji su uneti u bazi fakulteta, razvrstani po godinama.
+Klikom na neku godinu, mogu se sakriti ili prikazati smerovi iz te godine, a klikom na smer se otvara sledeća kolona, lista raspodela, kao i opcije za selektiran smer.</p>
+</div>
+<div class="paragraph">
+<p>U opcijama za smerove, mogu se pregledati osnovne informacije o smeru, kreirati nova raspodela i pogledati kako izgleda globalni raspored za trenutno izabrani smer.</p>
+</div>
+<div class="paragraph">
+<p>U koloni <strong>raspodele</strong> nalaze se sve raspodele koje su već kreirane za ranije selektirani smer.
+Razvrstane su po tome da li se radi o laboratorijskm, predavanjima ili računskim vežbama (pošto se tip raspodele vuče iz baze podataka, moguće je kreirati i drugačiju podelu, ili je imenovati drugačije).
+Klikom na neki tip raspodele, mogu se sakriti ili prikazati raspodele tog tipa, a klikom na samu raspodelu se otvara sledeća kolona, lista grupa, kao i opcije za selektiranu raspodelu.</p>
+</div>
+<div class="paragraph">
+<p>U opcijama za raspodele, mogu se pregledati osnovne informacije o raspodeli; pored toga, može se izmeniti, kopirati, izvesti (eksportovati) ili obrisati tekuća raspodela, zatim kreirati nova grupa, ili grupno izmeniti grupe raspodele.</p>
+</div>
+<div class="paragraph">
+<p>U koloni <strong>grupe</strong> nalaze se sve grupe koje su već kreirane za tanije selektiranu raspodelu.
+Uz ime svake grupe se, radi lakše identifikacije, nalazi i učionica koja je dodeljna tuj grupi (ukoliko uopšte postoji dodaljena učionica).
+Klikom na neku grupu se otvara sledeća kolona, lista studenata, kao i opcije za selektiranu grupu.</p>
+</div>
+<div class="paragraph">
+<p>U opcijama za grupe, mogu se pregledati osnovne informacije o grupi; sem toga, moguće je obrisati ili izmeniti grupu koja je trenutno selektirana, zatim dodati obaveštenje ili otkazati čas tog grupi, ili prikazati kombinovani raspored studenata koji pripadaju njoj.</p>
+</div>
+<div class="paragraph">
+<p>U koloni <strong>studenti</strong> nalaze se imena, prezimena i brojevi indeksa svih studenata koji su pridruženi trenutno selektiranoj grupi.
+Klikom na nekog studenta se otvaraju opcije za tog studenta.</p>
+</div>
+<div class="paragraph">
+<p>U opcijama za studente, mogu se pregledati osnovne informacije o studentima; sem toga, moguće je prebaciti studneta u drugu grupu ili izbaciti studenta iz grupe.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_promena_teme"><a class="link" href="#_promena_teme">Promena teme</a></h3>
+<div class="paragraph">
+<p>Promena teme se vrši klikom na neku od ponuđenih paleta boja iz padajućeg menija koji se otvara klikom na ikonicu četkice u gornjem desnom uglu asistentskog panela.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/97c5cab8c326440d940d76730c154a70.png" alt="97c5cab8c326440d940d76730c154a70">
+</div>
+</div>
+<div class="paragraph">
+<p>Utiče na četiri glavne boje koje dominantne u asistentskom panelu (po jedna za svaku listu i pridružene opcije).
+Može se izabrati neka od sledećih ponuđenih paleta boja: <em>Material</em>, <em>Sunset</em>, <em>Ice</em> i <em>Neon</em>.
+Paleta boja koja je trenutno selektirana biće obeležena boldiranim slovima.</p>
+</div>
+<div class="paragraph">
+<p>Da bi se tema promenila, neophodno je načiniti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>U gornjem desnom uglu, kliknuti na ikonicu četkice <span class="icon"><i class="fa fa-paint-brush"></i></span>.</p>
+</li>
+<li>
+<p>Iz padajućeg menija izabrati neku od ponuđenih paleta boja.</p>
+</li>
+<li>
+<p>Kliknuti na izabranu paletu.</p>
+</li>
+<li>
+<p>Padajući meni se automatski zatvara, a paleta boja je promenjena.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rasporedi"><a class="link" href="#_rasporedi">Rasporedi</a></h3>
+<div class="paragraph">
+<p>Četiri vrste rasporeda su dostupne asistentu: lični, globalni, po učionicama, i studentski.</p>
+</div>
+<div class="paragraph">
+<p><strong>Lični raspored</strong> asistenta pokazuje sve aktivnosti asistenta.
+<strong>Globalni raspored</strong> prikazuje raspored jednog smera.
+<strong>Raspored po učionicama</strong> prikazuje raspored po učionicama.
+<strong>Studentski raspored</strong> je raspored iz ugla studenta.
+Asistent ima privilegiju da pogleda studentom <strong>zvanični</strong> raspored (ne vidi njegove lične aktivnosti).</p>
+</div>
+<div class="paragraph">
+<p>Ovim rasporedima se pristupa preko početne stranice asistentskog panela, izborom odgovarajuće opcije iz padajućeg menija.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_raspodele"><a class="link" href="#_raspodele">Raspodele</a></h3>
+<div class="sect3">
+<h4 id="_kreiranje"><a class="link" href="#_kreiranje">Kreiranje</a></h4>
+<div class="paragraph">
+<p>Da bi se kreirala raspodela, potrebno je načiniti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine kojem se dodaje nova raspodela.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektirani smer kliknuti na dugme <strong>Nova raspodela</strong>.</p>
+</li>
+<li>
+<p>Uneti ime raspodele.</p>
+</li>
+<li>
+<p>Iz padajućeg menija izabrati predmet za koji se kreira raspodela.</p>
+</li>
+<li>
+<p>Iz padajućeg menija izabrati vrstu raspodele koja se kreira (računske, laboratorijske ili predavanja).</p>
+</li>
+<li>
+<p>Podrazumevano su polja za početak i kraj važenja raspodele popunjena na osnovu tekućeg semestra, ali se mogu menjati. Treba ispratiti format unasa datuma koji je naveden u labelama.</p>
+</li>
+<li>
+<p>Kliknuti na <strong>Dalje</strong>.</p>
+</li>
+<li>
+<p>Izabrati način kreiranja iz padajućeg menija (po broju grupa, po broju studenata ili ručno).</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Kada je način kreiranja podešen na <strong>po broju grupa</strong>, otvara se polje za unos broja grupa.</p>
+</li>
+<li>
+<p>Kada je način kreiranja podešen na <strong>po broju studenata</strong>, otvara se polje za unos broja studenata.</p>
+</li>
+<li>
+<p>Kada je način kreiranja podešen na <strong>ručno</strong>, nema dodatnih polja.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Uneti broj studenata, ondosno broj grupa.</p>
+</li>
+<li>
+<p>Izabarti način sortiranja (po indeksu ili nasumično).</p>
+</li>
+<li>
+<p>Kliknuti na dugme <strong>Prikaz</strong>.</p>
+</li>
+<li>
+<p>Prikazeće se kratak pregled načina podele. Sistem pokušava da studente rasporedi što je moguće bolje, a da nijedna grupa nema premalo ili previše studenata, odnosno da studenti budu što je ravnomernije moguće raspoređeni u skladu s mogućnostima. Ukoilko asistentu ne odgovara predložen raspored, može probati da koriguje unetu vrednost za broj grupa odnsono broj studenata, ili da izabere opciju <strong>ručno</strong>, jer tako ima potpunu kontrolu nad raspodelom. Ipak, trebalo bi da automatski načini kreiranja u većini slučajeva gbudu zadovoljavajući.</p>
+</li>
+<li>
+<p>Kliknuti na <strong>Dalje</strong>.</p>
+</li>
+<li>
+<p>Prikazuju se sve informacije o grupi koja će se kreirati, sa kompletnim spiskom studenata po grupama. Grupama se automatski dodeljuju imena <strong>Grupa 1</strong>, <strong>Grupa 2</strong>, itd. i iz ovog panela ih nije moguće promeniti (mada za tim uglavnom i ne postoji potreba).</p>
+</li>
+<li>
+<p>Ukoliko su podaci zadovoljavajući, kliknuti na <strong>Kreiraj raspodelu</strong>. Inače se može vršiti navigacija kroz korake kreacije raspodele koristeći dugmad <strong>Nazad</strong> i <strong>Dalje</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/c6334a056ce740b9a9d986db5609b727.png" alt="c6334a056ce740b9a9d986db5609b727">
+</div>
+<div class="title">Figure 5. Prvi korak pri kreiranju raspodele</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/e333f5c4e5f24e039cf131e5bf8f0b20.png" alt="e333f5c4e5f24e039cf131e5bf8f0b20">
+</div>
+<div class="title">Figure 6. Drugi korak pri kreiranju raspodele</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/118ed0c38a034381a99799a82942353f.png" alt="118ed0c38a034381a99799a82942353f">
+</div>
+<div class="title">Figure 7. Terći korak pri kreiranju raspodele</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_izmena"><a class="link" href="#_izmena">Izmena</a></h4>
+<div class="paragraph">
+<p>Da bi se izmenila raspodela, potrebno je ispratiti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela čije podatke treba izmeniti.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkretnu raspodelu čije podatke treba izmeniti.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektiranu raspodelu kliknuti na dugme <strong>Izmeni raspodelu</strong>.</p>
+</li>
+<li>
+<p>Otvara se panel koji nudi mogućnost izmene raspodele. Moguće je izmeniti ime raspodele, predmet, vrstu, kao i početak i kraj važenja.</p>
+</li>
+<li>
+<p>Nakon unosa željenih podataka, kliknuti na <strong>Sačuvaj izmene</strong> kako bi se unete izmene sačuvate u bazi podataka. Panel se potom zatvara.</p>
+</li>
+<li>
+<p>Klikom na dugme <strong>Reset</strong> će u panel za izmenu raspodele ponovo biti upisane tekuće vrednosti.</p>
+</li>
+<li>
+<p>Za jednostavno gašenje panela treba kliknuti bilo gde van njega (na zatamnjenoj površini).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_kopiranje"><a class="link" href="#_kopiranje">Kopiranje</a></h4>
+<div class="paragraph">
+<p>Da bi se kopirala raspodela, potrebno je ispratiti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela koju treba kopirati.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkretnu raspodelu koju treba kopirati.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektiranu raspodelu kliknuti na dugme <strong>Kopiraj raspodelu</strong>.</p>
+</li>
+<li>
+<p>Raspodela je kopirana.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Nakon uspešnog brisanja, prikazuje se poruka o uspešnosti (tost u donjem levom uglu ekrana) i u listi raspodela se pojavljuje nova raspodela, koja ima iste osnovne podatke i grupe kao i selektirana raspodela, a čije je ime predstavlja konaktenaciju imena trenutno selektirane raspodele i odrednice <em>(kopija)</em>.</p>
+</div>
+<div class="paragraph">
+<p>Navigacija do novokreirane kopije tekuće raspodele se može obaviti jednostavnim klikom na nju, kao da je u pitanju bilo koja druga raspodela kreirana na bilo koji drugi način.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_brisanje"><a class="link" href="#_brisanje">Brisanje</a></h4>
+<div class="paragraph">
+<p>Da bi se obrisala raspodela, potrebno je ispratiti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela koju treba obrisati.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkretnu raspodelu koju treba obrisati.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektiranu raspodelu kliknuti na dugme <strong>Obriši raspodelu</strong>.</p>
+</li>
+<li>
+<p>Otvara se dijalog u kojem se može potvrditi brisanje raspodele ili odustati. Dijalog sadrži i kratk tekst sa opisom akcije koja će se dogoditi ukoliko se ona potvrdi.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Potvrda brisanja se vrši klikom na dugme <strong>Obriši</strong>.</p>
+</li>
+<li>
+<p>Ukoliko raspodelu ipak ne treba obrisati, treba kliknuti na dugme <strong>Odustani</strong> ili bilo gde van otvorenog dijaloga, na zacrnjenoj površini iza njega.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Nakon uspešnog brisanja raspodele, prikazuje se odogvarajuća poruka (tost u donjem levom uglu ekrana).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_izvoz_raspodele"><a class="link" href="#_izvoz_raspodele">Izvoz raspodele</a></h4>
+<div class="paragraph">
+<p>Raspodelu je moguće izvsti (eksportovati) u <code>tsv</code> format, koji je pogodan za kopiranje u programe koji podatke predstavljaju na tablerni način, kao što su <em>LibreOffice Calc</em> ili <em>Google Sheets</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/e0e2e41e555d4c7599e9b4a881630212.png" alt="e0e2e41e555d4c7599e9b4a881630212">
+</div>
+<div class="title">Figure 8. Izgled panela za izvoz raspodele</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smeru okviru godine u kojem se nalazi željena raspodela koju treba izvesti.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkretnu raspodelu koju treba eksportovati, tj. izvesti.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektiranu raspodelu kliknuti na dugme <strong>Izvezi raspodelu</strong>.</p>
+</li>
+<li>
+<p>Otvara se panel u kome se nalazi tekst koji predstavlja <em>table separated format</em>. Moguće je pregledati ga i ručno ga kopirati kao i bilo koji drugi tekst sa veb-stranice, ali se može i iskoristiti posebno dugme za to namenjeno, <strong>Kopiraj</strong> (u slučaju sa brauzer koji se koristi podržava ovu opciju; ako se koristi nekompatibilan brauzer pojaviće se obaveštenje u vidu tosta u donjem levom uglu ekrana).</p>
+</li>
+<li>
+<p>Otvoriti neki od programa koji predstavlja podatke na tabelarni način i dozvoljava jednostavnu manipulaciju njima (npr. <em>LibreOffice Calc</em> ili <em>Google Sheets</em>). Nalepiti sadržaj korišćenjem npr. prečice <code>CTRL + V</code>. Za detalje oko korišćenja funkcija <em>paste</em> pogledati upustvo programa koji se koristi.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Dobijena elektronska tabela (<em>spreadsheet</em>) sadrži sve informacije o raspodeli, formatirane na način pogodan za dalje dizajniranje tabele, ukoliko je to porebno.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_grupe"><a class="link" href="#_grupe">Grupe</a></h3>
+<div class="sect3">
+<h4 id="_kreiranje_i_izmena"><a class="link" href="#_kreiranje_i_izmena">Kreiranje i izmena</a></h4>
+<div class="paragraph">
+<p>Paneli za izmenu postojeće i kreiranje nove grupe izgledaju i funkcionišu na isti način, ali se otvaraju sa raličitih mesta iz aplikacije.</p>
+</div>
+<div class="paragraph">
+<p>Za kreiranje nove grupe, potrebno je načiniti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela u koju treba dodati novu grupu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkretnu raspodelu u koju treba dodati novu grupu.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektiratnu rapspodelu kliknuti na dugme <strong>Nova grupa</strong>.</p>
+</li>
+<li>
+<p>Otvara se panel za dodavanje nove grupe u selektiranu raspodelu.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Za izmenu postojeće grupe, potrebno je načiniti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela u kojoj je grupa čije podatke treba izmeniti.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkertnu raspodelu u kojoj se nalazi grupa čije podatke treba izmeniti.</p>
+</li>
+<li>
+<p>Otvara se kolona sa grupama. Iz nje izabrati konkretnu grupu čije pdoatke treba izmeniti.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektiranu grupu kliknuti na dugme <strong>Izmeni raspodelu</strong>.</p>
+</li>
+<li>
+<p>Otvara se panel za izmenu selektirane grupe.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/d193e8ba31354c1893d19ae2b1654eb9.png" alt="d193e8ba31354c1893d19ae2b1654eb9">
+</div>
+<div class="title">Figure 9. Izgled panela za izmenu i kreiranje grupe</div>
+</div>
+<div class="paragraph">
+<p>Panel za izmenu selektirane grupe, odnosno za dodavanje nove grupe selektiranoj raspodeli ima sledeća polja za unos:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Ime grupe</strong> - Ime dodeljeno grupi. Ne mora da bude jedinstveno u okviru raspodele, mada se to preporučuje radi bolje organizovanosti i radi lakšeg kasnijeg pretraživanja studenata po grupama.</p>
+</li>
+<li>
+<p><strong>Učionica</strong> - Iz padajućeg menija se može izabrati bilo koja učionca koja je upisana u bazu fakulteta. Predstavlja mesto gde se čas održava.</p>
+</li>
+<li>
+<p><strong>Asistent</strong> - Iz padajućeg menija se može izabrati asisten koji je upisan u bazu podataka, a povezan je sa predmetom za koji je kreirana raspodela u kojoj se nalazi grupa koja se menja ili kreira. Ukoliko se željeni asistent ipak ne nalazi u ponuđenoj listi, klikom na dugme <strong>Svi asisteni</strong> se može zatražiti da se u listu ubace i svi ostali asistenti koji rade na fakultetu. Na ovaj način je omogućena veća fleksibilnost pri izboru asistenta koji je zadužen za održavanje nastave.</p>
+</li>
+<li>
+<p><strong>Perioda</strong> - Može se izabrati bilo koji od četiri ponuđena izbora iz padajućeg menija: <em>svake nedelje</em>, <em>svake druge nedelje</em>, <em>svake četvrte nedelje</em> i <em>samo jednom</em>. Od ovog izbora zavisi format unosa narednih polja. U slučaju da se izabere neka od prve tri opcije, smatra se da se čas ponavlja na određeni broj nedelja, pa su poneđene opcije <em>dan u nedelji</em>, <em>početak (vreme)</em> i <em>kraj (vreme)</em>. Ukoliko se izabere poslednja opcija, smatra se da čas treba da se održi samo jednom, pa su ponuđene opcije <em>početak (datum i vreme)</em> i <em>kraj (datum i vreme)</em>.</p>
+</li>
+<li>
+<p><strong>Dan u nedelji</strong>&#8201;&#8212;&#8201;Pojavljuje se samo u slučaju da je iz padajućeg menija <em>perioda</em> izabrana neka od prve tri opcije. Nosi informaciju o tome kog dana u nedelji će se održavati definisan čas.</p>
+</li>
+<li>
+<p><strong>Početak</strong> i <strong>kraj</strong>&#8201;&#8212;&#8201;U zavisnosti od izbora koji je selektiran iz padajućeg menija <em>perioda</em>, format ovog unosa se može javiti u dve varijante. Ukoliko je izabrana neka od prve tri opcije iz padajućeg menija <em>perioda</em>, unosi se samo vreme u labelom specifiranom formatu. Ukoliko je izabrana poslednja opcija, unosi se ceo datum, ponovo u labelom specificranom formatu.</p>
+</li>
+<li>
+<p><strong>Ova grupa</strong>&#8201;&#8212;&#8201;Ovde se nalazi lista studenata koji trenutno pripadaju grupi koja se menja. Uz ime studenta se nalaze i osnovni podaci o njemu, odnosno broj indeksa i adresa elektronske pošte. Može se iskoristiti polje za pretragu radi bržeg pretraživanja konkretnog studenta koji se traži. Nakon selektiranja nekih studenata iz grupe, one se iz nje mogu izbaciti klikom na crveno dugme <strong>Izbaci iz grupe</strong>.</p>
+</li>
+<li>
+<p><strong>Ostali</strong>&#8201;&#8212;&#8201;Ovde se nalazi lista studenata koji trenutno ne pripadaju grupi koja se menja. Uz ime studenta se nalaze i odnovni podaci o njemu, tačnije broj indeksa i adresa elektronske pošte. Može se iskoristiti polje za pretragu radi bržeg pretraživanja konkretnog studenta. Nakon selektiranja nekih studenata koji ne pripadaju grupi, oni se u nju mogu ubaciti klikom na zeleno dugme <strong>Ubaci u grupu</strong>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_grupna_izmena_grupa"><a class="link" href="#_grupna_izmena_grupa">Grupna izmena grupa</a></h4>
+<div class="paragraph">
+<p>Grupe jedne raspodele se mogu menjati pojedinačno, ali se neke njihove osnovne inforamcije radi jednostavnosti mogu menajti i izjedna, sa zajedničkog panela.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/a7526dde45dd4a39afba689b4b2545ef.png" alt="a7526dde45dd4a39afba689b4b2545ef">
+</div>
+<div class="title">Figure 10. Izgled panela za grupnu izmenu grupa jedne raspodele</div>
+</div>
+<div class="paragraph">
+<p>Da bi se grupno promenile grupe jedne raspodele, potrebno je ispratiti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela čije grupe treba promeniti.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkretnu raspodelu čije grupe treba promeniti.</p>
+</li>
+<li>
+<p>U sekciji opcija za selektiranu raspodelu kliknuti na dugme <strong>Grupe</strong>.</p>
+</li>
+<li>
+<p>Otvara se panel sa spiskom svih grupa i trenutnim osnovnim podaicma o njima, koji se mogu menjati. Među osnovne podatke spadaju sledeći podaci:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Učionica</strong>&#8201;&#8212;&#8201;iz padajućeg menija se može izabrati bilo koja učionica koja je upisana u bazu fakulteta. Predstavlja mesto gde se održava čas.</p>
+</li>
+<li>
+<p><strong>Perioda</strong>&#8201;&#8212;&#8201;može se izabrati jedan od četiri ponuđena izbora iz padajućeg menija: <em>svake nedelje</em>, <em>svake druge nedelje</em>, <em>svake četvrte nedelje</em> i <em>samo jednom</em>. Od ovog izbora zavisi format unosa narednih polja. U slučaju da se izabere neka od prve tri opcije, smatra se da se čas ponavlja na određeni broj nedelja, pa su poneđene opcije <em>dan u nedelji</em>, <em>početak (vreme)</em> i <em>kraj (vreme)</em>. Ukoliko se izabere poslednja opcija, smatra se da čas treba da se održi samo jednom, pa su ponuđene opcije <em>početak (datum i vreme)</em> i <em>kraj (datum i vreme)</em>.</p>
+</li>
+<li>
+<p><strong>Dan u nedelji</strong>&#8201;&#8212;&#8201;pojavljuje se samo u slučaju da je iz padajućeg menija <em>perioda</em> izabrana neka od prve tri opcije. Nosi informaciju o tome kog dana u nedelji će se održavati definisan čas.</p>
+</li>
+<li>
+<p><strong>Početak</strong> i <strong>kraj</strong>&#8201;&#8212;&#8201;U zavisnosti od izbora koji je selektiran iz padajućeg menija <em>perioda</em>, format ovog unosa se može javiti u dve varijante. Ukoliko je izabrana neka od prve tri opcije iz padajućeg menija <em>perioda</em>, unosi se samo vreme u labelom specifiranom formatu. Ukoliko je izabrana poslednja opcija, unosi se ceo datum, ponovo u labelom specificranom formatu.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Klikom na dugme <strong>Sačuvaj izmene</strong> se potvrđuju unete izmene.</p>
+</li>
+<li>
+<p>Ukoliko izmene ipak ne treba sačuvati, treba jedsnotavno zatvoriti panel. Zatvaranje panela se obavlja klikom na bilo koji deo zatamnjene površine iza otvorenog panela.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Panel je moguće ponovo otvoriti klikom na dugme <strong>Grupe</strong>, pri čemu će ranije unete izmene ostati u njemu (osim u slučaju da je u međuvremenu iz neke od listi s leve strane panela selektirana neka druga opcija), pa ih je ponovo moguće sačuvati.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_brisanje_2"><a class="link" href="#_brisanje_2">Brisanje</a></h4>
+<div class="paragraph">
+<p>Da bi se obriasla grupa, potrebno je ispratiti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se na sistem nalogom koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela čiju grupu treba obrisati.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati konkretnu raspodelu čiju grupu treba obrisati.</p>
+</li>
+<li>
+<p>Otvara se kolona sa grupama. Iz liste ponuđenih grupa koje pripadaju selektiranoj raspodelu, izabrati grupu koju treba obrisati.</p>
+</li>
+<li>
+<p>U sekciji opcija s desne strane za selektiranu grupu kliknuti na dugme <strong>Obriši grupu</strong>.</p>
+</li>
+<li>
+<p>Otvara se dijalog u kojem se može potvrditi brisanje grupe ili odustati. Dijalog sadrži i kratak tekst sa opisom akcije koja će se dogoditi ukoliko se ona potvrdi.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Potvrda brisanja se vrši klikom na dugme <strong>Obriši</strong>.</p>
+</li>
+<li>
+<p>Ukoliko grupu ipak ne treba obrisati, treba kliknuti na dugme <strong>Odustani</strong> ili bilo gde van otvorenog dijaloga, na zacrnjenoj površini iza njega.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_kombinovani_raspored"><a class="link" href="#_kombinovani_raspored">Kombinovani raspored</a></h4>
+<div class="paragraph">
+<p>Kombinovani raspored predstavlja raspored svih studenata koji pripadaju selektiranoj grupi. Da bi se on prikazao, potrebno je ispratiti sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima privilegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi željena raspodela za čiju grupu treba prikazati kombinovani raspored.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati željenu raspodelu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa grupama. Iz liste ponuđenih grupa, izabrati grupu u kojoj se nalaze studenti čiji kombinovani raspored treba prikazati.</p>
+</li>
+<li>
+<p>S desne strane, u sekciji opcija za selektiranu grupu, kliknuti na dugme <strong>Kombinovani raspored</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Kombinovani raspored se može zatvoriti klikom na bilo koji deo zacrnjene površine iza rasporeda.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_obaveštenja_i_otkazivanje"><a class="link" href="#_obaveštenja_i_otkazivanje">Obaveštenja i otkazivanje</a></h4>
+<div class="paragraph">
+<p>Asistenti mogu dodavati obaveštenje za određeni termin časa ili ga otkazati. Dugmad za dodavanje obaveštenja i otkazivanje časa se nalaze na istom mestu. Da bi se došlo do njih, potrebno je načiniti sledeće korake.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju pomoću akreditiva koji imaju privilegiju pristupa asistntskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi raspodela za čiju grupu treba dodati obaveštenje ili čiji čas treba otkazati.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati željenu raspodelu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa grupama. Iz nje izabrati željenu grupu.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/2ea37f81e0624ee6bbcf297575460cd9.png" alt="2ea37f81e0624ee6bbcf297575460cd9">
+</div>
+<div class="title">Figure 11. Izgled panela za otkazivanje časa, sa priakzanim padajućim menijem za izbor tačnog termina.</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/0c6e6fadc59541868c511b9a84a09021.png" alt="0c6e6fadc59541868c511b9a84a09021">
+</div>
+<div class="title">Figure 12. Izgled panela za otkazivanje časa.</div>
+</div>
+<div class="paragraph">
+<p>Dodavanje obaveštenja se vrši klikom na dugme <strong>Dodaj obaveštenje</strong>, a otkazivanje časa klikom na dugme <strong>Otaži čas</strong>.
+Klikom na njih se otvaraju slični paneli.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>U polju <strong>Naslov</strong> se unosi naslov obaveštenja (bilo da je to samo obično obaveštenje, ili obaveštenje koje se prisleđuje uz otkazivanje časa).</p>
+</li>
+<li>
+<p>U polju ispod njega se nalazi prostor gde se može upisati detaljniji opis obaveštenja.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>U slučaju da je grupi dodeljen termin koji ima periodu bez ponavljanja (<em>samo jednom</em>), na vrhu se prikazuje obaveštenje od datumu koji za koji se dodaje obaveštenje.
+U suprotnom, čas ima periodu sa ponavljanjem (<em>svake nedelje</em>, <em>svake druge nedelje</em> ili <em>svake četvrte nedelje</em>), i na vrhu se pojavljuje padajući meni iz koga se može izabrati neki od naredna četiri termina kada će čas biti održan.</p>
+</div>
+<div class="paragraph">
+<p>Klikom na dugme <strong>Dodaj obaveštenje</strong> ili <strong>Otkaži čas</strong> (u zavisnosti od prethodno selektirane akcije) obavlja se odgovarajuća akcija.
+Klikom na <strong>Nazad</strong> ili na bilo koji deo zacrnjene površine iza panela, panel se može ugasiti.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_studenti"><a class="link" href="#_studenti">Studenti</a></h3>
+<div class="sect3">
+<h4 id="_pomeranje_u_drugu_grupu"><a class="link" href="#_pomeranje_u_drugu_grupu">Pomeranje u drugu grupu</a></h4>
+<div class="paragraph">
+<p>Osim iz panela za izmenu grupe, student se može prebaciti u drugu grupu i navigiranjem do kolone sa studentima. Da bi se iskoristila ova funkcionalnost, potrebno je načini sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima priviglegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi raspodela koja sadrži grupu u kojoj je student koga treba premestiti u drugu grupu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati željenu raspodelu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa grupama. Iz nje izabrati željenu grupu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa studentima. Iz nje izabarti studenta kog treba premestiti iz selektirane grupe u neku drugu.</p>
+</li>
+<li>
+<p>S desne strane, u sekciji sa opcijama za studente, kliknuti na dugme <strong>Premesti u drugu grupu</strong>.</p>
+</li>
+<li>
+<p>Iz padajućeg menija u novootvorenom  izabrati grupu u koju treba premestiti studenta.</p>
+</li>
+<li>
+<p>Kliknuti na <strong>Premesti</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_izbacivanje_iz_grupe"><a class="link" href="#_izbacivanje_iz_grupe">Izbacivanje iz grupe</a></h4>
+<div class="paragraph">
+<p>Osim iz panela za izmenu grupe, student se iz grupe može izbaciti i navigiranjem do kolone sa studentima. Da bi se iskoristila ova funkcionalnost, potrebno je načini sledeće korake:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima priviglegiju pristupa asistentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati smer u okviru godine u kojem se nalazi raspodela koja sadrži grupu u kojoj je student koga treba izbaciti iz grupe.</p>
+</li>
+<li>
+<p>Otvara se kolona sa raspodelama. Iz nje izabrati željenu raspodelu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa grupama. Iz nje izabrati željenu grupu.</p>
+</li>
+<li>
+<p>Otvara se kolona sa studentima. Iz nje izabarti studenta kog treba izbaciti iz selektirane grupe.</p>
+</li>
+<li>
+<p>S desne strane, u sekciji sa opcijama za studente, kliknuti na dugme <strong>Izbaci iz grupe</strong>.</p>
+</li>
+<li>
+<p>Iz padajućeg menija izabrati grupu u koju treba premestiti studenta.</p>
+</li>
+<li>
+<p>Kliknuti na <strong>Premesti</strong>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_studentski_panel"><a class="link" href="#_studentski_panel">Studentski panel</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Studenti imaju pristup sledećim rasporedima časova:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Zvanični</strong> raspored je raspored dodeljen od strane asistenta putem asistentskog panela. Student ga ne može menjati, osim u slučaju da se zameni sa nekim drugim studentom i da pri tome ne dođe do nekonzistentnosti raspodele.</p>
+</li>
+<li>
+<p><strong>Lični</strong> raspored je raspored koji student može personalizovati. Mada je baziran na zvaničnom rasporedu, student ga može menjati sakrivanjem časova iz njega, ubacivanjem časova u njega (npr. iz globalnog rasporeda) i dodavanjem svojih novih aktivnosti.</p>
+</li>
+<li>
+<p><strong>Globalni</strong> raspored je raspored celog smera. Sadrži preklapanja.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/eycA8kG.png" alt="eycA8kG">
+</div>
+<div class="title">Figure 13. Primer izgleda zvaničnog rasporeda</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://image.prntscr.com/image/4c36221a01be43baa1a006539b34e2ad.png" alt="4c36221a01be43baa1a006539b34e2ad">
+</div>
+<div class="title">Figure 14. Primer izgleda ličnog rasporeda sa dodatim ličnim aktivnostima</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/fQVMafm.png" alt="fQVMafm">
+</div>
+<div class="title">Figure 15. Primer izgleda globalnog rasporeda</div>
+</div>
+<div class="sect2">
+<h3 id="_informacije_o_času"><a class="link" href="#_informacije_o_času">Informacije o času</a></h3>
+<div class="paragraph">
+<p>Informacije o času dobijaju se klikom na čas.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/J4Ep1XG.png" alt="J4Ep1XG">
+</div>
+<div class="title">Figure 16. Prikaz informacija o času</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima privilegiju pristupa studentskom panelu.</p>
+</li>
+<li>
+<p>Izbati bilo koji od rasporeda.</p>
+</li>
+<li>
+<p>Kliknuti na željeni čas.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_obaveštenja"><a class="link" href="#_obaveštenja">Obaveštenja</a></h3>
+<div class="paragraph">
+<p>Ukoliko čas sadrži obaveštenja, prikazaće se notifikaciona ikonica <span class="icon"><i class="fa fa-bell"></i></span> uz crveni indikator koji govori o tome koliko obaveštenja postoje. Detalji i obaveštenju ili obaveštenjima se mogu pogledati sledećim nizom akcija:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/EkkkHKO.png" alt="EkkkHKO">
+</div>
+<div class="title">Figure 17. Prikaz obaveštenja vezanih za čas</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima privilegiju pristupa studentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati lični ili zvanični raspored.</p>
+</li>
+<li>
+<p>Kliknuti na željeni čas.</p>
+</li>
+<li>
+<p>Izabrati karticu <strong>Obaveštenja</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Otkazani časovi imaju desaturisanu boju pozadine i šrafuru.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sakrivanje_i_dodavanje_u_lični"><a class="link" href="#_sakrivanje_i_dodavanje_u_lični">Sakrivanje i dodavanje u lični</a></h3>
+<div class="paragraph">
+<p>Sakrivanje iz ličnog rasporeda se može obaviti prateći sledeći niz koraka:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima privilegiju pristupa studentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati lični raspored.</p>
+</li>
+<li>
+<p>Kliknuti na čas koji tebra da se sakrije.</p>
+</li>
+<li>
+<p>Kliknuti na dugme <strong>Sakrij čas</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Raspored će se osvežiti i čas će biti sakriven, uz odgovarajuću poruku (tost u donjem levom uglu ekrana).</p>
+</div>
+<div class="paragraph">
+<p>Dodavanje časa u lični raspored se može obaviti prateći sledeći niz koraka:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima privilegiju pristupa studentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati zvaničan ili globalni raspored.</p>
+</li>
+<li>
+<p>Kliknuti na čas koji treba da se doda u lični raspored.</p>
+</li>
+<li>
+<p>Kliknuti na dugme <strong>Dodaj u lični</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Raspored će se osvežiti i čas će biti dostupan u ličnom rasporedu, što se može proveriti odlaskom u lični raspored.
+Prikazuje se odgovarajuća poruka (tost u donjem levom uglu), što može biti ili poruka o uspešnom prebacivanju časa, ili o tome kako se čas koji pokušava da se doda u lični zapravo već nalazi u ličnom, pa je njeogov ponovno dodavanje nemoguće.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/zAEvf9Q.png" alt="zAEvf9Q">
+</div>
+<div class="title">Figure 18. Dodat čas iz globalnog rasporeda; ličnio raspored sada ima preklapanje (zvaničan ne)</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zamena_studenata"><a class="link" href="#_zamena_studenata">Zamena studenata</a></h3>
+<div class="paragraph">
+<p>Studenti mogu da izvrše zamenu termina bez intervencije asistenta.
+Mada je zamišljeno da se oba opcija koristi za zamenu termina laboratorijskih vežbi, može se koristiti i za bilo koji drugi tip raspodele.
+Prilikom zamene termina, vodi se računa o konzistentnosti zvaničnog rasporeda.
+Studnti neće moći da se zamene ako se termini koje žele da izaberu kose sa aktivnostima koje se nalaze u njihovom zvaničnom rasporedu.</p>
+</div>
+<div class="paragraph">
+<p>Student može ili da oglasi traženje zamene ili da prihvati neki od oglasa.
+Obe akcije se odvijaju iz istog panela koji se naziva <strong>Oglasna tabla</strong>, kome se može pristupi na sledeći način:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ulogovati se u aplikaciju koristeći nalog koji ima privilegiju pristupa studentskom panelu.</p>
+</li>
+<li>
+<p>Izabrati lični raspored.</p>
+</li>
+<li>
+<p>Kliknuti na sporan čas, odnsno čas koji student želi da izbaci iz svog rasporeda u zamenu za meni drugi čas iz iste raspodele, ali koji pripada drugoj grupi.</p>
+</li>
+<li>
+<p>Kliknuti na dugme <strong>Oglasna tabla</strong>.</p>
+</li>
+<li>
+<p>Ukolko postoje oglasi koji su kreirali drugi studenti, prikazaće se u gornjem delu panela.
+Student može izabrati jedan od ponuđenih oglasa i kliknuti na <strong>Zameni se</strong>.
+Ukoliko je zamena moguća, studenti će se zameniti i prikazaće se odgovarajuća poruka.
+Ukoliko nije, prikazuje se odgovarajuća poruka.</p>
+</li>
+<li>
+<p>Ukoliko nijedan od termina među psotojećim oglasima ne odgovaraju studentu, ili ako pak takvih jednostavno nema, student može da oglasi svoj termin iz donje liste opcija.
+U donjoj listi su prikazani termini koji imaju druge grupe iz iste raspodele.
+Student ih može selektirati više i kliknuti na <strong>Dodaj oglas</strong>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Ukoliko ima puno termina, može se vršiti pretraga u odgovarajućim poljima.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/eUVhAbg.png" alt="eUVhAbg">
+</div>
+<div class="title">Figure 19. Primer zamene 1</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="http://i.imgur.com/QXAjZzu.png" alt="QXAjZzu">
+</div>
+<div class="title">Figure 20. Primer zamene 2</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2016-07-02 01:03:10 Central Europe Daylight Time
+</div>
+</div>
+</body>
+</html>

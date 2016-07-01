@@ -249,7 +249,38 @@ export class TimetableComponent {
         //console.log(this.classes);
     }
 
-    @Input() public dayNames;
+    public _dayNames: string[] = [
+        this._globalService.translate('monday'),
+        this._globalService.translate('tuesday'),
+        this._globalService.translate('wednesday'),
+        this._globalService.translate('thursday'),
+        this._globalService.translate('friday'),
+        this._globalService.translate('saturday'),
+        this._globalService.translate('sunday'),
+    ];
+
+    // U studetskom panelu se ce biti overridovano opcijama iz samog panela,
+    // ovde mu postavljam getter samo da kod asistentskog panela ne bi puklo.
+    // Zapravo moze uvek da bude ovako.
+    @Input() public set dayNames(dayNames) {
+        this._dayNames= dayNames;
+    }
+
+    public get dayNames() {
+        if (this._dayNames && this._dayNames.length > 0) {
+            return this._dayNames;
+        } else {
+            return [
+                this._globalService.translate('monday'),
+                this._globalService.translate('tuesday'),
+                this._globalService.translate('wednesday'),
+                this._globalService.translate('thursday'),
+                this._globalService.translate('friday'),
+                this._globalService.translate('saturday'),
+                this._globalService.translate('sunday'),
+            ]
+        }
+    }
 
     public get dayNamesAbbr(): string[] {
         // japanski uzima prvo slovo, ostali jeizici uzimaju prva tri slova
