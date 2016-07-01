@@ -46,6 +46,7 @@
     color: rgba(palette($blue), .5); // default
   }
 
+  //region Themes
   @each $var, $string in $theme-all-var-string {
     &.#{$string} {
       color: rgba($var, .9);
@@ -54,6 +55,19 @@
       }
     }
   }
+  //endregion
+
+  //region Additional material colors
+  @each $string, $var in $all-colors-string-var {
+    &.#{$string} {
+      color: rgba(palette($var), .9);
+      &:hover:not([disabled]) {
+        background-color: rgba(palette($var), .1);
+      }
+    }
+  }
+  //endregion
+
 }
 
 :host.r-button-raised {
@@ -85,6 +99,22 @@
 
       &[disabled] {
         background-color: desaturate(rgba($var, .7), 50%);
+      }
+    }
+  }
+  //endregion
+
+  //region Material colors
+  @each $string, $var in $all-colors-string-var {
+    &.#{$string} {
+      background-color: palette($var);
+
+      &:hover:not([disabled]) {
+        background-color: tint(palette($var), 10%);
+      }
+
+      &[disabled] {
+        background-color: desaturate(rgba(palette($var), .7), 50%);
       }
     }
   }

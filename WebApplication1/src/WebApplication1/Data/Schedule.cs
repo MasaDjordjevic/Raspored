@@ -46,20 +46,41 @@ namespace WebApplication1.Data
 
         public static string GetNextColor(string name)
         {
-            string[] boje = new string[] { "MaterialRed", "MaterialBlue", "MaterialGreen", "MaterialOrange", "MaterialPurple" };
+            string[] boje = new string[] {
+                "MaterialRed",
+                "MaterialPurple",
+                "MaterialPink",
+                "MaterialDeep-purple",
+                "MaterialLight-green",
+                "MaterialOrange",
+                "MaterialBlue",
+                "MaterialLight-blue",
+                "MaterialLime",
+                "MaterialGreen",
+                "MaterialTeal",
+                "MaterialBrown"
+            };
 
             colorCounter++;
             if (colorCounter == boje.Length)
                 colorCounter = 0;
-            
-            int num = 0;
+            int num = 7;
             foreach (char c in name)
             {
-                num += Math.Abs((c+1)*(c+1));
+                /*num = num*11 + Math.Abs(
+                    (c+1) * (c-1) +
+                    (int)Math.Round( (double) ( (double)c / 17.00) )
+                );*/
+                num = (num * 33) + c * 12;
             }
             num *= num;
             num = Math.Abs(num);
-            num = num%boje.Length;
+            num = (num % 101) % boje.Length;
+
+            if (name.StartsWith("Mik")) {
+                num = 0;
+            }
+
             return boje[num];
 
         }

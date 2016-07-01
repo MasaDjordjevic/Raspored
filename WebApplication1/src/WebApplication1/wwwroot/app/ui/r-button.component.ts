@@ -74,6 +74,7 @@ export class RFabButtonDirective {
     template: `{{text}}<ng-content></ng-content>`,
     styleUrls: ['app/ui/r-button.css'],
     host: {
+        // themes:
         "[class.red]": "primaryColorClassName === 'red'",
         "[class.yellow]": "primaryColorClassName === 'yellow'",
         "[class.blue]": "primaryColorClassName === 'blue'",
@@ -92,6 +93,19 @@ export class RFabButtonDirective {
         "[class.neon-diamond]": "primaryColorClassName === 'neon-diamond'",
         "[class.neon-gemstone]": "primaryColorClassName === 'neon-gemstone'",
         "[class.neon-poison]": "primaryColorClassName === 'neon-poison'",
+        // additional material (for students):
+        "[class.pink]": "primaryColorClassName === 'pink'",
+        "[class.purple]": "primaryColorClassName === 'purple'",
+        "[class.deep-purple]": "primaryColorClassName === 'deep-purple'",
+        "[class.indigo]": "primaryColorClassName === 'indigo'",
+        "[class.light-blue]": "primaryColorClassName === 'light-blue'",
+        "[class.cyan]": "primaryColorClassName === 'cyan'",
+        "[class.teal]": "primaryColorClassName === 'teal'",
+        "[class.light-green]": "primaryColorClassName === 'light-green'",
+        "[class.lime]": "primaryColorClassName === 'lime'",
+        "[class.brown]": "primaryColorClassName === 'brown'",
+        "[class.grey]": "primaryColorClassName === 'grey'",
+        "[class.blue-grey]": "primaryColorClassName === 'blue-grey'",
     }
 })
 

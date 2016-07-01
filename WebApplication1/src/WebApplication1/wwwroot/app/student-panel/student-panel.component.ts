@@ -66,7 +66,7 @@ export class StudentPanelComponent implements AfterContentInit {
     }
 
     getStudent() {
-        this._studentsService.getStudent(3)
+        this._studentsService.getStudent(2723)
             .then(student => this.student = student, error => this.error = error)
             .then(() => this.timetableType = TimetableType.Official);
     }

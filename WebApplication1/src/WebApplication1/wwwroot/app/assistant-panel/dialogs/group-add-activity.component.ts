@@ -72,13 +72,20 @@ export class AddActivityComponent {
 
     private _groupId: number = 0;
 
-    announcement:any = {
-        title: "",
-        content: "",
-    };
+    announcement: {title: string, content: string, startDate: any, endDate: any} = <any>{};
+
+    resetAnnouncement() {
+        this.announcement = {
+            content: "",
+            title: "",
+            startDate: null,
+            endDate: null
+        };
+    }
 
     @Input() set groupId(n: number) {
         this._groupId = n;
+        this.resetAnnouncement();
         this.getGroup();
     }
 
@@ -100,6 +107,7 @@ export class AddActivityComponent {
         private _globalService: GlobalService
     ) {
         this.getClassrooms();
+        this.resetAnnouncement();
     }
 
 
@@ -120,10 +128,10 @@ export class AddActivityComponent {
             .then(response => {
                 switch(response.status) {
                     case "uspelo":
-                        this._globalService.toast("Uspešno dodata aktivnost.");
+                        this._globalService.toast("Uspešno dodato obaveštenje.");
                         break;
                     default:
-                        this._globalService.toast(`Došlo je do greške. Nije dodata aktivnost.`);
+                        this._globalService.toast(`Došlo je do greške. Nije dodato obaveštenje.`);
                         debugger;
                         break;
                 }

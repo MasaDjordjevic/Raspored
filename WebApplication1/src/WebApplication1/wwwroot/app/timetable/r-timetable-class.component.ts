@@ -178,6 +178,7 @@ export class TimetableClassComponent {
                     }
                 }
             );
+        // Ne treba da se zatvori.
     }
 
     // obrisi aktivnosti
@@ -200,7 +201,11 @@ export class TimetableClassComponent {
                         break;
                 }
             })
-            .then(() => setTimeout(() => this._globalService.refreshStudentPanelPersonal(), 300));
+            .then(() => {
+                setTimeout(() => {
+                    this._globalService.refreshStudentPanelPersonal(), 300
+                })
+            });
     }
 
     // dodaj task

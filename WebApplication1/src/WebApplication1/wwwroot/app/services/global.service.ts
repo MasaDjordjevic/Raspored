@@ -417,10 +417,14 @@ export class GlobalService {
 
     //region Student Panel
     public refreshStudentPanelPersonal$: EventEmitter<any> = new EventEmitter<any>();
-
     public refreshStudentPanelPersonal() {
         this.refreshStudentPanelPersonal$.emit({});
     }
+
+    public refreshStudentPanelOfficial$: EventEmitter<any> = new EventEmitter<any>();
+    public refreshStudentPanelOfficial() {
+        this.refreshStudentPanelOfficial$.emit({});
+    } 
     //endregion
 
 }

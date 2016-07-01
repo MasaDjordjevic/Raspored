@@ -82,6 +82,7 @@
     justify-content: space-between;
     position: relative;
     @include z-depth(1);
+    background-color: white;
 
     .tab-line {
       position: absolute;
@@ -202,7 +203,9 @@
 
       .controls {
         display: flex;
-        justify-content: flex-end;
+        flex-shrink: 0;
+        justify-content: space-between;
+        flex-wrap: wrap;
       }
     }
 
@@ -248,6 +251,7 @@
           //background-color: palette($blue-grey, 50);
           @include z-depth(.5);
           margin-bottom: 1em;
+          background-color: white;
 
           &:last-child {
             margin-bottom: 0;
@@ -330,7 +334,28 @@
 
     &:not(.active) {
       color: rgba(white, .54);
-      background-color: desaturate(palette($var), 70%);
+      //background-color: palette($var, 300);
+      $color1: desaturate(palette($var, 300), 40%);
+      $color2: desaturate(palette($var, 400), 40%);
+      background: repeating-linear-gradient(
+                      45deg,
+                      $color1,
+                      $color1 10px,
+                      $color2 10px,
+                      $color2 20px
+      );
+
+      &.expanded {
+        $color1: white;
+        $color2: mix(black, white, 5%);
+        background: repeating-linear-gradient(
+                        45deg,
+                        $color1,
+                        $color1 10px,
+                        $color2 10px,
+                        $color2 20px
+        );
+      }
     }
   }
 }
