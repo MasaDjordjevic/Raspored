@@ -51,7 +51,7 @@ namespace WebApplication1.Data
             colorCounter++;
             if (colorCounter == boje.Length)
                 colorCounter = 0;
-
+            
             int num = 0;
             foreach (char c in name)
             {
