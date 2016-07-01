@@ -380,7 +380,7 @@ namespace WebApplication1.Data
                 if (query.Any())
                 {
                     GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
-                    if (gs.ignore == false)
+                    if (gs.ignore != true) //null ili false
                         throw new Exception("vec je u licnom");
                     gs.ignore = false;
                 }

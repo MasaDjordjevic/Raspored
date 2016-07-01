@@ -19,7 +19,7 @@ namespace WebApplication1.Controllers
         // 2827 - Isidora Nikolic (3. grupa)
         // 2723 - Milena Arsic (2. grupa)
         // 2597 - Aleksandar milanov (1. grupa)
-        private int STUDENT_ID = 2723;
+        public static int STUDENT_ID = 2723;
 
         public StudentsController(RasporedContext context)
         {

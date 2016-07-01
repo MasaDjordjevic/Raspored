@@ -109,7 +109,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                var BulletinBoardChoices = Data.Group.GetAllBulletinBoardChoices(id);
+                var BulletinBoardChoices = Data.Group.GetAllBulletinBoardChoices(id, StudentsController.STUDENT_ID);
                 return Ok(BulletinBoardChoices);
             }
             catch (Exception ex)
@@ -166,7 +166,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddAd([FromBody] AddAdBinding obj)
+        public IActionResult AddEditAd([FromBody] AddAdBinding obj)
         {
             if ( obj?.groupID == null || obj?.groupIDs == null)
             {
@@ -175,7 +175,7 @@ namespace WebApplication1.Controllers
             try
             {
                 // TODO vadi iz sesije
-                Data.Group.AddAd(3, obj.groupID.Value, obj.groupIDs);
+                Data.Group.AddEditAd(StudentsController.STUDENT_ID, obj.groupID.Value, obj.groupIDs);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

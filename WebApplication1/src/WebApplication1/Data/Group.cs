@@ -423,19 +423,29 @@ namespace WebApplication1.Data
         }
 
         // vraca termine ostalih grupa raspodele
-        public static List<BulletinBoardChoice> GetAllBulletinBoardChoices(int groupID)
+        public static List<BulletinBoardChoice> GetAllBulletinBoardChoices(int groupID, int? studentID = null)
         {
             using (RasporedContext _context = new RasporedContext())
             {
-
+                
                 return _context.Groups.Where(a => a.groupID != groupID &&
                                                 a.divisionID == _context.Groups.First(g => g.groupID == groupID).divisionID)
                                                 .Select(a => new BulletinBoardChoice
                                                 {
                                                     groupID = a.groupID,
                                                     time = TimeSpan.ToString(a.timeSpan),
-                                                    classroom = a.classroom.number
+                                                    classroom = a.classroom.number,
+                                                    chosen = studentID != null && IsChosen(a.groupID, studentID)
                                                 }).ToList();
+            }
+        }
+
+        public static bool IsChosen(int groupID, int? studentID)
+        {
+            if (studentID == null) return false;
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return _context.Periods.Any(a=> a.groupID == groupID && a.ad.studentID == studentID);
             }
         }
 
@@ -497,12 +507,35 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                Ads ad = new Ads
+                var query = _context.Ads.Include(a=> a.Periods).Where(a => a.studentID == studentID && a.groupID == groupID);
+                Ads ad;
+
+                if (groupIDs == null || groupIDs.Count == 0)
                 {
-                    studentID = studentID,
-                    groupID = groupID
-                };
-                _context.Ads.Add(ad);
+                    if (query.Any())
+                    {
+                        RemoveAd(query.First().adID);
+                    }
+                    return;
+                }
+
+                if (query.Any())
+                {
+                    ad = query.First();
+                    foreach (var period in ad.Periods)
+                    {
+                        _context.Remove(period);
+                    }
+                }
+                else
+                {
+                    ad = new Ads
+                    {
+                        studentID = studentID,
+                        groupID = groupID
+                    };
+                    _context.Ads.Add(ad);
+                }
 
                 foreach (int g in groupIDs)
                 {

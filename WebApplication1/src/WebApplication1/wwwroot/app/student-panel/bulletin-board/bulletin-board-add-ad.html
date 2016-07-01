@@ -13,9 +13,10 @@
 </r-multiple-selector>
 
 <button r-button raised
-        [text]="_globalService.translate('add_ad')"
+        [text]="change ? _globalService.translate('edit_ad') : _globalService.translate('add_ad')"
         (click)="addAd()"
         [primaryColor]="primaryColor"
 >
-    {{_globalService.translate('add_ad')}}
+    {{change ? _globalService.translate('edit_ad') : _globalService.translate('add_ad')}}
 </button>
+change {{change}}

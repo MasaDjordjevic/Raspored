@@ -1862,6 +1862,16 @@ export class GlobalService {
             "fr":  "NOT_TRANSLATED_YET",
             "ja":  "NOT_TRANSLATED_YET",
         },
+        "edit_ad": {
+            "en":  "Edit ad",
+            "sr":  "Izmeni oglas",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET",
+        },
         "pick_advertise_period": {
             "en":  "Which period do you want to advertise?",
             "sr":  "Koji termin oglašavaš?",

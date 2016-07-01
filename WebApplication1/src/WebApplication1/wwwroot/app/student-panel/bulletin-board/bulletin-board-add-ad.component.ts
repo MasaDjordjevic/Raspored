@@ -21,6 +21,7 @@ export class BulletinBoardAddAdComponent {
     @Input() secondaryColor: string = "MaterialOrange";
 
     @Input() public groupId;
+    @Input() change = false; // ako je true znaci da oglas vec postoji i da se zapravo radi o izmeni tog oglasa
 
     @Input() public possibleChoices: {groupID: number, time: string}[] = <any>[];
     @Output() public chosenChoicesChange: EventEmitter<any> = new EventEmitter<any>();
