@@ -60,6 +60,8 @@ export class BulletinBoardComponent {
         this._groupsService.getAllBulletinBoardChoices(this.groupId)
             .then(result => {
                 this.allChoices = <any>result;
+                this.chosenAllChoices = this.allChoices.filter(i => i["chosen"]).map(i=>i.groupID).map(String);
+                debugger;
             });
     }
 
