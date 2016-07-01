@@ -355,7 +355,15 @@ namespace WebApplication1.Data
                 GroupsStudents gs = _context.GroupsStudents.First(a => a.studentID == studentID && a.groupID == groupID);
                 if (gs.ignore == true)
                     throw new Exception("vec je u sakriven");
-                gs.ignore = true;
+
+                if (gs.falseMember == true)
+                {
+                    _context.GroupsStudents.Remove(gs);
+                }
+                else
+                {
+                    gs.ignore = true;
+                }
                 _context.SaveChanges();
             }
         }
