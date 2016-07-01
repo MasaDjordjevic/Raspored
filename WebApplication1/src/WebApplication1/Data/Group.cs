@@ -504,7 +504,7 @@ namespace WebApplication1.Data
 
         // student iz grupe groupID dodaje oglas i odgovaraju mu termini grupa iz liste
         // dodaje oglas ukoliko ne postoji,  menja ukoliko postoji, brise ukoliko postoji a nista nije selektirano
-        public static void AddAd(int studentID, int groupID, List<int> groupIDs)
+        public static void AddEditAd(int studentID, int groupID, List<int> groupIDs)
         {
             using (RasporedContext _context = new RasporedContext())
             {
