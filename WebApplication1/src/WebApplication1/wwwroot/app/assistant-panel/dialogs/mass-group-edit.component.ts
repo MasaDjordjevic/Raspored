@@ -46,7 +46,7 @@ import {moment} from "../../global/moment.import";
                              [(val)]="editedDivision[i].timeEnd"></r-input>
                 </template>
                 <template [ngIf]="editedDivision[i].period == 0">
-                    <r-input [label]="_globalService.translate('beginng') + ' (YYYY-MM-DD HH:MM)'"
+                    <r-input [label]="_globalService.translate('beginning') + ' (YYYY-MM-DD HH:MM)'"
                              [(val)]="editedDivision[i].dateTimeStart"></r-input>
                     <r-input [label]="_globalService.translate('ending') + ' (YYYY-MM-DD HH:MM)'"
                              [(val)]="editedDivision[i].dateTimeEnd"></r-input>

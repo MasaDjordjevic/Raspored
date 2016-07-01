@@ -337,7 +337,7 @@ namespace WebApplication1.Data
             }
         }
 
-        public static void AddActivity(int assistantID, int groupID, int? classroomID, TimeSpans timeSpan, string place,
+        public static void AddActivity(int assistantID, int? groupID, int? classroomID, TimeSpans timeSpan, string place,
             string title, string content)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -436,7 +436,7 @@ namespace WebApplication1.Data
                                                     time = TimeSpan.ToString(a.timeSpan),
                                                     classroom = a.classroom.number,
                                                     chosen = studentID != null && IsChosen(a.groupID, studentID)
-                                                }).ToList();
+                                                }).OrderBy(a => a.time).ToList();
             }
         }
 
@@ -460,7 +460,7 @@ namespace WebApplication1.Data
                     time = TimeSpan.ToString(a.ad.group.timeSpan),
                     classroom = a.ad.group.classroom.number,
                     studentName = Student.GetStudentName(a.ad.studentID)
-                }).ToList();
+                }).OrderBy(a=>a.time).ToList();
             }
         }
 
