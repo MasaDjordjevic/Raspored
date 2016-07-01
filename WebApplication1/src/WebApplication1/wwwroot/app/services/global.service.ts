@@ -475,6 +475,26 @@ export class GlobalService {
         //endregion
 
         //region General stuff
+        "type": {
+            "en":  "Type",
+            "sr":  "Vrsta",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET",
+        },
+        "time": {
+            "en":  "Time",
+            "sr":  "Vreme",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET",
+        },
         "back": {
             "en":  "Back",
             "sr":  "Nazad",
