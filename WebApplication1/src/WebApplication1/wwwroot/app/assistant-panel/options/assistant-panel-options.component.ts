@@ -26,20 +26,20 @@ import {AssistantService} from "../../services/assistant.service";
     template: `
     <div class="container">
         <div id="options">
-            <label>
+            <!--<label>
                 Weeks from now 
                 <input type="number" min="-100" max="100" step="1" [(ngModel)]="weeksFromNow" />
             </label>
             <label>
                 Assistant ID
                 <input type="number" min="1" max="100000" step="1" [(ngModel)]="assistantID" />
-            </label><br/>
-            <r-dropdown name="mode" [label]="'Režim'" [(val)]="mode">
+            </label>-->
+            <r-dropdown [label]="'Režim'" [(val)]="mode">
                 <r-dropdown-item [value]="0">student</r-dropdown-item>
                 <r-dropdown-item [value]="1">globalni</r-dropdown-item>
                 <r-dropdown-item [value]="2">učionica</r-dropdown-item>
             </r-dropdown>
-            <div *ngIf="mode == 0 || mode  == 1">
+            <template [ngIf]="mode == 0 || mode  == 1">
                 <r-dropdown #selYears *ngIf="yearDepartments != null" [label]="'Godina studija'" [(val)]="selectedYear" >                 
                     <r-dropdown-item *ngFor="let yd of yearDepartments; let i = index"  [value]="i">
                         {{yd.year}}
@@ -55,12 +55,12 @@ import {AssistantService} from "../../services/assistant.service";
                 <r-dropdown *ngIf="mode == 0" [label]="'Student'"  [(val)]="studentID">
                     <r-dropdown-item *ngFor="let stud of students" [value]="stud.studentID">{{stud.UniMembers.surname}} {{stud.UniMembers.name}} ({{stud.indexNumber}})</r-dropdown-item>
                 </r-dropdown>
-            </div>
+            </template>
                             
             <r-dropdown *ngIf="mode == 2"  [label]="'Učionica'" [(val)]="classroomID">
                 <r-dropdown-item *ngFor="let classroom of classrooms" [value]="classroom.classroomID" >{{classroom.number}}</r-dropdown-item>
             </r-dropdown>
-            mode: {{mode}} s:{{studentID}} g:{{groupID}} dep:{{departmentID}} c:{{classroomID}}
+            <span style="display:none">mode: {{mode}} s:{{studentID}} g:{{groupID}} dep:{{departmentID}} c:{{classroomID}}</span>
         </div>
         
         <div id="timetable">

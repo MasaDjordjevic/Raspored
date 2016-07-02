@@ -4,6 +4,7 @@ import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_BUTTON} from "../../ui/r-button.component";
 import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {GroupsService} from "../../services/groups.service";
+import {GlobalService} from "../../services/global.service";
 
 
 
@@ -37,7 +38,8 @@ export class BulletinBoardParametersComponent {
     }
 
     constructor(
-        private _groupsService: GroupsService
+        private _groupsService: GroupsService,
+        private _globalService: GlobalService
     ) {}
 
     public exchangeWith() {

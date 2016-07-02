@@ -26,7 +26,16 @@
     }
 
     #options {
+        padding-bottom: .5em;
         width: 100%;
+        display: flex;
+        justify-content: flex-start;
+
+        > r-dropdown {
+            width: 21%;
+            margin-right: 2%;
+            margin-left: 2%;
+        }
     }
 }
 
