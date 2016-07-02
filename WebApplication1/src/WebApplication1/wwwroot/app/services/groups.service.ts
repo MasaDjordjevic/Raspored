@@ -5,12 +5,13 @@ import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 import {Group} from "../models/Group";
 import {TimeSpan} from "../models/TimeSpan";
+import {ServiceService} from "./service.service";
 
 
 
 
 @Injectable()
-export class GroupsService {
+export class GroupsService  extends ServiceService {
     constructor(private http: Http) { }
 
     private _url = "api/Groups";
@@ -22,8 +23,8 @@ export class GroupsService {
     getGroup(groupId: number): Promise<Group> {
         return this.http.get(this._url + '/GetGroup/' + groupId)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     updateGroup(groupID: number, divisionID: number, assistantID:number, name: string, classroomID: number, timespan: any, students: Array<number>) {
@@ -42,16 +43,16 @@ export class GroupsService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/Update', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
     
 
     removeGroup(groupId:number) {
         return this.http.delete(this._url + '/DeleteGroups/' + groupId)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     addActivity(groupID: number, classroomID:number, place: string, title: string, content:string, timespan: TimeSpan) {
@@ -68,8 +69,8 @@ export class GroupsService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/AddActivity', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     cancelClass(groupID:number, title: string, content: string, timespan: TimeSpan) {
@@ -84,29 +85,29 @@ export class GroupsService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/CancelClass', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     unCancelClass(activityID:number): Promise<any[]> {
         return this.http.get(this._url + `/UnCancelClass/?activityID=${activityID}`)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     getCanceledTimes(groupID: number): Promise<any[]> {
         return this.http.get(this._url + `/GetCanceledTimes/?groupID=${groupID}`)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     getSchedule(groupID: number, weeksFromNow:number): Promise<any[]> {
         return this.http.get(this._url + `/GetSchedule/?groupID=${groupID}&weeksFromNow=${weeksFromNow}`)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     /**
@@ -116,8 +117,8 @@ export class GroupsService {
     getGroups(divisionID: number): Promise<Group[]> {
         return this.http.get(this._url + '/GetGroups/' + divisionID)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     massGroupEdit(sendData: any) {
@@ -129,8 +130,8 @@ export class GroupsService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/MassGroupEdit', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     //////// BulletinBoard ///////////
@@ -138,22 +139,22 @@ export class GroupsService {
     getAllBulletinBoardChoices(groupId: number): Promise<Group> {
         return this.http.get(this._url + '/GetAllBulletinBoardChoices/' + groupId)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     getPossibleBulletinBoardChoices(groupId: number): Promise<Group> {
         return this.http.get(this._url + '/GetPossibleBulletinBoardChoices/' + groupId)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     exchangeStudents(groupId: number, adID: number): Promise<Group> {
         return this.http.get(this._url + `/ExchangeStudents/?groupID=${groupId}&adID=${adID}`)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     addAd(groupID: number, groupIDs: any) {
@@ -166,22 +167,8 @@ export class GroupsService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/AddEditAd', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
-    }
-
-    private extractData(res: Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        let body = res.json();
-        return body || {};
-    }
-
-    private handleError(error: any) {
-        let errMsg = error.message || 'Server error';
-        console.error(errMsg);
-        return Promise.reject(errMsg);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
 }

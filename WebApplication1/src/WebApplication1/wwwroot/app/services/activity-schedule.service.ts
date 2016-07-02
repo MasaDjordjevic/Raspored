@@ -3,9 +3,10 @@ import {Http, Response} from "angular2/http";
 import {Injectable} from "angular2/core";
 import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
+import {ServiceService} from "./service.service";
 
 @Injectable()
-export class ActivityScheduleService {
+export class ActivityScheduleService extends ServiceService {
     constructor(private http:Http) {
     }
 
@@ -15,29 +16,14 @@ export class ActivityScheduleService {
     getCurrentSemesterTimeSpan(){
         return this.http.get(this._url + '/GetCurrentSemesterTimeSpan/')
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     deleteGlobalActivity(activityID: number) {
         return this.http.get(this._url + '/DeleteGlobalActivity/' + activityID)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
-
-    private extractData(res: Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        let body = res.json();
-        return body || {};
-    }
-
-    private handleError(error: any) {
-        let errMsg = error.message || 'Server error';
-        console.error(errMsg);
-        return Promise.reject(errMsg);
-    }
-
 }

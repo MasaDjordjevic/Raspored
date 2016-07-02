@@ -6,11 +6,12 @@ import {Observable}     from 'rxjs/Observable';
 
 import {Division} from "../models/Division";
 import {TypeDivisions} from '../models/TypeDivisions';
+import {ServiceService} from "./service.service";
 
 
 
 @Injectable()
-export class DivisionsService {
+export class DivisionsService extends ServiceService  {
     constructor(private http: Http) { }
 
     private _url = "api/Divisions";
@@ -19,8 +20,8 @@ export class DivisionsService {
     public getDivision(id: number) : Promise<Division> {
         return this.http.get(this._url + '/GetDivision/' + id)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     public updateDivision(divisionId, name, beginning, ending, divisionTypeID, courseID) {
@@ -37,22 +38,22 @@ export class DivisionsService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/UpdateDivision', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     public copyDivision(divisionId) {
         return this.http.get(this._url + '/CopyDivision/?divisionID=' + divisionId)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     public deleteDivision(divisionId) {
         return this.http.get(this._url + '/DeleteDivision/?divisionID=' + divisionId)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     /**
@@ -63,8 +64,8 @@ export class DivisionsService {
     public getDivisionsByType(departmentID: number): Promise<TypeDivisions[]> {
         return this.http.get(this._url + '/GetDivisions/' + departmentID)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }   
 
     /**
@@ -72,7 +73,7 @@ export class DivisionsService {
      */
     public getGroupsOnX(courseID: number, x: number, sortOrder: number) {
         return this.http.get(this._url + `/DivideOnX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
-            .toPromise().then(this.extractData).catch(this.handleError);
+            .toPromise().then(super.extractData).catch(super.handleError);
     }
 
     /**
@@ -80,12 +81,12 @@ export class DivisionsService {
      */
     public getGroupsWithX(courseID: number, x: number, sortOrder: number) {
         return this.http.get(this._url + `/DivideWithX?courseID=${courseID}&x=${x}&sortOrder=${sortOrder}`)
-            .toPromise().then(this.extractData).catch(this.handleError);
+            .toPromise().then(super.extractData).catch(super.handleError);
     }
     
     public getAllDivisionTypes() {
         return this.http.get(this._url + '/GetAllDivisionTypes')
-            .toPromise().then(this.extractData).catch(this.handleError);
+            .toPromise().then(super.extractData).catch(super.handleError);
     }
 
     public createInitialDivision(name: string, departmentID: number,
@@ -107,22 +108,7 @@ export class DivisionsService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/CreateInitialDivision', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
-
-    private extractData(res: Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        let body = res.json();
-        return body || {};
-    }
-
-    private handleError(error: any) {
-        let errMsg = error.message || 'Server error';
-        console.error(errMsg);
-        return Promise.reject(errMsg);
-    }
-
 }

@@ -24,7 +24,7 @@
 
     <!-- todo -->
     <r-dialog #optionsDialog [source]="optionsButton">
-        <div style="padding:2em; height: 600px; width: 600px;">
+        <div style="padding:2em;">
             <form><fieldset style="padding:.5em">
                 <legend>Prikaz dana u nedelji</legend>
                 <label *ngFor="let day of dayNames; let i = index">
@@ -56,7 +56,7 @@
                     <input type="number" min="1" max="10" step=".1" [(ngModel)]="scale"/>
                 </label>
             </fieldset></form>
-            <form #form="ngForm" (submit)="addNewActivity(form.value)"><fieldset style="padding:.5em">
+            <!--<form #form="ngForm" (submit)="addNewActivity(form.value)"><fieldset style="padding:.5em">
                 <legend>Nova lična aktivnost</legend>
                 <label>Dan</label>
                 <select #newActivityDay ngControl="newActivityDay" required>
@@ -71,7 +71,7 @@
                 <label>Opis</label>
                 <textarea required #newActicityDesc ngControl="newActivityDesc">Opis moje aktivnosti.</textarea> {{newActicityDesc.value}} <br/>
                 <button type="submit">Dodaj</button>
-            </fieldset></form>
+            </fieldset></form>-->
         </div>
     </r-dialog>
 

@@ -39,12 +39,11 @@
 
         <!-- ako je čas (nije aktivnost) -->
         <template [ngIf]="abbr && classroom">
-        <span class="title">
-            <template [ngIf]="!expanded">{{abbr}}</template>
-            <template [ngIf]="expanded">{{className}}</template>
-            {{_globalService.translate('in')}}
-            {{classroom}}
-        </span>
+            <span class="title">
+                {{abbr}} <!-- TODO bravo -->
+                {{_globalService.translate('in')}}
+                {{classroom}}
+            </span>
             <span class="type">{{type}}</span>
             <span class="assistant">{{assistant}}</span>
         </template>
@@ -253,6 +252,7 @@
                     </div>
 
                 </div>
+
                 <!-- aktivnost -->
                 <div class="main-info" *ngIf="!isClass">
                     <dl>
@@ -324,10 +324,6 @@
                                 r-button raised [text]="_globalService.translate('delete_activity')"
                                 (click)="deleteGlobalActivity()"
                                 [primaryColor]="color">Obriši aktivnost</button>
-
-
-
-
 
                     </div>
 

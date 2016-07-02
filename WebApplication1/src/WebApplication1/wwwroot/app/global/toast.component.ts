@@ -25,6 +25,15 @@ export class ToastComponent {
         })
     }
 
-    private message: string = null;
+    private _message: string = null;
+
+    set message(m: string) {
+        this._message = m;
+        document.getElementById('toast-message').innerHTML = m;
+    }
+
+    get message() {
+        return this._message;
+    }
 
 }
