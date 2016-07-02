@@ -3,9 +3,10 @@ import {Http, Response, Headers, RequestOptions} from "angular2/http";
 import {Injectable} from "angular2/core";
 import {Observable} from 'rxjs/Observable';
 import {Assistant} from '../models/Assistant';
+import {ServiceService} from "./service.service";
 
 @Injectable()
-export class AssistantService {
+export class AssistantService  extends ServiceService {
 
     constructor(private http: Http) { }
 
@@ -14,23 +15,23 @@ export class AssistantService {
     getAssistant(assistantId: number): Promise<Assistant>{
         return this.http.get(this._url + "/GetAssistant/" + assistantId )
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     getAssistants(): Promise<Assistant[]>{
         return this.http.get(this._url + "/GetAssistants" )
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     //vraca sve asistente ako raspodela kojoj pripada grupa nije kreirana po kursu ili vraca sve asistente tog kursa
     getAssistantsByGroupID(groupID: number): Promise<Assistant[]>{
         return this.http.get(this._url + "/GetAssistantsByGroupID/" + groupID )
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
     alter(newAssistant: Assistant) {
@@ -39,31 +40,16 @@ export class AssistantService {
 
     //getUnimembers(): Promise<Department[]> {
     //    return this.http.get(this._url).toPromise()
-    //        .then(this.extractData)
-    //        .catch(this.handleError);
+    //        .then(super.extractData)
+    //        .catch(super.handleError);
     //}
 
     getSchedule(assistantID: number, weeksFromNow:number): Promise<any[]> {
         return this.http.get(this._url + `/GetSchedule/?assistantID=${assistantID}&weeksFromNow=${weeksFromNow}`)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
     }
-
-    private extractData(res: Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        return res.json() || {};
-    }
-
-    private handleError(error: any) {
-        let errorMessage = error.message || 'Server error';
-        console.log(errorMessage);
-        return Promise.reject(errorMessage);
-    }
-
-
 
 }
 
