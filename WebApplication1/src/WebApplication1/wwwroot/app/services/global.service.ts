@@ -2120,6 +2120,39 @@ export class GlobalService {
         },
         //endregion
 
+        //region login
+        "username": {
+            "en":  "Username",
+            "sr":  "Korisničko ime",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "Uzantonomo",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "ユーザ名",
+        },
+        "password": {
+            "en":  "Password",
+            "sr":  "Šifra",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "Pasvorto",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "パスワード",
+        },
+        "login": {
+            "en":  "Log in",
+            "sr":  "Prijava",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "Ensalutu",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "ログイン",
+        },
+        //endregion
+
     };
     //endregion
 

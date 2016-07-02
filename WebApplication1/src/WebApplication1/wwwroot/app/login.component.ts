@@ -3,18 +3,63 @@ import {R_INPUT} from "./ui/r-input-text.component";
 import {R_BUTTON} from "./ui/r-button.component";
 import {Control} from "angular2/common";
 import {LoginService} from "./services/login.service";
+import {GlobalService} from "./services/global.service";
 
 @Component({
     selector: 'r-login',
     directives: [R_INPUT, R_BUTTON],
-    template: `
+    template:` 
+    
+        <button id="lang-picker" (click)="languagePickerOpened = !languagePickerOpened">
+            <i class="fa fa-globe"></i>
+        </button>
+        <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">
+            <div class="dropdown-item" (click)="language = 'en'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'en' ? 'bold' : 'normal'">English</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'sr'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'sr' ? 'bold' : 'normal'">srpski</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'src'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'src' ? 'bold' : 'normal'">српски</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'eo'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'eo' ? 'bold' : 'normal'">Esperanto</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg'); background-position: 0% center"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'es'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'es' ? 'bold' : 'normal'">español</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'de'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'de' ? 'bold' : 'normal'">deutsch</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'fr'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'fr' ? 'bold' : 'normal'">français</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'ja'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'ja' ? 'bold' : 'normal'">日本語</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg')"></div>
+            </div>
+        </div>
+        <div class="invisible-blackout" (click)="languagePickerOpened = false"></div>
+    
         <div class="logo"></div>
         <form (submit)="login()">
-            <r-input class="light-theme" label="Korisničko ime" [(val)]="username"></r-input>
-            <r-input class="light-theme" label="Šifra" [(val)]="password"></r-input>
+            <r-input [label]="_globalService.translate('username')" [(val)]="username"
+                     [primaryColor]="'MaterialRed'"
+            ></r-input>
+            <r-input [label]="_globalService.translate('password')" [type]="'password'"
+                     [(val)]="password" [primaryColor]="'MaterialRed'"
+            ></r-input>
             <div class="flex-spacer"></div>
             <div class="controls">
-                <button r-button raised text="Prijava">Prijava</button>
+                <button r-button raised [text]="_globalService.translate('login')" [primaryColor]="'MaterialRed'">{{_globalService.translate('login')}}</button>
             </div>
         </form>
     `,
@@ -23,11 +68,15 @@ import {LoginService} from "./services/login.service";
 })
 export class LoginComponent {
 
-    username: string = "plavusha";
-    password : string = "plavusha";
+    private languagePickerOpened: boolean = false;
 
-    constructor(private _loginService: LoginService) {
-    }
+    public username: string = "plavusha";
+    public password : string = "plavusha";
+
+    constructor(
+        private _loginService: LoginService,
+        private _globalService: GlobalService
+    ) { }
 
     login() {
         this._loginService.login(this.username, this.password)
@@ -38,4 +87,19 @@ export class LoginComponent {
                 }
             } );
     }
+
+    //region Language stuff
+    private lang = this._globalService.currentLanguage;
+
+    private _language: string;
+
+    public get language() {
+        return this._language;
+    }
+
+    public set language(lan) {
+        this._language = lan;
+        this._globalService.currentLanguage = lan;
+    }
+    //endregion
 }

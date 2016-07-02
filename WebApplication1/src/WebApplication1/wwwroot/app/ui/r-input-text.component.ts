@@ -11,7 +11,7 @@ import {GlobalService} from "../services/global.service";
     selector: "r-input",
     template: `
     <label [ngClass]="{collapsed: val && val != '' || _isFocused, highlight: _isFocused}">{{label}}</label>
-    <input type="text" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" [required]="required ? 'true' : null" #spy/>
+    <input [type]="type" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" [required]="required ? 'true' : null" #spy/>
     <!--<div class="validation-icon">
         <span *ngIf="control._touched && !control.valid">X</span>
     </div>-->
@@ -30,6 +30,8 @@ export class RInputText implements AfterViewInit {
     @Input() label: string = "";
     @Input("val") _val: string;
     @Output() valChange: EventEmitter<any> = new EventEmitter<any>();
+
+    @Input() type: string = "text";
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
