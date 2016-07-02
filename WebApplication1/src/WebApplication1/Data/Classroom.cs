@@ -46,7 +46,7 @@ namespace WebApplication1.Data
 
                 List<ScheduleDTO> activitiesSchedule =
                     _context.Activities.Where(a => a.classroomID == classroomID &&
-                        !_context.StudentsActivities.Any(sa => sa.activityID == a.activityID) && // ne uzima studentove aktivnosti
+                        !Group.IsStudentActivity(a.activityID)  && // ne uzima studentove aktivnosti
                         TimeSpan.Overlap(a.timeSpan, tsNow))
                         .Select(a => new ScheduleDTO
                     {

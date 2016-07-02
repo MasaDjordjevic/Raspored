@@ -10,6 +10,7 @@ import {R_DROPDOWN} from "../../ui/r-dropdown";
 import {R_INPUT} from "../../ui/r-input-text.component";
 import {GlobalService} from "../../services/global.service";
 import {moment} from "../../global/moment.import";
+import {StudentsService} from "../../services/students.service";
 
 
 
@@ -18,7 +19,7 @@ import {moment} from "../../global/moment.import";
     templateUrl: 'app/assistant-panel/dialogs/add-announcement.html',
     styleUrls: ['app/assistant-panel/dialogs/add-announcement.css'],
     directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
-    providers: [ClassroomsService, GroupsService],
+    providers: [ClassroomsService, GroupsService, StudentsService],
 })
 
 export class AddAnnouncementComponent {
@@ -26,6 +27,7 @@ export class AddAnnouncementComponent {
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
+    @Input() assistant = true; // ako je assistent dodaje se preko groupService ako je student preko studentService
 
     @Output() close: EventEmitter<any> = new EventEmitter<any>();
 
@@ -46,7 +48,7 @@ export class AddAnnouncementComponent {
             title: "",
             startDate: null,
             endDate: null,
-            classroom: 0,
+            classroom: null,
             place: ""
         };
     }
@@ -55,7 +57,8 @@ export class AddAnnouncementComponent {
     constructor(
         private _classroomsService: ClassroomsService,
         private _groupsService: GroupsService,
-        private _globalService: GlobalService
+        private _globalService: GlobalService,
+        private _studentsService: StudentsService
     ) {
         this.getClassrooms();
         this.resetAnnouncement();
@@ -67,33 +70,71 @@ export class AddAnnouncementComponent {
         timespan.startDate = new Date(this.announcement.startDate);
         timespan.endDate = new Date(this.announcement.endDate);
         timespan.period = 0;
-        this._groupsService.addActivity(
-            null, // groupID
-            this.announcement.classroom, // classroom
-            this.announcement.place, // place
-            this.announcement.title,
-            this.announcement.content,
-            timespan
-            )
-            .then(response => {
-                switch(response.status) {
-                    case "uspelo":
-                        this._globalService.toast(
-                            this._globalService.translate("successfully_added_announcement"));
-                        break;
-                    default:
-                        this._globalService.toast(this._globalService.translate("error") + ' '
-                            + this._globalService.translate("announcement_not_added"));
-                        debugger;
-                        break;
-                }
-            })
-            .then(() => {
-                this.closeMe();
-            })
-            .then(() => {
-                this._globalService.refreshAssistantPanelAll();
-            });
+
+        //nzm zasto ovo nece
+        var func = this._groupsService.addActivity;
+        if(!this.assistant)
+            func = this._studentsService.addActivity;
+
+        if(this.assistant) {
+            this._groupsService.addActivity(
+                null, // groupID
+                this.announcement.classroom, // classroom
+                this.announcement.place, // place
+                this.announcement.title,
+                this.announcement.content,
+                timespan
+                )
+                .then(response => {
+                    switch(response.status) {
+                        case "uspelo":
+                            this._globalService.toast(
+                                this._globalService.translate("successfully_added_announcement"));
+                            break;
+                        default:
+                            this._globalService.toast(this._globalService.translate("error") + ' '
+                                + this._globalService.translate("announcement_not_added"));
+                            debugger;
+                            break;
+                    }
+                })
+                .then(() => {
+                    this.closeMe();
+                })
+                .then(() => {
+                    this._globalService.refreshAssistantPanelAll();
+                });
+        }
+        else {
+            this._studentsService.addActivity(
+                null, // groupID
+                this.announcement.classroom, // classroom
+                this.announcement.place, // place
+                this.announcement.title,
+                this.announcement.content,
+                timespan
+                )
+                .then(response => {
+                    switch(response.status) {
+                        case "uspelo":
+                            this._globalService.toast(
+                                this._globalService.translate("successfully_added_announcement"));
+                            break;
+                        default:
+                            this._globalService.toast(this._globalService.translate("error") + ' '
+                                + this._globalService.translate("announcement_not_added"));
+                            debugger;
+                            break;
+                    }
+                })
+                .then(() => {
+                    this.closeMe();
+                })
+                .then(() => {
+                    this._globalService.refreshAssistantPanelAll();
+                });
+        }
+
     }
 
     getClassrooms() {

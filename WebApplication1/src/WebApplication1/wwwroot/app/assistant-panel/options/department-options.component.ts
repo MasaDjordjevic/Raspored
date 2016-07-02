@@ -14,6 +14,7 @@ import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 import {RomanNumeralsPipe} from "../../pipes/roman-numerals.pipe";
 import {R_STUDENT_SELECTOR} from "../dialogs/students-selector.component";
 import {GlobalService} from "../../services/global.service";
+import {TimetableComponent} from "../../timetable/r-timetable.component";
 
 
 
@@ -25,7 +26,7 @@ import {GlobalService} from "../../services/global.service";
         'app/assistant-panel/options/department-options.css',
     ],
     providers: [DepartmentService, StudentsService],
-    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, R_STUDENT_SELECTOR, DivisionCreatorComponent, StudentSearchComponent],
+    directives: [R_DIALOG, R_BUTTON, R_STEPPER, R_DL, R_STUDENT_SELECTOR, DivisionCreatorComponent, StudentSearchComponent, TimetableComponent],
     pipes: [TrimPipe, RomanNumeralsPipe]
 })
 

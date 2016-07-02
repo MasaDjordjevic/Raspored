@@ -38,7 +38,7 @@
         <button (click)="refresh({allMinusOne: true})">
             <i class="fa fa-home"></i>
         </button>
-        <button (click)="addAnnouncementDialog.open()">
+        <button #addAnnouncementButton (click)="addAnnouncementDialog.open()">
             <i class="fa fa-calendar-plus-o"></i>
         </button>
         <button (click)="languagePickerOpened = !languagePickerOpened">
@@ -131,7 +131,7 @@
     </r-dialog>
 
     <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
-        <add-announcement></add-announcement>
+        <add-announcement [assistant]="true"></add-announcement>
     </r-dialog>
 
 </header>

@@ -4,6 +4,8 @@ import {GlobalService} from "../services/global.service";
 import {TimetableComponent} from "../timetable/r-timetable.component";
 import {PanelHeaderComponent} from "../panel-header/panel-header.component";
 import {ToastComponent} from "../global/toast.component";
+import {R_DIALOG} from "../ui/r-dialog";
+import {AddAnnouncementComponent} from "../assistant-panel/dialogs/add-announcement.component";
 
 
 export enum TimetableType {
@@ -16,7 +18,7 @@ export enum TimetableType {
     templateUrl: 'app/student-panel/student-panel.html',
     styleUrls: ['app/student-panel/student-panel.css', 'app/panel-header/panel-header.css'],
     providers: [StudentsService],
-    directives: [TimetableComponent, PanelHeaderComponent, ToastComponent]
+    directives: [TimetableComponent, PanelHeaderComponent, ToastComponent, R_DIALOG, AddAnnouncementComponent]
 })
 
 export class StudentPanelComponent implements AfterContentInit {

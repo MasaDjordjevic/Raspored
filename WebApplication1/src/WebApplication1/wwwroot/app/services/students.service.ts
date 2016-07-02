@@ -111,7 +111,8 @@ export class StudentsService {
         .catch(this.handleError);
     }
 
-    public addActivity(classroomId: number, timespan: TimeSpan, title: string, content: string, place: string, groupId: number) {
+    public addActivity(groupId: number, classroomId: number, place: string, title: string, content: string, timespan: TimeSpan) {
+        debugger;
         let body = JSON.stringify({
             "classroomID" : classroomId,
             "timeSpan" : timespan,

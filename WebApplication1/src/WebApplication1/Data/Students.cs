@@ -330,8 +330,8 @@ namespace WebApplication1.Data
                     .ToList();
             
             AddToGroup(studentID, groupID, _context);
-                
-            
+
+            _context.SaveChanges();
 
 
         }

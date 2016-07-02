@@ -40,7 +40,9 @@
     </r-dialog>
 
     <r-dialog #globalScheduleDialog [source]="globalScheduleButton">
-        Globalni raspored <!-- TODO -->
+        <div id="globalSchedule">
+            <r-timetable [departmentID]="department.departmentID"></r-timetable>
+        </div>
     </r-dialog>
 
     <r-dialog class="json-debugging"

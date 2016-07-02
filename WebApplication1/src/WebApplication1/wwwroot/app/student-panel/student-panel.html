@@ -21,13 +21,23 @@
                 <i class="fa fa-pencil"></i>
             </button>
 
+
+
             <div class="flex-spacer"></div>
+
+            <button #addAnnouncementButton (click)="addAnnouncementDialog.open()">
+                <i class="fa fa-calendar-plus-o"></i>
+            </button>
 
             <div class="options">
                 <button (click)="languagePickerOpened = !languagePickerOpened">
                     <i class="fa fa-globe"></i>
                 </button>
             </div>
+
+            <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
+                <add-announcement [assistant]="false"></add-announcement>
+            </r-dialog>
 
             <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">
                 <div class="dropdown-item" (click)="language = 'en'; languagePickerOpened = false">
@@ -64,6 +74,8 @@
                 </div>
             </div>
             <div class="invisible-blackout" (click)="languagePickerOpened = false"></div>
+
+
 
         </header>
     </div>
