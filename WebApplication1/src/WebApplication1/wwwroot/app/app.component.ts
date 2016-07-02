@@ -94,6 +94,11 @@ export class AppComponent implements OnInit {
                     name: "Login",
                     loader: () => System.import("app/login.component").then(c => c["LoginComponent"])
                 }),
+                new AsyncRoute({
+                    path: "/unauthorized-access",
+                    name: "UnauthorizedAccess",
+                    loader: () => System.import("app/errors/unauthorized-access.component").then(c => c["UnauthorizedAccessComponent"])
+                }),
             ];
 
             this.router.config(this.routes);
