@@ -167,6 +167,9 @@ export class RDropdownComponent implements AfterContentInit, AfterViewInit {
     @Input() set val(v) {
         this._val = v;
         this.select(v);
+        if (v === null || v === undefined) {
+            this.currentSelectedStr = "";
+        }
     }
 
     get val() {
