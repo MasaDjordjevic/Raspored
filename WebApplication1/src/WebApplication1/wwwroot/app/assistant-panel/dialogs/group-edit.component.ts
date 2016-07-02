@@ -224,8 +224,7 @@ export class GroupEditComponent {
                         break;
                     default:
                         this._globalService.toast(this._globalService.translate('error') + ' ' +
-                            this._globalService.translate('group_not_edited__1') +
-                            this.group.name + this._globalService.translate('group_not_edited__2'));
+                            this._globalService.translate('group_not_edited'));
                         debugger;
                         break
                 }
