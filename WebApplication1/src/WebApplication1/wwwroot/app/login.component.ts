@@ -2,15 +2,16 @@ import {Component} from "angular2/core";
 import {R_INPUT} from "./ui/r-input-text.component";
 import {R_BUTTON} from "./ui/r-button.component";
 import {Control} from "angular2/common";
+import {LoginService} from "./services/login.service";
 
 @Component({
     selector: 'r-login',
     directives: [R_INPUT, R_BUTTON],
     template: `
         <div class="logo"></div>
-        <form>
-            <r-input class="light-theme" label="Korisničko ime" [control]="usernameControl"></r-input>
-            <r-input class="light-theme" label="Šifra" [control]="passwordControl"></r-input>
+        <form (submit)="login()">
+            <r-input class="light-theme" label="Korisničko ime" [(val)]="username"></r-input>
+            <r-input class="light-theme" label="Šifra" [(val)]="password"></r-input>
             <div class="flex-spacer"></div>
             <div class="controls">
                 <button r-button raised text="Prijava">Prijava</button>
@@ -18,19 +19,21 @@ import {Control} from "angular2/common";
         </form>
     `,
     styleUrls: ['app/login.css'],
+    providers: [LoginService]
 })
 export class LoginComponent {
 
-    usernameControl: Control;
-    usernameControlValue$: any;
+    username: string = "wlada";
+    password : string = "wlada";
 
-    passwordControl: Control;
-    passwordControlValue$: any;
+    constructor(private _loginService: LoginService) {
+    }
 
-    constructor() {
-        this.usernameControl = new Control();
-        this.usernameControlValue$ = this.usernameControl.valueChanges;
-        this.passwordControl = new Control();
-        this.passwordControlValue$ = this.passwordControl.valueChanges;
+    login() {
+        this._loginService.login(this.username, this.password)
+            .then( res =>{
+                console.log(res);
+                window.location = res.url;
+            } );
     }
 }

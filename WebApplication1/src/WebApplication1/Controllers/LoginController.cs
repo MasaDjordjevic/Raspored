@@ -1,0 +1,66 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Security.Claims;
+using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
+using Microsoft.Data.Entity;
+using Microsoft.Data.Entity.Query.Expressions;
+using WebApplication1.Exceptions;
+using WebApplication1.Models;
+
+namespace WebApplication1.Controllers
+{
+    [Produces("application/json")]
+    [Route("api/[controller]/[action]")]
+    public class LoginController : Controller
+    {
+        public class LoginBinding
+        {
+            public string username;
+            public string password;
+        }
+
+        [HttpPost]
+        public IActionResult Login([FromBody] LoginBinding obj)
+        {
+            if (String.IsNullOrEmpty(obj.username) || String.IsNullOrEmpty(obj.password))
+            {
+                return Ok(new { status = "parameter error" });
+            }
+
+            try
+            {
+                UniMembers usr = Data.Login.UserLogin(obj.username, obj.password);
+                HttpContext.Session.SetUser(usr);
+
+                //asistent
+                if (usr.studentID == null)
+                {
+                    HttpContext.Session.SetString("role", "assistant");
+                    return Ok(new { status = "uspelo", url = "/assistant-panel" });
+                }
+                else //student
+                {
+                    HttpContext.Session.SetString("role", "student");
+                    return Ok(new { status = "uspelo", url = "/student-panel" });
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(new {status = "nije uspelo", message = ex.Message});
+            }
+          
+        }
+
+        [HttpGet]
+        public IActionResult Test()
+        {
+            return Ok(HttpContext.Session.GetUser());
+        }
+    }
+}

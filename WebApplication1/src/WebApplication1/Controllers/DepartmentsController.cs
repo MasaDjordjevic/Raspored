@@ -71,42 +71,7 @@ namespace WebApplication1.Controllers
 
             return Ok(schedule);
         }
-
-        // PUT: api/Departments/5
-        [HttpPut("{id}")]
-        [Route("{id:int}")]
-        public IActionResult PutDepartments(int id, [FromBody] Departments departments)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
-
-            if (id != departments.departmentID)
-            {
-                return HttpBadRequest();
-            }
-
-            _context.Entry(departments).State = EntityState.Modified;
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DepartmentsExists(id))
-                {
-                    return HttpNotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
-        }
+        
 
         // POST: api/Departments
         [HttpPost]

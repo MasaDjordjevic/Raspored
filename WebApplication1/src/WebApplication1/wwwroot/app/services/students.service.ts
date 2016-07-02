@@ -157,6 +157,9 @@ export class StudentsService {
     }
 
     private handleError(error: any) {
+        if (error.status == 401) {
+            window.location = <Location>"/login";
+        }
         let errMsg = error.message || 'Server error';
         console.error(errMsg);
         return Promise.reject(errMsg);

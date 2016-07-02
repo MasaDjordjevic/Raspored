@@ -1,6 +1,7 @@
 using System.Collections;
 using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;
+using WebApplication1.Exceptions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -9,14 +10,6 @@ namespace WebApplication1.Controllers
     [Route("api/[controller]/[action]")]
     public class AssistantsController : Controller
     {
-        private RasporedContext _context;
-
-        public AssistantsController(RasporedContext context)
-        {
-            _context = context;
-        }
-
-       
         [HttpGet]
         public IEnumerable GetAssistants()
         {
@@ -67,6 +60,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult GetSchedule(int assistantID, int weeksFromNow)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);

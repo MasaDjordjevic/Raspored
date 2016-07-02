@@ -245,6 +245,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult MassGroupEdit([FromBody] MassGroupEditBinding obj)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (obj?.groups == null)
             {
                 return Ok(new { status = "parameter error" });
@@ -413,6 +415,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult CancelClass([FromBody] CancelClassBinding obj)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (obj == null)
             {
                 return Ok(new { status = "parameter error" });
@@ -434,6 +438,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult UnCancelClass(int activityID)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             try
             {
                 Data.Group.DeleteActivity(activityID);

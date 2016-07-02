@@ -63,42 +63,6 @@ namespace WebApplication1.Controllers
             return Ok(courses);
         }
 
-        // PUT: api/Courses/5
-        [HttpPut("{id}")]
-        [Route("{id:int}")]
-        public IActionResult PutCourses(int id, [FromBody] Courses courses)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
-
-            if (id != courses.courseID)
-            {
-                return HttpBadRequest();
-            }
-
-            _context.Entry(courses).State = EntityState.Modified;
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CoursesExists(id))
-                {
-                    return HttpNotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
-        }
-
         // POST: api/Courses
         [HttpPost]
         public IActionResult PostCourses([FromBody] Courses courses)
