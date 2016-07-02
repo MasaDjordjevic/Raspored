@@ -45,7 +45,7 @@
                 {{classroom}}
             </span>
             <span class="type">{{type}}</span>
-            <span class="assistant">{{assistant.name}}</span>
+            <span class="assistant">{{assistant?.name}}</span>
         </template>
 
         <!-- ako je aktivnost (nije čas) -->
@@ -133,9 +133,9 @@
                             <span>{{_globalService.translate('assistant')}}</span>
                         </dt>
                             <dd>
-                                {{assistant.name}}
+                                {{assistant?.name}}
                                 &nbsp;
-                                <a [href]="'mailto:' + assistant.mail">
+                                <a [href]="'mailto:' + assistant?.mail">
                                     <i class="fa fa-envelope"></i>
                                 </a>
                                 <!-- todo mejl asistena -->
