@@ -138,3 +138,30 @@
   }
 }
 //endregion
+
+//region Additional colors
+@each $string, $var in $all-colors-string-var {
+  :host.#{$string} {
+    .title {
+      color: palette($var);
+    }
+
+    .checkbox {
+      box-shadow: 0 0 0 3px palette($var) inset;
+    }
+
+    .ng-content mark {
+      background-color: rgba(palette($var), .2);
+      box-shadow: 0 0 0 1px rgba(palette($var), .6);
+    }
+
+    r-multiple-selector-item:hover {
+      background-color: rgba(palette($var), .1);
+    }
+
+    r-multiple-selector-item.selected .checkbox {
+      box-shadow: 0 0 0 .7em palette($var) inset;
+    }
+  }
+}
+//endregion

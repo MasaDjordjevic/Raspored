@@ -222,7 +222,7 @@ export class MultipleSelectorComponent implements AfterViewInit {
 
         this.values.sort(); // leksikografsko (jer ne moraju da budu brojke)
         this.checkItems();
-        this.valChange.next(this.values);
+        this.valChange.emit(this.values);
     }
 
     @ContentChildren(MultipleSelectorItemComponent) _items:
