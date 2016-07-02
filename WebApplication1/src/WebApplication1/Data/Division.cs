@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNet.Http;
 using Microsoft.Data.Entity;
 using WebApplication1.Models;
 using WebApplication1.Models.DTOs;
@@ -201,7 +202,7 @@ namespace WebApplication1.Data
             public List<Students> students; 
         }
 
-        public static void CreateInitialDivision(string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning, DateTime ending,
+        public static void CreateInitialDivision(int creatorID, string name, int departmentID, int courseID, int divisionTypeID, DateTime beginning, DateTime ending,
             List<Division.GroupOfStudents>  groups)
         {
             using (RasporedContext _context = new RasporedContext())
@@ -209,7 +210,7 @@ namespace WebApplication1.Data
                 Divisions div = new Divisions
                 {
                     name = name,
-                    creatorID = 1, //TODO vadi iz sesije
+                    creatorID = creatorID,
                     divisionTypeID = divisionTypeID,
                     beginning = beginning,
                     ending = ending,
@@ -278,7 +279,7 @@ namespace WebApplication1.Data
             }
         }
 
-        public static Divisions CopyDivision(int divisionID)
+        public static Divisions CopyDivision(int assistantID, int divisionID)
         {
              using (RasporedContext _context = new RasporedContext())
              {
@@ -289,7 +290,7 @@ namespace WebApplication1.Data
                     courseID = division.courseID,
                     beginning = division.beginning,
                     ending = division.ending,
-                    creatorID = division.creatorID, //TODO vadi iz sesije
+                    creatorID = assistantID,
                     divisionTypeID = division.divisionTypeID,
                     departmentID = division.departmentID,
                     name = division.name + " (kopija)",

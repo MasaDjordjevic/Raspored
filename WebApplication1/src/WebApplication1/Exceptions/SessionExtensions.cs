@@ -29,6 +29,19 @@ namespace WebApplication1.Exceptions
             return session.GetObjectFromJson<UniMembers>("user");
         }
 
+        public static int GetStudentID(this ISession session)
+        {
+            var id = session.GetUser().studentID;
+            if(id == null)
+                throw new Exception("nije ulogovan");
+            return id.Value;
+        }
+
+        public static int GetAssistantID(this ISession session)
+        {
+            return session.GetUser().uniMemberID;
+        }
+
         public static void SetUser(this ISession session, UniMembers user)
         {
             session.SetString("user", JsonConvert.SerializeObject(user));

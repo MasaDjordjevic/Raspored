@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
         // 2827 - Isidora Nikolic (3. grupa)
         // 2723 - Milena Arsic (2. grupa)
         // 2597 - Aleksandar milanov (1. grupa)
-        public static int STUDENT_ID = 2723;
+        //public static int STUDENT_ID = 2723;
 
 
         // GET: api/Students
@@ -258,8 +258,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                //TODO vadi iz sesije
-                Data.Student.HideClass(STUDENT_ID, groupID);
+                Data.Student.HideClass(HttpContext.Session.GetAssistantID(), groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -274,8 +273,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                //TODO vadi iz sesije
-                Data.Student.AddClassToPersonalSchedule(STUDENT_ID, groupID);
+                Data.Student.AddClassToPersonalSchedule(HttpContext.Session.GetAssistantID(), groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -289,8 +287,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                //TODO vadi iz sesije
-                Data.Student.AlertClass(STUDENT_ID, groupID);
+                Data.Student.AlertClass(HttpContext.Session.GetAssistantID(), groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -320,8 +317,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                //TODO vadi iz sesije
-                Data.Student.AddActivity(STUDENT_ID, obj.groupID, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
+                Data.Student.AddActivity(HttpContext.Session.GetAssistantID(), obj.groupID, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -338,8 +334,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                //TODO vadi iz sesije
-                Data.Student.DeleteActivity(STUDENT_ID, activityID);
+                Data.Student.DeleteActivity(HttpContext.Session.GetAssistantID(), activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -356,8 +351,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                //TODO vadi iz sesije
-                Data.Student.AlertActivity(STUDENT_ID, activityID);
+                Data.Student.AlertActivity(HttpContext.Session.GetAssistantID(), activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

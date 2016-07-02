@@ -8,6 +8,7 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Query.Expressions;
+using Newtonsoft.Json;
 using WebApplication1.Exceptions;
 using WebApplication1.Models;
 
@@ -34,7 +35,12 @@ namespace WebApplication1.Controllers
             try
             {
                 UniMembers usr = Data.Login.UserLogin(obj.username, obj.password);
-                HttpContext.Session.SetUser(usr);
+                HttpContext.Session.SetUser(JsonConvert.DeserializeObject<UniMembers>(
+                    (JsonConvert.SerializeObject(usr, Formatting.Indented,
+                                    new JsonSerializerSettings
+                                    {
+                                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                    }))));
 
                 //asistent
                 if (usr.studentID == null)
@@ -58,9 +64,29 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet]
-        public IActionResult Test()
+        public IActionResult GetUser()
         {
-            return Ok(HttpContext.Session.GetUser());
+            //mora ovako ruzno jer se tako ocekuje na frontu
+            if (HttpContext.Session.IsStudent())
+            {
+                var student = Data.Student.GetStudent(HttpContext.Session.GetStudentID());
+                return Ok(JsonConvert.SerializeObject(student, Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    }));
+            }
+            else
+            {
+                var assistnat = Data.Assistant.GetAssistant(HttpContext.Session.GetAssistantID());
+
+                return Ok(JsonConvert.SerializeObject(assistnat, Formatting.Indented,
+                                 new JsonSerializerSettings
+                                 {
+                                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                 }));
+            }
+
         }
     }
 }

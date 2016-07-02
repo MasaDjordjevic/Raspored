@@ -161,7 +161,7 @@ export class AssistantPanelOptionsComponent {
     _groupID: number;
     _departmentID: number;
     _classroomID: number;
-    _assistantID: number = 1;
+    _assistantID: number;
     _weeksFromNow:number = 0;
 
     _mode: number;
@@ -225,7 +225,7 @@ export class AssistantPanelOptionsComponent {
     get assistantID() {
         return this._assistantID;
     }
-    set assistantID(a) {
+    @Input() set assistantID(a) {
         this.clearAllIDs();
         this._assistantID = a;
     }

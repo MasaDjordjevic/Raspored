@@ -3,10 +3,11 @@ import {Http, Response} from "angular2/http";
 import {Injectable} from "angular2/core";
 import {Headers, RequestOptions} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
+import {ServiceService} from "./service.service";
 
 
 @Injectable()
-export class LoginService {
+export class LoginService extends ServiceService{
     constructor(private http:Http) {
     }
 
@@ -22,23 +23,16 @@ export class LoginService {
         let options = new RequestOptions({ headers: headers });
         return this.http.post(this._url + '/Login', body, options)
             .toPromise()
-            .then(this.extractData)
-            .catch(this.handleError);
+            .then(super.extractData)
+            .catch(super.handleError);
 
     }
 
-    private extractData(res: Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        let body = res.json();
-        return body || {};
-    }
-
-    private handleError(error: any) {
-        let errMsg = error.message || 'Server error';
-        console.error(errMsg);
-        return Promise.reject(errMsg);
+    getUser() {
+        return this.http.get(this._url + '/GetUser')
+            .toPromise()
+            .then(super.extractData)
+            .catch(super.handleError);
     }
 
 }

@@ -23,8 +23,8 @@ import {LoginService} from "./services/login.service";
 })
 export class LoginComponent {
 
-    username: string = "wlada";
-    password : string = "wlada";
+    username: string = "plavusha";
+    password : string = "plavusha";
 
     constructor(private _loginService: LoginService) {
     }
@@ -33,7 +33,9 @@ export class LoginComponent {
         this._loginService.login(this.username, this.password)
             .then( res =>{
                 console.log(res);
-                window.location = res.url;
+                if(res.status == "uspelo") {
+                    window.location = res.url;
+                }
             } );
     }
 }

@@ -150,7 +150,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Data.Division.CreateInitialDivision(obj.name, obj.departmentID, obj.courseID, obj.divisionTypeID, obj.beginning, obj.ending, obj.groups.ToList());
+                Data.Division.CreateInitialDivision(HttpContext.Session.GetAssistantID(), obj.name, obj.departmentID, obj.courseID, obj.divisionTypeID, obj.beginning, obj.ending, obj.groups.ToList());
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -271,7 +271,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Data.Division.CopyDivision(divisionID);
+                Data.Division.CopyDivision(HttpContext.Session.GetAssistantID(), divisionID);
                 return Ok(new {status = "uspelo"});
             }
             catch (Exception ex)

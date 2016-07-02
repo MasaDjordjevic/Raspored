@@ -109,7 +109,8 @@ namespace WebApplication1.Controllers
 
             try
             {
-                var BulletinBoardChoices = Data.Group.GetAllBulletinBoardChoices(id, StudentsController.STUDENT_ID);
+                var BulletinBoardChoices = Data.Group.GetAllBulletinBoardChoices(id,
+                    HttpContext.Session.GetUser().studentID); // ne zove getStudentID jer ovako moze da bude i null
                 return Ok(BulletinBoardChoices);
             }
             catch (Exception ex)
@@ -149,8 +150,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                // TODO vadi iz sesije
-                Data.Group.ExchangeStudents(4, groupID, adID);
+                Data.Group.ExchangeStudents(HttpContext.Session.GetStudentID(), groupID, adID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -174,8 +174,7 @@ namespace WebApplication1.Controllers
             }
             try
             {
-                // TODO vadi iz sesije
-                Data.Group.AddEditAd(StudentsController.STUDENT_ID, obj.groupID.Value, obj.groupIDs);
+                Data.Group.AddEditAd(HttpContext.Session.GetStudentID(), obj.groupID.Value, obj.groupIDs);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -393,8 +392,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                //TODO vadi iz sesije
-                Data.Group.AddActivity(1, obj.groupID, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
+                Data.Group.AddActivity(HttpContext.Session.GetAssistantID(), obj.groupID, obj.classroomID, obj.timespan, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

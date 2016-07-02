@@ -6,7 +6,7 @@
         <div style="background-image: url('avatar.png')"></div>
     </div>
 
-    <div class="basic-info">
+    <div *ngIf="assistant" class="basic-info">
         <div class="name">{{assistant.name}} {{assistant.surname}}</div>
         <div class="details">
             <div class="office"><i class="fa fa-briefcase"></i> {{assistant.address}}</div>
@@ -126,9 +126,9 @@
     </div>
     <div class="invisible-blackout" (click)="themePickerOpened = false"></div>
 
-    <r-dialog #assistantEditDialog [source]="assistantEditButton">
+    <!--<r-dialog #assistantEditDialog [source]="assistantEditButton">
         <r-assistant-edit [assistant]="assistant"></r-assistant-edit>
-    </r-dialog>
+    </r-dialog>-->
 
     <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
         <add-announcement [assistant]="true"></add-announcement>
@@ -170,6 +170,7 @@
     <r-assistant-panel-options
             *ngIf="isAtRoot"
             [dayNames]="dayNames"
+            [assistantID]="assistant?.uniMemberID"
     >
     </r-assistant-panel-options>
 

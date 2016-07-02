@@ -24,6 +24,7 @@ import {
 } from "../services/global.service";
 import {ToastComponent} from "../global/toast.component";
 import {AddAnnouncementComponent} from "./dialogs/add-announcement.component";
+import {LoginService} from "../services/login.service";
 
 @Component({
     selector: "r-assistant-panel",
@@ -38,7 +39,7 @@ import {AddAnnouncementComponent} from "./dialogs/add-announcement.component";
     ],
     templateUrl: 'app/assistant-panel/assistant-panel.html',
     styleUrls: ['app/assistant-panel/assistant-panel.css'],
-    providers: [GlobalService]
+    providers: [GlobalService, LoginService]
 })
 
 export class AssistantPanelComponent {
@@ -59,24 +60,8 @@ export class AssistantPanelComponent {
         return this.currentTheme.studentPrimaryColor;
     }
 
-    // TODO
-    private assistant = {
-        "uniMemberID": 1,
-        "address": "331",
-        "avatar": null,
-        "email": "wlada@elfak.ni.ac.rs",
-        "name": "Vlada",
-        "password": "wlada",
-        "studentID": null,
-        "surname": "Mihajlović",
-        "username": "wlada",
-        "Activities": [],
-        "AssistantsCourses": [],
-        "Divisions": [],
-        "GroupsAssistants": [],
-        "UniMembersRoles": [],
-        "student": null,
-    };
+
+    private assistant;
 
     private _selectedDepartmentId = -1;
     private _selectedDivisionId = -1;
@@ -85,9 +70,21 @@ export class AssistantPanelComponent {
 
     errorMessage: string;
 
+    getAssistant() {
+        this._loginService.getUser()
+            .then(asst => {
+                debugger;
+                this.assistant = asst,
+                    error => this.errorMessage = error
+            });
+    }
+
     constructor(
-        public _globalService: GlobalService
+        public _globalService: GlobalService,
+        public _loginService: LoginService
     ) {
+        this.getAssistant();
+
         //region Themes
         this._themes = [];
         this._themes["material"] = {

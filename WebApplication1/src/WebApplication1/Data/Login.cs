@@ -18,7 +18,6 @@ namespace WebApplication1.Data
             {
                 var query = _context.UniMembers
                     .Include(a=> a.student)
-                    .Include(a=> a.UniMembersRoles)
                     .Where(a => a.username == username && a.password == password);
                 if (query.Any())
                 {
