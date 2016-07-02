@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using WebApplication1.Exceptions;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -21,6 +22,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult GetRoles()
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             var roles = (from a in _context.Roles select new { id = a.roleID, name = a.name}).ToList();
             return Ok(roles);
         }
@@ -29,6 +32,8 @@ namespace WebApplication1.Controllers
         [HttpGet("{id}", Name = "GetRoles")]
         public IActionResult GetRoles([FromRoute] int id)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -48,6 +53,8 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public IActionResult PutRoles(int id, [FromBody] Roles roles)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -83,6 +90,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult PostRoles([FromBody] Roles roles)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -112,6 +121,8 @@ namespace WebApplication1.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteRoles(int id)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);

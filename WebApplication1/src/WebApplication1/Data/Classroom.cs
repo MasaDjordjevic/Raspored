@@ -10,6 +10,14 @@ namespace WebApplication1.Data
 {
     public static class Classroom
     {
+        public static IEnumerable GetClassrooms()
+        {
+            using (RasporedContext _context = new RasporedContext())
+            {
+                return (from a in _context.Classrooms select a).OrderBy(a => a.number).ToList();
+            }
+        } 
+
         public static IEnumerable GetSchedule(int classroomID, int weeksFromNow = 0)
         {
             using (RasporedContext _context = new RasporedContext())

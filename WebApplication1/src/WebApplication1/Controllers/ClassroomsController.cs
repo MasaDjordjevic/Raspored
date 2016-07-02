@@ -22,13 +22,13 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult GetClassrooms()
         {
-            var classrooms = (from a in _context.Classrooms select a).OrderBy(a => a.number).ToList();
+            var classrooms = Data.Classroom.GetClassrooms();
             return Ok(classrooms);
         }
         
         //mislim da se ovo ne koristi
         [HttpGet]
-        public IActionResult CheckIfAveable(int classroomID, TimeSpans time)
+        public IActionResult CheckIfAvailable(int classroomID, TimeSpans time)
         {
             try
             {
@@ -80,40 +80,7 @@ namespace WebApplication1.Controllers
             return Ok(schedule);
         }
 
-        // PUT: api/Classrooms/5
-        [HttpPut("{id}")]
-        public IActionResult PutClassrooms(int id, [FromBody] Classrooms classrooms)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
-
-            if (id != classrooms.classroomID)
-            {
-                return HttpBadRequest();
-            }
-
-            _context.Entry(classrooms).State = EntityState.Modified;
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClassroomsExists(id))
-                {
-                    return HttpNotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
-        }
+       
 
         // POST: api/Classrooms
         [HttpPost]

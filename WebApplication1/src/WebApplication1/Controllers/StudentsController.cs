@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
@@ -14,17 +15,11 @@ namespace WebApplication1.Controllers
     [Route("api/[controller]/[action]")]
     public class StudentsController : Controller
     {
-        private RasporedContext _context;
-
         // 2827 - Isidora Nikolic (3. grupa)
         // 2723 - Milena Arsic (2. grupa)
         // 2597 - Aleksandar milanov (1. grupa)
         public static int STUDENT_ID = 2723;
 
-        public StudentsController(RasporedContext context)
-        {
-            _context = context;
-        }
 
         // GET: api/Students
         [HttpGet]
@@ -149,6 +144,9 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult GetPersonalSchedule(int studentID, int weeksFromNow)
         {
+            if (!HttpContext.Session.IsStudent()) return HttpUnauthorized();
+
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -162,9 +160,13 @@ namespace WebApplication1.Controllers
             }
 
             return Ok(schedule);
-        }[HttpGet]
+        }
+    
+        [HttpGet]
         public IActionResult GetOfficialSchedule(int studentID, int weeksFromNow)
         {
+            if(!HttpContext.Session.IsStudent()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -183,6 +185,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult AddToGroup(int studentID, int groupID)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -231,6 +235,9 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult RemoveFromGroup(int studentID, int groupID)
         {
+
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             try
             {
                 if (!Data.Student.RemoveFromGroup(studentID, groupID))
@@ -305,7 +312,10 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult AddActivity([FromBody] AddActivityBinding obj)
         {
-            if(obj.timeSpan == null)
+            if (!HttpContext.Session.IsStudent()) return HttpUnauthorized();
+
+
+            if (obj.timeSpan == null)
                 return Ok(new { status = "parameter error" });
 
             try
@@ -323,6 +333,9 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult DeleteActivity(int activityID)
         {
+            if (!HttpContext.Session.IsStudent()) return HttpUnauthorized();
+
+
             try
             {
                 //TODO vadi iz sesije
@@ -338,6 +351,9 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult AlertActivity(int activityID)
         {
+
+            if (!HttpContext.Session.IsStudent()) return HttpUnauthorized();
+
             try
             {
                 //TODO vadi iz sesije
@@ -351,103 +367,8 @@ namespace WebApplication1.Controllers
         }
 
 
-        // PUT: api/Students/5
-        [HttpPut("{id}")]
-        public IActionResult PutStudents(int id, [FromBody] Students students)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
+        
 
-            if (id != students.studentID)
-            {
-                return HttpBadRequest();
-            }
-
-            _context.Entry(students).State = EntityState.Modified;
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentsExists(id))
-                {
-                    return HttpNotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return new HttpStatusCodeResult(StatusCodes.Status204NoContent);
-        }
-
-        // POST: api/Students
-        [HttpPost]
-        public IActionResult PostStudents([FromBody] Students students)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
-
-            _context.Students.Add(students);
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                if (StudentsExists(students.studentID))
-                {
-                    return new HttpStatusCodeResult(StatusCodes.Status409Conflict);
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("GetStudents", new { id = students.studentID }, students);
-        }
-
-        // DELETE: api/Students/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteStudents(int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
-
-            Students students = _context.Students.Single(m => m.studentID == id);
-            if (students == null)
-            {
-                return HttpNotFound();
-            }
-
-            _context.Students.Remove(students);
-            _context.SaveChanges();
-
-            return Ok(students);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool StudentsExists(int id)
-        {
-            return _context.Students.Count(e => e.studentID == id) > 0;
-        }
+      
     }
 }

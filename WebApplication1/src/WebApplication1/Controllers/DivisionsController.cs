@@ -6,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using Newtonsoft.Json;
 using WebApplication1.Data;
+using WebApplication1.Exceptions;
 using WebApplication1.Models;
 
 
@@ -34,6 +35,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult DivideWithX(int courseID, int x, int sortOrder)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             var groups =  Data.Division.DivideWithX(courseID, x, sortOrder);
 
             if (groups == null)
@@ -47,6 +50,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult DivideOnX(int courseID, int x, int sortOrder)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             var groups = Data.Division.DivideOnX(courseID, x, sortOrder);
 
             if (groups == null)
@@ -60,6 +65,8 @@ namespace WebApplication1.Controllers
         [HttpGet("{id}", Name = "GetDivisionsOfDepartment")]
         public IActionResult GetDivisionsOfDepartment(int id)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -139,7 +146,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult CreateInitialDivision([FromBody] DivisionsController.CreateInitialDivisionParameterBinding obj)
         {
-            
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             try
             {
                 Data.Division.CreateInitialDivision(obj.name, obj.departmentID, obj.courseID, obj.divisionTypeID, obj.beginning, obj.ending, obj.groups.ToList());
@@ -185,6 +193,8 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public IActionResult PutDivisions(int id, [FromBody] Divisions division)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             //Divisions d = ((JObject) divisions).ToObject<Divisions>();
             if (!ModelState.IsValid)
             {
@@ -232,6 +242,8 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult UpdateDivision([FromBody] DivisionsController.DivisionUpdateBinding obj)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (obj?.divisionID == null)
                 return Ok(new {status = "parameter error"});
 
@@ -250,6 +262,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult CopyDivision(int divisionID)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -270,6 +284,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult DeleteDivision(int divisionID)
         {
+            if (!HttpContext.Session.IsAssistant()) return HttpUnauthorized();
+
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
@@ -287,27 +303,6 @@ namespace WebApplication1.Controllers
         }
 
 
-
-        // DELETE: api/Divisions/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteDivisions(int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
-
-            Divisions divisions = _context.Divisions.Single(m => m.divisionID == id);
-            if (divisions == null)
-            {
-                return HttpNotFound();
-            }
-
-            _context.Divisions.Remove(divisions);
-            _context.SaveChanges();
-
-            return Ok(divisions);
-        }
 
         protected override void Dispose(bool disposing)
         {
