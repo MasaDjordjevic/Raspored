@@ -137,7 +137,11 @@ namespace WebApplication1.Data
                                                         activityContent = a.activityContent,
                                                         isClass = false,
                                                         activityID = a.activityID,
-                                                        assistant = a.assistant.name + " " + a.assistant.surname,
+                                                        assistant = new AssistantNameMail
+                                                        {
+                                                            name = a.assistant.name + " " + a.assistant.surname,
+                                                            mail = a.assistant.email
+                                                        },
                                                         classroom = a.classroom == null ? null : a.classroom.number,
                                                         place = a.place
                                                     }).ToList();
