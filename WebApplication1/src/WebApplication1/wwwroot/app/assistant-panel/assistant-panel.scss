@@ -142,7 +142,7 @@ header {
   @include z-depth(1);
   border-radius: .2em;
   display: block;
-  z-index: 2;
+  z-index: 3;
 
   &.hidden {
     display: none;

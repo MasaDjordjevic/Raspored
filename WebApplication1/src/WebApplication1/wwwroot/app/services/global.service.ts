@@ -2088,16 +2088,6 @@ export class GlobalService {
             "fr":  "NOT_TRANSLATED_YET",
             "ja":  "NOT_TRANSLATED_YET",
         },
-        "add_task": {
-            "en":  "Add task",
-            "sr":  "Dodaj zadatak",
-            "src": "NOT_TRANSLATED_YET",
-            "eo":  "NOT_TRANSLATED_YET",
-            "es":  "NOT_TRANSLATED_YET",
-            "de":  "NOT_TRANSLATED_YET",
-            "fr":  "NOT_TRANSLATED_YET",
-            "ja":  "NOT_TRANSLATED_YET",
-        },
         "bulletin_board": {
             "en":  "Bulletin board",
             "sr":  "Oglasna tabla",

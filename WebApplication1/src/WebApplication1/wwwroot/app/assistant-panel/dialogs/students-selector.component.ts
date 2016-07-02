@@ -22,6 +22,7 @@ import {R_MULTIPLE_SELECTOR} from "../../ui/multiple-selector.component";
 })
 
 export class StudentsSelectorComponent {
+
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
 
@@ -59,9 +60,6 @@ export class StudentsSelectorComponent {
     }
 
     @Input() title: string = "";
-
-    @Input() primaryColor: string = "MaterialBlue";
-    @Input() secondaryColor: string = "MaterialOrange";
     
 }
 

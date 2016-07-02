@@ -11,12 +11,16 @@ import {R_INPUT} from "../../ui/r-input-text.component";
 import {GlobalService} from "../../services/global.service";
 import {moment} from "../../global/moment.import";
 
+
+
 @Component({
     selector: 'add-announcement',
     templateUrl: 'app/assistant-panel/dialogs/add-announcement.html',
+    styleUrls: ['app/assistant-panel/dialogs/add-announcement.css'],
     directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
     providers: [ClassroomsService, GroupsService],
 })
+
 export class AddAnnouncementComponent {
 
     @Input() primaryColor: string = "MaterialBlue";
@@ -33,7 +37,8 @@ export class AddAnnouncementComponent {
     courses: Course[];
     private errorMessage;
 
-    announcement: {title: string, content: string, startDate: any, endDate: any, classroom: number, place: string} = <any>{};
+    announcement: {title: string, content: string, startDate: any, endDate: any, classroom: number, place: string}
+        = <any>{};
 
     resetAnnouncement() {
         this.announcement = {

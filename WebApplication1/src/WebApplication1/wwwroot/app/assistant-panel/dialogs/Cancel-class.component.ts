@@ -11,7 +11,7 @@ import {moment} from "../../global/moment.import";
 
 @Component({
     selector: 'cancel-class',
-    templateUrl: 'app/assistant-panel/dialogs/cancel-class.html',
+    templateUrl: 'app/assistant-panel/dialogs/cancel-class.html', 
     styleUrls: ['app/assistant-panel/dialogs/cancel-class.css'],
     directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
     providers: [GroupsService],
