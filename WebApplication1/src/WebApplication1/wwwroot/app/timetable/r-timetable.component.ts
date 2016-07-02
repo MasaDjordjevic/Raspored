@@ -11,6 +11,8 @@ import {DepartmentService} from "../services/department.service";
 import {ClassroomsService} from "../services/classrooms.service";
 import {AssistantService} from "../services/assistant.service";
 import {GlobalService} from "../services/global.service";
+import {R_MULTIPLE_SELECTOR} from "../ui/multiple-selector.component";
+import {R_INPUT} from "../ui/r-input-text.component";
 
 
 export enum TimetableType {
@@ -30,7 +32,7 @@ export enum Mode {
     templateUrl: 'app/timetable/r-timetable.html',
     styleUrls: ['app/timetable/r-timetable.css'],
     providers: [StudentsService, GroupsService, DepartmentService, ClassroomsService, AssistantService],
-    directives: [TimetableColumnComponent, R_BUTTON, R_DIALOG],
+    directives: [TimetableColumnComponent, R_BUTTON, R_DIALOG, R_MULTIPLE_SELECTOR, R_INPUT],
     pipes: [ToTimestampPipe]
 })
 export class TimetableComponent {
