@@ -15,6 +15,12 @@ namespace WebApplication1.Data
         public int? classroomID { get; set; }
     }
 
+    public class AssistantNameMail
+    {
+        public string name { get; set; }
+        public string mail { get; set; }
+    }
+
     public class ScheduleDTO
     {
         public DayOfWeek day { get; set; }
@@ -29,7 +35,7 @@ namespace WebApplication1.Data
         public string className { get; set; }
         public string abbr { get; set; }
         public string classroom { get; set; }
-        public string assistant { get; set; }
+        public AssistantNameMail assistant { get; set; }
         public string type { get; set; }
         public List<NotificationDTO> notifications { get; set; }
 

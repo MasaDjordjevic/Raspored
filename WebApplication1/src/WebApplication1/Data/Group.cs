@@ -408,16 +408,20 @@ namespace WebApplication1.Data
             }
         }
 
-        public static string GetAssistant(int groupID)
+        public static AssistantNameMail GetAssistant(int groupID)
         {
             using (RasporedContext _context = new RasporedContext())
             {
                 var query = _context.Groups.Where(a => a.groupID == groupID)
-                        .Select(a => a.assistant.name + " " + a.assistant.surname);
+                        .Select(a => new AssistantNameMail
+                        {
+                            name = a.assistant.name + " " + a.assistant.surname,
+                            mail = a.assistant.email
+                        });
                 if (query.Any())
                     return query.First();
                 else
-                    return "";
+                    return null;
 
             }
         }
