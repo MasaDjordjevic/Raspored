@@ -70,10 +70,20 @@ export class AssistantPanelComponent {
 
     errorMessage: string;
 
+    logout() {
+        this._loginService.logout()
+            .then(res=> {
+                if(res.status == "uspelo") {
+                    window.location = <Location>"/login";
+                } else {
+                    console.log(res);
+                }
+            })
+    }
+
     getAssistant() {
         this._loginService.getUser()
             .then(asst => {
-                debugger;
                 this.assistant = asst,
                     error => this.errorMessage = error
             });

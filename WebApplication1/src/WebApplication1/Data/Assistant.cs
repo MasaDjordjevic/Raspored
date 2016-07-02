@@ -81,7 +81,7 @@ namespace WebApplication1.Data
                 List<ScheduleDTO> activitiesSchedule =
                     _context.Activities.Where(a => ((a.assistantID == assistantID || 
                                                     (a.groupID != null && a.cancelling == false && groups.Contains(a.groupID.Value)) ||
-                                                    (a.groupID == null))
+                                                    (!Group.IsStudentActivity(a.activityID) && a.groupID == null))
                                                     && TimeSpan.Overlap(a.timeSpan, tsNow)))
                                                     .Select(a => new ScheduleDTO
                                                     {
@@ -94,9 +94,8 @@ namespace WebApplication1.Data
                                                         activityContent = a.activityContent,
                                                         isClass = false,
                                                         activityID = a.activityID,
-                                                        assistant = new AssistantNameMail {name=  a.assistant.name + " " + a.assistant.surname, 
-                                                        mail = a.assistant.email},
-                                                        classroom = a.classroom == null ? null : a.classroom.number,
+                                                        assistant = Student.GetAssistantNameMail(a.assistantID),
+                                                        classroom = Student.GetClassroomNumber(a.classroomID),
                                                         place = a.place
                                                     }).ToList();
 

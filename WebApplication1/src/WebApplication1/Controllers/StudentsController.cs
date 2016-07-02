@@ -8,6 +8,7 @@ using Microsoft.Data.Entity;
 using Newtonsoft.Json;
 using WebApplication1.Exceptions;
 using WebApplication1.Models;
+using TimeSpan = WebApplication1.Data.TimeSpan;
 
 namespace WebApplication1.Controllers
 {
@@ -300,7 +301,7 @@ namespace WebApplication1.Controllers
         {
             public int? groupID;
             public int? classroomID;
-            public TimeSpans timeSpan;
+            public GroupsController.TimeSpanBinding timeSpan;
             public string place;
             public string title;
             public string content;
@@ -317,7 +318,10 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Data.Student.AddActivity(HttpContext.Session.GetAssistantID(), obj.groupID, obj.classroomID, obj.timeSpan, obj.place, obj.title, obj.content);
+                //konvertovanje u timeSpan
+                TimeSpans ts = TimeSpan.getTimeSpan(obj.timeSpan);
+
+                Data.Student.AddActivity(HttpContext.Session.GetAssistantID(), obj.groupID, obj.classroomID, ts, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)

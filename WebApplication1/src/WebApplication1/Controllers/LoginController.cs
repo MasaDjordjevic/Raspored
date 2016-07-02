@@ -88,5 +88,19 @@ namespace WebApplication1.Controllers
             }
 
         }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            try
+            {
+                HttpContext.Session.SetUser(null);
+                return Ok(new {status="uspelo"});
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
     }
 }

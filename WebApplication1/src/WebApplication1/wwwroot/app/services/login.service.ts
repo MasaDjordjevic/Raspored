@@ -35,4 +35,11 @@ export class LoginService extends ServiceService{
             .catch(super.handleError);
     }
 
+    logout() {
+        return this.http.get(this._url + '/Logout')
+            .toPromise()
+            .then(super.extractData)
+            .catch(super.handleError);
+    }
+
 }

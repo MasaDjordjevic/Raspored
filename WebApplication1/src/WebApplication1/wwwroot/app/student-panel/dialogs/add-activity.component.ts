@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from "angular2/core";
+import {Component, Input, Output, EventEmitter, AfterViewInit} from "angular2/core";
 import {ClassroomsService} from "../../services/classrooms.service";
 import {GroupsService} from "../../services/groups.service";
 import {TimeSpan} from "../../models/TimeSpan";
@@ -15,14 +15,14 @@ import {StudentsService} from "../../services/students.service";
 
 
 @Component({
-    selector: 'add-announcement',
-    templateUrl: 'app/assistant-panel/dialogs/add-announcement.html',
-    styleUrls: ['app/assistant-panel/dialogs/add-announcement.css'],
+    selector: 'add-personal-activity',
+    templateUrl: 'app/student-panel/dialogs/add-activity.html',
     directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
-    providers: [ClassroomsService, GroupsService, StudentsService],
+    providers: [ClassroomsService, StudentsService],
 })
 
-export class AddAnnouncementComponent {
+export class AddPersonalActivityComponent {
+
 
     @Input() primaryColor: string = "MaterialBlue";
     @Input() secondaryColor: string = "MaterialOrange";
@@ -39,8 +39,15 @@ export class AddAnnouncementComponent {
 
     announcement: {title: string, content: string, startDate: any, endDate: any, classroom: number, place: string}
         = <any>{};
+    editedPeriod: any;
+    editedDayOfWeek: any;
+    editedTimeStart: any;
+    editedTimeEnd: any;
+    editedDateTimeStart: any;
+    editedDateTimeEnd: any;
 
-    resetAnnouncement() {
+
+    resetActivity() {
         this.announcement = {
             content: "",
             title: "",
@@ -54,24 +61,32 @@ export class AddAnnouncementComponent {
 
     constructor(
         private _classroomsService: ClassroomsService,
-        private _groupsService: GroupsService,
         private _globalService: GlobalService,
         private _studentsService: StudentsService
     ) {
         this.getClassrooms();
-        this.resetAnnouncement();
+        this.resetActivity();
     }
 
 
     save() {
-        var timespan:TimeSpan = new TimeSpan;
-        timespan.startDate = new Date(this.announcement.startDate);
-        timespan.endDate = new Date(this.announcement.endDate);
-        timespan.period = 0;
-      
+        var timespan: any = {};
 
-       
-        this._groupsService.addActivity(
+        // ako nista nije odabrano
+        if (this.editedPeriod == null) {
+            timespan = null;
+        } else {
+            timespan.startDate = new Date(this.editedDateTimeStart);
+            timespan.endDate = new Date(this.editedDateTimeEnd);
+            timespan.period = +this.editedPeriod;
+            timespan.dayOfWeek = this.editedDayOfWeek;
+            timespan.timeStart = this.editedTimeStart;
+            timespan.timeEnd = this.editedTimeEnd;
+        }
+
+        debugger;
+
+        this._studentsService.addActivity(
             null, // groupID
             this.announcement.classroom, // classroom
             this.announcement.place, // place
@@ -108,7 +123,7 @@ export class AddAnnouncementComponent {
             .then(
                 cls => this.classrooms = cls,
                 error => this.errorMessage = <any>error
-            .then(()=> this.announcement.classroom = this.classrooms[0]));
+                    .then(()=> this.announcement.classroom = this.classrooms[0]));
     }
 
 

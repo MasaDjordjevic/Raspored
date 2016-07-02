@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNet.Http;
 using Microsoft.Data.Entity;
 using WebApplication1.Models;
 using Newtonsoft.Json;
@@ -120,12 +121,12 @@ namespace WebApplication1.Data
 
                 List<int> activities = official ? new List<int>() : 
                     _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
-                List<ScheduleDTO> activitiesSchedule =
+               
+                List <ScheduleDTO> activitiesSchedule =
                     _context.Activities.Where(a => (activities.Contains(a.activityID) || 
                                                     (a.groupID != null && a.cancelling == false && groups.Contains(a.groupID.Value)) ||
-                                                    a.groupID == null) 
-                                                    && TimeSpan.Overlap(a.timeSpan, tsNow)
-                                                    && a.groupID == null) //nisu obavestenja vezana za casove
+                                                    (!Group.IsStudentActivity(a.activityID) && a.groupID == null)) 
+                                                    && TimeSpan.Overlap(a.timeSpan, tsNow)) //nisu obavestenja vezana za casove
                                                     .Select(a => new ScheduleDTO
                                                     {
                                                         day = a.timeSpan.startDate.DayOfWeek,
@@ -137,12 +138,8 @@ namespace WebApplication1.Data
                                                         activityContent = a.activityContent,
                                                         isClass = false,
                                                         activityID = a.activityID,
-                                                        assistant = new AssistantNameMail
-                                                        {
-                                                            name = a.assistant.name + " " + a.assistant.surname,
-                                                            mail = a.assistant.email
-                                                        },
-                                                        classroom = a.classroom == null ? null : a.classroom.number,
+                                                        assistant = GetAssistantNameMail(a.assistantID),
+                                                        classroom = GetClassroomNumber(a.classroomID),
                                                         place = a.place
                                                     }).ToList();
 
@@ -150,6 +147,45 @@ namespace WebApplication1.Data
 
 
                 return Schedule.Convert(returnValue);
+            }
+        }
+
+        public static string GetClassroomNumber(int? classroomID)
+        {
+            if (classroomID == null) return null;
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var cl = _context.Classrooms.Where(a => a.classroomID == classroomID);
+                if (cl.Any())
+                {
+                    return cl.First().number;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static AssistantNameMail GetAssistantNameMail(int? assistantID)
+        {
+            if(assistantID == null) return null;
+            using (RasporedContext _context = new RasporedContext())
+            {
+                var asst = _context.UniMembers.Where(a => a.uniMemberID == assistantID);
+                if (asst.Any())
+                {
+                    var a = asst.First();
+                    return new AssistantNameMail
+                    {
+                        name = a.name + " " + a.surname,
+                        mail = a.email
+                    };
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -212,7 +248,7 @@ namespace WebApplication1.Data
                 _context.StudentsActivities.Where(a => a.studentID == studentID && a.ignore != true).Select(a => a.activityID).ToList();
             List<TimeSpans> activitiesSchedule =
                 _context.Activities.Where(
-                    a => activities.Contains(a.activityID) || (a.cancelling == false && groups.Contains(a.groupID.Value)))
+                    a => activities.Contains(a.activityID) || (a.groupID != null && a.cancelling == false && groups.Contains(a.groupID.Value)))
                     .Select(a => a.timeSpan)
                     .ToList();
 

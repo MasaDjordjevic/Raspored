@@ -7,6 +7,7 @@ import {ToastComponent} from "../global/toast.component";
 import {R_DIALOG} from "../ui/r-dialog";
 import {AddAnnouncementComponent} from "../assistant-panel/dialogs/add-announcement.component";
 import {LoginService} from "../services/login.service";
+import {AddPersonalActivityComponent} from "./dialogs/add-activity.component";
 
 
 export enum TimetableType {
@@ -19,7 +20,7 @@ export enum TimetableType {
     templateUrl: 'app/student-panel/student-panel.html',
     styleUrls: ['app/student-panel/student-panel.css', 'app/panel-header/panel-header.css'],
     providers: [StudentsService, LoginService],
-    directives: [TimetableComponent, PanelHeaderComponent, ToastComponent, R_DIALOG, AddAnnouncementComponent]
+    directives: [TimetableComponent, PanelHeaderComponent, ToastComponent, R_DIALOG, AddPersonalActivityComponent]
 })
 
 export class StudentPanelComponent implements AfterContentInit {
@@ -102,12 +103,22 @@ export class StudentPanelComponent implements AfterContentInit {
     }
 
     getStudent() {
-    this._loginService.getUser()
-        .then(student => {
-            debugger;
-            this.student = student, error => this.error = error
-        })
-        .then(() => this.timetableType = TimetableType.Official);
-}
+        this._loginService.getUser()
+            .then(student => {
+                this.student = student, error => this.error = error
+            })
+            .then(() => this.timetableType = TimetableType.Official);
+    }
+    
+    logout() {
+        this._loginService.logout()
+            .then(res=> {
+                if(res.status == "uspelo") {
+                    window.location = <Location>"/login";
+                } else {
+                    console.log(res);
+                }
+            })
+    }
 
 }

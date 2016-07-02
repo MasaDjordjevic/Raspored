@@ -15,13 +15,15 @@
                 </div>
             </div>
 
-            <button #StudentEditButton
+            <!--<button #StudentEditButton
                     (click)="_globalService.toast('test')"
             >
                 <i class="fa fa-pencil"></i>
+            </button>-->
+
+            <button (click)="logout()">
+                <i class="fa fa-sign-out"></i>
             </button>
-
-
 
             <div class="flex-spacer"></div>
 
@@ -36,7 +38,7 @@
             </div>
 
             <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
-                <add-announcement [assistant]="false"></add-announcement>
+                <add-personal-activity></add-personal-activity>
             </r-dialog>
 
             <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">

@@ -1,0 +1,65 @@
+<r-input [label]="_globalService.translate('title')"
+         [(val)]="announcement.title"
+         [primaryColor]="primaryColor">
+</r-input>
+
+<textarea [(ngModel)]="announcement.content"></textarea>
+
+<r-dropdown *ngIf="classrooms"
+            [label]="_globalService.translate('classroom')"
+            [(val)]="announcement.classroom"
+            [primaryColor]="primaryColor"
+>
+    <r-dropdown-item
+            *ngFor="let classroom of classrooms"
+            [value]="classroom.classroomID"
+    >
+        {{classroom.number}}
+    </r-dropdown-item>
+</r-dropdown>
+
+<r-input [label]="_globalService.translate('place')"
+         [(val)]="announcement.place"
+         [primaryColor]="primaryColor">
+</r-input>
+
+<div class="inputs-right">
+    <r-dropdown [label]="_globalService.translate('period')" [(val)]="editedPeriod">
+        <r-dropdown-item [value]="1">{{_globalService.translate('every_week')}}</r-dropdown-item>
+        <r-dropdown-item [value]="2">{{_globalService.translate('every_second_week')}}</r-dropdown-item>
+        <r-dropdown-item [value]="4">{{_globalService.translate('every_fourth_week')}}</r-dropdown-item>
+        <r-dropdown-item [value]="0">{{_globalService.translate('just_once')}}</r-dropdown-item>
+    </r-dropdown>
+    <template [ngIf]="editedPeriod && editedPeriod !== 0">
+        <r-dropdown [label]="_globalService.translate('day_of_week')" [(val)]="editedDayOfWeek">
+            <r-dropdown-item [value]="1">{{_globalService.translate('monday')}}</r-dropdown-item>
+            <r-dropdown-item [value]="2">{{_globalService.translate('tuesday')}}</r-dropdown-item>
+            <r-dropdown-item [value]="3">{{_globalService.translate('wednesday')}}</r-dropdown-item>
+            <r-dropdown-item [value]="4">{{_globalService.translate('thursday')}}</r-dropdown-item>
+            <r-dropdown-item [value]="5">{{_globalService.translate('friday')}}</r-dropdown-item>
+            <r-dropdown-item [value]="6">{{_globalService.translate('saturday')}}</r-dropdown-item>
+            <r-dropdown-item [value]="0">{{_globalService.translate('sunday')}}</r-dropdown-item>
+        </r-dropdown>
+        <r-input [label]="_globalService.translate('beginning') + ' (HH:MM)'"
+                 [(val)]="editedTimeStart"></r-input>
+        <r-input [label]="_globalService.translate('ending') + ' (HH:MM)'"
+                 [(val)]="editedTimeEnd"></r-input>
+    </template>
+    <template [ngIf]="editedPeriod == 0">
+        <r-input [label]="_globalService.translate('beginning') + ' (YYYY-MM-DD HH:MM)'"
+                 [(val)]="editedDateTimeStart"></r-input>
+        <r-input [label]="_globalService.translate('ending') + ' (YYYY-MM-DD HH:MM)'"
+                 [(val)]="editedDateTimeEnd"></r-input>
+    </template>
+</div>
+
+<div class="controls">
+    <button r-button flat [text]="_globalService.translate('back')"
+            (click)="closeMe()" [primaryColor]="primaryColor">
+        {{_globalService.translate('back')}}
+    </button>
+    <button r-button raised [text]="_globalService.translate('add_announcement')"
+            (click)="save()" [primaryColor]="primaryColor">
+        {{_globalService.translate('add_announcement')}}
+    </button>
+</div>

@@ -18,6 +18,10 @@
         <i class="fa fa-pencil"></i>
     </button>-->
 
+    <button (click)="logout()">
+        <i class="fa fa-sign-out"></i>
+    </button>
+
     <div class="flex-spacer"></div>
 
     <div class="debug" style="display: none;">
@@ -131,7 +135,7 @@
     </r-dialog>-->
 
     <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
-        <add-announcement [assistant]="true"></add-announcement>
+        <add-announcement></add-announcement>
     </r-dialog>
 
 </header>
