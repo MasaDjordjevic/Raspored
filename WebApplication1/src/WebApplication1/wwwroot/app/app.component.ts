@@ -81,7 +81,6 @@ export class AppComponent implements OnInit {
                 new AsyncRoute({
                     path: "/assistant-panel",
                     name: "AssistantPanel",
-                    useAsDefault: true,
                     loader: () => System.import("app/assistant-panel/assistant-panel.component").then(c => c["AssistantPanelComponent"])
                 }),
                 new AsyncRoute({
@@ -92,6 +91,7 @@ export class AppComponent implements OnInit {
                 new AsyncRoute({
                     path: "/login",
                     name: "Login",
+                    useAsDefault: true,
                     loader: () => System.import("app/login.component").then(c => c["LoginComponent"])
                 }),
                 new AsyncRoute({
