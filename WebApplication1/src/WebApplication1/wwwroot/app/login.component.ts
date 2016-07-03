@@ -76,7 +76,16 @@ export class LoginComponent {
     constructor(
         private _loginService: LoginService,
         private _globalService: GlobalService
-    ) { }
+    ) {
+        // ako je vec ulogovan redirektuj ga
+        this._loginService.loginRedirect()
+            .then( res =>{
+                console.log(res);
+                if(res.status == "uspelo") {
+                    window.location = res.url;
+                }
+            } );
+    }
 
     login() {
         this._loginService.login(this.username, this.password)

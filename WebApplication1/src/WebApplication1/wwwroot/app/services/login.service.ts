@@ -28,6 +28,13 @@ export class LoginService extends ServiceService{
 
     }
 
+    loginRedirect() {
+        return this.http.get(this._url + '/LoginRedirect')
+            .toPromise()
+            .then(super.extractData)
+            .catch(super.handleError);
+    }
+
     getUser() {
         return this.http.get(this._url + '/GetUser')
             .toPromise()

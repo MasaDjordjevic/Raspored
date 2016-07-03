@@ -24,6 +24,31 @@ namespace WebApplication1.Controllers
             public string password;
         }
 
+        [HttpGet]
+        public IActionResult LoginRedirect()
+        {
+            UniMembers usr = HttpContext.Session.GetUser();
+            if (usr == null)
+                return Ok(new {status = "nista"});
+            
+            return Redirect(usr);
+        }
+
+        public IActionResult Redirect(UniMembers usr)
+        {
+            //asistent
+            if (usr.studentID == null)
+            {
+                HttpContext.Session.SetString("role", "assistant");
+                return Ok(new { status = "uspelo", url = "/assistant-panel" });
+            }
+            else //student
+            {
+                HttpContext.Session.SetString("role", "student");
+                return Ok(new { status = "uspelo", url = "/student-panel" });
+            }
+        }
+
         [HttpPost]
         public IActionResult Login([FromBody] LoginBinding obj)
         {
@@ -42,17 +67,7 @@ namespace WebApplication1.Controllers
                                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                                     }))));
 
-                //asistent
-                if (usr.studentID == null)
-                {
-                    HttpContext.Session.SetString("role", "assistant");
-                    return Ok(new { status = "uspelo", url = "/assistant-panel" });
-                }
-                else //student
-                {
-                    HttpContext.Session.SetString("role", "student");
-                    return Ok(new { status = "uspelo", url = "/student-panel" });
-                }
+                return Redirect(usr);
 
 
             }
@@ -110,7 +125,7 @@ namespace WebApplication1.Controllers
         {
             if (HttpContext.Session.IsStudent())
             {
-                return Ok();
+                return Ok(new {status="uspelo"});
             }
             else
             {
@@ -123,7 +138,7 @@ namespace WebApplication1.Controllers
         {
             if (HttpContext.Session.IsAssistant())
             {
-                return Ok();
+                return Ok(new { status = "uspelo" });
             }
             else
             {
