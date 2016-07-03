@@ -27,6 +27,7 @@
      [style.boxShadow]= "expanded ? '0 0 0 0.7em ' + color + ' inset' : ''"
      [style.color]= "expanded ? 'black' : textColor"
      (click)= "expand($event)"
+     [class.activity]="!isClass"
 >
 
     <template [ngIf]="!expanded">
@@ -87,6 +88,7 @@
 
         <div class="tab-content">
             <template [ngIf]="selectedTab === 1">
+
                 <!-- čas, a ne aktivnost -->
                 <div class="main-info" *ngIf="isClass">
                     <dl>
@@ -128,14 +130,14 @@
                                 {{type}}
                             </dd></div>
 
-                        <div><dt class="assistant">
+                        <div *ngIf="assistant"><dt class="assistant">
                             <i class="fa fa-male"></i>
                             <span>{{_globalService.translate('assistant')}}</span>
                         </dt>
                             <dd>
                                 {{assistant?.name}}
                                 &nbsp;
-                                <a [href]="'mailto:' + assistant?.mail">
+                                <a *ngIf="assistant.mail" [href]="'mailto:' + assistant?.mail">
                                     <i class="fa fa-envelope"></i>
                                 </a>
                                 <!-- todo mejl asistena -->
@@ -156,13 +158,8 @@
                                 (click)="addToPersonal()"
                                 [primaryColor]="color">{{_globalService.translate('add_to_personal')}}</button>
 
-                        <button *ngIf="mode === _Mode.StudentPersonal && !isClass"
-                                r-button raised [text]="_globalService.translate('delete_activity')"
-                                (click)="deleteActivity()"
-                                [primaryColor]="color">Obriši aktivnost</button>
-
                         <button *ngIf="mode === _Mode.StudentPersonal && isClass"
-                                r-button raised [text]="_globalService.translate('delete_activity')"
+                                r-button raised [text]="_globalService.translate('hide_class')"
                                 (click)="hideClass()"
                                 [primaryColor]="color">Sakrij čas</button>
 
@@ -255,6 +252,11 @@
 
                 <!-- aktivnost -->
                 <div class="main-info" *ngIf="!isClass">
+
+                    <h1 class="activity-title">{{activityTitle}}</h1>
+
+                    <p class="activity-content" style="padding-bottom: 30px;">{{activityContent}}</p>
+
                     <dl>
                         <div><dt class="class-time">
                             <i class="fa fa-clock-o"></i>
@@ -280,49 +282,19 @@
                                 {{place}}
                             </dd></div>
 
-                        <div><dt class="class-subject">
-                            <i class="fa fa-graduation-cap"></i>
-                            <span>{{_globalService.translate('title')}}</span>
-                        </dt>
-                            <dd>
-                                {{activityTitle}}
-                            </dd></div>
-
-                        <div><dt class="class-subject">
-                            <i class="fa fa-graduation-cap"></i>
-                            <span>{{_globalService.translate('content')}}</span>
-                        </dt>
-                            <dd>
-                                {{activityContent}}
-                            </dd></div>
-
-
-                        <div><dt class="assistant">
-                            <i class="fa fa-male"></i>
-                            <span>{{_globalService.translate('creator')}}</span>
-                        </dt>
-                            <dd>
-                                {{assistant}}
-                                &nbsp;
-                                <a [href]="'mailto:' + assistantEmail">
-                                    <i class="fa fa-envelope"></i>
-                                </a>
-                                <!-- todo mejl asistena -->
-                                <!--<div class="more-info">-->
-                                <!--<i class="fa fa-question"></i>-->
-                                <!--<div>-->
-                                <!--331-->
-                                <!--</div>-->
-                                <!--</div>-->
-                            </dd></div>
 
                     </dl>
 
                     <div class="controls">
 
-                        <button *ngIf="mode === _Mode.AssistantOfficial && !isClass"
+                        <button *ngIf="mode === _Mode.AssistantOfficial"
                                 r-button raised [text]="_globalService.translate('delete_activity')"
                                 (click)="deleteGlobalActivity()"
+                                [primaryColor]="color">Obriši aktivnost</button>
+
+                        <button *ngIf="mode === _Mode.StudentPersonal"
+                                r-button raised [text]="_globalService.translate('delete_activity')"
+                                (click)="deleteActivity()"
                                 [primaryColor]="color">Obriši aktivnost</button>
 
                     </div>

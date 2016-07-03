@@ -11,6 +11,10 @@
   transition: all .3s ease;
 }
 
+a, a:hover, a:visited {
+  color: rgba(black, .7)!important;
+}
+
 .invisible-blackout {
   position: absolute;
   z-index: 19;
@@ -45,6 +49,10 @@
   user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
 
+  &.activity {
+    box-shadow: 0 0 0 .5em rgba(black, .5) inset;
+    padding: .8em;
+  }
 
   & > span {
     cursor: default;

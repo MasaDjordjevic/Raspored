@@ -7,14 +7,19 @@
 >
 </r-bulletin-board-parameters>
 
-<template [ngIf]="possibleChoices && possibleChoices.length === 0">
+<template [ngIf]="possibleChoices && possibleChoices.length === 0 && allChoices && allChoices.length > 0">
     <span>{{_globalService.translate('no_ads')}}</span>
 </template>
 
 <r-bulletin-board-add-ad
+        *ngIf="allChoices && allChoices.length > 0"
         [possibleChoices]="allChoices"
         [chosenChoices]="chosenAllChoices"
         [groupId]="groupId"
         [primaryColor]="primaryColor"
 >
 </r-bulletin-board-add-ad>
+
+<template [ngIf]="allChoices && allChoices.length === 0">
+    <span>{{_globalService.translate('no_possibilities')}}</span>
+</template>
