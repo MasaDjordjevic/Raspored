@@ -65,7 +65,7 @@ export class DivisionOptionsComponent implements AfterViewInit {
     //ovo je moglo i preko setera ali mi ulazi u beskonacku petlju sa setovanjem samog sebe
     setDivision (div) {
         this.division = div;
-        this.emptyGroup = {name: "", classroomID: "-1", GroupsStudents: [], division: this.division };
+        this.emptyGroup = {name: "", classroomID: null, GroupsStudents: [], division: this.division };
 
     }
 
