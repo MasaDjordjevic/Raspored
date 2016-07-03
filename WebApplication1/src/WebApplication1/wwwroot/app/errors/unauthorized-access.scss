@@ -42,7 +42,7 @@ $background-color: palette($blue-grey, 900);
       left: 106px;
       top: 120px;
       opacity: 0;
-      animation: tear-drop 1.2s ease-in .33s 3;
+      animation: tear-drop 1.2s ease-in .33s 1;
       color: rgba(white, .5);
 
       @keyframes tear-drop {

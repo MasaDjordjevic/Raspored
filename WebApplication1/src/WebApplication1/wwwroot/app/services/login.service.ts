@@ -42,4 +42,18 @@ export class LoginService extends ServiceService{
             .catch(super.handleError);
     }
 
+    isAllowedStudent() {
+        return this.http.get(this._url + '/IsAllowedStudent')
+            .toPromise()
+            .then(super.extractData)
+            .catch(super.handleError);
+    }
+
+    isAllowedAssistant() {
+        return this.http.get(this._url + '/IsAllowedAssistant')
+            .toPromise()
+            .then(super.extractData)
+            .catch(super.handleError);
+    }
+
 }
