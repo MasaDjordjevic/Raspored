@@ -93,8 +93,14 @@ export class AssistantPanelComponent {
         public _globalService: GlobalService,
         public _loginService: LoginService
     ) {
-        this.getAssistant();
+        this._loginService.isAllowedAssistant()
+            .then(()=> {
+                this.getAssistant();
+                this.setup();
+            });
+    }
 
+    public setup() {
         //region Themes
         this._themes = [];
         this._themes["material"] = {
@@ -123,17 +129,16 @@ export class AssistantPanelComponent {
         };
         this.theme = "material";
         //endregion
-        
+
         //region Service subscriptions
         this._globalService
             .refreshAssistantPanelAll$
             .subscribe(item => this.refresh(null));
-        
+
         this._globalService
             .refreshAssistantPanelMoveMinusOne$
             .subscribe(item => this.refresh({shiftMinusOne: true}));
         //endregion
-        
     }
 
     // Osvezava referencu da bi se prosledili ID-jevi kroz inpute (i da se opet pozove AJAX)

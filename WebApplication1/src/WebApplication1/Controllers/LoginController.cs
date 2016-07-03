@@ -76,17 +76,19 @@ namespace WebApplication1.Controllers
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     }));
             }
-            else
+
+            if (HttpContext.Session.IsAssistant())
             {
                 var assistnat = Data.Assistant.GetAssistant(HttpContext.Session.GetAssistantID());
 
                 return Ok(JsonConvert.SerializeObject(assistnat, Formatting.Indented,
-                                 new JsonSerializerSettings
-                                 {
-                                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                 }));
+                    new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    }));
             }
 
+            return HttpUnauthorized();
         }
 
         [HttpGet]
@@ -100,6 +102,32 @@ namespace WebApplication1.Controllers
             catch (Exception ex)
             {
                 return Ok(new { status = "nije uspelo", message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public IActionResult IsAllowedStudent()
+        {
+            if (HttpContext.Session.IsStudent())
+            {
+                return Ok();
+            }
+            else
+            {
+                return HttpUnauthorized();
+            }
+        }
+
+        [HttpGet]
+        public IActionResult IsAllowedAssistant()
+        {
+            if (HttpContext.Session.IsAssistant())
+            {
+                return Ok();
+            }
+            else
+            {
+                return HttpUnauthorized();
             }
         }
     }

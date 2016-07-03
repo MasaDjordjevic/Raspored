@@ -1,209 +1,211 @@
-﻿<r-toast></r-toast>
+﻿<template *ngIf="assistant">
+    <r-toast></r-toast>
 
-<header>
+    <header>
 
-    <div class="profile-picture">
-        <div style="background-image: url('avatar.png')"></div>
-    </div>
-
-    <div *ngIf="assistant" class="basic-info">
-        <div class="name">{{assistant.name}} {{assistant.surname}}</div>
-        <div class="details">
-            <div class="office"><i class="fa fa-briefcase"></i> {{assistant.address}}</div>
-            <div class="e-mail"><i class="fa fa-envelope"></i> {{assistant.email}}</div>
+        <div class="profile-picture">
+            <div style="background-image: url('avatar.png')"></div>
         </div>
-    </div>
 
-    <!--<button #assistantEditButton (click)="assistantEditDialog.open()">
-        <i class="fa fa-pencil"></i>
-    </button>-->
-
-    <button (click)="logout()">
-        <i class="fa fa-sign-out"></i>
-    </button>
-
-    <div class="flex-spacer"></div>
-
-    <div class="debug" style="display: none;">
-        DEBUGGING STUFF&nbsp;&nbsp;&nbsp;
-        <div>
-            lang <input type="text" [(ngModel)]="language"> &nbsp;
-            theme <input type="text" [(ngModel)]="theme"> &nbsp;
-            dep <input type="text" [(ngModel)]="_selectedDepartmentId">
-            div <input type="text" [(ngModel)]="_selectedDivisionId">
-            grp <input type="text" [(ngModel)]="_selectedGroupId">
-            stud <input type="text" [(ngModel)]="_selectedStudentId">
-        </div>
-        <div>service lang {{_globalService.currentLanguage}}</div>
-        <button (click)="refresh()"><i class="fa fa-refresh"></i></button>
-    </div>
-
-    <div class="options">
-        <button (click)="refresh({allMinusOne: true})">
-            <i class="fa fa-home"></i>
-        </button>
-        <button #addAnnouncementButton (click)="addAnnouncementDialog.open()">
-            <i class="fa fa-calendar-plus-o"></i>
-        </button>
-        <button (click)="languagePickerOpened = !languagePickerOpened">
-            <i class="fa fa-globe"></i>
-        </button>
-        <button (click)="themePickerOpened = !themePickerOpened">
-            <i class="fa fa-paint-brush"></i>
-        </button>
-    </div>
-
-    <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">
-        <div class="dropdown-item" (click)="language = 'en'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'en' ? 'bold' : 'normal'">English</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg')"></div>
-        </div>
-        <div class="dropdown-item" (click)="language = 'sr'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'sr' ? 'bold' : 'normal'">srpski</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
-        </div>
-        <div class="dropdown-item" (click)="language = 'src'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'src' ? 'bold' : 'normal'">српски</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
-        </div>
-        <div class="dropdown-item" (click)="language = 'eo'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'eo' ? 'bold' : 'normal'">Esperanto</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg'); background-position: 0% center"></div>
-        </div>
-        <div class="dropdown-item" (click)="language = 'es'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'es' ? 'bold' : 'normal'">español</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg')"></div>
-        </div>
-        <div class="dropdown-item" (click)="language = 'de'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'de' ? 'bold' : 'normal'">deutsch</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')"></div>
-        </div>
-        <div class="dropdown-item" (click)="language = 'fr'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'fr' ? 'bold' : 'normal'">français</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg')"></div>
-        </div>
-        <div class="dropdown-item" (click)="language = 'ja'; languagePickerOpened = false">
-            <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'ja' ? 'bold' : 'normal'">日本語</span>
-            <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg')"></div>
-        </div>
-    </div>
-    <div class="invisible-blackout" (click)="languagePickerOpened = false"></div>
-
-
-    <div class="dropdown theme-dropdown" [class.hidden]="!themePickerOpened">
-        <div class="dropdown-item" (click)="theme = 'material'; themePickerOpened = false">
-            <span class="theme-name">Material</span>
-            <div class="theme-preview">
-                <div style="background-color: #FFC107"></div>
-                <div style="background-color: #03A9F4"></div>
-                <div style="background-color: #F44336"></div>
-                <div style="background-color: #4CAF50"></div>
+        <div *ngIf="assistant" class="basic-info">
+            <div class="name">{{assistant.name}} {{assistant.surname}}</div>
+            <div class="details">
+                <div class="office"><i class="fa fa-briefcase"></i> {{assistant.address}}</div>
+                <div class="e-mail"><i class="fa fa-envelope"></i> {{assistant.email}}</div>
             </div>
         </div>
-        <div class="dropdown-item" (click)="theme = 'sunset'; themePickerOpened = false">
-            <span class="theme-name">Sunset</span>
-            <div class="theme-preview">
-                <div style="background-color: #811d5e"></div>
-                <div style="background-color: #fd2f24"></div>
-                <div style="background-color: #ff6f01"></div>
-                <div style="background-color: #fed800"></div>
+
+        <!--<button #assistantEditButton (click)="assistantEditDialog.open()">
+            <i class="fa fa-pencil"></i>
+        </button>-->
+
+        <button (click)="logout()">
+            <i class="fa fa-sign-out"></i>
+        </button>
+
+        <div class="flex-spacer"></div>
+
+        <div class="debug" style="display: none;">
+            DEBUGGING STUFF&nbsp;&nbsp;&nbsp;
+            <div>
+                lang <input type="text" [(ngModel)]="language"> &nbsp;
+                theme <input type="text" [(ngModel)]="theme"> &nbsp;
+                dep <input type="text" [(ngModel)]="_selectedDepartmentId">
+                div <input type="text" [(ngModel)]="_selectedDivisionId">
+                grp <input type="text" [(ngModel)]="_selectedGroupId">
+                stud <input type="text" [(ngModel)]="_selectedStudentId">
+            </div>
+            <div>service lang {{_globalService.currentLanguage}}</div>
+            <button (click)="refresh()"><i class="fa fa-refresh"></i></button>
+        </div>
+
+        <div class="options">
+            <button (click)="refresh({allMinusOne: true})">
+                <i class="fa fa-home"></i>
+            </button>
+            <button #addAnnouncementButton (click)="addAnnouncementDialog.open()">
+                <i class="fa fa-calendar-plus-o"></i>
+            </button>
+            <button (click)="languagePickerOpened = !languagePickerOpened">
+                <i class="fa fa-globe"></i>
+            </button>
+            <button (click)="themePickerOpened = !themePickerOpened">
+                <i class="fa fa-paint-brush"></i>
+            </button>
+        </div>
+
+        <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">
+            <div class="dropdown-item" (click)="language = 'en'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'en' ? 'bold' : 'normal'">English</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'sr'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'sr' ? 'bold' : 'normal'">srpski</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'src'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'src' ? 'bold' : 'normal'">српски</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/ff/Flag_of_Serbia.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'eo'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'eo' ? 'bold' : 'normal'">Esperanto</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg'); background-position: 0% center"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'es'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'es' ? 'bold' : 'normal'">español</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9a/Flag_of_Spain.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'de'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'de' ? 'bold' : 'normal'">deutsch</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'fr'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'fr' ? 'bold' : 'normal'">français</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg')"></div>
+            </div>
+            <div class="dropdown-item" (click)="language = 'ja'; languagePickerOpened = false">
+                <span class="language-name" [style.fontWeight]="_globalService.currentLanguage === 'ja' ? 'bold' : 'normal'">日本語</span>
+                <div class="flag" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/9/9e/Flag_of_Japan.svg')"></div>
             </div>
         </div>
-        <div class="dropdown-item" (click)="theme = 'ice'; themePickerOpened = false">
-            <span class="theme-name">Ice</span>
-            <div class="theme-preview">
-                <div style="background-color: #012e40"></div>
-                <div style="background-color: #025e73"></div>
-                <div style="background-color: #037f8c"></div>
-                <div style="background-color: #038c8c"></div>
+        <div class="invisible-blackout" (click)="languagePickerOpened = false"></div>
+
+
+        <div class="dropdown theme-dropdown" [class.hidden]="!themePickerOpened">
+            <div class="dropdown-item" (click)="theme = 'material'; themePickerOpened = false">
+                <span class="theme-name">Material</span>
+                <div class="theme-preview">
+                    <div style="background-color: #FFC107"></div>
+                    <div style="background-color: #03A9F4"></div>
+                    <div style="background-color: #F44336"></div>
+                    <div style="background-color: #4CAF50"></div>
+                </div>
+            </div>
+            <div class="dropdown-item" (click)="theme = 'sunset'; themePickerOpened = false">
+                <span class="theme-name">Sunset</span>
+                <div class="theme-preview">
+                    <div style="background-color: #811d5e"></div>
+                    <div style="background-color: #fd2f24"></div>
+                    <div style="background-color: #ff6f01"></div>
+                    <div style="background-color: #fed800"></div>
+                </div>
+            </div>
+            <div class="dropdown-item" (click)="theme = 'ice'; themePickerOpened = false">
+                <span class="theme-name">Ice</span>
+                <div class="theme-preview">
+                    <div style="background-color: #012e40"></div>
+                    <div style="background-color: #025e73"></div>
+                    <div style="background-color: #037f8c"></div>
+                    <div style="background-color: #038c8c"></div>
+                </div>
+            </div>
+            <div class="dropdown-item" (click)="theme = 'neon'; themePickerOpened = false">
+                <span class="theme-name">Neon</span>
+                <div class="theme-preview">
+                    <div style="background-color: #0E0B16"></div>
+                    <div style="background-color: #A239CA"></div>
+                    <div style="background-color: #4717F6"></div>
+                    <div style="background-color: #18DD00"></div>
+                </div>
             </div>
         </div>
-        <div class="dropdown-item" (click)="theme = 'neon'; themePickerOpened = false">
-            <span class="theme-name">Neon</span>
-            <div class="theme-preview">
-                <div style="background-color: #0E0B16"></div>
-                <div style="background-color: #A239CA"></div>
-                <div style="background-color: #4717F6"></div>
-                <div style="background-color: #18DD00"></div>
-            </div>
-        </div>
-    </div>
-    <div class="invisible-blackout" (click)="themePickerOpened = false"></div>
+        <div class="invisible-blackout" (click)="themePickerOpened = false"></div>
 
-    <!--<r-dialog #assistantEditDialog [source]="assistantEditButton">
-        <r-assistant-edit [assistant]="assistant"></r-assistant-edit>
-    </r-dialog>-->
+        <!--<r-dialog #assistantEditDialog [source]="assistantEditButton">
+            <r-assistant-edit [assistant]="assistant"></r-assistant-edit>
+        </r-dialog>-->
 
-    <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
-        <add-announcement></add-announcement>
-    </r-dialog>
+        <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
+            <add-announcement></add-announcement>
+        </r-dialog>
 
-</header>
+    </header>
 
-<main>
+    <main>
 
-    <!-- Liste -->
-    <r-departments-list
-            (selectDepartment)="onDepartmentSelect($event)"
-            [primaryColor]="departmentPrimaryColor"
-    >
-    </r-departments-list>
-    <r-divisions-list
-            *ngIf="_selectedDepartmentId != -1"
-            [selectedDepartmentId]="_selectedDepartmentId"
-            (selectDivision)="onDivisionSelect($event)"
-            [primaryColor]="divisionPrimaryColor"
-    >
-    </r-divisions-list>
-    <r-groups-list
-            *ngIf="_selectedDivisionId != -1"
-            [selectedDivisionId]="_selectedDivisionId"
-            (selectGroup)="onGroupSelect($event)"
-            [primaryColor]="groupPrimaryColor"
-    >
-    </r-groups-list>
-    <r-students-list
-            *ngIf="_selectedGroupId != -1"
-            [selectedGroupId]="_selectedGroupId"
-            (selectStudent)="onStudentSelect($event)"
-            [primaryColor]="studentPrimaryColor"
-    >
-    </r-students-list>
+        <!-- Liste -->
+        <r-departments-list
+                (selectDepartment)="onDepartmentSelect($event)"
+                [primaryColor]="departmentPrimaryColor"
+        >
+        </r-departments-list>
+        <r-divisions-list
+                *ngIf="_selectedDepartmentId != -1"
+                [selectedDepartmentId]="_selectedDepartmentId"
+                (selectDivision)="onDivisionSelect($event)"
+                [primaryColor]="divisionPrimaryColor"
+        >
+        </r-divisions-list>
+        <r-groups-list
+                *ngIf="_selectedDivisionId != -1"
+                [selectedDivisionId]="_selectedDivisionId"
+                (selectGroup)="onGroupSelect($event)"
+                [primaryColor]="groupPrimaryColor"
+        >
+        </r-groups-list>
+        <r-students-list
+                *ngIf="_selectedGroupId != -1"
+                [selectedGroupId]="_selectedGroupId"
+                (selectStudent)="onStudentSelect($event)"
+                [primaryColor]="studentPrimaryColor"
+        >
+        </r-students-list>
 
-    <!-- Opcije -->
-    <r-assistant-panel-options
-            *ngIf="isAtRoot"
-            [dayNames]="dayNames"
-            [assistantID]="assistant?.uniMemberID"
-    >
-    </r-assistant-panel-options>
+        <!-- Opcije -->
+        <r-assistant-panel-options
+                *ngIf="isAtRoot"
+                [dayNames]="dayNames"
+                [assistantID]="assistant?.uniMemberID"
+        >
+        </r-assistant-panel-options>
 
-    <r-department-options
-            *ngIf="isAtDepartment"
-            [departmentId]="_selectedDepartmentId"
-            [primaryColor]="departmentPrimaryColor"
-    ></r-department-options>
+        <r-department-options
+                *ngIf="isAtDepartment"
+                [departmentId]="_selectedDepartmentId"
+                [primaryColor]="departmentPrimaryColor"
+        ></r-department-options>
 
-    <r-division-options
-            *ngIf="isAtDivision"
-            [divisionId]="_selectedDivisionId"
-            (update)="refresh($event)"
-            [primaryColor]="divisionPrimaryColor"
-    >
-    </r-division-options>
+        <r-division-options
+                *ngIf="isAtDivision"
+                [divisionId]="_selectedDivisionId"
+                (update)="refresh($event)"
+                [primaryColor]="divisionPrimaryColor"
+        >
+        </r-division-options>
 
-    <r-group-options
-            *ngIf="isAtGroup"
-            [groupId]="_selectedGroupId"
-            [primaryColor]="groupPrimaryColor"
-    ></r-group-options>
+        <r-group-options
+                *ngIf="isAtGroup"
+                [groupId]="_selectedGroupId"
+                [primaryColor]="groupPrimaryColor"
+        ></r-group-options>
 
-    <r-student-options
-            *ngIf="isAtStudent"
-            [studentId]="_selectedStudentId"
-            [groupId]="_selectedGroupId"
-            [divisionId]="_selectedDivisionId"
-            [primaryColor]="studentPrimaryColor"
-    ></r-student-options>
+        <r-student-options
+                *ngIf="isAtStudent"
+                [studentId]="_selectedStudentId"
+                [groupId]="_selectedGroupId"
+                [divisionId]="_selectedDivisionId"
+                [primaryColor]="studentPrimaryColor"
+        ></r-student-options>
 
-</main>
+    </main>
+</template>

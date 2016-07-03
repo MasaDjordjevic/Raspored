@@ -95,6 +95,7 @@ export class StudentPanelComponent implements AfterContentInit {
         private _elementRef: ElementRef,
         private _loginService: LoginService
     ) {
+        this._loginService.isAllowedStudent();
         this.setDayNames();
     }
 
