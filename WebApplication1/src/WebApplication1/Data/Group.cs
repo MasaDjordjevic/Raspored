@@ -632,7 +632,7 @@ namespace WebApplication1.Data
                         }).ToList();
                 
                 List<ScheduleDTO> activitiesSchedule =
-                    _context.Activities.Where(a => !a.cancelling.Value && groups.Contains(a.groupID.Value) && !IsStudentActivity(a.activityID)
+                    _context.Activities.Where(a => a.cancelling != true && a.groupID != null && groups.Contains(a.groupID.Value) && !IsStudentActivity(a.activityID)
                                                     && TimeSpan.Overlap(a.timeSpan, tsNow))
                     .Select(a => new ScheduleDTO
                     {
