@@ -151,7 +151,7 @@ export class DivisionCreatorComponent implements AfterViewInit {
         this.courses = null;
         this.createdGroups = null;
         this.errorMessage = null;
-        this.newDivisionName = "default name";
+        this.newDivisionName = "";
         this.newDivisionClassId = null;
         this.newDivisionBeginningDate = "2016-05-04"; //TODO
         this.newDivisionEndingDate = "2020-04-20"; //TODO

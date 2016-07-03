@@ -43,9 +43,21 @@ export class BulletinBoardParametersComponent {
     ) {}
 
     public exchangeWith() {
-        /*debugger;*/
-        this._groupsService.exchangeStudents(this.groupId, this.chosenChoices.map(Number)[0]) //TODO da ovo ne bude niz, i promeni komponentu
-            .then(response => console.log(response));
+        this._groupsService.exchangeStudents(this.groupId, this.chosenChoices.map(Number)[0])
+            .then(response => {
+                switch (response.status) {
+                    case "uspelo":
+                        this._globalService.toast(this._globalService.translate('exchange_successful'));
+                        break;
+                    default:
+                        this._globalService.toast(this._globalService.translate('error') + ' ' +
+                            this._globalService.toast(this._globalService.translate('exchange_not_successful')));
+                        break;
+                }
+            })
+            .then(() => {
+                this._globalService.refreshStudentPanelOfficial();
+            });
     }
     
 }

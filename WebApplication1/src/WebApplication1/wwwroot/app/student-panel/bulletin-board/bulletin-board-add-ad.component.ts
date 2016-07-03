@@ -57,8 +57,7 @@ export class BulletinBoardAddAdComponent {
                 }
             })
             .then(() => {
-                this._globalService.refreshStudentPanelPersonal();
-                this._globalService.refreshStudentPanelOfficial(); // oglas moze da se doda iz zvanicnog i licnog
+                this._globalService.refreshStudentPanelOfficial(); 
             });
     }
 

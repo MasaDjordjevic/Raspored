@@ -1822,6 +1822,26 @@ export class GlobalService {
         //endregion
 
         //region Bulletin Board
+        "exchange_successful": {
+            "en":  "Exchange successful.",
+            "sr":  "Uspešno izvršena zamena.",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET",
+        },
+        "exchange_not_successful": {
+            "en":  "Exchange not successful.",
+            "sr":  "Zamena nije uspela.",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET",
+        },
         "no_ads": {
             "en":  "No ads. You can write your own.",
             "sr":  "Nema oglasa. Možes da ubaciš svoj.",
