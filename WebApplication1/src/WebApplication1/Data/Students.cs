@@ -494,8 +494,10 @@ namespace WebApplication1.Data
         {
             using (RasporedContext _context = new RasporedContext())
             {
-                StudentsActivities sa = _context.StudentsActivities.First(a => a.studentID == studentID && a.activityID == activityID);
+                StudentsActivities sa = _context.StudentsActivities.Include(a=> a.activity).First(a => a.studentID == studentID && a.activityID == activityID);
+                Activities ac = sa.activity;
                 _context.Remove(sa);
+                _context.Remove(ac);
                 _context.SaveChanges();
             }
         }
