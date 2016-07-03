@@ -189,7 +189,21 @@ export class TimetableClassComponent {
     // obrisi aktivnosti
     public deleteActivity() {      
         this._studentsService.deleteActivity(this.activityId)
-            .then(status => console.log(status));
+            .then(response => {
+                switch (response.status) {
+                    case "uspelo":
+                        this._globalService.toast(this._globalService.translate('successfully_deleted_activity'));
+                        break;
+                    default:
+                        this._globalService.toast(this._globalService.translate('error') + " " +
+                            this._globalService.translate('activity_not_deleted')); 
+                        debugger;
+                        break;
+                }
+            })
+            .then(() => {
+                this._globalService.refreshStudentPanelPersonal();
+            });
     }
 
     public deleteGlobalActivity() {

@@ -148,12 +148,12 @@ export class AddTaskComponent {
         timespan.period = 0;
 
         this._studentsService.addActivity(
-            this.task.classroomId, // classroom
-            timespan,
+            this.group.groupID,
+            this.task.classroomId,
+            this.task.place,
             this.task.title,
             this.task.content,
-            this.task.place,
-            this.group.groupID            
+            timespan
         )
             .then(response => {
                 console.log(response);

@@ -1832,6 +1832,16 @@ export class GlobalService {
             "fr":  "NOT_TRANSLATED_YET",
             "ja":  "NOT_TRANSLATED_YET",
         },
+        "no_possibilities": {
+            "en":  "No groups for exchange.",
+            "sr":  "Nema grupa za zamenu.",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET",
+        },
         "adding_ad_successful": {
             "en":  "Successfully added ad.",
             "sr":  "Uspešno dodat oglas.",
@@ -1873,8 +1883,8 @@ export class GlobalService {
             "ja":  "NOT_TRANSLATED_YET",
         },
         "pick_advertise_period": {
-            "en":  "Which period do you want to advertise?",
-            "sr":  "Koji termin oglašavaš?",
+            "en":  "Which periods are suitable for you?",
+            "sr":  "Koji termini ti odgovaraju?",
             "src": "NOT_TRANSLATED_YET",
             "eo":  "NOT_TRANSLATED_YET",
             "es":  "NOT_TRANSLATED_YET",
@@ -2030,7 +2040,7 @@ export class GlobalService {
         },
         "class_added_to_personal_unsuccessful": {
             "en":  "Class not added to personal timetable.",
-            "sr":  "Čas nije dodat u licňi raspored.",
+            "sr":  "Čas nije dodat u lični raspored.",
             "src": "NOT_TRANSLATED_YET",
             "eo":  "NOT_TRANSLATED_YET",
             "es":  "NOT_TRANSLATED_YET",
@@ -2164,6 +2174,61 @@ export class GlobalService {
         },
 
         //endregion
+
+
+        "successfully_added_activity": {
+            "en":  "Successfully added activity.",
+            "sr":  "Uspešno dodata aktivnost.",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET！",
+        },
+        "activity_not_added": {
+            "en":  "Activity not added.",
+            "sr":  "Aktivnost nije dodata.",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET！",
+        },
+        "add_activity": {
+            "en":  "Add activity",
+            "sr":  "Dodaj aktivnost",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET！",
+        },
+        
+        "successfully_deleted_activity": {
+            "en":  "Successfully deleted activity.",
+            "sr":  "Uspešno obrisana aktivnost.",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET！",
+        },
+        "activity_not_deleted": {
+            "en":  "Activity not deleted.",
+            "sr":  "Aktivnost nije obrisana.",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET！",
+        },
+        
+        
 
     };
     //endregion

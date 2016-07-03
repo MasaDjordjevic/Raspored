@@ -99,11 +99,11 @@ export class AddPersonalActivityComponent {
                 switch(response.status) {
                     case "uspelo":
                         this._globalService.toast(
-                            this._globalService.translate("successfully_added_announcement"));
+                            this._globalService.translate("successfully_added_activity"));
                         break;
                     default:
                         this._globalService.toast(this._globalService.translate("error") + ' '
-                            + this._globalService.translate("announcement_not_added"));
+                            + this._globalService.translate("activity_not_added"));
                         debugger;
                         break;
                 }
@@ -112,7 +112,7 @@ export class AddPersonalActivityComponent {
                 this.closeMe();
             })
             .then(() => {
-                this._globalService.refreshAssistantPanelAll();
+                this._globalService.refreshStudentPanelPersonal();
             });
 
 

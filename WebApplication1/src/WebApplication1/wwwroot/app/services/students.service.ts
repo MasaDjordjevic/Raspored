@@ -112,7 +112,8 @@ export class StudentsService extends ServiceService {
         .catch(super.handleError);
     }
 
-    public addActivity(groupId: number, classroomId: number, place: string, title: string, content: string, timespan: TimeSpan) {
+    public addActivity(groupId: number, classroomId: number, place: string,
+                       title: string, content: string, timespan: TimeSpan) {
         debugger;
         let body = JSON.stringify({
             "classroomID" : classroomId,
