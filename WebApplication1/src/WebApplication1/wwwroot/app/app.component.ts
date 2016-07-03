@@ -10,14 +10,6 @@ import {RolesComponent} from "./admin/roles.component";
 
 declare var System: any;
 
-@RouteConfig([
-    {
-        path: '/assistant-panel/...',
-        component: AssistantPanelComponent,
-        name: 'AssistantPanel',
-    }
-])
-
 @Component({
     selector: "app",
     templateUrl: "/app/app.html",
@@ -98,6 +90,11 @@ export class AppComponent implements OnInit {
                     path: "/unauthorized-access",
                     name: "UnauthorizedAccess",
                     loader: () => System.import("app/errors/unauthorized-access.component").then(c => c["UnauthorizedAccessComponent"])
+                }),
+                new AsyncRoute({
+                    path: "/**",
+                    name: "NotFound",
+                    loader: () => System.import("app/login.component").then(c => c["LoginComponent"])
                 }),
             ];
 
