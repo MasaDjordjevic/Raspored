@@ -38,7 +38,7 @@
             </div>
 
             <r-dialog #addAnnouncementDialog [source]="addAnnouncementButton">
-                <add-personal-activity></add-personal-activity>
+                <add-personal-activity (close)="addAnnouncementDialog.close()"></add-personal-activity>
             </r-dialog>
 
             <div class="dropdown language-dropdown" [class.hidden]="!languagePickerOpened">

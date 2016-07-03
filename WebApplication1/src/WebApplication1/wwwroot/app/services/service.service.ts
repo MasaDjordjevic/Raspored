@@ -18,6 +18,9 @@ export class ServiceService {
     }
 
     protected handleError(error: any) {
+        if (error.status === 401) {
+            window.location =  <Location>"/unauthorized-access";
+        }
         let errMsg = error.message || 'Server error';
         console.error(errMsg);
         return Promise.reject(errMsg);

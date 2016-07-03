@@ -17,6 +17,7 @@ import {StudentsService} from "../../services/students.service";
 @Component({
     selector: 'add-personal-activity',
     templateUrl: 'app/student-panel/dialogs/add-activity.html',
+    styleUrls: ['app/student-panel/dialogs/add-activity.css'],
     directives: [R_INPUT, R_DROPDOWN, R_BUTTON],
     providers: [ClassroomsService, StudentsService],
 })
