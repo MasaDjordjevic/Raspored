@@ -25,7 +25,7 @@ export class GlobalService {
     }
     //endregion cookies
 
-    //region Associative array of emitters, should be removed TODO
+    //region Associative array of emitters
     private _emitters:
         { [channel: string]: EventEmitter<any> } = {};
 
@@ -356,16 +356,6 @@ export class GlobalService {
             "ja":  "NOT_TRANSLATED_YET",
         },
         "remove_student__3": {
-            "en":  "from group",
-            "sr":  "iz grupe",
-            "src": "NOT_TRANSLATED_YET",
-            "eo":  "NOT_TRANSLATED_YET",
-            "es":  "NOT_TRANSLATED_YET",
-            "de":  "NOT_TRANSLATED_YET",
-            "fr":  "NOT_TRANSLATED_YET",
-            "ja":  "NOT_TRANSLATED_YET",
-        },
-        "remove_student__4": {
             "en":  "?",
             "sr":  "?",
             "src": "NOT_TRANSLATED_YET",
@@ -958,6 +948,16 @@ export class GlobalService {
         "successfully_created_division__2": {
             "en":  ".",
             "sr":  ".",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "NOT_TRANSLATED_YET",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "NOT_TRANSLATED_YET",
+        },
+        "create_division": {
+            "en":  "Create division",
+            "sr":  "Kreiraj raspodelu",
             "src": "NOT_TRANSLATED_YET",
             "eo":  "NOT_TRANSLATED_YET",
             "es":  "NOT_TRANSLATED_YET",

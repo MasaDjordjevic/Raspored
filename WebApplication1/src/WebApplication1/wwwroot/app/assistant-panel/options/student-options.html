@@ -9,7 +9,6 @@
         <dd>{{student.indexNumber}}</dd>
     </dl>
 
-    <!-- todo -->
     <p>{{errorMessage}}</p>
 
     <div class="flex-spacer"></div>
@@ -30,14 +29,11 @@
 
     <r-dialog #removeFromGroupDialog [source]="removeFromGroupButton">
         <div class="remove-from-group-dialog">
-            <!-- todo, nemam grupu -->
             <div class="dialog-text">
                 {{_globalService.translate('remove_student__1')}}
                 <b>{{student.UniMembers.name}} {{student.UniMembers.surname}}</b>
                 {{_globalService.translate('remove_student__2')}}
-                <b>{{student.indexNumber}}</b>
-                {{_globalService.translate('remove_student__3')}}
-                <b>TODO, NEMAM GRUPU</b>{{_globalService.translate('remove_student__4')}}</div>
+                <b>{{student.indexNumber}}</b>{{_globalService.translate('remove_student__3')}}</div>
             <div class="dialog-controls">
                 <button r-button flat [text]="_globalService.translate('cancel')"
                         (click)="removeFromGroupDialog.close()" [primaryColor]="primaryColor">

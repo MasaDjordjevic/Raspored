@@ -108,7 +108,8 @@ export class DivisionCreatorComponent implements AfterViewInit {
                 return !!(this.$$newDivisionName && this.$$newDivisionClassId && this.$$newDivisionTypeId && this.$$newDivisionBeginningDate && this.$$newDivisionEndingDate);
 
             case 2:
-                return !!(this.$$newDivisionCreationWay && this.$$newDivisionCreationNumberX && this.$$newDivisionCreationOrderIsRandom && !!this.createdGroups);
+                return !!(this.$$newDivisionCreationWay && this.$$newDivisionCreationNumberX && this.$$newDivisionCreationOrderIsRandom &&
+                (!!this.createdGroups || this.newDivisionCreationWay == 'manual'));
 
             case 3:
                 return true; // nista se ne menja, samo pregled
@@ -194,7 +195,6 @@ export class DivisionCreatorComponent implements AfterViewInit {
                 .then(groups => this.createdGroups = groups, error => this.errorMessage = <any>error);
         } else {
             this._globalService.toast(this._globalService.translate("selected_manual_no_list_to_display"));
-            // manual TODO
         }
     }
 

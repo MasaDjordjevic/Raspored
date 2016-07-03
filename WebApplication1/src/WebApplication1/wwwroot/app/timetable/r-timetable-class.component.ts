@@ -230,35 +230,13 @@ export class TimetableClassComponent {
                     this._globalService.refreshStudentPanelPersonal()
                 }, 300)
             });
-    }
-
-    // dodaj task
-    public addTask() {
-        //TODO
-        /*this._studentsService.addActivity()
-            .then(status => console.log(status));*/
-    }
-
-    // dodaj obavestenje
-    public addAnnouncement() {
-        // TODO
-        alert("TODO");
-    }
-
-    // otkazi cas
-    public cancelClass() {
-        // TODO
-        alert("TODO");
-    }
-    
+    }    
 
     constructor(
         private elementRef: ElementRef,
         private _studentsService: StudentsService,
         private _globalService: GlobalService,
         private _activityScheduleService: ActivityScheduleService
-    ) {
-
-    }
+    ) {  }
 
 }

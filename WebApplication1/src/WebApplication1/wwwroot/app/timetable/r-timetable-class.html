@@ -41,7 +41,7 @@
         <!-- ako je čas (nije aktivnost) -->
         <template [ngIf]="abbr && classroom">
             <span class="title">
-                {{abbr}} <!-- TODO bravo -->
+                {{abbr}}
                 {{_globalService.translate('in')}}
                 {{classroom}}
             </span>
@@ -140,13 +140,6 @@
                                 <a *ngIf="assistant.mail" [href]="'mailto:' + assistant?.mail">
                                     <i class="fa fa-envelope"></i>
                                 </a>
-                                <!-- todo mejl asistena -->
-                                <!--<div class="more-info">-->
-                                <!--<i class="fa fa-question"></i>-->
-                                <!--<div>-->
-                                <!--331-->
-                                <!--</div>-->
-                                <!--</div>-->
                             </dd></div>
 
                     </dl>

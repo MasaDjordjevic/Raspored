@@ -56,7 +56,6 @@ export class StudentOptionsComponent {
     }
 
     removeFromGroup(){
-        //TODO nesto pametnije sa odgovorom
         this._service.removeFromGroup(this.studentId, this.groupId)
             .then(response => {
                 switch(response["status"]) {

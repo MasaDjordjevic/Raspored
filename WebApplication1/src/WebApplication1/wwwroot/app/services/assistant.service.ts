@@ -34,16 +34,6 @@ export class AssistantService  extends ServiceService {
             .catch(super.handleError);
     }
 
-    alter(newAssistant: Assistant) {
-        alert("TODO"); //TODO
-    }
-
-    //getUnimembers(): Promise<Department[]> {
-    //    return this.http.get(this._url).toPromise()
-    //        .then(super.extractData)
-    //        .catch(super.handleError);
-    //}
-
     getSchedule(assistantID: number, weeksFromNow:number): Promise<any[]> {
         return this.http.get(this._url + `/GetSchedule/?assistantID=${assistantID}&weeksFromNow=${weeksFromNow}`)
             .toPromise()

@@ -73,7 +73,6 @@ export class RStepperHeaderComponent {
     </div>
     <!-- Prev/Next buttons -->
     <div class="r-stepper-footer">
-        {{allAreValid()}}
         <button r-button flat [text]="_globalService.translate('back')" (click)="goToPrev()"
                 [disabled]="currentIsFirst()" [primaryColor]="primaryColor">{{_globalService.translate('back')}}</button>
         <template [ngIf]="!currentIsLast()">

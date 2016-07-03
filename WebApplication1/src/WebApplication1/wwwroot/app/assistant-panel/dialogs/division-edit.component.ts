@@ -87,9 +87,6 @@ export class DivisionEditComponent implements AfterViewInit {
         this._hasUnsavedChanges = true;
     }
 
-    //TODO refaktorisajne:
-    //sve ovo sam iskopirala iz division-creator-component
-
     ngAfterViewInit() {
         this.oldDivision = this.division;
         this.getCoursesOfDepartment();
@@ -127,9 +124,7 @@ export class DivisionEditComponent implements AfterViewInit {
             //this.division.divisionID = -1;
         }
 
-        // TODO ovo je krajnje retardirano
         // vracamo edited stvari nazad u pocetni objekat da bismo mogli da posaljemo
-
         var sendId = this.division.divisionID;
         var sendName = this.editedDivision.name;
         var sendBeginning = this.editedDivision.beginning;
@@ -139,8 +134,7 @@ export class DivisionEditComponent implements AfterViewInit {
 
         console.log(sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID);
         /*debugger;*/
-
-        //TODO nesto pametnije sa odgovorom
+        
         this._divisionsService.updateDivision(
             sendId, sendName, sendBeginning, sendEnding, sendDivisionTypeID, sendCourseID)
             .then(response => {

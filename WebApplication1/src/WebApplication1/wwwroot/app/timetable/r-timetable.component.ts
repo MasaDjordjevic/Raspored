@@ -195,7 +195,6 @@ export class TimetableComponent {
     }
 
     getStudentSchedule(){
-        //TODO prosledi lepo ID, preko sesije
         this._studentsService.getPersonalSchedule(this.studentID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
@@ -204,7 +203,6 @@ export class TimetableComponent {
     }
 
     getOfficialStudentSchedule() {
-        //TODO prosledi lepo ID, preko sesije (valjda)
         this._studentsService.getOfficialSchedule(this.officialStudentID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
@@ -213,7 +211,6 @@ export class TimetableComponent {
     }
 
     getGroupSchedule(){
-        //TODO prosledi lepo ID
         this._groupsService.getSchedule(this.groupID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
@@ -222,7 +219,6 @@ export class TimetableComponent {
     }
 
     getDepartmentSchedule() {
-        //TODO prosledi lepo ID
         this._departmentsService.getSchedule(this.departmentID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
@@ -231,7 +227,6 @@ export class TimetableComponent {
     }
 
     getClassroomSchedule() {
-        //TODO prosledi lepo ID
         this._clasroomsService.getSchedule(this.classroomID, this.weeksFromNow)
             .then(
                 sch => this.classes = sch,
@@ -286,7 +281,6 @@ export class TimetableComponent {
 
     public get dayNamesAbbr(): string[] {
         // japanski uzima prvo slovo, ostali jeizici uzimaju prva tri slova
-        // TODO testiraj
         let length = 3;
         if (this._globalService.currentLanguage == "ja") {
             length = 1;
@@ -295,69 +289,5 @@ export class TimetableComponent {
     }
 
     displayDay: Array<boolean> = [true, true, true, true, true, true, false];
-
-    public addNewActivity(value) {
-        //TODO
-        alert("Sledi mock dodavanje. Implementirati AJAX poziv.");
-        var newClass = {
-            startMinutes: value.newActivityStart,
-            durationMinutes: value.newActivityDuration,
-            activityTitle: value.newActivityTitle,
-            activityContent: value.newActivityDesc,
-            active: true,
-            color: "MaterialBlue",
-        };
-
-        var theDay = this.classes[+value.newActivityDay].push(newClass);
-    }
-
-
-
-     /*public classes = [
-        [
-            // ponedeljak
-            {startMinutes: 615, durationMinutes: 65, className: "Sistemi baza podataka", abbr: "SBP", classroom: "A2", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#f44336", active: true},
-            {startMinutes: 675, durationMinutes: 45, className: "Sistemi baza podataka", abbr: "SBP", classroom: "A2", assistant: "Clada Mihajlovitj", type: "predavanje", color: "#f44336", active: false},
-            {startMinutes: 500, durationMinutes: 90, activityTitle: "Teretana", activityContent: "Moji su bicepsi biseri rasuti po celom benču", color: "#E91E63", active: true},
-            {startMinutes: 735, durationMinutes: 45, className: "Veštačka inteligencija", abbr: "VI", classroom: "431", assistant: "Vlada Mihajlovitj", type: "računske", color: "#673AB7", active: true},
-            {startMinutes: 840, durationMinutes: 90, className: "Sistemi baza podataka", abbr: "SBP", classroom: "2xx", assistant: "Medica Dobrog Srca", type: "laboratorijske", color: "#f44336", active: true},
-            {startMinutes: 930, durationMinutes: 90, className: "Veb programiranje", abbr: "WEB", classroom: "234", assistant: "Ivica Comic Sans", type: "laboratorijske", color: "#2196F3", active: true},
-            {startMinutes: 795, durationMinutes: 45, className: "Veštačka inteligencija", abbr: "VI", classroom: "431", assistant: "Vlada Mihajlovitj", type: "računske", color: "#673AB7", active: true},
-
-        ],
-        [
-            // utorak
-            {startMinutes: 495, durationMinutes: 45, className: "Softversko inženjerstvo", abbr: "SWE", classroom: "A2", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#8BC34A", active: true},
-            {startMinutes: 555, durationMinutes: 45, className: "Softversko inženjerstvo", abbr: "SWE", classroom: "A2", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#8BC34A", active: true},
-            {startMinutes: 615, durationMinutes: 45, className: "Mikroračunarski sistemi", abbr: "MIKS", classroom: "222", assistant: "Vlada Mihajlovitj", type: "računske", color: "#FFC107", active: true, announcement: "OVO JE SPARTA!"},
-            {startMinutes: 675, durationMinutes: 45, className: "Mikroračunarski sistemi", abbr: "MIKS", classroom: "222", assistant: "Vlada Mihajlovitj", type: "računske", color: "#FFC107", active: true},
-            {startMinutes: 900, durationMinutes: 90, className: "Veštačka inteligencija", abbr: "VI", classroom: "2xx", assistant: "Vlada Mihajlovitj", type: "laboratorijske", color: "#673AB7", active: true},
-        ],
-        [
-            // sreda
-            {startMinutes: 555, durationMinutes: 45, className: "Veštačka inteligencija", abbr: "VI", classroom: "A2", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#673AB7", active: true},
-            {startMinutes: 615, durationMinutes: 45, className: "Veštačka inteligencija", abbr: "VI", classroom: "A2", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#673AB7", active: true},
-            {startMinutes: 675, durationMinutes: 45, className: "Mikroračunarski sistemi", abbr: "MIKS", classroom: "A3", assistant: "Vlada Mihajlovitj", type: "predavanje", color: "#FFC107", active: true},
-            {startMinutes: 735, durationMinutes: 45, className: "Mikroračunarski sistemi", abbr: "MIKS", classroom: "A3", assistant: "Clada Mighahd", type: "predavanje", color: "#FFC107", active: true}
-        ],
-        [
-            // četvrtak
-            {startMinutes: 495, durationMinutes: 45, className: "Veb programiranje", abbr: "WEB", classroom: "525", assistant: "Petko Biceps <3", type: "predavanje", color: "#2196F3", active: true},
-            {startMinutes: 555, durationMinutes: 45, className: "Veb programiranje", abbr: "WEB", classroom: "525", assistant: "Petko Biceps <3", type: "predavanje", color: "#2196F3", active: true},
-            {startMinutes: 615, durationMinutes: 45, className: "Veb programiranje", abbr: "WEB", classroom: "525", assistant: "Petko Biceps <3", type: "računske", color: "#2196F3", active: true},
-            {startMinutes: 675, durationMinutes: 45, className: "Veb programiranje", abbr: "WEB", classroom: "525", assistant: "Petko Biceps <3", type: "računske", color: "#2196F3", active: true},
-        ],
-        [
-            // petak
-            {startMinutes: 495, durationMinutes: 45, className: "Engleski jezik II", abbr: "ENG2", classroom: "A2", assistant: "Houp Dickovitj", type: "predavanje", color: "#FF5722", active: true},
-            {startMinutes: 555, durationMinutes: 45, className: "Engleski jezik II", abbr: "ENG2", classroom: "A2", assistant: "Houp Dickovitj", type: "predavanje", color: "#FF5722", active: true}
-        ],
-        [
-            // subota
-        ],
-        [
-            // nedelja
-        ],
-    ]*/
 
 }

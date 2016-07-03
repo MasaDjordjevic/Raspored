@@ -149,7 +149,6 @@ export class AssistantPanelComponent {
             this._selectedGroupId = <any>(new Number(this._selectedGroupId));
             this._selectedDivisionId = <any>(new Number(this._selectedDivisionId));
             this._selectedDepartmentId = <any>(new Number(this._selectedDepartmentId));
-            // this._selectedStudentId = +(this._selectedStudentId + ""); // TODO ovako
         } else {
             // Inace, u zavisnosti od prosledjene opcije uradi odgovarajuce manipulacije
             if ( $options.shiftMinusOne) {

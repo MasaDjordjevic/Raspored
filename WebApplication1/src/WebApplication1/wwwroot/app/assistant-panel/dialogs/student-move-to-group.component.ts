@@ -11,6 +11,7 @@ import {GlobalService} from "../../services/global.service";
 @Component({
     selector: 'move-student-to-group',
     template: ` 
+    <template [ngIf="groups && groups.length > 1 && groupId">
         <span *ngIf="groups && groups.length > 1 && groupId">
             {{_globalService.translate('student_is_currently_in_group__1')}}
             <b>{{groupName}}</b>
@@ -39,6 +40,10 @@ import {GlobalService} from "../../services/global.service";
             </button>  
             
         </div>
+    </template>
+    <template [ngIf]="!(groups && groups.length > 1 && groupId)">
+        <span>Nema drugih grupa.</span>
+    </template>
     `,
     providers: [DivisionsService, GroupsService],
     directives: [R_BUTTON, R_DROPDOWN],
@@ -64,7 +69,6 @@ export class MoveStudentToGroupComponent {
         return this.groups && this.groups.filter(e => e.groupID !== this.groupId);
     }
 
-    // TODO lazo iskoristi ovaj ID
     // grupa kroz koju se doslo
     @Input() groupId: number;
 
@@ -120,7 +124,7 @@ export class MoveStudentToGroupComponent {
             .then(response => {
                 switch(response["status"]) {
                     case "uspelo":
-                        this._globalService.toast(this._globalService.translate('student_successfully_moved')); // TODO koji, odakle, gde?
+                        this._globalService.toast(this._globalService.translate('student_successfully_moved'));
                         break;
                     default:
                         this._globalService.toast(this._globalService.translate('error') + ' ' +
