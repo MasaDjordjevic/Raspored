@@ -2056,7 +2056,7 @@ export class GlobalService {
             "es":  "NOT_TRANSLATED_YET",
             "de":  "NOT_TRANSLATED_YET",
             "fr":  "NOT_TRANSLATED_YET",
-            "ja":  "NOT_TRANSLATED_YET",
+            "ja":  "の",
         },
         "announcements": {
             "en":  "Announcements",
@@ -2120,7 +2120,7 @@ export class GlobalService {
         },
         //endregion
 
-        //region login
+        //region Login
         "username": {
             "en":  "Username",
             "sr":  "Korisničko ime",
@@ -2151,6 +2151,18 @@ export class GlobalService {
             "fr":  "NOT_TRANSLATED_YET",
             "ja":  "ログイン",
         },
+
+        "wrong_credentials": {
+            "en":  "Wrong username and/or password!",
+            "sr":  "Pogrešno korisničko ime i/ili lozinka!",
+            "src": "NOT_TRANSLATED_YET",
+            "eo":  "Malĝustan uzulnomon kaj/aŭ pasvorton!",
+            "es":  "NOT_TRANSLATED_YET",
+            "de":  "NOT_TRANSLATED_YET",
+            "fr":  "NOT_TRANSLATED_YET",
+            "ja":  "間違ったユーザー名とパスワード！",
+        },
+
         //endregion
 
     };
