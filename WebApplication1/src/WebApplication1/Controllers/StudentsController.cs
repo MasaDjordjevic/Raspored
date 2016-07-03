@@ -259,7 +259,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                Data.Student.HideClass(HttpContext.Session.GetAssistantID(), groupID);
+                Data.Student.HideClass(HttpContext.Session.GetStudentID(), groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -274,7 +274,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                Data.Student.AddClassToPersonalSchedule(HttpContext.Session.GetAssistantID(), groupID);
+                Data.Student.AddClassToPersonalSchedule(HttpContext.Session.GetStudentID(), groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -288,7 +288,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                Data.Student.AlertClass(HttpContext.Session.GetAssistantID(), groupID);
+                Data.Student.AlertClass(HttpContext.Session.GetStudentID(), groupID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -321,7 +321,7 @@ namespace WebApplication1.Controllers
                 //konvertovanje u timeSpan
                 TimeSpans ts = TimeSpan.getTimeSpan(obj.timeSpan);
 
-                Data.Student.AddActivity(HttpContext.Session.GetAssistantID(), obj.groupID, obj.classroomID, ts, obj.place, obj.title, obj.content);
+                Data.Student.AddActivity(HttpContext.Session.GetStudentID(), obj.groupID, obj.classroomID, ts, obj.place, obj.title, obj.content);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -338,7 +338,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Data.Student.DeleteActivity(HttpContext.Session.GetAssistantID(), activityID);
+                Data.Student.DeleteActivity(HttpContext.Session.GetStudentID(), activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
@@ -355,7 +355,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                Data.Student.AlertActivity(HttpContext.Session.GetAssistantID(), activityID);
+                Data.Student.AlertActivity(HttpContext.Session.GetStudentID(), activityID);
                 return Ok(new { status = "uspelo" });
             }
             catch (Exception ex)
