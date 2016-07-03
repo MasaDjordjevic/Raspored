@@ -64,7 +64,6 @@ import {GlobalService} from "./services/global.service";
         </form>
         
         <div id="login-message" [class.shown]="showLoginMessage">
-            <i class="fa fa-warning"></i>
             <span>{{_globalService.translate('wrong_credentials')}}</span>
         </div>
     `,
