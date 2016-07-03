@@ -52,7 +52,7 @@ import {GlobalService} from "./services/global.service";
         <div class="logo"></div>
         <form (submit)="login()">
             <r-input [label]="_globalService.translate('username')" [(val)]="username"
-                     [primaryColor]="'MaterialRed'"
+                     [primaryColor]="'MaterialRed'" [autofocus]="true"
             ></r-input>
             <r-input [label]="_globalService.translate('password')" [type]="'password'"
                      [(val)]="password" [primaryColor]="'MaterialRed'"
@@ -62,6 +62,11 @@ import {GlobalService} from "./services/global.service";
                 <button r-button raised [text]="_globalService.translate('login')" [primaryColor]="'MaterialRed'">{{_globalService.translate('login')}}</button>
             </div>
         </form>
+        
+        <div id="login-message" [class.shown]="showLoginMessage">
+            <i class="fa fa-warning"></i>
+            <span>{{_globalService.translate('wrong_credentials')}}</span>
+        </div>
     `,
     styleUrls: ['app/login.css'],
     providers: [LoginService]
@@ -70,8 +75,29 @@ export class LoginComponent {
 
     private languagePickerOpened: boolean = false;
 
-    public username: string = "plavusha";
-    public password : string = "plavusha";
+    private loginMessage: string = "";
+    private showLoginMessage: boolean = false;
+
+    public _username: string = "plavush";
+    public _password : string = "plavusha";
+
+    set username(u: string) {
+        this._username = u;
+        this.showLoginMessage = false;
+    }
+
+    get username() {
+        return this._username;
+    }
+
+    set password(p: string) {
+        this._password = p;
+        this.showLoginMessage = false;
+    }
+
+    get password() {
+        return this._password;
+    }
 
     constructor(
         private _loginService: LoginService,
@@ -93,6 +119,10 @@ export class LoginComponent {
                 console.log(res);
                 if(res.status == "uspelo") {
                     window.location = res.url;
+                } else if (res.status == "nije uspelo") {
+                    if (res.message == "Wrong credentials") {
+                        this.showLoginMessage = true;
+                    }
                 }
             } );
     }

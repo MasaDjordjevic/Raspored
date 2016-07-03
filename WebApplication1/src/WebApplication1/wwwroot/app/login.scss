@@ -142,3 +142,27 @@ button#lang-picker {
     line-height: 1.6em;
   }
 }
+
+#login-message {
+
+  &.shown {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    transition: all .33s ease;
+  }
+
+  transition: all .33s ease;
+  transform: translate(0, -50px) scale(1.05);
+  opacity: 0;
+  height: 4em;
+  line-height: 5em;
+  color: rgba(white, .86);
+  font-weight: bold;
+
+  i {
+    padding-right: .5em;
+    display: none;
+    color: palette($red, 300);
+  }
+
+}

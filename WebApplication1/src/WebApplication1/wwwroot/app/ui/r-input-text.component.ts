@@ -11,7 +11,13 @@ import {GlobalService} from "../services/global.service";
     selector: "r-input",
     template: `
     <label [ngClass]="{collapsed: val && val != '' || _isFocused, highlight: _isFocused}">{{label}}</label>
-    <input [type]="type" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" [required]="required ? 'true' : null" #spy/>
+    <template [ngIf]="autofocus">
+        <input [type]="type" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" autofocus [required]="required ? 'true' : null" #spy/>
+    </template>
+    <template [ngIf]="!autofocus">
+        <input [type]="type" [(ngModel)]="val" (focus)="focus()" (blur)="blur()" [required]="required ? 'true' : null" #spy/>
+    </template>
+    
     <!--<div class="validation-icon">
         <span *ngIf="control._touched && !control.valid">X</span>
     </div>-->
@@ -25,6 +31,8 @@ import {GlobalService} from "../services/global.service";
 })
 
 export class RInputText implements AfterViewInit {
+
+    @Input() autofocus: boolean = false;
 
     @Input() required: boolean = true;
     @Input() label: string = "";
