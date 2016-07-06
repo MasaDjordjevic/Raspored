@@ -77,8 +77,8 @@ export class LoginComponent {
     private loginMessage: string = "";
     private showLoginMessage: boolean = false;
 
-    public _username: string = "ksenija";
-    public _password : string = "ksenija";
+    public _username: string = "";
+    public _password : string = "";
 
     set username(u: string) {
         this._username = u;
